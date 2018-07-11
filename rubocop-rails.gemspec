@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.authors = ['Bozhidar Batsov', 'Jonas Arvidsson', 'Yuji Nakayama']
   s.description = <<-DESCRIPTION
     Automatic Rails code style checking tool.
-    A RuboCop extensions focused on enforcing Rails best practices and coding conventions.
+    A RuboCop extension focused on enforcing Rails best practices and coding conventions.
   DESCRIPTION
 
   s.email = 'rubocop@googlegroups.com'
