@@ -1,0 +1,207 @@
+# This is the default configuration file. Enabling and disabling is configured
+# in separate files. This file adds all other parameters apart from Enabled.
+
+inherit_from:
+  - enabled.yml
+  - disabled.yml
+
+# Common configuration.
+AllCops:
+  # What version of Rails is the inspected code using?  If a value is specified
+  # for TargetRailsVersion then it is used.  Acceptable values are specificed
+  # as a float (i.e. 5.1); the patch version of Rails should not be included.
+  # If TargetRailsVersion is not set, RuboCop will parse the Gemfile.lock or
+  # gems.locked file to find the version of Rails that has been bound to the
+  # application.  If neither of those files exist, RuboCop will use Rails 5.0
+  # as the default.
+  TargetRailsVersion: ~
+
+#################### Rails #################################
+
+Rails/ActionFilter:
+  EnforcedStyle: action
+  SupportedStyles:
+    - action
+    - filter
+  Include:
+    - app/controllers/**/*.rb
+
+Rails/AssertNot:
+  Include:
+    - '**/test/**/*'
+
+Rails/Blank:
+  # Convert usages of `nil? || empty?` to `blank?`
+  NilOrEmpty: true
+  # Convert usages of `!present?` to `blank?`
+  NotPresent: true
+  # Convert usages of `unless present?` to `if blank?`
+  UnlessPresent: true
+
+Rails/BulkChangeTable:
+  Database: null
+  SupportedDatabases:
+    - mysql
+    - postgresql
+  Include:
+    - db/migrate/*.rb
+
+Rails/CreateTableWithTimestamps:
+  Include:
+    - db/migrate/*.rb
+
+Rails/Date:
+  # The value `strict` disallows usage of `Date.today`, `Date.current`,
+  # `Date#to_time` etc.
+  # The value `flexible` allows usage of `Date.current`, `Date.yesterday`, etc
+  # (but not `Date.today`) which are overridden by ActiveSupport to handle current
+  # time zone.
+  EnforcedStyle: flexible
+  SupportedStyles:
+    - strict
+    - flexible
+
+Rails/Delegate:
+  # When set to true, using the target object as a prefix of the
+  # method name without using the `delegate` method will be a
+  # violation. When set to false, this case is legal.
+  EnforceForPrefixed: true
+
+Rails/DynamicFindBy:
+  Whitelist:
+    - find_by_sql
+
+Rails/EnumUniqueness:
+  Include:
+    - app/models/**/*.rb
+
+Rails/Exit:
+  Include:
+    - app/**/*.rb
+    - config/**/*.rb
+    - lib/**/*.rb
+  Exclude:
+    - lib/**/*.rake
+
+Rails/FilePath:
+  EnforcedStyle: arguments
+  SupportedStyles:
+    - slashes
+    - arguments
+
+Rails/FindBy:
+  Include:
+    - app/models/**/*.rb
+
+Rails/FindEach:
+  Include:
+    - app/models/**/*.rb
+
+Rails/HasAndBelongsToMany:
+  Include:
+    - app/models/**/*.rb
+
+Rails/HasManyOrHasOneDependent:
+  Include:
+    - app/models/**/*.rb
+
+Rails/HttpStatus:
+  EnforcedStyle: symbolic
+  SupportedStyles:
+    - numeric
+    - symbolic
+
+Rails/InverseOf:
+  Include:
+    - app/models/**/*.rb
+
+Rails/LexicallyScopedActionFilter:
+  Include:
+    - app/controllers/**/*.rb
+
+Rails/NotNullColumn:
+  Include:
+    - db/migrate/*.rb
+
+Rails/Output:
+  Include:
+    - app/**/*.rb
+    - config/**/*.rb
+    - db/**/*.rb
+    - lib/**/*.rb
+
+Rails/Present:
+  # Convert usages of `!nil? && !empty?` to `present?`
+  NotNilAndNotEmpty: true
+  # Convert usages of `!blank?` to `present?`
+  NotBlank: true
+  # Convert usages of `unless blank?` to `if present?`
+  UnlessBlank: true
+
+Rails/ReadWriteAttribute:
+  Include:
+    - app/models/**/*.rb
+
+Rails/RefuteMethods:
+  Include:
+    - '**/test/**/*'
+
+Rails/RequestReferer:
+  EnforcedStyle: referer
+  SupportedStyles:
+    - referer
+    - referrer
+
+Rails/ReversibleMigration:
+  Include:
+    - db/migrate/*.rb
+
+Rails/SafeNavigation:
+  # This will convert usages of `try` to use safe navigation as well as `try!`.
+  # `try` and `try!` work slightly differently. `try!` and safe navigation will
+  # both raise a `NoMethodError` if the receiver of the method call does not
+  # implement the intended method. `try` will not raise an exception for this.
+  ConvertTry: false
+
+Rails/ScopeArgs:
+  Include:
+    - app/models/**/*.rb
+
+Rails/TimeZone:
+  # The value `strict` means that `Time` should be used with `zone`.
+  # The value `flexible` allows usage of `in_time_zone` instead of `zone`.
+  EnforcedStyle: flexible
+  SupportedStyles:
+    - strict
+    - flexible
+
+Rails/UniqBeforePluck:
+  EnforcedStyle: conservative
+  SupportedStyles:
+    - conservative
+    - aggressive
+  AutoCorrect: false
+
+Rails/UnknownEnv:
+  Environments:
+    - development
+    - test
+    - production
+
+Rails/SkipsModelValidations:
+  Blacklist:
+    - decrement!
+    - decrement_counter
+    - increment!
+    - increment_counter
+    - toggle!
+    - touch
+    - update_all
+    - update_attribute
+    - update_column
+    - update_columns
+    - update_counters
+
+Rails/Validation:
+  Include:
+    - app/models/**/*.rb
