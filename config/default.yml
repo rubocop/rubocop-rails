@@ -16,8 +16,6 @@ AllCops:
   # as the default.
   TargetRailsVersion: ~
 
-#################### Rails #################################
-
 Rails/ActionFilter:
   EnforcedStyle: action
   SupportedStyles:
