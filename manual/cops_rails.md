@@ -1681,6 +1681,12 @@ class SomeClass
 end
 ```
 
+### Configurable attributes
+
+Name | Default value | Configurable values
+--- | --- | ---
+AutoCorrect | `false` | Boolean
+
 ## Rails/RequestReferer
 
 Enabled by default | Supports autocorrection

@@ -284,6 +284,7 @@ Rails/RefuteMethods:
 Rails/RelativeDateConstant:
   Description: 'Do not assign relative date to constants.'
   Enabled: true
+  AutoCorrect: false
 
 Rails/RequestReferer:
   Description: 'Use consistent syntax for request.referer.'
