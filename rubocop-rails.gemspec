@@ -32,5 +32,6 @@ Gem::Specification.new do |s|
   }
 
   s.add_runtime_dependency 'rubocop', '>= 0.58.0'
+  s.add_development_dependency('rack', '>= 2.0')
 end
 # rubocop:enable Metrics/BlockLength
