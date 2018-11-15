@@ -6,16 +6,16 @@ Rails/ActionFilter:
 
 Rails/ActiveRecordAliases:
   Description: >-
-                  Avoid Active Record aliases:
-                  Use `update` instead of `update_attributes`.
-                  Use `update!` instead of `update_attributes!`.
+    Avoid Active Record aliases:
+    Use `update` instead of `update_attributes`.
+    Use `update!` instead of `update_attributes!`.
   Enabled: true
 
 Rails/ActiveSupportAliases:
   Description: >-
-                  Avoid ActiveSupport aliases of standard ruby methods:
-                  `String#starts_with?`, `String#ends_with?`,
-                  `Array#append`, `Array#prepend`.
+    Avoid ActiveSupport aliases of standard ruby methods:
+    `String#starts_with?`, `String#ends_with?`,
+    `Array#append`, `Array#prepend`.
   Enabled: true
 
 Rails/ApplicationJob:
@@ -40,14 +40,14 @@ Rails/BulkChangeTable:
 
 Rails/CreateTableWithTimestamps:
   Description: >-
-                  Checks the migration for which timestamps are not included
-                  when creating a new table.
+    Checks the migration for which timestamps are not included
+    when creating a new table.
   Enabled: true
 
 Rails/Date:
   Description: >-
-                  Checks the correct usage of date aware methods,
-                  such as Date.today, Date.current etc.
+    Checks the correct usage of date aware methods,
+    such as Date.today, Date.current etc.
   Enabled: true
 
 Rails/Delegate:
@@ -73,9 +73,9 @@ Rails/EnvironmentComparison:
 
 Rails/Exit:
   Description: >-
-                  Favor `fail`, `break`, `return`, etc. over `exit` in
-                  application or library code outside of Rake files to avoid
-                  exits during unit testing or running in production.
+    Favor `fail`, `break`, `return`, etc. over `exit` in
+    application or library code outside of Rake files to avoid
+    exits during unit testing or running in production.
   Enabled: true
 
 Rails/FilePath:
@@ -148,8 +148,8 @@ Rails/Present:
 
 Rails/ReadWriteAttribute:
   Description: >-
-                 Checks for read_attribute(:attr) and
-                 write_attribute(:attr, val).
+    Checks for read_attribute(:attr) and
+    write_attribute(:attr, val).
   StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#read-attribute'
   Enabled: true
 
@@ -185,8 +185,8 @@ Rails/ScopeArgs:
 
 Rails/SkipsModelValidations:
   Description: >-
-                 Use methods that skips model validations with caution.
-                 See reference for more information.
+    Use methods that skips model validations with caution.
+    See reference for more information.
   Reference: 'http://guides.rubyonrails.org/active_record_validations.html#skipping-validations'
   Enabled: true
 

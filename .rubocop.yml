@@ -32,7 +32,7 @@ Style/FormatStringToken:
 Style/IpAddresses:
   # The test for this cop includes strings that would cause offenses
   Exclude:
-  - spec/rubocop/cop/style/ip_addresses_spec.rb
+    - spec/rubocop/cop/style/ip_addresses_spec.rb
 
 Layout/EndOfLine:
   EnforcedStyle: lf
@@ -45,13 +45,13 @@ Layout/ClassStructure:
       - prepend
       - extend
   ExpectedOrder:
-      - module_inclusion
-      - constants
-      - public_class_methods
-      - initializer
-      - instance_methods
-      - protected_methods
-      - private_methods
+    - module_inclusion
+    - constants
+    - public_class_methods
+    - initializer
+    - instance_methods
+    - protected_methods
+    - private_methods
 
 Layout/IndentHeredoc:
   EnforcedStyle: powerpack
