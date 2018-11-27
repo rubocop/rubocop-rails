@@ -3,8 +3,6 @@
 RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
   subject(:cop) { described_class.new(config) }
 
-  let(:rails_version) { 5.2 }
-
   shared_examples 'offense' do
     it 'registers an offense when including combinable transformations' do
       expect_offense(<<-RUBY.strip_indent)
@@ -373,9 +371,13 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       }
     end
 
-    it_behaves_like 'offense'
-    it_behaves_like 'no offense for mysql'
-    it_behaves_like 'offense for postgresql'
+    context 'with Rails 5.2' do
+      let(:rails_version) { 5.2 }
+
+      it_behaves_like 'offense'
+      it_behaves_like 'no offense for mysql'
+      it_behaves_like 'offense for postgresql'
+    end
 
     context 'with Rails 5.1' do
       let(:rails_version) { 5.1 }
@@ -419,7 +421,17 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
         }
       end
 
-      it_behaves_like 'offense for postgresql'
+      context 'with Rails 5.2' do
+        let(:rails_version) { 5.2 }
+
+        it_behaves_like 'offense for postgresql'
+      end
+
+      context 'with Rails 5.1' do
+        let(:rails_version) { 5.1 }
+
+        it_behaves_like 'no offense for postgresql'
+      end
     end
 
     context 'invalid (e.g. ERB)' do
