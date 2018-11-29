@@ -27,8 +27,8 @@ Style/DocumentationMethod:
 
 Style/ImplicitRuntimeError:
   Description: >-
-                 Use `raise` or `fail` with an explicit exception class and
-                 message, rather than just a message.
+    Use `raise` or `fail` with an explicit exception class and
+    message, rather than just a message.
   Enabled: false
 
 Style/InlineComment:
@@ -51,11 +51,11 @@ Style/MethodCalledOnDoEndBlock:
 
 Style/MissingElse:
   Description: >-
-                Require if/case expressions to have an else branches.
-                If enabled, it is recommended that
-                Style/UnlessElse and Style/EmptyElse be enabled.
-                This will conflict with Style/EmptyElse if
-                Style/EmptyElse is configured to style "both"
+    Require if/case expressions to have an else branches.
+    If enabled, it is recommended that
+    Style/UnlessElse and Style/EmptyElse be enabled.
+    This will conflict with Style/EmptyElse if
+    Style/EmptyElse is configured to style "both"
   Enabled: false
 
 Style/OptionHash:
