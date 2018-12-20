@@ -3,6 +3,8 @@
 require 'bundler'
 require 'bundler/gem_tasks'
 
+Dir['tasks/**/*.rake'].each { |t| load t }
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -24,5 +26,7 @@ task :coverage do
 end
 
 task default: %i[
+  documentation_syntax_check
+  generate_cops_documentation
   spec
 ]
