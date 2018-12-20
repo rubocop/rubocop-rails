@@ -25,7 +25,13 @@ task :coverage do
   Rake::Task['spec'].execute
 end
 
+desc 'Run RuboCop over this gem'
+task :internal_investigation do
+  sh('bundle exec rubocop')
+end
+
 task default: %i[
+  internal_investigation
   documentation_syntax_check
   generate_cops_documentation
   spec
