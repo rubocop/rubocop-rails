@@ -82,6 +82,10 @@ Metrics/BlockLength:
     - '**/*.rake'
     - 'spec/**/*.rb'
 
+Naming/FileName:
+  Exclude:
+    - lib/rubocop-rails.rb
+
 Metrics/ModuleLength:
   Exclude:
     - 'spec/**/*.rb'

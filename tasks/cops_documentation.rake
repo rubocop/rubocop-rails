@@ -65,8 +65,7 @@ task generate_cops_documentation: :yard_for_generate_documentation do
   def code_example(ruby_code)
     content = "```ruby\n".dup
     content << ruby_code.text
-      .gsub('@good', '# good')
-      .gsub('@bad', '# bad').strip
+               .gsub('@good', '# good').gsub('@bad', '# bad').strip
     content << "\n```\n"
     content
   end
@@ -121,7 +120,6 @@ task generate_cops_documentation: :yard_for_generate_documentation do
     table.join("\n") + "\n"
   end
 
-  # rubocop:disable Metrics/MethodLength
   def format_table_value(val)
     value =
       case val
@@ -136,7 +134,6 @@ task generate_cops_documentation: :yard_for_generate_documentation do
       end
     value.gsub("#{Dir.pwd}/", '').rstrip
   end
-  # rubocop:enable Metrics/MethodLength
 
   def references(config, cop)
     cop_config = config.for_cop(cop)
@@ -149,8 +146,6 @@ task generate_cops_documentation: :yard_for_generate_documentation do
     content
   end
 
-  # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/MethodLength
   def print_cops_of_department(cops, department, config)
     selected_cops = cops_of_department(cops, department).select do |cop|
       cop.to_s.start_with?('RuboCop::Cop::Rails')
@@ -167,11 +162,7 @@ task generate_cops_documentation: :yard_for_generate_documentation do
       file.write(content.strip + "\n")
     end
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 
-  # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/MethodLength
   def print_cop_with_doc(cop, config)
     t = config.for_cop(cop)
     non_display_keys = %w[Description Enabled StyleGuide Reference]
@@ -186,11 +177,8 @@ task generate_cops_documentation: :yard_for_generate_documentation do
     end
     cops_body(config, cop, description, examples_object, pars)
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 
   # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/MethodLength
   def table_of_content_for_department(cops, department)
     selected_cops = cops_of_department(cops, department.to_sym).select do |cop|
       cop.to_s.start_with?('RuboCop::Cop::Rails')
@@ -208,7 +196,6 @@ task generate_cops_documentation: :yard_for_generate_documentation do
     content
   end
   # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 
   def print_table_of_contents(cops)
     path = "#{Dir.pwd}/manual/cops.md"
