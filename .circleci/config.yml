@@ -1,0 +1,43 @@
+version: 2.1
+
+jobs:
+  rake_default:
+    parameters:
+      image:
+        description: "Name of the Docker image."
+        type: string
+        default: "circleci/ruby"
+    docker:
+      - image: << parameters.image >>
+    environment:
+      # CircleCI container has two cores, but Ruby can see 32 cores. So we
+      # configure test-queue.
+      # See https://github.com/tmm1/test-queue#environment-variables
+      TEST_QUEUE_WORKERS: 2
+      JRUBY_OPTS: "--debug -J-Xmx1000M" # get more accurate coverage data in JRuby
+    steps:
+      - checkout
+      - run: bundle install
+      - run: bundle exec rake
+
+workflows:
+  build:
+    jobs:
+      - rake_default:
+          name: Ruby 2.2
+          image: circleci/ruby:2.2
+      - rake_default:
+          name: Ruby 2.3
+          image: circleci/ruby:2.3
+      - rake_default:
+          name: Ruby 2.4
+          image: circleci/ruby:2.4
+      - rake_default:
+          name: Ruby 2.5
+          image: circleci/ruby:2.5
+      - rake_default:
+          name: Ruby HEAD
+          image: rubocophq/circleci-ruby-snapshot:latest # Nightly snapshot build
+      - rake_default:
+          name: JRuby 9.2
+          image: circleci/jruby:9.2
