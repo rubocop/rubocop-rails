@@ -23,7 +23,6 @@ matrix:
     - rvm: jruby-head
   fast_finish: true
 before_install:
-  - gem update --system
   - gem update --remote bundler
 install:
   - bundle install --retry=3
