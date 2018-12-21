@@ -30,6 +30,12 @@ Rails/AssertNot:
   Description: 'Use `assert_not` instead of `assert !`.'
   Enabled: true
 
+Rails/BelongsTo:
+  Description: >-
+                  Use `optional: true` instead of `required: false` for
+                  `belongs_to` relations'
+  Enabled: true
+
 Rails/Blank:
   Description: 'Enforces use of `blank?`.'
   Enabled: true
