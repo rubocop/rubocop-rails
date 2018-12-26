@@ -103,6 +103,10 @@ Rails/HasManyOrHasOneDependent:
   Include:
     - app/models/**/*.rb
 
+Rails/HelperInstanceVariable:
+  Include:
+    - app/helpers/**/*.rb
+
 Rails/HttpStatus:
   EnforcedStyle: symbolic
   SupportedStyles:
