@@ -813,9 +813,8 @@ Enabled | No
 This cop checks for use of the helper methods which reference
 instance variables.
 
-Relying on the existing of a particular instance variable
-makes it difficult to re-use helper methods in different
-contexts.
+Relying on instance variables makes it difficult to re-use helper
+methods.
 
 If it seems awkward to explicitly pass in each dependent
 variable, consider moving the behaviour elsewhere, for
