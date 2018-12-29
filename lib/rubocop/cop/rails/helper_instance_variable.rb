@@ -30,6 +30,10 @@ module RuboCop
         def on_ivar(node)
           add_offense(node)
         end
+
+        def on_ivasgn(node)
+          add_offense(node)
+        end
       end
     end
   end
