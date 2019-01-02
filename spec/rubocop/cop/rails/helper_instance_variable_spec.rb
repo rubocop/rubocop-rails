@@ -16,7 +16,7 @@ RSpec.describe RuboCop::Cop::Rails::HelperInstanceVariable do
     expect_offense(<<-RUBY.strip_indent)
       def welcome_message(user)
         @user_name = user.name
-        ^^^^^^^^^^^^^^^^^^^^^^ Do not use instance variables in helpers.
+        ^^^^^^^^^^ Do not use instance variables in helpers.
       end
     RUBY
   end

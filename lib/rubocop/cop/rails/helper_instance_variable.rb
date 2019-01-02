@@ -31,7 +31,7 @@ module RuboCop
         end
 
         def on_ivasgn(node)
-          add_offense(node)
+          add_offense(node, location: :name)
         end
       end
     end
