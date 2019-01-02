@@ -825,12 +825,12 @@ example to a model, decorator or presenter.
 ```ruby
 # bad
 def welcome_message
-  "Hello " + @user.name
+  "Hello #{@user.name}"
 end
 
 # good
 def welcome_message(user)
-  "Hello " + user.name
+  "Hello #{user.name}"
 end
 ```
 

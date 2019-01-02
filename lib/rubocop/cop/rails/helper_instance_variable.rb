@@ -16,12 +16,12 @@ module RuboCop
       # @example
       #   # bad
       #   def welcome_message
-      #     "Hello " + @user.name
+      #     "Hello #{@user.name}"
       #   end
       #
       #   # good
       #   def welcome_message(user)
-      #     "Hello " + user.name
+      #     "Hello #{user.name}"
       #   end
       class HelperInstanceVariable < Cop
         MSG = 'Do not use instance variables in helpers.'.freeze
