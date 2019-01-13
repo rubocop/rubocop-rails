@@ -113,6 +113,13 @@ Rails/HttpStatus:
     - numeric
     - symbolic
 
+Rails/IgnoredSkipActionFilterOption:
+  Description: 'Checks that `if` and `only` (or `except`) are not used together as options of `skip_*` action filter.'
+  Reference: 'https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options'
+  Enabled: true
+  Include:
+    - app/controllers/**/*.rb
+
 Rails/InverseOf:
   Include:
     - app/models/**/*.rb
