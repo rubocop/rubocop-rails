@@ -172,6 +172,10 @@ Rails/RedundantReceiverInWithOptions:
   Description: 'Checks for redundant receiver in `with_options`.'
   Enabled: true
 
+Rails/ReflectionClassName:
+  Description: 'Use a string for `class_name` option value in the definition of a reflection.'
+  Enabled: true
+
 Rails/RefuteMethods:
   Description: 'Use `assert_not` methods instead of `refute` methods.'
   Enabled: true
