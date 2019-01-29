@@ -30,20 +30,7 @@ Metrics/MethodLength:
 # Configuration parameters: Prefixes.
 # Prefixes: when, with, without
 RSpec/ContextWording:
-  Exclude:
-    - 'spec/rubocop/cop/rails/blank_spec.rb'
-    - 'spec/rubocop/cop/rails/bulk_change_table_spec.rb'
-    - 'spec/rubocop/cop/rails/delegate_spec.rb'
-    - 'spec/rubocop/cop/rails/exit_spec.rb'
-    - 'spec/rubocop/cop/rails/file_path_spec.rb'
-    - 'spec/rubocop/cop/rails/has_many_or_has_one_dependent_spec.rb'
-    - 'spec/rubocop/cop/rails/inverse_of_spec.rb'
-    - 'spec/rubocop/cop/rails/present_spec.rb'
-    - 'spec/rubocop/cop/rails/read_write_attribute_spec.rb'
-    - 'spec/rubocop/cop/rails/redundant_receiver_in_with_options_spec.rb'
-    - 'spec/rubocop/cop/rails/relative_date_constant_spec.rb'
-    - 'spec/rubocop/cop/rails/reversible_migration_spec.rb'
-    - 'spec/rubocop/cop/rails/safe_navigation_spec.rb'
+  Enabled: false
 
 # Offense count: 204
 # Configuration parameters: Max.
