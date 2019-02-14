@@ -32,13 +32,6 @@ module RuboCop
       #   redirect_to root_url, status: 301
       #
       class HttpStatus < Cop
-        begin
-          require 'rack/utils'
-          RACK_LOADED = true
-        rescue LoadError
-          RACK_LOADED = false
-        end
-
         include ConfigurableEnforcedStyle
 
         def_node_matcher :http_status, <<-PATTERN
@@ -62,10 +55,6 @@ module RuboCop
 
             add_offense(checker.node, message: checker.message)
           end
-        end
-
-        def support_autocorrect?
-          RACK_LOADED
         end
 
         def autocorrect(node)
@@ -110,11 +99,7 @@ module RuboCop
           end
 
           def message
-            if RACK_LOADED
-              format(MSG, prefer: preferred_style, current: number.to_s)
-            else
-              DEFAULT_MSG
-            end
+            format(MSG, prefer: preferred_style, current: number.to_s)
           end
 
           def preferred_style
@@ -155,11 +140,7 @@ module RuboCop
           end
 
           def message
-            if RACK_LOADED
-              format(MSG, prefer: preferred_style, current: symbol.inspect)
-            else
-              DEFAULT_MSG
-            end
+            format(MSG, prefer: preferred_style, current: symbol.inspect)
           end
 
           def preferred_style

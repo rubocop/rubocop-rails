@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
     'bug_tracker_uri' => 'https://github.com/rubocop-hq/rubocop-rails/issues'
   }
 
+  s.add_runtime_dependency 'rack', '>= 2.0'
   s.add_runtime_dependency 'rubocop', '>= 0.58.0'
-  s.add_development_dependency('rack', '>= 2.0')
 end
 # rubocop:enable Metrics/BlockLength

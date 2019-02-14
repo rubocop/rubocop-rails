@@ -49,30 +49,6 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_url, status: 550
       RUBY
     end
-
-    context 'when rack is not loaded' do
-      before { stub_const("#{described_class}::RACK_LOADED", false) }
-
-      it 'registers an offense and does not correct using numeric value' do
-        expect_offense(<<-RUBY)
-          render :foo, status: 200
-                               ^^^ Prefer `symbolic` over `numeric` to define HTTP status code.
-          render json: { foo: 'bar' }, status: 404
-                                               ^^^ Prefer `symbolic` over `numeric` to define HTTP status code.
-          render plain: 'foo/bar', status: 304
-                                           ^^^ Prefer `symbolic` over `numeric` to define HTTP status code.
-          redirect_to root_url, status: 301
-                                        ^^^ Prefer `symbolic` over `numeric` to define HTTP status code.
-        RUBY
-
-        expect_correction(<<-RUBY)
-          render :foo, status: 200
-          render json: { foo: 'bar' }, status: 404
-          render plain: 'foo/bar', status: 304
-          redirect_to root_url, status: 301
-        RUBY
-      end
-    end
   end
 
   context 'when EnforcedStyle is `numeric`' do
@@ -120,23 +96,6 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         render :foo, status: :missing
         render :foo, status: :redirect
       RUBY
-    end
-
-    context 'when rack is not loaded' do
-      before { stub_const("#{described_class}::RACK_LOADED", false) }
-
-      it 'registers an offense and corrects using symbolic value' do
-        expect_offense(<<-RUBY)
-          render :foo, status: :ok
-                               ^^^ Prefer `numeric` over `symbolic` to define HTTP status code.
-          render json: { foo: 'bar' }, status: :not_found
-                                               ^^^^^^^^^^ Prefer `numeric` over `symbolic` to define HTTP status code.
-          render plain: 'foo/bar', status: :not_modified
-                                           ^^^^^^^^^^^^^ Prefer `numeric` over `symbolic` to define HTTP status code.
-          redirect_to root_url, status: :moved_permanently
-                                        ^^^^^^^^^^^^^^^^^^ Prefer `numeric` over `symbolic` to define HTTP status code.
-        RUBY
-      end
     end
   end
 end
