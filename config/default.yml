@@ -1098,6 +1098,12 @@ Rails/TimeZoneAssignment:
     - spec/**/*.rb
     - test/**/*.rb
 
+Rails/Timecop:
+  Description: 'Prefer `ActiveSupport::Testing::TimeHelpers` over `Timecop`.'
+  Enabled: pending
+  VersionAdded: <<next>>
+  SafeAutoCorrect: false
+
 Rails/ToFormattedS:
   Description: 'Checks for consistent uses of `to_fs` or `to_formatted_s`.'
   StyleGuide: 'https://rails.rubystyle.guide/#prefer-to-fs'
