@@ -3,6 +3,8 @@
 RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
   subject(:cop) { described_class.new(config) }
 
+  let(:cop_config) { { 'AllowImplicitReturn' => true } }
+
   shared_examples 'checks_common_offense' do |method|
     it "when using #{method} with arguments" do
       inspect_source("object.#{method}(name: 'Tom', age: 20)")
