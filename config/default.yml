@@ -1,11 +1,5 @@
-# This is the default configuration file. Enabling and disabling is configured
-# in separate files. This file adds all other parameters apart from Enabled.
-
-inherit_from:
-  - enabled.yml
-  - disabled.yml
-
 # Common configuration.
+
 AllCops:
   # What version of Rails is the inspected code using?  If a value is specified
   # for TargetRailsVersion then it is used.  Acceptable values are specificed
@@ -17,6 +11,8 @@ AllCops:
   TargetRailsVersion: ~
 
 Rails/ActionFilter:
+  Description: 'Enforces consistent use of action filter methods.'
+  Enabled: true
   EnforcedStyle: action
   SupportedStyles:
     - action
@@ -24,11 +20,43 @@ Rails/ActionFilter:
   Include:
     - app/controllers/**/*.rb
 
+Rails/ActiveRecordAliases:
+  Description: >-
+                  Avoid Active Record aliases:
+                  Use `update` instead of `update_attributes`.
+                  Use `update!` instead of `update_attributes!`.
+  Enabled: true
+
+Rails/ActiveSupportAliases:
+  Description: >-
+                  Avoid ActiveSupport aliases of standard ruby methods:
+                  `String#starts_with?`, `String#ends_with?`,
+                  `Array#append`, `Array#prepend`.
+  Enabled: true
+
+Rails/ApplicationJob:
+  Description: 'Check that jobs subclass ApplicationJob.'
+  Enabled: true
+
+Rails/ApplicationRecord:
+  Description: 'Check that models subclass ApplicationRecord.'
+  Enabled: true
+
 Rails/AssertNot:
+  Description: 'Use `assert_not` instead of `assert !`.'
+  Enabled: true
   Include:
     - '**/test/**/*'
 
+Rails/BelongsTo:
+  Description: >-
+                  Use `optional: true` instead of `required: false` for
+                  `belongs_to` relations'
+  Enabled: true
+
 Rails/Blank:
+  Description: 'Enforces use of `blank?`.'
+  Enabled: true
   # Convert usages of `nil? || empty?` to `blank?`
   NilOrEmpty: true
   # Convert usages of `!present?` to `blank?`
@@ -37,6 +65,8 @@ Rails/Blank:
   UnlessPresent: true
 
 Rails/BulkChangeTable:
+  Description: 'Check whether alter queries are combinable.'
+  Enabled: true
   Database: null
   SupportedDatabases:
     - mysql
@@ -45,10 +75,18 @@ Rails/BulkChangeTable:
     - db/migrate/*.rb
 
 Rails/CreateTableWithTimestamps:
+  Description: >-
+                  Checks the migration for which timestamps are not included
+                  when creating a new table.
+  Enabled: true
   Include:
     - db/migrate/*.rb
 
 Rails/Date:
+  Description: >-
+                  Checks the correct usage of date aware methods,
+                  such as Date.today, Date.current etc.
+  Enabled: true
   # The value `strict` disallows usage of `Date.today`, `Date.current`,
   # `Date#to_time` etc.
   # The value `flexible` allows usage of `Date.current`, `Date.yesterday`, etc
@@ -60,20 +98,40 @@ Rails/Date:
     - flexible
 
 Rails/Delegate:
+  Description: 'Prefer delegate method for delegations.'
+  Enabled: true
   # When set to true, using the target object as a prefix of the
   # method name without using the `delegate` method will be a
   # violation. When set to false, this case is legal.
   EnforceForPrefixed: true
 
+Rails/DelegateAllowBlank:
+  Description: 'Do not use allow_blank as an option to delegate.'
+  Enabled: true
+
 Rails/DynamicFindBy:
+  Description: 'Use `find_by` instead of dynamic `find_by_*`.'
+  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#find_by'
+  Enabled: true
   Whitelist:
     - find_by_sql
 
 Rails/EnumUniqueness:
+  Description: 'Avoid duplicate integers in hash-syntax `enum` declaration.'
+  Enabled: true
   Include:
     - app/models/**/*.rb
 
+Rails/EnvironmentComparison:
+  Description: "Favor `Rails.env.production?` over `Rails.env == 'production'`"
+  Enabled: true
+
 Rails/Exit:
+  Description: >-
+                  Favor `fail`, `break`, `return`, etc. over `exit` in
+                  application or library code outside of Rake files to avoid
+                  exits during unit testing or running in production.
+  Enabled: true
   Include:
     - app/**/*.rb
     - config/**/*.rb
@@ -82,32 +140,57 @@ Rails/Exit:
     - lib/**/*.rake
 
 Rails/FilePath:
+  Description: 'Use `Rails.root.join` for file path joining.'
+  Enabled: true
   EnforcedStyle: arguments
   SupportedStyles:
     - slashes
     - arguments
 
 Rails/FindBy:
+  Description: 'Prefer find_by over where.first.'
+  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#find_by'
+  Enabled: true
   Include:
     - app/models/**/*.rb
 
 Rails/FindEach:
+  Description: 'Prefer all.find_each over all.find.'
+  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#find-each'
+  Enabled: true
   Include:
     - app/models/**/*.rb
 
 Rails/HasAndBelongsToMany:
+  Description: 'Prefer has_many :through to has_and_belongs_to_many.'
+  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#has-many-through'
+  Enabled: true
   Include:
     - app/models/**/*.rb
 
 Rails/HasManyOrHasOneDependent:
+  Description: 'Define the dependent option to the has_many and has_one associations.'
+  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#has_many-has_one-dependent-option'
+  Enabled: true
   Include:
     - app/models/**/*.rb
 
 Rails/HelperInstanceVariable:
+  Description: 'Do not use instance variables in helpers'
+  Enabled: true
   Include:
     - app/helpers/**/*.rb
 
+Rails/HttpPositionalArguments:
+  Description: 'Use keyword arguments instead of positional arguments in http method calls.'
+  Enabled: true
+  Include:
+    - 'spec/**/*'
+    - 'test/**/*'
+
 Rails/HttpStatus:
+  Description: 'Enforces use of symbolic or numeric value to define HTTP status.'
+  Enabled: true
   EnforcedStyle: symbolic
   SupportedStyles:
     - numeric
@@ -121,25 +204,53 @@ Rails/IgnoredSkipActionFilterOption:
     - app/controllers/**/*.rb
 
 Rails/InverseOf:
+  Description: 'Checks for associations where the inverse cannot be determined automatically.'
+  Enabled: true
   Include:
     - app/models/**/*.rb
 
 Rails/LexicallyScopedActionFilter:
+  Description: "Checks that methods specified in the filter's `only` or `except` options are explicitly defined in the controller."
+  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#lexically-scoped-action-filter'
+  Enabled: true
   Include:
     - app/controllers/**/*.rb
 
+Rails/LinkToBlank:
+  Description: 'Checks that `link_to` with a `target: "_blank"` have a `rel: "noopener"` option passed to them.'
+  Reference: https://mathiasbynens.github.io/rel-noopener/
+  Enabled: true
+
 Rails/NotNullColumn:
+  Description: 'Do not add a NOT NULL column without a default value'
+  Enabled: true
   Include:
     - db/migrate/*.rb
 
 Rails/Output:
+  Description: 'Checks for calls to puts, print, etc.'
+  Enabled: true
   Include:
     - app/**/*.rb
     - config/**/*.rb
     - db/**/*.rb
     - lib/**/*.rb
 
+Rails/OutputSafety:
+  Description: 'The use of `html_safe` or `raw` may be a security risk.'
+  Enabled: true
+
+Rails/PluralizationGrammar:
+  Description: 'Checks for incorrect grammar when using methods like `3.day.ago`.'
+  Enabled: true
+
+Rails/Presence:
+  Description: 'Checks code that can be written more easily using `Object#presence` defined by Active Support.'
+  Enabled: true
+
 Rails/Present:
+  Description: 'Enforces use of `present?`.'
+  Enabled: true
   # Convert usages of `!nil? && !empty?` to `present?`
   NotNilAndNotEmpty: true
   # Convert usages of `!blank?` to `present?`
@@ -148,56 +259,74 @@ Rails/Present:
   UnlessBlank: true
 
 Rails/ReadWriteAttribute:
+  Description: >-
+                 Checks for read_attribute(:attr) and
+                 write_attribute(:attr, val).
+  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#read-attribute'
+  Enabled: true
   Include:
     - app/models/**/*.rb
 
+Rails/RedundantReceiverInWithOptions:
+  Description: 'Checks for redundant receiver in `with_options`.'
+  Enabled: true
+
+Rails/ReflectionClassName:
+  Description: 'Use a string for `class_name` option value in the definition of a reflection.'
+  Enabled: true
+
 Rails/RefuteMethods:
+  Description: 'Use `assert_not` methods instead of `refute` methods.'
+  Enabled: true
   Include:
     - '**/test/**/*'
 
+Rails/RelativeDateConstant:
+  Description: 'Do not assign relative date to constants.'
+  Enabled: true
+
 Rails/RequestReferer:
+  Description: 'Use consistent syntax for request.referer.'
+  Enabled: true
   EnforcedStyle: referer
   SupportedStyles:
     - referer
     - referrer
 
 Rails/ReversibleMigration:
+  Description: 'Checks whether the change method of the migration file is reversible.'
+  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#reversible-migration'
+  Reference: 'https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html'
+  Enabled: true
   Include:
     - db/migrate/*.rb
 
 Rails/SafeNavigation:
+  Description: "Use Ruby's safe navigation operator (`&.`) instead of `try!`"
+  Enabled: true
   # This will convert usages of `try` to use safe navigation as well as `try!`.
   # `try` and `try!` work slightly differently. `try!` and safe navigation will
   # both raise a `NoMethodError` if the receiver of the method call does not
   # implement the intended method. `try` will not raise an exception for this.
   ConvertTry: false
 
+Rails/SaveBang:
+  Description: 'Identifies possible cases where Active Record save! or related should be used.'
+  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#save-bang'
+  Enabled: false
+
 Rails/ScopeArgs:
+  Description: 'Checks the arguments of ActiveRecord scopes.'
+  Enabled: true
   Include:
     - app/models/**/*.rb
 
-Rails/TimeZone:
-  # The value `strict` means that `Time` should be used with `zone`.
-  # The value `flexible` allows usage of `in_time_zone` instead of `zone`.
-  EnforcedStyle: flexible
-  SupportedStyles:
-    - strict
-    - flexible
-
-Rails/UniqBeforePluck:
-  EnforcedStyle: conservative
-  SupportedStyles:
-    - conservative
-    - aggressive
-  AutoCorrect: false
-
-Rails/UnknownEnv:
-  Environments:
-    - development
-    - test
-    - production
-
 Rails/SkipsModelValidations:
+  Description: >-
+                 Use methods that skips model validations with caution.
+                 See reference for more information.
+  Reference: 'https://guides.rubyonrails.org/active_record_validations.html#skipping-validations'
+  Enabled: true
   Blacklist:
     - decrement!
     - decrement_counter
@@ -211,6 +340,37 @@ Rails/SkipsModelValidations:
     - update_columns
     - update_counters
 
+Rails/TimeZone:
+  Description: 'Checks the correct usage of time zone aware methods.'
+  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#time'
+  Reference: 'http://danilenko.org/2012/7/6/rails_timezones'
+  Enabled: true
+  # The value `strict` means that `Time` should be used with `zone`.
+  # The value `flexible` allows usage of `in_time_zone` instead of `zone`.
+  EnforcedStyle: flexible
+  SupportedStyles:
+    - strict
+    - flexible
+
+Rails/UniqBeforePluck:
+  Description: 'Prefer the use of uniq or distinct before pluck.'
+  Enabled: true
+  EnforcedStyle: conservative
+  SupportedStyles:
+    - conservative
+    - aggressive
+  AutoCorrect: false
+
+Rails/UnknownEnv:
+  Description: 'Use correct environment name.'
+  Enabled: true
+  Environments:
+    - development
+    - test
+    - production
+
 Rails/Validation:
+  Description: 'Use validates :attribute, hash of validations.'
+  Enabled: true
   Include:
     - app/models/**/*.rb
