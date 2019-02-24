@@ -342,6 +342,7 @@ Rails/SkipsModelValidations:
     - update_column
     - update_columns
     - update_counters
+  Whitelist: []
 
 Rails/TimeZone:
   Description: 'Checks the correct usage of time zone aware methods.'
