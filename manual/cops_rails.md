@@ -2019,6 +2019,12 @@ Services::Service::Mailer.update(message: 'Message')
 Service::Mailer::update
 ```
 
+### Configurable attributes
+
+Name | Default value | Configurable values
+--- | --- | ---
+AllowImplicitReturn | `true` | Boolean
+
 ### References
 
 * [https://github.com/rubocop-hq/rails-style-guide#save-bang](https://github.com/rubocop-hq/rails-style-guide#save-bang)

@@ -315,6 +315,7 @@ Rails/SaveBang:
   Description: 'Identifies possible cases where Active Record save! or related should be used.'
   StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#save-bang'
   Enabled: false
+  AllowImplicitReturn: true
 
 Rails/ScopeArgs:
   Description: 'Checks the arguments of ActiveRecord scopes.'
