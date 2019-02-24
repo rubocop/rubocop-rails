@@ -316,6 +316,7 @@ Rails/SaveBang:
   StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#save-bang'
   Enabled: false
   AllowImplicitReturn: true
+  AllowedReceivers: []
 
 Rails/ScopeArgs:
   Description: 'Checks the arguments of ActiveRecord scopes.'

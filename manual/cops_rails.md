@@ -2024,6 +2024,7 @@ Service::Mailer::update
 Name | Default value | Configurable values
 --- | --- | ---
 AllowImplicitReturn | `true` | Boolean
+AllowedReceivers | `[]` | Array
 
 ### References
 
