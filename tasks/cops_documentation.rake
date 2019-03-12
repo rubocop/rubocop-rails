@@ -223,9 +223,13 @@ task generate_cops_documentation: :yard_for_generate_documentation do
 
     content << "\n<!-- END_COP_LIST -->"
 
-    content = original.sub(
-      /<!-- START_COP_LIST -->.+<!-- END_COP_LIST -->/m, content
-    )
+    content = if original.empty?
+                content
+              else
+                original.sub(
+                  /<!-- START_COP_LIST -->.+<!-- END_COP_LIST -->/m, content
+                )
+              end
     File.write(path, content)
   end
 
