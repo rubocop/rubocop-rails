@@ -14,7 +14,7 @@ jobs:
       # configure test-queue.
       # See https://github.com/tmm1/test-queue#environment-variables
       TEST_QUEUE_WORKERS: 2
-      JRUBY_OPTS: "--debug -J-Xmx1000M" # get more accurate coverage data in JRuby
+      JRUBY_OPTS: "--dev -J-Xmx1000M"
     steps:
       - checkout
       - run: bundle install
