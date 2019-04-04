@@ -281,9 +281,9 @@ task documentation_syntax_check: :yard_for_generate_documentation do
         parser = Parser::Ruby25.new(RuboCop::AST::Builder.new)
         parser.diagnostics.all_errors_are_fatal = true
         parser.parse(buffer)
-      rescue Parser::SyntaxError => ex
+      rescue Parser::SyntaxError => e
         path = example.object.file
-        puts "#{path}: Syntax Error in an example. #{ex}"
+        puts "#{path}: Syntax Error in an example. #{e}"
         ok = false
       end
     end
