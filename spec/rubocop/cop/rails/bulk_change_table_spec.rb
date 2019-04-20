@@ -115,8 +115,17 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
     it 'registers an offense when including combinable alter methods' do
       expect_offense(<<~RUBY)
         def change
+          change_column_default :users, :name, false
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+          change_column_default :users, :address, false
+        end
+      RUBY
+    end
+
+    it 'does not register an offense for `change_column_null`' do
+      expect_no_offenses(<<-RUBY.strip_indent)
+        def change
           change_column_null :users, :name, false
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
           change_column_null :users, :address, false
         end
       RUBY
@@ -139,6 +148,13 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
     it 'does not register an offense' \
        'when including combinable alter methods' do
       expect_no_offenses(<<~RUBY)
+        def change
+          change_column_default :users, :name, false
+          change_column_default :users, :address, false
+        end
+      RUBY
+
+      expect_no_offenses(<<-RUBY.strip_indent)
         def change
           change_column_null :users, :name, false
           change_column_null :users, :address, false
