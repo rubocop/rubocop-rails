@@ -399,7 +399,7 @@ end
 
 Name | Default value | Configurable values
 --- | --- | ---
-Database | `<none>` | 
+Database | `<none>` | `mysql`, `postgresql`
 Include | `db/migrate/*.rb` | Array
 
 ## Rails/CreateTableWithTimestamps
