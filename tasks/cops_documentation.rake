@@ -19,7 +19,7 @@ task generate_cops_documentation: :yard_for_generate_documentation do
     content = h2(cop.cop_name)
     content << properties(config, cop)
     content << "#{description}\n"
-    content << examples(examples_objects) if examples_objects.count > 0
+    content << examples(examples_objects) if examples_objects.count.positive?
     content << configurations(pars)
     content << references(config, cop)
     content

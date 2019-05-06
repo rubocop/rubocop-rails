@@ -24,7 +24,7 @@ module RuboCop
       #     "Hello #{user.name}"
       #   end
       class HelperInstanceVariable < Cop
-        MSG = 'Do not use instance variables in helpers.'.freeze
+        MSG = 'Do not use instance variables in helpers.'
 
         def on_ivar(node)
           add_offense(node)
