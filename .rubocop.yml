@@ -32,6 +32,14 @@ Style/IpAddresses:
   Exclude:
   - spec/rubocop/cop/style/ip_addresses_spec.rb
 
+Layout/AlignHash:
+  EnforcedHashRocketStyle:
+    - key
+    - table
+  EnforcedColonStyle:
+    - key
+    - table
+
 Layout/EndOfLine:
   EnforcedStyle: lf
 
