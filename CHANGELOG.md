@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.0.0 (2019-05-22)
+
 ### New features
 
 * Extract Rails cops from rubocop-hq/rubocop repository. ([@koic][])
