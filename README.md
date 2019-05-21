@@ -1,5 +1,6 @@
 # RuboCop Rails
 
+[![Gem Version](https://badge.fury.io/rb/rubocop-rails.svg)](https://badge.fury.io/rb/rubocop-rails)
 [![CircleCI](https://circleci.com/gh/rubocop-hq/rubocop-rails.svg?style=svg)](https://circleci.com/gh/rubocop-hq/rubocop-rails)
 
 A [RuboCop](https://github.com/rubocop-hq/rubocop) extension focused on enforcing Rails best practices and coding conventions.
