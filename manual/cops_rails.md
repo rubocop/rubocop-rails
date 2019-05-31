@@ -455,6 +455,29 @@ Name | Default value | Configurable values
 --- | --- | ---
 Include | `db/migrate/*.rb` | Array
 
+## Rails/CredentialsDirectAccess
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Enabled | Yes | Yes  | 2.0.1 | -
+
+This cop checks for access of app secrets and credentials.
+If there is a typo in the key name, direct access silently returns
+nil and can lead to subtle bugs. Fetch raises an error upfront.
+
+### Examples
+
+```ruby
+# bad
+Rails.application.secrets.foo
+Rails.application.credentials.bar
+
+# good
+Rails.application.secrets.fetch(:foo)
+Rails.application.credentials.fetch(:bar)
+Rails.application.credentials.fetch(:baz, "default_baz")
+```
+
 ## Rails/Date
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged

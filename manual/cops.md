@@ -12,6 +12,7 @@
 * [Rails/Blank](cops_rails.md#railsblank)
 * [Rails/BulkChangeTable](cops_rails.md#railsbulkchangetable)
 * [Rails/CreateTableWithTimestamps](cops_rails.md#railscreatetablewithtimestamps)
+* [Rails/CredentialsDirectAccess](cops_rails.md#railscredentialsdirectaccess)
 * [Rails/Date](cops_rails.md#railsdate)
 * [Rails/Delegate](cops_rails.md#railsdelegate)
 * [Rails/DelegateAllowBlank](cops_rails.md#railsdelegateallowblank)

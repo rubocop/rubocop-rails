@@ -102,6 +102,11 @@ Rails/CreateTableWithTimestamps:
   Include:
     - db/migrate/*.rb
 
+Rails/CredentialsDirectAccess:
+  Description: 'Checks for access of app secrets and credentials.'
+  Enabled: true
+  VersionAdded: '2.0.1'
+
 Rails/Date:
   Description: >-
                   Checks the correct usage of date aware methods,
