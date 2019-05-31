@@ -1,5 +1,7 @@
 require 'rubocop-rails'
 require 'rubocop/rspec/support'
+require_relative 'support/file_helper'
+require_relative 'support/shared_contexts'
 
 if ENV['COVERAGE'] == 'true'
   require 'simplecov'
