@@ -34,6 +34,14 @@ Put this into your `.rubocop.yml`.
 require: rubocop-rails
 ```
 
+Alternatively, use the following array notation when specifying multiple extensions.
+
+```yaml
+require:
+  - rubocop-other-extension
+  - rubocop-rails
+```
+
 Now you can run `rubocop` and it will automatically load the RuboCop Rails
 cops together with the standard cops.
 
