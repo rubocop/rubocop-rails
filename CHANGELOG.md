@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#51](https://github.com/rubocop-hq/rubocop-rails/issues/51): Add allowed receiver class names option for `Rails/DynamicFindBy`. ([@tejasbubane][])
+
 ### Bug fixes
 
 * [#12](https://github.com/rubocop-hq/rubocop-rails/issues/12): Fix a false positive for `Rails/SkipsModelValidations` when passing a boolean literal to `touch`. ([@eugeneius][])
@@ -178,3 +182,4 @@
 [@djudd]: https://github.com/djudd
 [@sunny]: https://github.com/sunny
 [@hoshinotsuyoshi]: https://github.com/hoshinotsuyoshi
+[@tejasbubane]: https://github.com/tejasbubane

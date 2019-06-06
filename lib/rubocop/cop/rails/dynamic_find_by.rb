@@ -10,37 +10,41 @@ module RuboCop
       # @example
       #   # bad
       #   User.find_by_name(name)
-      #
-      #   # bad
       #   User.find_by_name_and_email(name)
-      #
-      #   # bad
       #   User.find_by_email!(name)
       #
       #   # good
       #   User.find_by(name: name)
-      #
-      #   # good
       #   User.find_by(name: name, email: email)
+      #   User.find_by!(email: email)
+      #
+      # @example AllowedMethods: find_by_sql
+      #   # bad
+      #   User.find_by_query(users_query)
       #
       #   # good
-      #   User.find_by!(email: email)
+      #   User.find_by_sql(users_sql)
+      #
+      # @example AllowedReceivers: Gem::Specification
+      #   # bad
+      #   Specification.find_by_name('backend').gem_dir
+      #
+      #   # good
+      #   Gem::Specification.find_by_name('backend').gem_dir
       class DynamicFindBy < Cop
         MSG = 'Use `%<static_name>s` instead of dynamic `%<method>s`.'
         METHOD_PATTERN = /^find_by_(.+?)(!)?$/.freeze
 
         def on_send(node)
-          method_name = node.method_name.to_s
+          return if allowed_invocation?(node)
 
-          return if whitelist.include?(method_name)
-
+          method_name = node.method_name
           static_name = static_method_name(method_name)
-
           return unless static_name
 
           add_offense(node,
                       message: format(MSG, static_name: static_name,
-                                           method: node.method_name))
+                                           method: method_name))
         end
         alias on_csend on_send
 
@@ -57,6 +61,31 @@ module RuboCop
 
         private
 
+        def allowed_invocation?(node)
+          allowed_method?(node) || allowed_receiver?(node) ||
+            whitelisted?(node)
+        end
+
+        def allowed_method?(node)
+          return unless cop_config['AllowedMethods']
+
+          cop_config['AllowedMethods'].include?(node.method_name.to_s)
+        end
+
+        def allowed_receiver?(node)
+          return unless cop_config['AllowedReceivers'] && node.receiver
+
+          cop_config['AllowedReceivers'].include?(node.receiver.source)
+        end
+
+        # config option `WhiteList` will be deprecated soon
+        def whitelisted?(node)
+          whitelist_config = cop_config['Whitelist']
+          return unless whitelist_config
+
+          whitelist_config.include?(node.method_name.to_s)
+        end
+
         def autocorrect_method_name(corrector, node)
           corrector.replace(node.loc.selector,
                             static_method_name(node.method_name.to_s))
@@ -66,10 +95,6 @@ module RuboCop
           keywords.each.with_index do |keyword, idx|
             corrector.insert_before(node.arguments[idx].loc.expression, keyword)
           end
-        end
-
-        def whitelist
-          cop_config['Whitelist']
         end
 
         def column_keywords(method)
