@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#67](https://github.com/rubocop-hq/rubocop-rails/issues/67): [Fix #67] TimeZone: Always autocorrect `DateTime` => `Time` ([@vfonic][])
+
 ## 2.0.0 (2019-05-22)
 
 ### New features
