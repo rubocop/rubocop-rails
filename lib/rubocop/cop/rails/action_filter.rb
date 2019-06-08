@@ -33,7 +33,6 @@ module RuboCop
       #   append_around_filter :do_stuff
       #   skip_after_filter :do_stuff
       class ActionFilter < Cop
-        extend TargetRailsVersion
         include ConfigurableEnforcedStyle
 
         MSG = 'Prefer `%<prefer>s` over `%<current>s`.'
@@ -69,8 +68,6 @@ module RuboCop
           skip_before_action
           skip_action_callback
         ].freeze
-
-        minimum_target_rails_version 4.0
 
         def on_block(node)
           check_method_node(node.send_node)

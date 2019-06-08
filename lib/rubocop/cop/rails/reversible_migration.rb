@@ -231,12 +231,7 @@ module RuboCop
 
         def check_change_table_node(node, block)
           change_table_call(node) do |arg|
-            if target_rails_version < 4.0
-              add_offense(
-                node,
-                message: format(MSG, action: 'change_table')
-              )
-            elsif block.send_type?
+            if block.send_type?
               check_change_table_offense(arg, block)
             else
               block.each_child_node(:send) do |child_node|
