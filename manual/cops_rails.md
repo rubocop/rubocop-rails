@@ -1913,6 +1913,65 @@ Name | Default value | Configurable values
 --- | --- | ---
 EnforcedStyle | `referer` | `referer`, `referrer`
 
+## Rails/RescueFromExceptionsVariableName
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Enabled | Yes | Yes  | 2.4 | -
+
+This cop makes sure that rescued exceptions variables are named as
+expected.
+
+The `PreferredName` config option takes a `String`. It represents
+the required name of the variable. Its default is `e` that is read
+from `Naming/RescuedExceptionsVariableName` cop in the main Rubocop
+repository.
+
+### Examples
+
+#### PreferredName: e (default)
+
+```ruby
+# bad
+rescue_from MyException do |exception|
+  # do something
+end
+
+# good
+rescue_from MyException do |e|
+  # do something
+end
+
+# good
+rescue_from MyException do |_e|
+  # do something
+end
+```
+#### PreferredName: exception
+
+```ruby
+# bad
+rescue_from MyException do |e|
+  # do something
+end
+
+# good
+rescue_from MyException do |exception|
+  # do something
+end
+
+# good
+rescue_from MyException do |_exception|
+  # do something
+end
+```
+
+### Configurable attributes
+
+Name | Default value | Configurable values
+--- | --- | ---
+PreferredName | `e` | String
+
 ## Rails/ReversibleMigration
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
