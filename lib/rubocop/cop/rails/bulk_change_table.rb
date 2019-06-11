@@ -129,7 +129,6 @@ module RuboCop
 
         POSTGRESQL_COMBINABLE_ALTER_METHODS = %i[
           change_column_default
-          change_column_null
         ].freeze
 
         def on_def(node)
