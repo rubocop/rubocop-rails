@@ -6,6 +6,10 @@
 
 * [#43](https://github.com/rubocop-hq/rubocop-rails/issues/43): Remove `change_column_null` method from `BulkChangeTable` cop offenses. ([@anthony-robin][])
 
+### Changes
+
+* [#74](https://github.com/rubocop-hq/rubocop-rails/pull/74): Drop Rails 3 support. ([@koic][])
+
 ## 2.0.1 (2019-06-08)
 
 ### Changes

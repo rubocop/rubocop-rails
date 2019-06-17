@@ -76,6 +76,12 @@ Rails/FindBy:
     - lib/example.rb
 ```
 
+## Compatibility
+
+Rails cops support the following versions:
+
+- Rails 4.0+
+
 ## Contributing
 
 Checkout the [contribution guidelines](CONTRIBUTING.md).

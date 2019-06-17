@@ -151,60 +151,30 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
   end
 
   context 'change_table' do
-    context 'Rails < 4.0', :rails3 do
-      it_behaves_like 'offense', 'change_table', <<-RUBY
-        change_table :users do |t|
-          t.column :name, :string
-          t.text :description
-          t.boolean :authorized
-        end
-      RUBY
+    it_behaves_like 'accepts', 'change_table(with reversible calls)', <<-RUBY
+      change_table :users do |t|
+        t.column :name, :string
+        t.text :description
+        t.boolean :authorized
+      end
+    RUBY
 
-      it_behaves_like 'offense', 'change_table', <<-RUBY
-        change_table :users do |t|
-          t.change :description, :text
-        end
-      RUBY
+    it_behaves_like 'offense', 'change_table(with change)', <<-RUBY
+      change_table :users do |t|
+        t.change :description, :text
+      end
+    RUBY
 
-      it_behaves_like 'offense', 'change_table', <<-RUBY
-        change_table :users do |t|
-          t.change_default :authorized, 1
-        end
-      RUBY
+    it_behaves_like 'offense', 'change_table(with change_default)', <<-RUBY
+      change_table :users do |t|
+        t.change_default :authorized, 1
+      end
+    RUBY
 
-      it_behaves_like 'offense', 'change_table', <<-RUBY
-        change_table :users do |t|
-          t.remove :qualification
-        end
-      RUBY
-    end
-
-    context 'Rails >= 4.0', :rails4 do
-      it_behaves_like 'accepts', 'change_table(with reversible calls)', <<-RUBY
-        change_table :users do |t|
-          t.column :name, :string
-          t.text :description
-          t.boolean :authorized
-        end
-      RUBY
-
-      it_behaves_like 'offense', 'change_table(with change)', <<-RUBY
-        change_table :users do |t|
-          t.change :description, :text
-        end
-      RUBY
-
-      it_behaves_like 'offense', 'change_table(with change_default)', <<-RUBY
-        change_table :users do |t|
-          t.change_default :authorized, 1
-        end
-      RUBY
-
-      it_behaves_like 'offense', 'change_table(with remove)', <<-RUBY
-        change_table :users do |t|
-          t.remove :qualification
-        end
-      RUBY
-    end
+    it_behaves_like 'offense', 'change_table(with remove)', <<-RUBY
+      change_table :users do |t|
+        t.remove :qualification
+      end
+    RUBY
   end
 end

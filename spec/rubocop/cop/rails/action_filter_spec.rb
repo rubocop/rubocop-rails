@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ActionFilter, :config do
+  subject(:cop) { described_class.new(config) }
+
+  let(:cop_config) { { 'Include' => nil } }
+
   describe '::FILTER_METHODS' do
     it 'contains all of the filter methods' do
       expect(described_class::FILTER_METHODS).to eq(%i[
@@ -41,121 +45,63 @@ RSpec.describe RuboCop::Cop::Rails::ActionFilter, :config do
     end
   end
 
-  context 'Rails <= 4.0', :rails3 do
-    subject(:cop) { described_class.new(config) }
+  context 'when style is action' do
+    before do
+      cop_config['EnforcedStyle'] = 'action'
+    end
 
-    let(:cop_config) { { 'Include' => nil } }
-
-    context 'when using action methods' do
-      described_class::FILTER_METHODS.each do |method|
-        it "does not register an offense for #{method}" do
-          expect_no_offenses("#{method} :name")
-        end
-
-        it "does not register an offense for #{method} with block" do
-          expect_no_offenses("#{method} { |controller| something }")
-        end
+    described_class::FILTER_METHODS.each do |method|
+      it "registers an offense for #{method}" do
+        inspect_source_file("#{method} :name")
+        expect(cop.offenses.size).to eq(1)
       end
 
-      described_class::ACTION_METHODS.each do |method|
-        it "accepts #{method}" do
-          expect_no_offenses("#{method} :something")
-        end
-      end
-
-      it 'does not auto-correct to preferred method' do
-        new_source = autocorrect_source_file('before_filter :test')
-        expect(new_source).to eq('before_filter :test')
+      it "registers an offense for #{method} with block" do
+        inspect_source_file("#{method} { |controller| something }")
+        expect(cop.offenses.size).to eq(1)
       end
     end
 
-    context 'when using filter methods' do
-      described_class::ACTION_METHODS.each do |method|
-        it "does not register an offense for #{method}" do
-          expect_no_offenses("#{method} :name")
-        end
-
-        it "does not register an offense for #{method} with block" do
-          expect_no_offenses("#{method} { |controller| something }")
-        end
+    described_class::ACTION_METHODS.each do |method|
+      it "accepts #{method}" do
+        inspect_source_file("#{method} :something")
+        expect(cop.offenses.empty?).to be(true)
       end
+    end
 
-      described_class::FILTER_METHODS.each do |method|
-        it "accepts #{method}" do
-          expect_no_offenses("#{method} :something")
-        end
-      end
-
-      it 'does not auto-correct to preferred method' do
-        new_source = autocorrect_source_file('before_action :test')
-        expect(new_source).to eq('before_action :test')
-      end
+    it 'auto-corrects to preferred method' do
+      new_source = autocorrect_source_file('before_filter :test')
+      expect(new_source).to eq('before_action :test')
     end
   end
 
-  context 'Rails >= 4.0', :rails4 do
-    subject(:cop) { described_class.new(config) }
+  context 'when style is filter' do
+    before do
+      cop_config['EnforcedStyle'] = 'filter'
+    end
 
-    let(:cop_config) { { 'Include' => nil } }
-
-    context 'when style is action' do
-      before do
-        cop_config['EnforcedStyle'] = 'action'
+    described_class::ACTION_METHODS.each do |method|
+      it "registers an offense for #{method}" do
+        inspect_source_file("#{method} :name")
+        expect(cop.offenses.size).to eq(1)
       end
 
-      described_class::FILTER_METHODS.each do |method|
-        it "registers an offense for #{method}" do
-          inspect_source_file("#{method} :name")
-          expect(cop.offenses.size).to eq(1)
-        end
-
-        it "registers an offense for #{method} with block" do
-          inspect_source_file("#{method} { |controller| something }")
-          expect(cop.offenses.size).to eq(1)
-        end
-      end
-
-      described_class::ACTION_METHODS.each do |method|
-        it "accepts #{method}" do
-          inspect_source_file("#{method} :something")
-          expect(cop.offenses.empty?).to be(true)
-        end
-      end
-
-      it 'auto-corrects to preferred method' do
-        new_source = autocorrect_source_file('before_filter :test')
-        expect(new_source).to eq('before_action :test')
+      it "registers an offense for #{method} with block" do
+        inspect_source_file("#{method} { |controller| something }")
+        expect(cop.offenses.size).to eq(1)
       end
     end
 
-    context 'when style is filter' do
-      before do
-        cop_config['EnforcedStyle'] = 'filter'
+    described_class::FILTER_METHODS.each do |method|
+      it "accepts #{method}" do
+        inspect_source_file("#{method} :something")
+        expect(cop.offenses.empty?).to be(true)
       end
+    end
 
-      described_class::ACTION_METHODS.each do |method|
-        it "registers an offense for #{method}" do
-          inspect_source_file("#{method} :name")
-          expect(cop.offenses.size).to eq(1)
-        end
-
-        it "registers an offense for #{method} with block" do
-          inspect_source_file("#{method} { |controller| something }")
-          expect(cop.offenses.size).to eq(1)
-        end
-      end
-
-      described_class::FILTER_METHODS.each do |method|
-        it "accepts #{method}" do
-          inspect_source_file("#{method} :something")
-          expect(cop.offenses.empty?).to be(true)
-        end
-      end
-
-      it 'auto-corrects to preferred method' do
-        new_source = autocorrect_source_file('before_action :test')
-        expect(new_source).to eq('before_filter :test')
-      end
+    it 'auto-corrects to preferred method' do
+      new_source = autocorrect_source_file('before_action :test')
+      expect(new_source).to eq('before_filter :test')
     end
   end
 end
