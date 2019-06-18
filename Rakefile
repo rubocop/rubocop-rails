@@ -13,6 +13,7 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
+require 'rubocop/rake_task'
 require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec) do |spec|
@@ -25,16 +26,19 @@ task :coverage do
   Rake::Task['spec'].execute
 end
 
-desc 'Run RuboCop over this gem'
-task :internal_investigation do
-  sh('bundle exec rubocop')
+desc 'Run RuboCop over itself'
+RuboCop::RakeTask.new(:internal_investigation).tap do |task|
+  if RUBY_ENGINE == 'ruby' &&
+     RbConfig::CONFIG['host_os'] !~ /mswin|msys|mingw|cygwin|bccwin|wince|emc/
+    task.options = %w[--parallel]
+  end
 end
 
 task default: %i[
-  internal_investigation
   documentation_syntax_check
   generate_cops_documentation
   spec
+  internal_investigation
 ]
 
 desc 'Generate a new cop template'
