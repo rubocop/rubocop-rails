@@ -34,6 +34,6 @@ Gem::Specification.new do |s|
   # Rack::Utils::SYMBOL_TO_STATUS_CODE, which is used by HttpStatus cop, was
   # introduced in rack 1.1
   s.add_runtime_dependency 'rack', '>= 1.1'
-  s.add_runtime_dependency 'rubocop', '>= 0.70.0'
+  s.add_runtime_dependency 'rubocop', '>= 0.72.0'
 end
 # rubocop:enable Metrics/BlockLength

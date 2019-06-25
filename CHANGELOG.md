@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.1.0 (2019-06-26)
+
 ### Bug fixes
 
 * [#43](https://github.com/rubocop-hq/rubocop-rails/issues/43): Remove `change_column_null` method from `BulkChangeTable` cop offenses. ([@anthony-robin][])
