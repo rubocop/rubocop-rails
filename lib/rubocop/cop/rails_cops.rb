@@ -4,7 +4,7 @@ module RuboCop
   # RuboCop included the Rails cops directly before version 1.0.0.
   # We can remove them to avoid warnings about redefining constants.
   module Cop
-    remove_const('Rails') if const_defined?('Rails')
+    remove_const('Rails') if const_defined?('Rails', false)
   end
 end
 

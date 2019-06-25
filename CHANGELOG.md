@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#43](https://github.com/rubocop-hq/rubocop-rails/issues/43): Remove `change_column_null` method from `BulkChangeTable` cop offenses. ([@anthony-robin][])
+* [#79](https://github.com/rubocop-hq/rubocop-rails/issues/79): Fix `RuboCop::Cop::Rails not defined (NameError)`. ([@rmm5t][])
 
 ### Changes
 
@@ -27,3 +28,4 @@
 [@andyw8]: https://github.com/andyw8
 [@buehmann]: https://github.com/buehmann
 [@anthony-robin]: https://github.com/anthony-robin
+[@rmm5t]: https://github.com/rmm5t
