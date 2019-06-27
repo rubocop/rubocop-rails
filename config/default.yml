@@ -9,6 +9,9 @@ AllCops:
   # application.  If neither of those files exist, RuboCop will use Rails 5.0
   # as the default.
   TargetRailsVersion: ~
+  # When specifying style guide URLs, any paths and/or fragments will be
+  # evaluated relative to the base URL.
+  StyleGuideBaseURL: https://rails.rubystyle.guide
 
 Rails/ActionFilter:
   Description: 'Enforces consistent use of action filter methods.'
@@ -136,7 +139,7 @@ Rails/DelegateAllowBlank:
 
 Rails/DynamicFindBy:
   Description: 'Use `find_by` instead of dynamic `find_by_*`.'
-  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#find_by'
+  StyleGuide: '#find_by'
   Enabled: true
   VersionAdded: '0.44'
   Whitelist:
@@ -180,7 +183,7 @@ Rails/FilePath:
 
 Rails/FindBy:
   Description: 'Prefer find_by over where.first.'
-  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#find_by'
+  StyleGuide: '#find_by'
   Enabled: true
   VersionAdded: '0.30'
   Include:
@@ -188,7 +191,7 @@ Rails/FindBy:
 
 Rails/FindEach:
   Description: 'Prefer all.find_each over all.find.'
-  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#find-each'
+  StyleGuide: '#find-each'
   Enabled: true
   VersionAdded: '0.30'
   Include:
@@ -196,7 +199,7 @@ Rails/FindEach:
 
 Rails/HasAndBelongsToMany:
   Description: 'Prefer has_many :through to has_and_belongs_to_many.'
-  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#has-many-through'
+  StyleGuide: '#has-many-through'
   Enabled: true
   VersionAdded: '0.12'
   Include:
@@ -204,7 +207,7 @@ Rails/HasAndBelongsToMany:
 
 Rails/HasManyOrHasOneDependent:
   Description: 'Define the dependent option to the has_many and has_one associations.'
-  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#has_many-has_one-dependent-option'
+  StyleGuide: '#has_many-has_one-dependent-option'
   Enabled: true
   VersionAdded: '0.50'
   Include:
@@ -251,7 +254,7 @@ Rails/InverseOf:
 
 Rails/LexicallyScopedActionFilter:
   Description: "Checks that methods specified in the filter's `only` or `except` options are explicitly defined in the controller."
-  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#lexically-scoped-action-filter'
+  StyleGuide: '#lexically-scoped-action-filter'
   Enabled: true
   Safe: false
   VersionAdded: '0.52'
@@ -316,7 +319,7 @@ Rails/ReadWriteAttribute:
   Description: >-
                  Checks for read_attribute(:attr) and
                  write_attribute(:attr, val).
-  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#read-attribute'
+  StyleGuide: '#read-attribute'
   Enabled: true
   VersionAdded: '0.20'
   VersionChanged: '0.29'
@@ -367,7 +370,7 @@ Rails/RequestReferer:
 
 Rails/ReversibleMigration:
   Description: 'Checks whether the change method of the migration file is reversible.'
-  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#reversible-migration'
+  StyleGuide: '#reversible-migration'
   Reference: 'https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html'
   Enabled: true
   VersionAdded: '0.47'
@@ -386,7 +389,7 @@ Rails/SafeNavigation:
 
 Rails/SaveBang:
   Description: 'Identifies possible cases where Active Record save! or related should be used.'
-  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#save-bang'
+  StyleGuide: '#save-bang'
   Enabled: false
   VersionAdded: '0.42'
   VersionChanged: '0.59'
@@ -424,7 +427,7 @@ Rails/SkipsModelValidations:
 
 Rails/TimeZone:
   Description: 'Checks the correct usage of time zone aware methods.'
-  StyleGuide: 'https://github.com/rubocop-hq/rails-style-guide#time'
+  StyleGuide: '#time'
   Reference: 'http://danilenko.org/2012/7/6/rails_timezones'
   Enabled: true
   Safe: false
