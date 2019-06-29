@@ -1,13 +1,5 @@
 # frozen_string_literal: true
 
-module RuboCop
-  # RuboCop included the Rails cops directly before version 1.0.0.
-  # We can remove them to avoid warnings about redefining constants.
-  module Cop
-    remove_const('Rails') if const_defined?('Rails', false)
-  end
-end
-
 require_relative 'mixin/target_rails_version'
 
 require_relative 'rails/action_filter'
