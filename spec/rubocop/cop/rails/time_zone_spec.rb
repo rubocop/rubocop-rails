@@ -6,92 +6,90 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
   context 'when EnforcedStyle is "strict"' do
     let(:cop_config) { { 'EnforcedStyle' => 'strict' } }
 
-    described_class::TIMECLASSES.each do |klass|
-      it "registers an offense for #{klass}.now" do
-        inspect_source("#{klass}.now")
+    it 'registers an offense for Time.now' do
+      inspect_source('Time.now')
+      expect(cop.offenses.size).to eq(1)
+      expect(cop.offenses.first.message).to include('`Time.zone.now`')
+    end
+
+    it 'registers an offense for Time.current' do
+      inspect_source('Time.current')
+      expect(cop.offenses.size).to eq(1)
+      expect(cop.offenses.first.message).to include('`Time.zone.now`')
+    end
+
+    it 'registers an offense for Time.new without argument' do
+      inspect_source('Time.new')
+      expect(cop.offenses.size).to eq(1)
+      expect(cop.offenses.first.message).to include('`Time.zone.now`')
+    end
+
+    it 'registers an offense for Time.new with argument' do
+      inspect_source('Time.new(2012, 6, 10, 12, 00)')
+      expect(cop.offenses.size).to eq(1)
+      expect(cop.offenses.first.message).to include('`Time.zone.local`')
+    end
+
+    it 'does not register an offense when a .new method is called
+        independently of the Time class' do
+      expect_no_offenses(<<~RUBY)
+        Range.new(1, Time.class.to_s)
+      RUBY
+    end
+
+    it 'does not register an offense for Time.new with zone argument' do
+      expect_no_offenses(<<~RUBY)
+        Time.new(1988, 3, 15, 3, 0, 0, '-05:00')
+      RUBY
+    end
+
+    it 'registers an offense for ::Time.now' do
+      inspect_source('::Time.now')
+      expect(cop.offenses.size).to eq(1)
+    end
+
+    it 'accepts Some::Time.now' do
+      expect_no_offenses(<<~RUBY)
+        Some::Time.now(0).strftime('%H:%M')
+      RUBY
+    end
+
+    described_class::ACCEPTED_METHODS.each do |a_method|
+      it "registers an offense Time.now.#{a_method}" do
+        inspect_source("Time.now.#{a_method}")
         expect(cop.offenses.size).to eq(1)
         expect(cop.offenses.first.message).to include('`Time.zone.now`')
       end
+    end
 
-      it "registers an offense for #{klass}.current" do
-        inspect_source("#{klass}.current")
-        expect(cop.offenses.size).to eq(1)
-        expect(cop.offenses.first.message).to include('`Time.zone.now`')
+    context 'autocorrect' do
+      let(:cop_config) do
+        { 'AutoCorrect' => 'true', 'EnforcedStyle' => 'strict' }
       end
 
-      it "registers an offense for #{klass}.new without argument" do
-        inspect_source("#{klass}.new")
-        expect(cop.offenses.size).to eq(1)
-        expect(cop.offenses.first.message).to include('`Time.zone.now`')
+      it 'autocorrects correctly' do
+        source = 'Time.now.in_time_zone'
+        new_source = autocorrect_source(source)
+        expect(new_source).to eq('Time.zone.now')
       end
 
-      it "registers an offense for #{klass}.new with argument" do
-        inspect_source("#{klass}.new(2012, 6, 10, 12, 00)")
-        expect(cop.offenses.size).to eq(1)
-        expect(cop.offenses.first.message).to include('`Time.zone.local`')
-      end
-
-      it "does not register an offense when a .new method is called
-        independently of the #{klass} class" do
-        expect_no_offenses(<<~RUBY)
-          Range.new(1, #{klass}.class.to_s)
-        RUBY
-      end
-
-      it "does not register an offense for #{klass}.new with zone argument" do
-        expect_no_offenses(<<~RUBY)
-          #{klass}.new(1988, 3, 15, 3, 0, 0, '-05:00')
-        RUBY
-      end
-
-      it "registers an offense for ::#{klass}.now" do
-        inspect_source("::#{klass}.now")
-        expect(cop.offenses.size).to eq(1)
-      end
-
-      it "accepts Some::#{klass}.now" do
-        expect_no_offenses(<<~RUBY)
-          Some::#{klass}.now(0).strftime('%H:%M')
-        RUBY
-      end
-
-      described_class::ACCEPTED_METHODS.each do |a_method|
-        it "registers an offense #{klass}.now.#{a_method}" do
-          inspect_source("#{klass}.now.#{a_method}")
-          expect(cop.offenses.size).to eq(1)
-          expect(cop.offenses.first.message).to include('`Time.zone.now`')
-        end
-      end
-
-      context 'autocorrect' do
-        let(:cop_config) do
-          { 'AutoCorrect' => 'true', 'EnforcedStyle' => 'strict' }
-        end
-
-        it 'autocorrects correctly' do
-          source = "#{klass}.now.in_time_zone"
+      # :current is a special case and is treated separately below
+      (described_class::DANGEROUS_METHODS - [:current]).each do |a_method|
+        it 'corrects the error' do
+          source = <<~RUBY
+            Time.#{a_method}
+          RUBY
           new_source = autocorrect_source(source)
+          expect(new_source).to eq(<<~RUBY)
+            Time.zone.#{a_method}
+          RUBY
+        end
+      end
+
+      describe '.current' do
+        it 'corrects the error' do
+          new_source = autocorrect_source('Time.current')
           expect(new_source).to eq('Time.zone.now')
-        end
-
-        # :current is a special case and is treated separately below
-        (described_class::DANGEROUS_METHODS - [:current]).each do |a_method|
-          it 'corrects the error' do
-            source = <<~RUBY
-              #{klass}.#{a_method}
-            RUBY
-            new_source = autocorrect_source(source)
-            expect(new_source).to eq(<<~RUBY)
-              Time.zone.#{a_method}
-            RUBY
-          end
-        end
-
-        describe '.current' do
-          it 'corrects the error' do
-            new_source = autocorrect_source("#{klass}.current")
-            expect(new_source).to eq('Time.zone.now')
-          end
         end
       end
     end
@@ -214,81 +212,79 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
   context 'when EnforcedStyle is "flexible"' do
     let(:cop_config) { { 'EnforcedStyle' => 'flexible' } }
 
-    described_class::TIMECLASSES.each do |klass|
-      it "registers an offense for #{klass}.now" do
-        inspect_source("#{klass}.now")
-        expect(cop.offenses.size).to eq(1)
+    it 'registers an offense for Time.now' do
+      inspect_source('Time.now')
+      expect(cop.offenses.size).to eq(1)
 
-        expect(cop.offenses.first.message).to include('Use one of')
-        expect(cop.offenses.first.message).to include('`Time.zone.now`')
-        expect(cop.offenses.first.message).to include("`#{klass}.current`")
-
-        described_class::ACCEPTED_METHODS.each do |a_method|
-          expect(cop.offenses.first.message)
-            .to include("#{klass}.now.#{a_method}")
-        end
-      end
-
-      it "accepts #{klass}.current" do
-        expect_no_offenses(<<~RUBY)
-          #{klass}.current
-        RUBY
-      end
+      expect(cop.offenses.first.message).to include('Use one of')
+      expect(cop.offenses.first.message).to include('`Time.zone.now`')
+      expect(cop.offenses.first.message).to include('`Time.current`')
 
       described_class::ACCEPTED_METHODS.each do |a_method|
-        it "accepts #{klass}.now.#{a_method}" do
-          expect_no_offenses(<<~RUBY)
-            #{klass}.now.#{a_method}
-          RUBY
+        expect(cop.offenses.first.message)
+          .to include("Time.now.#{a_method}")
+      end
+    end
+
+    it 'accepts Time.current' do
+      expect_no_offenses(<<~RUBY)
+        Time.current
+      RUBY
+    end
+
+    described_class::ACCEPTED_METHODS.each do |a_method|
+      it "accepts Time.now.#{a_method}" do
+        expect_no_offenses(<<~RUBY)
+          Time.now.#{a_method}
+        RUBY
+      end
+    end
+
+    it 'accepts Time.zone.now' do
+      expect_no_offenses(<<~RUBY)
+        Time.zone.now
+      RUBY
+    end
+
+    it 'accepts Time.zone_default.now' do
+      expect_no_offenses(<<~RUBY)
+        Time.zone_default.now
+      RUBY
+    end
+
+    it 'accepts Time.find_zone(time_zone).now' do
+      expect_no_offenses(<<~RUBY)
+        Time.find_zone('EST').now
+      RUBY
+    end
+
+    it 'accepts Time.find_zone!(time_zone).now' do
+      expect_no_offenses(<<~RUBY)
+        Time.find_zone!('EST').now
+      RUBY
+    end
+
+    described_class::DANGEROUS_METHODS.each do |a_method|
+      it "accepts Time.current.#{a_method}" do
+        expect_no_offenses(<<~RUBY)
+          Time.current.#{a_method}
+        RUBY
+      end
+
+      context 'autocorrect' do
+        let(:cop_config) do
+          { 'AutoCorrect' => 'true', 'EnforcedStyle' => 'flexible' }
         end
-      end
 
-      it "accepts #{klass}.zone.now" do
-        expect_no_offenses(<<~RUBY)
-          #{klass}.zone.now
-        RUBY
-      end
-
-      it "accepts #{klass}.zone_default.now" do
-        expect_no_offenses(<<~RUBY)
-          #{klass}.zone_default.now
-        RUBY
-      end
-
-      it "accepts #{klass}.find_zone(time_zone).now" do
-        expect_no_offenses(<<~RUBY)
-          #{klass}.find_zone('EST').now
-        RUBY
-      end
-
-      it "accepts #{klass}.find_zone!(time_zone).now" do
-        expect_no_offenses(<<~RUBY)
-          #{klass}.find_zone!('EST').now
-        RUBY
-      end
-
-      described_class::DANGEROUS_METHODS.each do |a_method|
-        it "accepts #{klass}.current.#{a_method}" do
-          expect_no_offenses(<<~RUBY)
-            #{klass}.current.#{a_method}
+        it 'corrects the error' do
+          source = <<~RUBY
+            Time.#{a_method}
           RUBY
-        end
-
-        context 'autocorrect' do
-          let(:cop_config) do
-            { 'AutoCorrect' => 'true', 'EnforcedStyle' => 'flexible' }
-          end
-
-          it 'corrects the error' do
-            source = <<~RUBY
-              #{klass}.#{a_method}
+          new_source = autocorrect_source(source)
+          unless a_method == :current
+            expect(new_source).to eq(<<~RUBY)
+              Time.zone.#{a_method}
             RUBY
-            new_source = autocorrect_source(source)
-            unless a_method == :current
-              expect(new_source).to eq(<<~RUBY)
-                #{klass}.zone.#{a_method}
-              RUBY
-            end
           end
         end
       end

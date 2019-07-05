@@ -55,8 +55,6 @@ module RuboCop
         MSG_LOCALTIME = 'Do not use `Time.localtime` without ' \
                         'offset or zone.'
 
-        TIMECLASSES = %i[Time DateTime].freeze
-
         GOOD_METHODS = %i[zone zone_default find_zone find_zone!].freeze
 
         DANGEROUS_METHODS = %i[now local new parse at current].freeze
@@ -67,10 +65,10 @@ module RuboCop
         def on_const(node)
           mod, klass = *node
           # we should only check core classes
-          # (`DateTime`, `Time`, `::DateTime` or `::Time`)
+          # (`Time` or `::Time`)
           return unless (mod.nil? || mod.cbase_type?) && method_send?(node)
 
-          check_time_node(klass, node.parent) if TIMECLASSES.include?(klass)
+          check_time_node(klass, node.parent) if klass == :Time
         end
 
         def autocorrect(node)
@@ -153,7 +151,7 @@ module RuboCop
           if (receiver.is_a? RuboCop::AST::Node) && !receiver.cbase_type?
             method_from_time_class?(receiver)
           else
-            TIMECLASSES.include?(method_name)
+            method_name == :Time
           end
         end
 
