@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.2.0 (2019-07-07)
+
 ### Bug fixes
 
 * [#67](https://github.com/rubocop-hq/rubocop-rails/issues/67): Fix an incorrect auto-correct for `Rails/TimeZone` when using `DateTime`. ([@koic][])
