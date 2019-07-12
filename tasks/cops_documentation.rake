@@ -79,7 +79,7 @@ task generate_cops_documentation: :yard_for_generate_documentation do
   def code_example(ruby_code)
     content = +"```ruby\n"
     content << ruby_code.text
-               .gsub('@good', '# good').gsub('@bad', '# bad').strip
+                        .gsub('@good', '# good').gsub('@bad', '# bad').strip
     content << "\n```\n"
     content
   end
