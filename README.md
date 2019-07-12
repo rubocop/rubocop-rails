@@ -48,7 +48,7 @@ cops together with the standard cops.
 ### Command line
 
 ```sh
-rubocop --require rubocop-rails --rails
+rubocop --require rubocop-rails
 ```
 
 Note: `--rails` option is required while `rubocop` command supports `--rails` option.
