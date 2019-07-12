@@ -75,10 +75,15 @@ module RuboCop
           lambda do |corrector|
             # add `.zone`: `Time.at` => `Time.zone.at`
             corrector.insert_after(node.children[0].source_range, '.zone')
-            # replace `Time.zone.current` => `Time.zone.now`
-            if node.method_name == :current
+
+            case node.method_name
+            when :current
+              # replace `Time.zone.current` => `Time.zone.now`
               corrector.replace(node.loc.selector, 'now')
+            when :new
+              autocorrect_time_new(node, corrector)
             end
+
             # prefer `Time` over `DateTime` class
             if strict?
               corrector.replace(node.children.first.source_range, 'Time')
@@ -88,6 +93,14 @@ module RuboCop
         end
 
         private
+
+        def autocorrect_time_new(node, corrector)
+          if node.arguments?
+            corrector.replace(node.loc.selector, 'local')
+          else
+            corrector.replace(node.loc.selector, 'now')
+          end
+        end
 
         # remove redundant `.in_time_zone` from `Time.zone.now.in_time_zone`
         def remove_redundant_in_time_zone(corrector, node)
