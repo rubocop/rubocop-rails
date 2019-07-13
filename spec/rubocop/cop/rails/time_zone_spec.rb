@@ -19,15 +19,25 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
     end
 
     it 'registers an offense for Time.new without argument' do
-      inspect_source('Time.new')
-      expect(cop.offenses.size).to eq(1)
-      expect(cop.offenses.first.message).to include('`Time.zone.now`')
+      expect_offense(<<~RUBY)
+        Time.new
+             ^^^ Do not use `Time.new` without zone. Use `Time.zone.now` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Time.zone.now
+      RUBY
     end
 
     it 'registers an offense for Time.new with argument' do
-      inspect_source('Time.new(2012, 6, 10, 12, 00)')
-      expect(cop.offenses.size).to eq(1)
-      expect(cop.offenses.first.message).to include('`Time.zone.local`')
+      expect_offense(<<~RUBY)
+        Time.new(2012, 6, 10, 12, 00)
+             ^^^ Do not use `Time.new` without zone. Use `Time.zone.local` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Time.zone.local(2012, 6, 10, 12, 00)
+      RUBY
     end
 
     it 'does not register an offense when a .new method is called
@@ -74,7 +84,7 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
       end
 
       # :current is a special case and is treated separately below
-      (described_class::DANGEROUS_METHODS - [:current]).each do |a_method|
+      (described_class::DANGEROUS_METHODS - %i[current new]).each do |a_method|
         it 'corrects the error' do
           source = <<~RUBY
             Time.#{a_method}
@@ -281,7 +291,7 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
             Time.#{a_method}
           RUBY
           new_source = autocorrect_source(source)
-          unless a_method == :current
+          unless %i[current new].include?(a_method)
             expect(new_source).to eq(<<~RUBY)
               Time.zone.#{a_method}
             RUBY

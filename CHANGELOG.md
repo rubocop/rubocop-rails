@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+* [#86](https://github.com/rubocop-hq/rubocop-rails/issues/86): Fix an incorrect auto-correct for `Rails/TimeZone` when using `Time.new`. ([@koic][])
+
 ## 2.2.0 (2019-07-07)
 
 ### Bug fixes
