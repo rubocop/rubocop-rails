@@ -2038,6 +2038,7 @@ should be used instead of save because the model might have failed to
 save and an exception is better than unhandled failure.
 
 This will allow:
+
 - update or save calls, assigned to a variable,
   or used as a condition in an if/unless/case statement.
 - create calls, assigned to a variable that then has a
