@@ -3,7 +3,6 @@
 $LOAD_PATH.unshift File.expand_path('lib', __dir__)
 require 'rubocop/rails/version'
 
-# rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |s|
   s.name = 'rubocop-rails'
   s.version = RuboCop::Rails::Version::STRING
@@ -36,4 +35,3 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'rack', '>= 1.1'
   s.add_runtime_dependency 'rubocop', '>= 0.72.0'
 end
-# rubocop:enable Metrics/BlockLength
