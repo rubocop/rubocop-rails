@@ -548,6 +548,14 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
         if x.persisted?; something; end
       RUBY
     end
+
+    it "when using #{method} with `||`" do
+      expect_no_offenses(<<~RUBY)
+        def find_or_create(**opts)
+          find(**opts) || #{method}(**opts)
+        end
+      RUBY
+    end
   end
 
   described_class::CREATE_PERSIST_METHODS.each do |method|

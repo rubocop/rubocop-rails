@@ -140,9 +140,9 @@ module RuboCop
         def on_send(node) # rubocop:disable Metrics/CyclomaticComplexity
           return unless persist_method?(node)
           return if return_value_assigned?(node)
+          return if implicit_return?(node)
           return if check_used_in_conditional(node)
           return if argument?(node)
-          return if implicit_return?(node)
           return if explicit_return?(node)
 
           add_offense_for_node(node)
@@ -277,10 +277,18 @@ module RuboCop
           return false unless cop_config['AllowImplicitReturn']
 
           node = assignable_node(node)
-          method = node.parent
+          method, sibling_index = find_method_with_sibling_index(node.parent)
           return unless method && (method.def_type? || method.block_type?)
 
-          method.children.size == node.sibling_index + 1
+          method.children.size == node.sibling_index + sibling_index
+        end
+
+        def find_method_with_sibling_index(node, sibling_index = 1)
+          return node, sibling_index unless node&.or_type?
+
+          sibling_index += 1
+
+          find_method_with_sibling_index(node.parent, sibling_index)
         end
 
         def argument?(node)

@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#53](https://github.com/rubocop-hq/rubocop-rails/issues/53): Fix a false positive for `Rails/SaveBang` when implicitly return using finder method and creation method connected by `||`. ([@koic][])
+
 ## 2.2.1 (2019-07-13)
 
 ### Bug fixes
