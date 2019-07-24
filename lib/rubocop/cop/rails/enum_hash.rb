@@ -50,6 +50,35 @@ module RuboCop
             key.source
           end
         end
+
+        def autocorrect(node)
+          enum_values = node.children[2].children.first.children[1]
+          to_replace = enum_values.loc.expression
+          values_hash = "{ #{converted_values(enum_values)} }"
+
+          ->(corrector) { corrector.replace(to_replace, values_hash) }
+        end
+
+        private
+
+        def converted_values(enum_values)
+          enum_values.children.each_with_index.map do |child, index|
+            hash_entry_as_string(child, index)
+          end.join(', ')
+        end
+
+        def hash_entry_as_string(child, index)
+          value = child.children.first
+          case value
+          when String
+            "'#{value}' => #{index}"
+          when Symbol
+            value = "'#{value}'" if value =~ /\s/
+            "#{value}: #{index}"
+          else
+            "#{child.source} => #{index}"
+          end
+        end
       end
     end
   end

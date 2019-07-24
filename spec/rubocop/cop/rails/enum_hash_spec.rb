@@ -79,6 +79,16 @@ RSpec.describe RuboCop::Cop::Rails::EnumHash do
         RUBY
       end
     end
+
+    it 'autocorrects' do
+      expect(
+        autocorrect_source(
+          'enum status: [:old, :"very active", "is archived", 42]'
+        )
+      ).to eq(
+        "enum status: { old: 0, 'very active': 1, 'is archived' => 2, 42 => 3 }"
+      )
+    end
   end
 
   context 'when hash syntax is used' do
