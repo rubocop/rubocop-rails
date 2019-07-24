@@ -145,6 +145,14 @@ Rails/DynamicFindBy:
   Whitelist:
     - find_by_sql
 
+Rails/EnumHash:
+  Description: 'Prefer hash syntax over array syntax when defining enums.'
+  StyleGuide: '#enums'
+  Enabled: true
+  VersionAdded: '2.3'
+  Include:
+    - app/models/**/*.rb
+
 Rails/EnumUniqueness:
   Description: 'Avoid duplicate integers in hash-syntax `enum` declaration.'
   Enabled: true

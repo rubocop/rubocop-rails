@@ -642,6 +642,39 @@ Whitelist | `find_by_sql` | Array
 
 * [https://rails.rubystyle.guide#find_by](https://rails.rubystyle.guide#find_by)
 
+## Rails/EnumHash
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Enabled | Yes | No | 2.3 | -
+
+This cop looks for enums written with array syntax.
+
+When using array syntax, adding an element in a
+position other than the last causes all previous
+definitions to shift. Explicitly specifying the
+value for each key prevents this from happening.
+
+### Examples
+
+```ruby
+# bad
+enum status: [:active, :archived]
+
+# good
+enum status: { active: 0, archived: 1 }
+```
+
+### Configurable attributes
+
+Name | Default value | Configurable values
+--- | --- | ---
+Include | `app/models/**/*.rb` | Array
+
+### References
+
+* [https://rails.rubystyle.guide#enums](https://rails.rubystyle.guide#enums)
+
 ## Rails/EnumUniqueness
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
