@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#78](https://github.com/rubocop-hq/rubocop-rails/issues/78): Add new `Rails/EnumHash` cop. ([@fedeagripa][], [@brunvez][], [@santib][])
+
 ### Bug fixes
 
 * [#53](https://github.com/rubocop-hq/rubocop-rails/issues/53): Fix a false positive for `Rails/SaveBang` when implicitly return using finder method and creation method connected by `||`. ([@koic][])
@@ -47,3 +51,6 @@
 [@buehmann]: https://github.com/buehmann
 [@anthony-robin]: https://github.com/anthony-robin
 [@rmm5t]: https://github.com/rmm5t
+[@fedeagripa]: https://github.com/fedeagripa
+[@brunvez]: https://github.com/brunvez
+[@santib]: https://github.com/santib
