@@ -21,13 +21,33 @@ module RuboCop
         MSG = 'Enum defined as an array found in `%<enum>s` enum declaration. '\
               'Use hash syntax instead.'
 
-        def_node_matcher :enum_with_array?, <<~PATTERN
-          (send nil? :enum (hash (pair (_ $_) array)))
+        def_node_matcher :enum?, <<~PATTERN
+          (send nil? :enum (hash $...))
+        PATTERN
+
+        def_node_matcher :array_pair?, <<~PATTERN
+          (pair $_ $array)
         PATTERN
 
         def on_send(node)
-          enum_with_array?(node) do |name|
-            add_offense(node, message: format(MSG, enum: name))
+          enum?(node) do |pairs|
+            pairs.each do |pair|
+              key, array = array_pair?(pair)
+              next unless key
+
+              add_offense(array, message: format(MSG, enum: enum_name(key)))
+            end
+          end
+        end
+
+        private
+
+        def enum_name(key)
+          case key.type
+          when :sym, :str
+            key.value
+          else
+            key.source
           end
         end
       end
