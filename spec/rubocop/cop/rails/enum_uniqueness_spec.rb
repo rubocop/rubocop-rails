@@ -85,4 +85,33 @@ RSpec.describe RuboCop::Cop::Rails::EnumUniqueness, :config do
       end
     end
   end
+
+  context 'when the enum name is a string' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        enum "status" => [:active, :archived, :active]
+                                              ^^^^^^^ Duplicate value `:active` found in `status` enum declaration.
+      RUBY
+    end
+  end
+
+  context 'when the enum name is not a literal' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        enum KEY => [:active, :archived, :active]
+                                         ^^^^^^^ Duplicate value `:active` found in `KEY` enum declaration.
+      RUBY
+    end
+  end
+
+  context 'with multiple enum definition for a `enum` method call' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        enum status: [:active, :archived, :active],
+                                          ^^^^^^^ Duplicate value `:active` found in `status` enum declaration.
+             role: [:owner, :member, :guest, :member]
+                                             ^^^^^^^ Duplicate value `:member` found in `role` enum declaration.
+      RUBY
+    end
+  end
 end
