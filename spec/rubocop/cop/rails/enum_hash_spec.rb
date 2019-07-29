@@ -79,6 +79,17 @@ RSpec.describe RuboCop::Cop::Rails::EnumHash do
         RUBY
       end
     end
+
+    it 'autocorrects' do
+      expect_offense(<<~RUBY)
+        enum status: [:old, :"very active", "is archived", 42]
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Enum defined as an array found in `status` enum declaration. Use hash syntax instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        enum status: {:old=>0, :"very active"=>1, "is archived"=>2, 42=>3}
+      RUBY
+    end
   end
 
   context 'when hash syntax is used' do

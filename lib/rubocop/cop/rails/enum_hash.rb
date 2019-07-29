@@ -40,6 +40,16 @@ module RuboCop
           end
         end
 
+        def autocorrect(node)
+          range = node.loc.expression
+          hash = node
+                 .children
+                 .each_with_index
+                 .map { |elem, index| [elem.children.first, index] }.to_h
+
+          ->(corrector) { corrector.replace(range, hash.to_s) }
+        end
+
         private
 
         def enum_name(key)

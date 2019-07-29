@@ -646,7 +646,7 @@ Whitelist | `find_by_sql` | Array
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | No | 2.3 | -
+Enabled | Yes | Yes  | 2.3 | -
 
 This cop looks for enums written with array syntax.
 
