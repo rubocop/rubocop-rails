@@ -31,6 +31,7 @@ Rails/ActiveRecordAliases:
                   Use `update!` instead of `update_attributes!`.
   Enabled: true
   VersionAdded: '0.53'
+  SafeAutoCorrect: false
 
 Rails/ActiveRecordOverride:
   Description: >-

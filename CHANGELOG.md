@@ -10,6 +10,10 @@
 
 * [#53](https://github.com/rubocop-hq/rubocop-rails/issues/53): Fix a false positive for `Rails/SaveBang` when implicitly return using finder method and creation method connected by `||`. ([@koic][])
 
+### Changes
+
+* [#98](https://github.com/rubocop-hq/rubocop-rails/pull/98): Mark `Rails/ActiveRecordAliases` as `SafeAutoCorrect` false and disable autocorrect by default. ([@prathamesh-sonpatki][])
+
 ## 2.2.1 (2019-07-13)
 
 ### Bug fixes
@@ -54,3 +58,4 @@
 [@fedeagripa]: https://github.com/fedeagripa
 [@brunvez]: https://github.com/brunvez
 [@santib]: https://github.com/santib
+[@prathamesh-sonpatki]: https://github.com/prathamesh-sonpatki
