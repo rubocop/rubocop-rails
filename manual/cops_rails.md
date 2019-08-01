@@ -51,7 +51,7 @@ Include | `app/controllers/**/*.rb` | Array
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | Yes  | 0.53 | -
+Enabled | Yes | Yes (Unsafe) | 0.53 | -
 
 Checks that ActiveRecord aliases are not used. The direct method names
 are more clear and easier to read.
