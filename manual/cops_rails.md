@@ -2064,7 +2064,7 @@ ConvertTry | `false` | Boolean
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Disabled | Yes | Yes  | 0.42 | 0.59
+Disabled | Yes | Yes (Unsafe) | 0.42 | 0.59
 
 This cop identifies possible cases where Active Record save! or related
 should be used instead of save because the model might have failed to
