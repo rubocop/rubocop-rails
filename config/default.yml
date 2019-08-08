@@ -404,6 +404,7 @@ Rails/SaveBang:
   VersionChanged: '0.59'
   AllowImplicitReturn: true
   AllowedReceivers: []
+  SafeAutoCorrect: false
 
 Rails/ScopeArgs:
   Description: 'Checks the arguments of ActiveRecord scopes.'
