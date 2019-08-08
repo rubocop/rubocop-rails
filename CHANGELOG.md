@@ -13,6 +13,8 @@
 ### Changes
 
 * [#98](https://github.com/rubocop-hq/rubocop-rails/pull/98): Mark `Rails/ActiveRecordAliases` as `SafeAutoCorrect` false and disable autocorrect by default. ([@prathamesh-sonpatki][])
+* [#101](https://github.com/rubocop-hq/rubocop-rails/pull/101): Mark `Rails/SaveBang` as `SafeAutoCorrect` false and disable autocorrect by default. ([@prathamesh-sonpatki][])
+* [#102](https://github.com/rubocop-hq/rubocop-rails/pull/102): Include `create_or_find_by` in `Rails/SaveBang` cop. ([@MaximeLaurenty][])
 
 ## 2.2.1 (2019-07-13)
 
@@ -59,3 +61,4 @@
 [@brunvez]: https://github.com/brunvez
 [@santib]: https://github.com/santib
 [@prathamesh-sonpatki]: https://github.com/prathamesh-sonpatki
+[@MaximeLaurenty]: https://github.com/MaximeLaurenty
