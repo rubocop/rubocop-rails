@@ -108,7 +108,7 @@ module RuboCop
         CREATE_CONDITIONAL_MSG = '`%<current>s` returns a model which is ' \
                                  'always truthy.'
 
-        CREATE_PERSIST_METHODS = %i[create
+        CREATE_PERSIST_METHODS = %i[create create_or_find_by
                                     first_or_create find_or_create_by].freeze
         MODIFY_PERSIST_METHODS = %i[save
                                     update update_attributes destroy].freeze
