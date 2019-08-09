@@ -23,20 +23,40 @@ module RuboCop
         MSG = 'Duplicate value `%<value>s` found in `%<enum>s` ' \
               'enum declaration.'
 
-        def_node_matcher :enum_declaration, <<-PATTERN
-          (send nil? :enum (hash (pair (_ $_) ${array hash})))
+        def_node_matcher :enum?, <<~PATTERN
+          (send nil? :enum (hash $...))
+        PATTERN
+
+        def_node_matcher :enum_values, <<~PATTERN
+          (pair $_ ${array hash})
         PATTERN
 
         def on_send(node)
-          enum_declaration(node) do |name, args|
-            items = args.values
+          enum?(node) do |pairs|
+            pairs.each do |pair|
+              enum_values(pair) do |key, args|
+                items = args.values
 
-            return unless duplicates?(items)
+                next unless duplicates?(items)
 
-            consecutive_duplicates(items).each do |item|
-              add_offense(item, message: format(MSG, value: item.source,
-                                                     enum: name))
+                consecutive_duplicates(items).each do |item|
+                  add_offense(item, message: format(
+                    MSG, value: item.source, enum: enum_name(key)
+                  ))
+                end
+              end
             end
+          end
+        end
+
+        private
+
+        def enum_name(key)
+          case key.type
+          when :sym, :str
+            key.value
+          else
+            key.source
           end
         end
       end
