@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.3.0 (2019-08-13)
+
 ### New features
 
 * [#78](https://github.com/rubocop-hq/rubocop-rails/issues/78): Add new `Rails/EnumHash` cop. ([@fedeagripa][], [@brunvez][], [@santib][])
