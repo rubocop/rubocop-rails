@@ -38,6 +38,8 @@ module RuboCop
       #   # good
       #   a.presence || b
       class Presence < Cop
+        include RangeHelp
+
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
 
         def_node_matcher :redundant_receiver_and_other, <<-PATTERN
@@ -115,8 +117,28 @@ module RuboCop
         end
 
         def replacement(receiver, other)
-          or_source = other.nil? || other.nil_type? ? '' : " || #{other.source}"
+          or_source = if other&.send_type?
+                        build_source_for_or_method(other)
+                      else
+                        ''
+                      end
+
           "#{receiver.source}.presence" + or_source
+        end
+
+        def build_source_for_or_method(other)
+          if other.parenthesized? || !other.arguments?
+            " || #{other.source}"
+          else
+            method = range_between(
+              other.source_range.begin_pos,
+              other.first_argument.source_range.begin_pos - 1
+            ).source
+
+            arguments = other.arguments.map(&:source).join(', ')
+
+            " || #{method}(#{arguments})"
+          end
         end
       end
     end

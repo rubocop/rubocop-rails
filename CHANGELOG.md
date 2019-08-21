@@ -6,6 +6,7 @@
 
 * [#104](https://github.com/rubocop-hq/rubocop-rails/issues/104): Exclude Rails-independent `bin/bundle` by default. ([@koic][])
 * [#107](https://github.com/rubocop-hq/rubocop-rails/issues/107): Fix style guide URLs when specifying `rubocop --display-style-guide` option. ([@koic][])
+* [#111](https://github.com/rubocop-hq/rubocop-rails/issues/111): Fix an incorrect autocorrect for `Rails/Presence` when method arguments of `else` branch is not enclosed in parentheses. ([@koic][])
 
 ## 2.3.0 (2019-08-13)
 
