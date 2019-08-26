@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#104](https://github.com/rubocop-hq/rubocop-rails/issues/104): Exclude Rails-independent `bin/bundle` by default. ([@koic][])
+* [#107](https://github.com/rubocop-hq/rubocop-rails/issues/107): Fix style guide URLs when specifying `rubocop --display-style-guide` option. ([@koic][])
 
 ## 2.3.0 (2019-08-13)
 
