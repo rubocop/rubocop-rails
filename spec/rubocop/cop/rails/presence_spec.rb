@@ -73,6 +73,58 @@ RSpec.describe RuboCop::Cop::Rails::Presence do
                 .map { |num| num + 2 }.presence || b
   FIXED
 
+  context 'when a method argument of `else` branch ' \
+          'is enclosed in parentheses' do
+    it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
+      if value.present?
+        value
+      else
+        do_something(value)
+      end
+    SOURCE
+      value.presence || do_something(value)
+    CORRECTION
+  end
+
+  context 'when a method argument of `else` branch ' \
+          'is not enclosed in parentheses' do
+    it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
+      if value.present?
+        value
+      else
+        do_something value
+      end
+    SOURCE
+      value.presence || do_something(value)
+    CORRECTION
+  end
+
+  context 'when multiple method arguments of `else` branch ' \
+          'is not enclosed in parentheses' do
+    it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
+      if value.present?
+        value
+      else
+        do_something arg1, arg2
+      end
+    SOURCE
+      value.presence || do_something(arg1, arg2)
+    CORRECTION
+  end
+
+  context 'when a method argument with a receiver of `else` branch ' \
+          'is not enclosed in parentheses' do
+    it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
+      if value.present?
+        value
+      else
+        foo.do_something value
+      end
+    SOURCE
+      value.presence || foo.do_something(value)
+    CORRECTION
+  end
+
   it 'does not register an offense when using `#presence`' do
     expect_no_offenses(<<~RUBY)
       a.presence
