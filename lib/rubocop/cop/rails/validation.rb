@@ -82,18 +82,42 @@ module RuboCop
 
         def correct_validate_type(corrector, node)
           last_argument = node.arguments.last
-          validate_type = node.method_name.to_s.split('_')[1]
 
           if last_argument.hash_type?
             corrector.replace(
               last_argument.loc.expression,
-              "#{validate_type}: #{braced_options(last_argument)}"
+              "#{validate_type(node)}: #{braced_options(last_argument)}"
             )
+          elsif last_argument.array_type?
+            correct_validate_type_for_array_argument(corrector, node)
           else
             range = last_argument.source_range
 
-            corrector.insert_after(range, ", #{validate_type}: true")
+            corrector.insert_after(range, ", #{validate_type(node)}: true")
           end
+        end
+
+        def correct_validate_type_for_array_argument(corrector, node)
+          arguments = node.last_argument
+
+          attributes = []
+
+          arguments.each_child_node do |child_node|
+            attributes << if arguments.percent_literal?
+                            ":#{child_node.source}"
+                          else
+                            child_node.source
+                          end
+          end
+
+          corrector.replace(
+            arguments.loc.expression,
+            "#{attributes.join(', ')}, #{validate_type(node)}: true"
+          )
+        end
+
+        def validate_type(node)
+          node.method_name.to_s.split('_')[1]
         end
 
         def braced_options(options)
