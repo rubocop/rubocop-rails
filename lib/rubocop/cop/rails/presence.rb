@@ -119,8 +119,10 @@ module RuboCop
         def replacement(receiver, other)
           or_source = if other&.send_type?
                         build_source_for_or_method(other)
-                      else
+                      elsif other.nil? || other.nil_type?
                         ''
+                      else
+                        " || #{other.source}"
                       end
 
           "#{receiver.source}.presence" + or_source
