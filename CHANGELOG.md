@@ -6,6 +6,10 @@
 
 * [#123](https://github.com/rubocop-hq/rubocop-rails/pull/123): Add new `Rails/ApplicationController` and `Rails/ApplicationMailer` cops. ([@eugeneius][])
 
+### Bug fixes
+
+* [#120](https://github.com/rubocop-hq/rubocop-rails/issues/120): Fix message for `Rails/SaveBang` when the save is in the body of a conditional. ([@jas14][])
+
 ## 2.3.2 (2019-09-01)
 
 ### Bug fixes
@@ -85,3 +89,4 @@
 [@prathamesh-sonpatki]: https://github.com/prathamesh-sonpatki
 [@MaximeLaurenty]: https://github.com/MaximeLaurenty
 [@eugeneius]: https://github.com/eugeneius
+[@jas14]: https://github.com/jas14

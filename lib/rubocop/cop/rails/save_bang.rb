@@ -141,7 +141,7 @@ module RuboCop
           return unless persist_method?(node)
           return if return_value_assigned?(node)
           return if implicit_return?(node)
-          return if check_used_in_conditional(node)
+          return if check_used_in_condition_or_compound_boolean(node)
           return if argument?(node)
           return if explicit_return?(node)
 
@@ -211,8 +211,8 @@ module RuboCop
           array
         end
 
-        def check_used_in_conditional(node)
-          return false unless conditional?(node)
+        def check_used_in_condition_or_compound_boolean(node)
+          return false unless in_condition_or_compound_boolean?(node)
 
           unless MODIFY_PERSIST_METHODS.include?(node.method_name)
             add_offense_for_node(node, CREATE_CONDITIONAL_MSG)
@@ -221,15 +221,21 @@ module RuboCop
           true
         end
 
-        def conditional?(node) # rubocop:disable Metrics/CyclomaticComplexity
+        def in_condition_or_compound_boolean?(node)
           node = node.block_node || node
+          parent = node.parent
+          return false unless parent
 
-          condition = node.parent
-          return false unless condition
+          operator_or_single_negative?(parent) ||
+            (conditional?(parent) && node == parent.condition)
+        end
 
-          condition.if_type? || condition.case_type? ||
-            condition.or_type? || condition.and_type? ||
-            single_negative?(condition)
+        def operator_or_single_negative?(node)
+          node.or_type? || node.and_type? || single_negative?(node)
+        end
+
+        def conditional?(parent)
+          parent.if_type? || parent.case_type?
         end
 
         def allowed_receiver?(node)
