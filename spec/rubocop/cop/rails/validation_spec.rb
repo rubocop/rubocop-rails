@@ -73,6 +73,19 @@ RSpec.describe RuboCop::Cop::Rails::Validation do
       end
 
       context "with validates_#{type}_of when " \
+              'attributes are specified with frozen array literal' do
+        let(:auto_corrected_source) do
+          "validates :full_name, :birth_date, #{type}: true"
+        end
+
+        let(:source) do
+          "validates_#{type}_of [:full_name, :birth_date].freeze"
+        end
+
+        include_examples 'auto-corrects'
+      end
+
+      context "with validates_#{type}_of when " \
               'attributes are specified with symbol array literal' do
         let(:auto_corrected_source) do
           "validates :full_name, :birth_date, #{type}: true"
@@ -80,6 +93,19 @@ RSpec.describe RuboCop::Cop::Rails::Validation do
 
         let(:source) do
           "validates_#{type}_of %i[full_name birth_date]"
+        end
+
+        include_examples 'auto-corrects'
+      end
+
+      context "with validates_#{type}_of when " \
+              'attributes are specified with frozen symbol array literal' do
+        let(:auto_corrected_source) do
+          "validates :full_name, :birth_date, #{type}: true"
+        end
+
+        let(:source) do
+          "validates_#{type}_of %i[full_name birth_date].freeze"
         end
 
         include_examples 'auto-corrects'

@@ -61,7 +61,8 @@ module RuboCop
 
         def autocorrect(node)
           last_argument = node.arguments.last
-          return if !last_argument.literal? && !last_argument.splat_type?
+          return if !last_argument.literal? && !last_argument.splat_type? &&
+                    !frozen_array_argument?(last_argument)
 
           lambda do |corrector|
             corrector.replace(node.loc.selector, 'validates')
@@ -81,15 +82,19 @@ module RuboCop
         end
 
         def correct_validate_type(corrector, node)
-          last_argument = node.arguments.last
+          last_argument = node.last_argument
 
           if last_argument.hash_type?
-            corrector.replace(
-              last_argument.loc.expression,
-              "#{validate_type(node)}: #{braced_options(last_argument)}"
-            )
+            correct_validate_type_for_hash(corrector, node, last_argument)
           elsif last_argument.array_type?
-            correct_validate_type_for_array_argument(corrector, node)
+            loc = last_argument.loc
+
+            correct_validate_type_for_array(corrector, node, last_argument, loc)
+          elsif frozen_array_argument?(last_argument)
+            arguments = node.last_argument.receiver
+            loc = arguments.parent.loc
+
+            correct_validate_type_for_array(corrector, node, arguments, loc)
           else
             range = last_argument.source_range
 
@@ -97,9 +102,14 @@ module RuboCop
           end
         end
 
-        def correct_validate_type_for_array_argument(corrector, node)
-          arguments = node.last_argument
+        def correct_validate_type_for_hash(corrector, node, arguments)
+          corrector.replace(
+            arguments.loc.expression,
+            "#{validate_type(node)}: #{braced_options(arguments)}"
+          )
+        end
 
+        def correct_validate_type_for_array(corrector, node, arguments, loc)
           attributes = []
 
           arguments.each_child_node do |child_node|
@@ -111,13 +121,17 @@ module RuboCop
           end
 
           corrector.replace(
-            arguments.loc.expression,
+            loc.expression,
             "#{attributes.join(', ')}, #{validate_type(node)}: true"
           )
         end
 
         def validate_type(node)
           node.method_name.to_s.split('_')[1]
+        end
+
+        def frozen_array_argument?(argument)
+          argument.send_type? && argument.method?(:freeze)
         end
 
         def braced_options(options)
