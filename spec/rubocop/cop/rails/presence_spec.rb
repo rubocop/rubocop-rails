@@ -36,6 +36,8 @@ RSpec.describe RuboCop::Cop::Rails::Presence do
   it_behaves_like 'offense', '!a.present? ? b : a', 'a.presence || b', 1, 1
   it_behaves_like 'offense', 'a.blank? ? b : a', 'a.presence || b', 1, 1
   it_behaves_like 'offense', '!a.blank? ? a : b', 'a.presence || b', 1, 1
+  it_behaves_like 'offense', 'a.present? ? a : 1', 'a.presence || 1', 1, 1
+  it_behaves_like 'offense', 'a.blank? ? 1 : a', 'a.presence || 1', 1, 1
 
   it_behaves_like 'offense',
                   'a(:bar).map(&:baz).present? ? a(:bar).map(&:baz) : nil',
