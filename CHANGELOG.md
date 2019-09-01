@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.3.2 (2019-09-01)
+
 ### Bug fixes
 
 * [#118](https://github.com/rubocop-hq/rubocop-rails/issues/118): Fix an incorrect autocorrect for `Rails/Validation` when attributes are specified with array literal. ([@koic][])
