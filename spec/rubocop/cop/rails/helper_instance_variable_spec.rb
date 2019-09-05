@@ -4,7 +4,7 @@ RSpec.describe RuboCop::Cop::Rails::HelperInstanceVariable do
   subject(:cop) { described_class.new }
 
   it 'reports uses of instance variables' do
-    expect_offense(<<-'RUBY'.strip_indent)
+    expect_offense(<<~'RUBY')
       def welcome_message
         "Hello #{@user.name}"
                  ^^^^^ Do not use instance variables in helpers.
@@ -13,7 +13,7 @@ RSpec.describe RuboCop::Cop::Rails::HelperInstanceVariable do
   end
 
   it 'reports instance variable assignments' do
-    expect_offense(<<-RUBY.strip_indent)
+    expect_offense(<<~RUBY)
       def welcome_message(user)
         @user_name = user.name
         ^^^^^^^^^^ Do not use instance variables in helpers.
@@ -22,7 +22,7 @@ RSpec.describe RuboCop::Cop::Rails::HelperInstanceVariable do
   end
 
   specify do
-    expect_no_offenses(<<-'RUBY'.strip_indent)
+    expect_no_offenses(<<~'RUBY')
       def welcome_message(user)
         "Hello #{user.name}"
       end

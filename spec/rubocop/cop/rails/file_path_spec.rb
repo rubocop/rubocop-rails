@@ -17,7 +17,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when using Rails.root.join in string interpolation of argument' do
       it 'registers an offense' do
-        expect_offense(<<-'RUBY'.strip_indent)
+        expect_offense(<<~'RUBY')
           system "rm -rf #{Rails.root.join('a', 'b.png')}"
                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
         RUBY
@@ -26,7 +26,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when using string interpolation without Rails.root' do
       it 'does not register an offense' do
-        expect_no_offenses(<<-'RUBY'.strip_indent)
+        expect_no_offenses(<<~'RUBY')
           repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
         RUBY
       end
@@ -34,7 +34,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when using File::SEPARATOR string without Rails.root' do
       it 'does not register an offense' do
-        expect_no_offenses(<<-'RUBY'.strip_indent)
+        expect_no_offenses(<<~'RUBY')
           "#{42}/"
         RUBY
       end
@@ -57,7 +57,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when using Rails.root called by double quoted string' do
       it 'registers an offense' do
-        expect_offense(<<-'RUBY'.strip_indent)
+        expect_offense(<<~'RUBY')
           "#{Rails.root}/app/models/goober"
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
         RUBY
@@ -67,7 +67,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
     context 'when concat Rails.root and file separator ' \
             'using string interpolation' do
       it 'registers an offense' do
-        expect_offense(<<-'RUBY'.strip_indent)
+        expect_offense(<<~'RUBY')
           system "rm -rf #{Rails.root}/foo/bar"
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
         RUBY
@@ -77,7 +77,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
     context 'when concat Rails.root.join and extension ' \
             'using string interpolation' do
       it 'registers an offense' do
-        expect_offense(<<-'RUBY'.strip_indent)
+        expect_offense(<<~'RUBY')
           "#{Rails.root.join('tmp', user.id, 'icon')}.png"
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
         RUBY
@@ -129,7 +129,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when using Rails.root.join in string interpolation of argument' do
       it 'does not registers an offense' do
-        expect_no_offenses(<<-'RUBY'.strip_indent)
+        expect_no_offenses(<<~'RUBY')
           'system "rm -rf #{Rails.root.join(\'a\', \'b.png\')}"'
         RUBY
       end
@@ -137,7 +137,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when using string interpolation without Rails.root' do
       it 'does not registers an offense' do
-        expect_no_offenses(<<-'RUBY'.strip_indent)
+        expect_no_offenses(<<~'RUBY')
           repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
         RUBY
       end
@@ -145,7 +145,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when using File::SEPARATOR string without Rails.root' do
       it 'does not registers an offense' do
-        expect_no_offenses(<<-'RUBY'.strip_indent)
+        expect_no_offenses(<<~'RUBY')
           "#{42}/"
         RUBY
       end
@@ -171,7 +171,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when using Rails.root called by double quoted string' do
       it 'registers an offense' do
-        expect_offense(<<-'RUBY'.strip_indent)
+        expect_offense(<<~'RUBY')
           "#{Rails.root}/app/models/goober"
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path', 'to')` instead.
         RUBY
@@ -181,7 +181,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
     context 'when concat Rails.root and file separator ' \
             'using string interpolation' do
       it 'registers an offense' do
-        expect_offense(<<-'RUBY'.strip_indent)
+        expect_offense(<<~'RUBY')
           system "rm -rf #{Rails.root}/foo/bar"
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path', 'to')` instead.
         RUBY
@@ -191,7 +191,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
     context 'when concat Rails.root.join and extension ' \
             'using string interpolation' do
       it 'registers an offense' do
-        expect_offense(<<-'RUBY'.strip_indent)
+        expect_offense(<<~'RUBY')
           "#{Rails.root.join('tmp', user.id, 'icon')}.png"
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path', 'to')` instead.
         RUBY
