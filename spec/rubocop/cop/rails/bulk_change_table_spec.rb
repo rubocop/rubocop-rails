@@ -123,7 +123,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
     end
 
     it 'does not register an offense for `change_column_null`' do
-      expect_no_offenses(<<-RUBY.strip_indent)
+      expect_no_offenses(<<~RUBY)
         def change
           change_column_null :users, :name, false
           change_column_null :users, :address, false
@@ -154,7 +154,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
         end
       RUBY
 
-      expect_no_offenses(<<-RUBY.strip_indent)
+      expect_no_offenses(<<~RUBY)
         def change
           change_column_null :users, :name, false
           change_column_null :users, :address, false
