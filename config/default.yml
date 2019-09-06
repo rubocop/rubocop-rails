@@ -49,10 +49,20 @@ Rails/ActiveSupportAliases:
   Enabled: true
   VersionAdded: '0.48'
 
+Rails/ApplicationController:
+  Description: 'Check that controllers subclass ApplicationController.'
+  Enabled: true
+  VersionAdded: '2.4'
+
 Rails/ApplicationJob:
   Description: 'Check that jobs subclass ApplicationJob.'
   Enabled: true
   VersionAdded: '0.49'
+
+Rails/ApplicationMailer:
+  Description: 'Check that mailers subclass ApplicationMailer.'
+  Enabled: true
+  VersionAdded: '2.4'
 
 Rails/ApplicationRecord:
   Description: 'Check that models subclass ApplicationRecord.'

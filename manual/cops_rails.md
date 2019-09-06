@@ -127,6 +127,28 @@ are not used.
 [1, 2, 'a'].prepend('b')
 ```
 
+## Rails/ApplicationController
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Enabled | Yes | Yes  | 2.4 | -
+
+This cop checks that controllers subclass ApplicationController.
+
+### Examples
+
+```ruby
+# good
+class MyController < ApplicationController
+  # ...
+end
+
+# bad
+class MyController < ActionController::Base
+  # ...
+end
+```
+
 ## Rails/ApplicationJob
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
@@ -145,6 +167,28 @@ end
 
 # bad
 class Rails4Job < ActiveJob::Base
+  # ...
+end
+```
+
+## Rails/ApplicationMailer
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Enabled | Yes | Yes  | 2.4 | -
+
+This cop checks that mailers subclass ApplicationMailer with Rails 5.0.
+
+### Examples
+
+```ruby
+# good
+class MyMailer < ApplicationMailer
+  # ...
+end
+
+# bad
+class MyMailer < ActionMailer::Base
   # ...
 end
 ```
