@@ -6,6 +6,8 @@ module RuboCop
       # This cop is used to identify usages of file path joining process
       # to use `Rails.root.join` clause. It is used to add uniformity when
       # joining paths.
+      # 
+      # This is to avoid bugs on operating systems, such as Windows, that don't use '/' as the path separator.
       #
       # @example EnforcedStyle: arguments (default)
       #   # bad
