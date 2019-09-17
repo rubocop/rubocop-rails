@@ -223,6 +223,28 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       end
     end
 
+    it "when using #{method} in the body of a oneline if" do
+      inspect_source("object.#{method} if false")
+
+      expect(cop.messages)
+        .to eq(["Use `#{method}!` instead of `#{method}` " \
+                'if the return value is not checked.'])
+    end
+
+    it "when using #{method} in the body of an else" do
+      inspect_source(<<~RUBY)
+        if condition
+          puts "true"
+        else
+          object.#{method}
+        end
+      RUBY
+
+      expect(cop.messages)
+        .to eq(["Use `#{method}!` instead of `#{method}` " \
+                'if the return value is not checked.'])
+    end
+
     it "when using #{method} with a bunch of hashes & arrays" do
       inspect_source(<<~RUBY)
         return [{ success: object.#{method} }, true]
