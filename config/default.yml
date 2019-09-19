@@ -333,6 +333,15 @@ Rails/Present:
   # Convert usages of `unless blank?` to `if present?`
   UnlessBlank: true
 
+Rails/RakeEnvironment:
+  Description: 'Set `:environment` task as a dependency to all rake task.'
+  Enabled: true
+  Safe: false
+  VersionAdded: '2.4'
+  Include:
+    - '**/Rakefile'
+    - '**/*.rake'
+
 Rails/ReadWriteAttribute:
   Description: >-
                  Checks for read_attribute(:attr) and

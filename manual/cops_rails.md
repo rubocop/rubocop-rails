@@ -1660,6 +1660,43 @@ NotNilAndNotEmpty | `true` | Boolean
 NotBlank | `true` | Boolean
 UnlessBlank | `true` | Boolean
 
+## Rails/RakeEnvironment
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Enabled | No | No | 2.4 | -
+
+This cop checks rake task definition without `environment` dependency.
+`environment` dependency is important because it loads application code
+for the rake task. The rake task cannot use application code, such as
+models, without `environment` dependency.
+
+You can ignore the offense if the task satisfies at least one of the
+following conditions:
+
+* The task does not need application code.
+* The task invokes :environment task.
+
+### Examples
+
+```ruby
+# bad
+task :foo do
+  do_something
+end
+
+# good
+task foo: :environment do
+  do_something
+end
+```
+
+### Configurable attributes
+
+Name | Default value | Configurable values
+--- | --- | ---
+Include | `**/Rakefile`, `**/*.rake` | Array
+
 ## Rails/ReadWriteAttribute
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged

@@ -40,6 +40,7 @@
 * [Rails/PluralizationGrammar](cops_rails.md#railspluralizationgrammar)
 * [Rails/Presence](cops_rails.md#railspresence)
 * [Rails/Present](cops_rails.md#railspresent)
+* [Rails/RakeEnvironment](cops_rails.md#railsrakeenvironment)
 * [Rails/ReadWriteAttribute](cops_rails.md#railsreadwriteattribute)
 * [Rails/RedundantAllowNil](cops_rails.md#railsredundantallownil)
 * [Rails/RedundantReceiverInWithOptions](cops_rails.md#railsredundantreceiverinwithoptions)
