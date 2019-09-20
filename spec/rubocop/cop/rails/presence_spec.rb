@@ -44,6 +44,11 @@ RSpec.describe RuboCop::Cop::Rails::Presence do
                   'a(:bar).map(&:baz).presence',
                   1, 1
 
+  it_behaves_like 'offense',
+                  'a.present? ? a : b[:c]',
+                  'a.presence || b[:c]',
+                  1, 1
+
   it_behaves_like 'offense', <<~RUBY.chomp, 'a.presence', 1, 5
     if a.present?
       a

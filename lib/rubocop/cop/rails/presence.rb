@@ -129,7 +129,7 @@ module RuboCop
         end
 
         def build_source_for_or_method(other)
-          if other.parenthesized? || !other.arguments?
+          if other.parenthesized? || other.method?('[]') || !other.arguments?
             " || #{other.source}"
           else
             method = range_between(
