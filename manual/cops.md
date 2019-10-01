@@ -50,6 +50,7 @@
 * [Rails/RequestReferer](cops_rails.md#railsrequestreferer)
 * [Rails/ReversibleMigration](cops_rails.md#railsreversiblemigration)
 * [Rails/SafeNavigation](cops_rails.md#railssafenavigation)
+* [Rails/SafeNavigationWithBlank](cops_rails.md#railssafenavigationwithblank)
 * [Rails/SaveBang](cops_rails.md#railssavebang)
 * [Rails/ScopeArgs](cops_rails.md#railsscopeargs)
 * [Rails/SkipsModelValidations](cops_rails.md#railsskipsmodelvalidations)
