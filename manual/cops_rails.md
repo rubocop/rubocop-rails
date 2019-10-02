@@ -2065,37 +2065,40 @@ to convert `try`. It will convert code to use safe navigation.
 
 ### Examples
 
+#### ConvertTry: false (default)
+
 ```ruby
-# ConvertTry: false
-  # bad
-  foo.try!(:bar)
-  foo.try!(:bar, baz)
-  foo.try!(:bar) { |e| e.baz }
+# bad
+foo.try!(:bar)
+foo.try!(:bar, baz)
+foo.try!(:bar) { |e| e.baz }
 
-  foo.try!(:[], 0)
+foo.try!(:[], 0)
 
-  # good
-  foo.try(:bar)
-  foo.try(:bar, baz)
-  foo.try(:bar) { |e| e.baz }
+# good
+foo.try(:bar)
+foo.try(:bar, baz)
+foo.try(:bar) { |e| e.baz }
 
-  foo&.bar
-  foo&.bar(baz)
-  foo&.bar { |e| e.baz }
+foo&.bar
+foo&.bar(baz)
+foo&.bar { |e| e.baz }
+```
+#### ConvertTry: true
 
-# ConvertTry: true
-  # bad
-  foo.try!(:bar)
-  foo.try!(:bar, baz)
-  foo.try!(:bar) { |e| e.baz }
-  foo.try(:bar)
-  foo.try(:bar, baz)
-  foo.try(:bar) { |e| e.baz }
+```ruby
+# bad
+foo.try!(:bar)
+foo.try!(:bar, baz)
+foo.try!(:bar) { |e| e.baz }
+foo.try(:bar)
+foo.try(:bar, baz)
+foo.try(:bar) { |e| e.baz }
 
-  # good
-  foo&.bar
-  foo&.bar(baz)
-  foo&.bar { |e| e.baz }
+# good
+foo&.bar
+foo&.bar(baz)
+foo&.bar { |e| e.baz }
 ```
 
 ### Configurable attributes
