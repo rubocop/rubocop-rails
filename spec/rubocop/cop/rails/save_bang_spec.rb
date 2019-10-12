@@ -55,7 +55,7 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
     end
 
     it "when using #{method} without arguments" do
-      inspect_source(method.to_s)
+      inspect_source(+method.to_s)
 
       expect(cop.messages)
         .to eq(["Use `#{method}!` instead of `#{method}` " \
