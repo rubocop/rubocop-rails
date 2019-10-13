@@ -19,6 +19,7 @@
 ### Changes
 
 * [#156](https://github.com/rubocop-hq/rubocop-rails/pull/156): Make `Rails/UnknownEnv` cop aware of `Rails.env == 'unknown_env'`. ([@pocke][])
+* [#141](https://github.com/rubocop-hq/rubocop-rails/pull/141): Change default of `EnforcedStyle` from `arguments` to `slashes` for `Rails/FilePath`. ([@koic][])
 
 ## 2.3.2 (2019-09-01)
 

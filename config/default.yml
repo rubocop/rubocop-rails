@@ -193,8 +193,8 @@ Rails/FilePath:
   Description: 'Use `Rails.root.join` for file path joining.'
   Enabled: true
   VersionAdded: '0.47'
-  VersionChanged: '0.57'
-  EnforcedStyle: arguments
+  VersionChanged: '2.4'
+  EnforcedStyle: slashes
   SupportedStyles:
     - slashes
     - arguments
