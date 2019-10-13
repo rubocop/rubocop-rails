@@ -9,6 +9,7 @@
 ### Bug fixes
 
 * [#120](https://github.com/rubocop-hq/rubocop-rails/issues/120): Fix message for `Rails/SaveBang` when the save is in the body of a conditional. ([@jas14][])
+* [#131](https://github.com/rubocop-hq/rubocop-rails/pull/131): Fix an incorrect autocorrect for `Rails/Presence` when using `[]` method. ([@forresty][])
 
 ## 2.3.2 (2019-09-01)
 
@@ -90,3 +91,4 @@
 [@MaximeLaurenty]: https://github.com/MaximeLaurenty
 [@eugeneius]: https://github.com/eugeneius
 [@jas14]: https://github.com/jas14
+[@forresty]: https://github.com/forresty
