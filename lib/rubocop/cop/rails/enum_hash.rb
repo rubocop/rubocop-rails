@@ -41,13 +41,11 @@ module RuboCop
         end
 
         def autocorrect(node)
-          range = node.loc.expression
-          hash = node
-                 .children
-                 .each_with_index
-                 .map { |elem, index| [elem.children.first, index] }.to_h
+          hash = node.children.each_with_index.map do |elem, index|
+            "#{elem.source} => #{index}"
+          end.join(', ')
 
-          ->(corrector) { corrector.replace(range, hash.to_s) }
+          ->(corrector) { corrector.replace(node.loc.expression, "{#{hash}}") }
         end
 
         private
