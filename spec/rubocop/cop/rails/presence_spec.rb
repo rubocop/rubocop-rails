@@ -67,7 +67,7 @@ RSpec.describe RuboCop::Cop::Rails::Presence do
 
   it_behaves_like 'offense', 'a if a.present?', 'a.presence', 1, 1
   it_behaves_like 'offense', 'a unless a.blank?', 'a.presence', 1, 1
-  it_behaves_like 'offense', <<~RUBY.chomp, <<~FIXED.chomp, 1, 7 # rubocop:disable Metrics/LineLength
+  it_behaves_like 'offense', <<~RUBY.chomp, <<~FIXED.chomp, 1, 7
     if [1, 2, 3].map { |num| num + 1 }
                 .map { |num| num + 2 }
                 .present?
