@@ -386,6 +386,12 @@ Rails/RequestReferer:
     - referer
     - referrer
 
+Rails/RescueFromExceptionsVariableName:
+  Description: 'Use consistent rescued exceptions variables naming.'
+  Enabled: true
+  VersionAdded: '2.4'
+  PreferredName: e
+
 Rails/ReversibleMigration:
   Description: 'Checks whether the change method of the migration file is reversible.'
   StyleGuide: 'https://rails.rubystyle.guide#reversible-migration'

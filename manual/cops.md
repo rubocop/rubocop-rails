@@ -47,6 +47,7 @@
 * [Rails/RefuteMethods](cops_rails.md#railsrefutemethods)
 * [Rails/RelativeDateConstant](cops_rails.md#railsrelativedateconstant)
 * [Rails/RequestReferer](cops_rails.md#railsrequestreferer)
+* [Rails/RescueFromExceptionsVariableName](cops_rails.md#railsrescuefromexceptionsvariablename)
 * [Rails/ReversibleMigration](cops_rails.md#railsreversiblemigration)
 * [Rails/SafeNavigation](cops_rails.md#railssafenavigation)
 * [Rails/SaveBang](cops_rails.md#railssavebang)

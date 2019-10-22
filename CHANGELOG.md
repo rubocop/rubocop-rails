@@ -5,6 +5,7 @@
 ### New features
 
 * [#123](https://github.com/rubocop-hq/rubocop-rails/pull/123): Add new `Rails/ApplicationController` and `Rails/ApplicationMailer` cops. ([@eugeneius][])
+* [#139](https://github.com/rubocop-hq/rubocop-rails/pull/139): Add new `Rails/RescueFromExceptionsVariableName` cop. ([@anthony-robin][])
 
 ### Bug fixes
 
