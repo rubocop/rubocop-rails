@@ -129,15 +129,11 @@ module RuboCop
         MSG = '%<action>s is not reversible.'
 
         def_node_matcher :irreversible_schema_statement_call, <<-PATTERN
-          (send nil? ${:change_table_comment :execute :remove_belongs_to} ...)
+          (send nil? ${:execute :remove_belongs_to} ...)
         PATTERN
 
         def_node_matcher :drop_table_call, <<-PATTERN
           (send nil? :drop_table ...)
-        PATTERN
-
-        def_node_matcher :change_column_default_call, <<-PATTERN
-          (send nil? :change_column_default {[(sym _) (sym _)] (splat _)} $...)
         PATTERN
 
         def_node_matcher :remove_column_call, <<-PATTERN
@@ -158,7 +154,7 @@ module RuboCop
 
           check_irreversible_schema_statement_node(node)
           check_drop_table_node(node)
-          check_change_column_default_node(node)
+          check_reversible_hash_node(node)
           check_remove_column_node(node)
           check_remove_foreign_key_node(node)
         end
@@ -190,17 +186,15 @@ module RuboCop
           end
         end
 
-        def check_change_column_default_node(node)
-          change_column_default_call(node) do |args|
-            unless all_hash_key?(args.last, :from, :to)
-              add_offense(
-                node,
-                message: format(
-                  MSG, action: 'change_column_default(without :from and :to)'
-                )
-              )
-            end
-          end
+        def check_reversible_hash_node(node)
+          return if reversible_change_table_call?(node)
+
+          add_offense(
+            node,
+            message: format(
+              MSG, action: "#{node.method_name}(without :from and :to)"
+            )
+          )
         end
 
         def check_remove_column_node(node)
@@ -253,7 +247,8 @@ module RuboCop
           case node.method_name
           when :change, :remove
             false
-          when :change_default
+          when :change_default, :change_column_default, :change_table_comment,
+               :change_column_comment
             all_hash_key?(node.arguments.last, :from, :to)
           else
             true

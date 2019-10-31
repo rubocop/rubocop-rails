@@ -126,6 +126,30 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     RUBY
   end
 
+  context 'change_table_comment' do
+    it_behaves_like 'accepts',
+                    'change_table_comment(with :from and :to)', <<-RUBY
+      change_table_comment(:posts, from: nil, to: "draft")
+    RUBY
+
+    it_behaves_like 'offense',
+                    'change_table_comment(without :from and :to)', <<-RUBY
+      change_table_comment(:suppliers, 'new')
+    RUBY
+  end
+
+  context 'change_column_comment' do
+    it_behaves_like 'accepts',
+                    'change_column_comment(with :from and :to)', <<-RUBY
+      change_column_comment(:posts, :state, from: nil, to: "draft")
+    RUBY
+
+    it_behaves_like 'offense',
+                    'change_column_comment(without :from and :to)', <<-RUBY
+      change_column_comment(:suppliers, :qualification, 'new')
+    RUBY
+  end
+
   context 'remove_column' do
     it_behaves_like 'accepts', 'remove_column(with type)', <<-RUBY
       remove_column(:suppliers, :qualification, :string)

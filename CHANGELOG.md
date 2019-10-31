@@ -13,6 +13,8 @@
 * [#131](https://github.com/rubocop-hq/rubocop-rails/pull/131): Fix an incorrect autocorrect for `Rails/Presence` when using `[]` method. ([@forresty][])
 * [#142](https://github.com/rubocop-hq/rubocop-rails/pull/142): Fix an incorrect autocorrect for `Rails/EnumHash` when using nested constants. ([@koic][])
 * [#136](https://github.com/rubocop-hq/rubocop-rails/pull/136): Fix a false positive for `Rails/ReversibleMigration` when using `change_default` with `:from` and `:to` options. ([@sinsoku][])
+* [#144](https://github.com/rubocop-hq/rubocop-rails/issues/144): Fix a false positive for `Rails/ReversibleMigration` when using change_table_comment with a `:from` and `:to` hash. ([@DNA][])
+
 
 ## 2.3.2 (2019-09-01)
 
@@ -97,3 +99,4 @@
 [@forresty]: https://github.com/forresty
 [@sinsoku]: https://github.com/sinsoku
 [@pocke]: https://github.com/pocke
+[@DNA]: https://github.com/DNA
