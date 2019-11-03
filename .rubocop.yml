@@ -30,7 +30,7 @@ Style/FormatStringToken:
   Exclude:
     - spec/**/*
 
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedHashRocketStyle:
     - key
     - table
