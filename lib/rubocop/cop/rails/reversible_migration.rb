@@ -127,9 +127,6 @@ module RuboCop
       # @see https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
       class ReversibleMigration < Cop
         MSG = '%<action>s is not reversible.'
-        IRREVERSIBLE_CHANGE_TABLE_CALLS = %i[
-          change change_default remove
-        ].freeze
 
         def_node_matcher :irreversible_schema_statement_call, <<-PATTERN
           (send nil? ${:change_table_comment :execute :remove_belongs_to} ...)
@@ -244,12 +241,23 @@ module RuboCop
         def check_change_table_offense(receiver, node)
           method_name = node.method_name
           return if receiver != node.receiver &&
-                    !IRREVERSIBLE_CHANGE_TABLE_CALLS.include?(method_name)
+                    reversible_change_table_call?(node)
 
           add_offense(
             node,
             message: format(MSG, action: "change_table(with #{method_name})")
           )
+        end
+
+        def reversible_change_table_call?(node)
+          case node.method_name
+          when :change, :remove
+            false
+          when :change_default
+            all_hash_key?(node.arguments.last, :from, :to)
+          else
+            true
+          end
         end
 
         def within_change_method?(node)

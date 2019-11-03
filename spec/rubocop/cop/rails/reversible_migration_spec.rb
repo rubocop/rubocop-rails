@@ -165,6 +165,13 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
       end
     RUBY
 
+    it_behaves_like 'accepts',
+                    'change_table(with reversible change_default)', <<-RUBY
+      change_table :users do |t|
+        t.change_default :authorized, from: nil, to: 1
+      end
+    RUBY
+
     it_behaves_like 'offense', 'change_table(with change_default)', <<-RUBY
       change_table :users do |t|
         t.change_default :authorized, 1
