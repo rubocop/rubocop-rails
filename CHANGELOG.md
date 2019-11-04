@@ -5,6 +5,7 @@
 ### New features
 
 * [#123](https://github.com/rubocop-hq/rubocop-rails/pull/123): Add new `Rails/ApplicationController` and `Rails/ApplicationMailer` cops. ([@eugeneius][])
+* [#130](https://github.com/rubocop-hq/rubocop-rails/pull/130): Add new `Rails/RakeEnvironment` cop. ([@pocke][])
 
 ### Bug fixes
 
@@ -95,3 +96,4 @@
 [@jas14]: https://github.com/jas14
 [@forresty]: https://github.com/forresty
 [@sinsoku]: https://github.com/sinsoku
+[@pocke]: https://github.com/pocke
