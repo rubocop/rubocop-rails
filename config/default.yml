@@ -288,6 +288,13 @@ Rails/LinkToBlank:
   Enabled: true
   VersionAdded: '0.62'
 
+Rails/NewGlobalModel:
+  Description: 'Disallows addition of new global models to `app/models`. Prefer Rails Engines or namespaces.'
+  Enabled: false
+  VersionAdded: '0.77'
+  GlobalModelsPath: 'app/models/'
+  AllowNamespacedGlobalModels: true
+
 Rails/NotNullColumn:
   Description: 'Do not add a NOT NULL column without a default value'
   Enabled: true

@@ -34,6 +34,7 @@
 * [Rails/InverseOf](cops_rails.md#railsinverseof)
 * [Rails/LexicallyScopedActionFilter](cops_rails.md#railslexicallyscopedactionfilter)
 * [Rails/LinkToBlank](cops_rails.md#railslinktoblank)
+* [Rails/NewGlobalModel](cops_rails.md#railsnewglobalmodel)
 * [Rails/NotNullColumn](cops_rails.md#railsnotnullcolumn)
 * [Rails/Output](cops_rails.md#railsoutput)
 * [Rails/OutputSafety](cops_rails.md#railsoutputsafety)

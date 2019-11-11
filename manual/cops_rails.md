@@ -1407,6 +1407,79 @@ link_to 'Click here', url, target: '_blank', rel: 'noreferrer'
 * [https://html.spec.whatwg.org/multipage/links.html#link-type-noopener](https://html.spec.whatwg.org/multipage/links.html#link-type-noopener)
 * [https://html.spec.whatwg.org/multipage/links.html#link-type-noreferrer](https://html.spec.whatwg.org/multipage/links.html#link-type-noreferrer)
 
+## Rails/NewGlobalModel
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Disabled | Yes | No | 0.77 | -
+
+This cop disallows adding new models to the `app/models` directory.
+
+The goal is to encourage developers to put new models inside Rails
+Engines (or at least namespaces), where they can be more modularly
+isolated and ownership is clear.
+
+Use RuboCop's standard `Exclude` file list parameter to exclude
+existing global model files from counting as violations for this cop.
+
+### Examples
+
+#### AllowNamespacedGlobalModels: true (default)
+
+```ruby
+# When `AllowNamespacedGlobalModels` is true, the cop only forbids
+# additions at the top-level directory.
+
+# bad
+# path: app/models/my_new_global_model.rb
+class MyNewGlobalModel < ApplicationRecord
+  # ...
+end
+
+# good
+# path: app/models/my_namespace/my_new_global_model.rb
+class MyNamespace::MyNewGlobalModel < ApplicationRecord
+  # ...
+end
+
+# good
+# path: engines/my_engine/app/models/my_engine/my_new_engine_model.rb
+class MyEngine::MyNewEngineModel < ApplicationRecord
+  # ...
+end
+```
+#### AllowNamespacedGlobalModels: false
+
+```ruby
+# When `AllowNamespacedGlobalModels` is false, the cop forbids all
+# new models in this directory and its descendants.
+
+# bad
+# path: app/models/my_new_global_model.rb
+class MyNewGlobalModel < ApplicationRecord
+  # ...
+end
+
+# bad
+# path: app/models/my_namespace/my_new_global_model.rb
+class MyNamespace::MyNewGlobalModel < ApplicationRecord
+  # ...
+end
+
+# good
+# path: engines/my_engine/app/models/my_engine/my_new_engine_model.rb
+class MyEngine::MyNewEngineModel < ApplicationRecord
+  # ...
+end
+```
+
+### Configurable attributes
+
+Name | Default value | Configurable values
+--- | --- | ---
+GlobalModelsPath | `app/models/` | String
+AllowNamespacedGlobalModels | `true` | Boolean
+
 ## Rails/NotNullColumn
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged

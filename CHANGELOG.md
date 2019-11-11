@@ -7,6 +7,7 @@
 * [#123](https://github.com/rubocop-hq/rubocop-rails/pull/123): Add new `Rails/ApplicationController` and `Rails/ApplicationMailer` cops. ([@eugeneius][])
 * [#130](https://github.com/rubocop-hq/rubocop-rails/pull/130): Add new `Rails/RakeEnvironment` cop. ([@pocke][])
 * [#132](https://github.com/rubocop-hq/rubocop-rails/pull/132): Add new `Rails/SafeNavigationWithBlank` cop. ([@gyfis][])
+* Add new `Rails/NewGlobalModel` cop. ([@maxh][])
 
 ### Bug fixes
 
@@ -101,3 +102,4 @@
 [@pocke]: https://github.com/pocke
 [@gyfis]: https:/github.com/gyfis
 [@DNA]: https://github.com/DNA
+[@maxh]: https://github.com/maxh
