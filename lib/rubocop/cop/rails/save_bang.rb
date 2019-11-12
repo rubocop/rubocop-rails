@@ -255,7 +255,7 @@ module RuboCop
             if node.variable?
               node.node_parts.first == receiver_part.to_sym
             elsif node.send_type?
-              node.method_name == receiver_part.to_sym
+              node.method?(receiver_part.to_sym)
             elsif node.const_type?
               const_matches?(node.const_name, receiver_part)
             end

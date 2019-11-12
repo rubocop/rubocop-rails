@@ -36,7 +36,7 @@ module RuboCop
           '`allow_nil: false` is redundant when `allow_blank` is true.'
 
         def on_send(node)
-          return unless node.method_name == :validates
+          return unless node.method?(:validates)
 
           allow_nil, allow_blank = find_allow_nil_and_allow_blank(node)
           return unless allow_nil && allow_blank

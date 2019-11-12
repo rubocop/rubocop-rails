@@ -85,7 +85,7 @@ module RuboCop
 
         def check_deprecated_methods(node)
           DEPRECATED_METHODS.each do |relevant:, deprecated:|
-            next unless node.method_name == deprecated.to_sym
+            next unless node.method?(deprecated.to_sym)
 
             add_offense(node, location: :selector,
                               message: format(DEPRECATED_MSG,

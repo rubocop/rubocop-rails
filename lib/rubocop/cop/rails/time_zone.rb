@@ -188,7 +188,7 @@ module RuboCop
           selector_node = node
 
           while node&.send_type?
-            break if node.method_name == :localtime
+            break if node.method?(:localtime)
 
             node = node.parent
           end
