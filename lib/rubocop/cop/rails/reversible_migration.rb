@@ -128,23 +128,23 @@ module RuboCop
       class ReversibleMigration < Cop
         MSG = '%<action>s is not reversible.'
 
-        def_node_matcher :irreversible_schema_statement_call, <<-PATTERN
+        def_node_matcher :irreversible_schema_statement_call, <<~PATTERN
           (send nil? ${:execute :remove_belongs_to} ...)
         PATTERN
 
-        def_node_matcher :drop_table_call, <<-PATTERN
+        def_node_matcher :drop_table_call, <<~PATTERN
           (send nil? :drop_table ...)
         PATTERN
 
-        def_node_matcher :remove_column_call, <<-PATTERN
+        def_node_matcher :remove_column_call, <<~PATTERN
           (send nil? :remove_column $...)
         PATTERN
 
-        def_node_matcher :remove_foreign_key_call, <<-PATTERN
+        def_node_matcher :remove_foreign_key_call, <<~PATTERN
           (send nil? :remove_foreign_key _ $_)
         PATTERN
 
-        def_node_matcher :change_table_call, <<-PATTERN
+        def_node_matcher :change_table_call, <<~PATTERN
           (send nil? :change_table $_ ...)
         PATTERN
 

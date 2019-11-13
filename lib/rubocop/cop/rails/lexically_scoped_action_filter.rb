@@ -101,7 +101,7 @@ module RuboCop
           :skip_action_callback
         ].freeze
 
-        def_node_matcher :only_or_except_filter_methods, <<-PATTERN
+        def_node_matcher :only_or_except_filter_methods, <<~PATTERN
           (send
             nil?
             {#{FILTERS.join(' ')}}

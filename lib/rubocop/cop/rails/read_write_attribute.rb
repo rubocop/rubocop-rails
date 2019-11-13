@@ -26,7 +26,7 @@ module RuboCop
       class ReadWriteAttribute < Cop
         MSG = 'Prefer `%<prefer>s` over `%<current>s`.'
 
-        def_node_matcher :read_write_attribute?, <<-PATTERN
+        def_node_matcher :read_write_attribute?, <<~PATTERN
           {
             (send nil? :read_attribute _)
             (send nil? :write_attribute _ _)

@@ -50,7 +50,7 @@ module RuboCop
         MSG_UNLESS_BLANK = 'Use `if %<prefer>s` instead of ' \
                            '`%<current>s`.'
 
-        def_node_matcher :exists_and_not_empty?, <<-PATTERN
+        def_node_matcher :exists_and_not_empty?, <<~PATTERN
           (and
               {
                 (send (send $_ :nil?) :!)
@@ -66,7 +66,7 @@ module RuboCop
 
         def_node_matcher :not_blank?, '(send (send $_ :blank?) :!)'
 
-        def_node_matcher :unless_blank?, <<-PATTERN
+        def_node_matcher :unless_blank?, <<~PATTERN
           (:if $(send $_ :blank?) {nil? (...)} ...)
         PATTERN
 

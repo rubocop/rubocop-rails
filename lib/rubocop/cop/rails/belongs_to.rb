@@ -65,7 +65,7 @@ module RuboCop
           'In most configurations, this is the default and you can omit ' \
           'this option altogether'
 
-        def_node_matcher :match_belongs_to_with_options, <<-PATTERN
+        def_node_matcher :match_belongs_to_with_options, <<~PATTERN
           (send _ :belongs_to _
             (hash <$(pair (sym :required) ${true false}) ...>)
           )

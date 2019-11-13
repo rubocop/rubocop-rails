@@ -31,7 +31,7 @@ module RuboCop
           (send #rails_env? $#unknown_env_predicate?)
         PATTERN
 
-        def_node_matcher :unknown_environment_equal?, <<-PATTERN
+        def_node_matcher :unknown_environment_equal?, <<~PATTERN
           {
             (send #rails_env? {:== :===} $(str #unknown_env_name?))
             (send $(str #unknown_env_name?) {:== :===} #rails_env?)

@@ -49,7 +49,7 @@ module RuboCop
           :skip_action_callback
         ].freeze
 
-        def_node_matcher :filter_options, <<-PATTERN
+        def_node_matcher :filter_options, <<~PATTERN
           (send
             nil?
             {#{FILTERS.join(' ')}}

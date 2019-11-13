@@ -63,7 +63,7 @@ module RuboCop
         # that have a single method call on the left hand side
         # (`bar || foo.empty?`) will blow up when checking
         # `(send (:nil) :== $_)`.
-        def_node_matcher :nil_or_empty?, <<-PATTERN
+        def_node_matcher :nil_or_empty?, <<~PATTERN
           (or
               {
                 (send $_ :!)
@@ -82,7 +82,7 @@ module RuboCop
 
         def_node_matcher :defining_blank?, '(def :blank? (args) ...)'
 
-        def_node_matcher :unless_present?, <<-PATTERN
+        def_node_matcher :unless_present?, <<~PATTERN
           (:if $(send $_ :present?) {nil? (...)} ...)
         PATTERN
 

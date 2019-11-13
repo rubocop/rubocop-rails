@@ -34,14 +34,14 @@ module RuboCop
       class HttpStatus < Cop
         include ConfigurableEnforcedStyle
 
-        def_node_matcher :http_status, <<-PATTERN
+        def_node_matcher :http_status, <<~PATTERN
           {
             (send nil? {:render :redirect_to} _ $hash)
             (send nil? {:render :redirect_to} $hash)
           }
         PATTERN
 
-        def_node_matcher :status_code, <<-PATTERN
+        def_node_matcher :status_code, <<~PATTERN
           (hash <(pair (sym :status) ${int sym}) ...>)
         PATTERN
 

@@ -56,7 +56,7 @@ RSpec.describe RuboCop::Config do
 
           it "uses the single digit Rails version in #{file_name}" do
             content =
-              <<-HEREDOC
+              <<~LOCKFILE
                 GEM
                   remote: https://rubygems.org/
                   specs:
@@ -83,14 +83,14 @@ RSpec.describe RuboCop::Config do
 
                 BUNDLED WITH
                   1.16.1
-              HEREDOC
+              LOCKFILE
             create_file(lock_file_path, content)
             expect(configuration.target_rails_version).to eq 4.1
           end
 
           it "uses the multi digit Rails version in #{file_name}" do
             content =
-              <<-HEREDOC
+              <<~LOCKFILE
                 GEM
                   remote: https://rubygems.org/
                   specs:
@@ -117,14 +117,14 @@ RSpec.describe RuboCop::Config do
 
                 BUNDLED WITH
                   1.16.1
-              HEREDOC
+              LOCKFILE
             create_file(lock_file_path, content)
             expect(configuration.target_rails_version).to eq 400.33
           end
 
           it "does not use the DEPENDENCIES Rails version in #{file_name}" do
             content =
-              <<-HEREDOC
+              <<~LOCKFILE
                 GEM
                   remote: https://rubygems.org/
                   specs:
@@ -141,14 +141,14 @@ RSpec.describe RuboCop::Config do
 
                 BUNDLED WITH
                   1.16.1
-              HEREDOC
+              LOCKFILE
             create_file(lock_file_path, content)
             expect(configuration.target_rails_version).not_to eq 900.88
           end
 
           it "uses the default Rails when Rails is not in #{file_name}" do
             content =
-              <<-HEREDOC
+              <<~LOCKFILE
                 GEM
                   remote: https://rubygems.org/
                   specs:
@@ -166,7 +166,7 @@ RSpec.describe RuboCop::Config do
 
                 BUNDLED WITH
                   1.16.1
-              HEREDOC
+              LOCKFILE
             create_file(lock_file_path, content)
             default = RuboCop::Config::DEFAULT_RAILS_VERSION
             expect(configuration.target_rails_version).to eq default

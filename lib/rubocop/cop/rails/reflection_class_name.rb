@@ -16,13 +16,13 @@ module RuboCop
       class ReflectionClassName < Cop
         MSG = 'Use a string value for `class_name`.'
 
-        def_node_matcher :association_with_reflection, <<-PATTERN
+        def_node_matcher :association_with_reflection, <<~PATTERN
           (send nil? {:has_many :has_one :belongs_to} _
             (hash <$#reflection_class_name ...>)
           )
         PATTERN
 
-        def_node_matcher :reflection_class_name, <<-PATTERN
+        def_node_matcher :reflection_class_name, <<~PATTERN
           (pair (sym :class_name) [!dstr !str !sym])
         PATTERN
 
