@@ -295,6 +295,13 @@ Rails/NotNullColumn:
   Include:
     - db/migrate/*.rb
 
+Rails/NoVariablePrecisionDecimal:
+  Description: 'Do not define a Decimal column without explicit scale and precision parameters.'
+  Enabled: true
+  VersionAdded: '2.3.3'
+  Include:
+    - db/migrate/*.rb
+
 Rails/Output:
   Description: 'Checks for calls to puts, print, etc.'
   Enabled: true
