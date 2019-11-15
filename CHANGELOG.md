@@ -16,6 +16,10 @@
 * [#136](https://github.com/rubocop-hq/rubocop-rails/pull/136): Fix a false positive for `Rails/ReversibleMigration` when using `change_default` with `:from` and `:to` options. ([@sinsoku][])
 * [#144](https://github.com/rubocop-hq/rubocop-rails/issues/144): Fix a false positive for `Rails/ReversibleMigration` when using `change_table_comment` or `change_column_comment` with a `:from` and `:to` hash. ([@DNA][])
 
+### Changes
+
+* [#156](https://github.com/rubocop-hq/rubocop-rails/pull/156): Make `Rails/UnknownEnv` cop aware of `Rails.env == 'unknown_env'`. ([@pocke][])
+
 ## 2.3.2 (2019-09-01)
 
 ### Bug fixes

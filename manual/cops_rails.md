@@ -2502,9 +2502,11 @@ exist.
 ```ruby
 # bad
 Rails.env.proudction?
+Rails.env == 'proudction'
 
 # good
 Rails.env.production?
+Rails.env == 'production'
 ```
 
 ### Configurable attributes
