@@ -46,7 +46,7 @@ module RuboCop
           first_arg = node.arguments[0]
           case first_arg&.type
           when :sym, :str
-            return first_arg.value.to_sym
+            first_arg.value.to_sym
           when :hash
             return nil if first_arg.children.size != 1
 
