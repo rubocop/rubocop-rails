@@ -686,6 +686,63 @@ Whitelist | `find_by_sql` | Array
 
 * [https://rails.rubystyle.guide#find_by](https://rails.rubystyle.guide#find_by)
 
+## Rails/EngineGlobalModelAccess
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Disabled | Yes | No | 2.4 | -
+
+This cop checks for engines reaching directly into app/ models.
+
+With an ActiveRecord object, engine code can perform arbitrary
+reads and arbitrary writes to models located in the main `app/`
+directory. This cop helps isolate Rails Engine code to ensure
+that modular boundaries are respected.
+
+Checks for both access via `MyGlobalModel.foo` and associations.
+
+### Examples
+
+```ruby
+# bad
+
+class MyEngine::MyService
+  m = SomeGlobalModel.find(123)
+  m.any_random_attribute = "whatever i want"
+  m.save
+end
+
+# good
+
+class MyEngine::MyService
+  ApiServiceForGlobalModels.perform_a_supported_operation("foo")
+end
+```
+```ruby
+# bad
+
+class MyEngine::MyModel < ApplicationModel
+  has_one :some_global_model, class_name: "SomeGlobalModel"
+end
+
+# good
+
+class MyEngine::MyModel < ApplicationModel
+  # No direct association to global models.
+end
+```
+
+### Configurable attributes
+
+Name | Default value | Configurable values
+--- | --- | ---
+AutoCorrect | `false` | Boolean
+EnginesPath | `engines/` | String
+GlobalModelsPath | `app/models/` | String
+DisabledEngines | `[]` | Array
+AllowedGlobalModels | `[]` | Array
+Include | `**/*.rb` | Array
+
 ## Rails/EnumHash
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged

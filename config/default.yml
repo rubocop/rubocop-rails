@@ -155,6 +155,18 @@ Rails/DynamicFindBy:
   Whitelist:
     - find_by_sql
 
+Rails/EngineGlobalModelAccess:
+  Description: 'Do not directly access global models from within Rails Engines.'
+  Enabled: false
+  VersionAdded: '2.4'
+  AutoCorrect: false
+  EnginesPath: engines/
+  GlobalModelsPath: app/models/
+  DisabledEngines: []
+  AllowedGlobalModels: []
+  Include:
+    - '**/*.rb'
+
 Rails/EnumHash:
   Description: 'Prefer hash syntax over array syntax when defining enums.'
   StyleGuide: 'https://rails.rubystyle.guide#enums'
