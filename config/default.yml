@@ -155,6 +155,13 @@ Rails/DynamicFindBy:
   Whitelist:
     - find_by_sql
 
+Rails/EngineApiViolation:
+  Description: 'Use Rails Engine APIs instead of arbitrary code access.'
+  Enabled: false
+  VersionAdded: '0.77'
+  EnginesPath: 'engines/'
+  UnprotectedEngines: []
+
 Rails/EnumHash:
   Description: 'Prefer hash syntax over array syntax when defining enums.'
   StyleGuide: 'https://rails.rubystyle.guide#enums'

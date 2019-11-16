@@ -79,6 +79,7 @@ Lint/BooleanSymbol:
 
 Metrics/BlockLength:
   Exclude:
+    - 'rubocop-rails.gemspec'
     - 'Rakefile'
     - '**/*.rake'
     - 'spec/**/*.rb'

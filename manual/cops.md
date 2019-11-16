@@ -18,6 +18,7 @@
 * [Rails/Delegate](cops_rails.md#railsdelegate)
 * [Rails/DelegateAllowBlank](cops_rails.md#railsdelegateallowblank)
 * [Rails/DynamicFindBy](cops_rails.md#railsdynamicfindby)
+* [Rails/EngineApiViolation](cops_rails.md#railsengineapiviolation)
 * [Rails/EnumHash](cops_rails.md#railsenumhash)
 * [Rails/EnumUniqueness](cops_rails.md#railsenumuniqueness)
 * [Rails/EnvironmentComparison](cops_rails.md#railsenvironmentcomparison)

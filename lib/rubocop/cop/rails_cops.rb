@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'mixin/engine_api'
 require_relative 'mixin/target_rails_version'
 
 require_relative 'rails/action_filter'
@@ -19,6 +20,7 @@ require_relative 'rails/date'
 require_relative 'rails/delegate'
 require_relative 'rails/delegate_allow_blank'
 require_relative 'rails/dynamic_find_by'
+require_relative 'rails/engine_api_violation'
 require_relative 'rails/enum_hash'
 require_relative 'rails/enum_uniqueness'
 require_relative 'rails/environment_comparison'

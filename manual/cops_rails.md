@@ -686,6 +686,124 @@ Whitelist | `find_by_sql` | Array
 
 * [https://rails.rubystyle.guide#find_by](https://rails.rubystyle.guide#find_by)
 
+## Rails/EngineApiViolation
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Disabled | Yes | No | 0.77 | -
+
+This cop prevents code outside of a Rails Engine from directly
+accessing the engine without going through an API. The goal is
+to improve modularity and enforce separation of concerns.
+
+# Defining an engine's API
+
+The cop looks inside an engine's `api/` directory to determine its
+API. API surface can be defined in two ways:
+
+- Add source files to `api/`. Code defined in these modules
+  will be accessible outside your engine. For example, adding
+  `api/foo_service.rb` will allow code outside your engine to
+  invoke eg `MyEngine::Api::FooService.bar(baz)`.
+- Create a `_whitelist.rb` file in `api/`. Modules listed in
+  this file are accessible to code outside the engine. The file
+  must have this name and a particular format (see below).
+
+Both of these approaches can be used concurrently in the same engine.
+Due to Rails Engine directory conventions, the API directory should
+generally be located at eg `engines/my_engine/app/api/my_engine/api/`.
+
+# Usage
+
+This cop can be useful when splitting apart a legacy codebase.
+In particular, you might move some code into an engine without
+enabling the cop, and then enable the cop to see where the engine
+boundary is crossed. For each violation, you can either:
+
+- Expose new API surface from your engine
+- Move the violating file into the engine
+- Add the violating file to `_legacy_dependents.rb` (see below)
+
+The cop detects cross-engine associations as well as cross-engine
+module access.
+
+# Isolation guarantee
+
+This cop can be easily circumvented with metaprogramming, so it cannot
+strongly guarantee the isolation of engines. But it can serve as
+a useful guardrail during development, especially during incremental
+migrations.
+
+Consider using plain-old Ruby objects instead of ActiveRecords as the
+exchange value between engines. If one engine gets a reference to an
+ActiveRecord object for a model in another engine, it will be able
+to perform arbitrary reads and writes via associations and `.save`.
+
+# Example `api/_legacy_dependents.rb` file
+
+This file contains a burn-down list of source code files that still
+do direct access to an engine "under the hood", without using the
+API. It must have this structure.
+
+```rb
+module MyEngine::Api::LegacyDependents
+  FILES_WITH_DIRECT_ACCESS = [
+    "app/models/some_old_legacy_model.rb",
+    "engines/other_engine/app/services/other_engine/other_service.rb",
+  ]
+end
+```
+
+# Example `api/_whitelist.rb` file
+
+This file contains a list of modules that are allowed to be accessed
+by code outside the engine. It must have this structure.
+
+```rb
+module MyEngine::Api::Whitelist
+  PUBLIC_MODULES = [
+    MyEngine::BarService,
+    MyEngine::BazService,
+    MyEngine::BatConstants,
+  ]
+end
+```
+
+### Examples
+
+```ruby
+# bad
+class MyService
+  m = ReallyImportantSharedEngine::InternalModel.find(123)
+  m.destroy
+end
+
+# good
+class MyService
+  ReallyImportantSharedEngine::Api::SomeService.execute(123)
+end
+```
+```ruby
+# bad
+
+class MyEngine::MyModel < ApplicationModel
+  has_one :foo_model, class_name: "SharedEngine::FooModel"
+end
+
+# good
+
+class MyEngine::MyModel < ApplicationModel
+  # (No direct associations to models in API-protected engines.)
+end
+```
+
+### Configurable attributes
+
+Name | Default value | Configurable values
+--- | --- | ---
+EnginesPath | `engines/` | String
+UnprotectedEngines | `[]` | Array
+
 ## Rails/EnumHash
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
