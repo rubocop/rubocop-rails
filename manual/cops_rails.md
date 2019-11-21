@@ -812,7 +812,7 @@ Exclude | `lib/**/*.rake` | Array
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | No | 0.47 | 0.57
+Enabled | Yes | No | 0.47 | 2.4
 
 This cop is used to identify usages of file path joining process
 to use `Rails.root.join` clause. It is used to add uniformity when
@@ -820,7 +820,7 @@ joining paths.
 
 ### Examples
 
-#### EnforcedStyle: arguments (default)
+#### EnforcedStyle: arguments
 
 ```ruby
 # bad
@@ -831,7 +831,7 @@ File.join(Rails.root, 'app/models/goober')
 # good
 Rails.root.join('app', 'models', 'goober')
 ```
-#### EnforcedStyle: slashes
+#### EnforcedStyle: slashes (default)
 
 ```ruby
 # bad
@@ -847,7 +847,7 @@ Rails.root.join('app/models/goober')
 
 Name | Default value | Configurable values
 --- | --- | ---
-EnforcedStyle | `arguments` | `slashes`, `arguments`
+EnforcedStyle | `slashes` | `slashes`, `arguments`
 
 ## Rails/FindBy
 
