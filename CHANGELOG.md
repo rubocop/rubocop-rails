@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.4.0 (2019-11-27)
+
 ### New features
 
 * [#123](https://github.com/rubocop-hq/rubocop-rails/pull/123): Add new `Rails/ApplicationController` and `Rails/ApplicationMailer` cops. ([@eugeneius][])
