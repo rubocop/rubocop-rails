@@ -1407,6 +1407,21 @@ link_to 'Click here', url, target: '_blank', rel: 'noreferrer'
 * [https://html.spec.whatwg.org/multipage/links.html#link-type-noopener](https://html.spec.whatwg.org/multipage/links.html#link-type-noopener)
 * [https://html.spec.whatwg.org/multipage/links.html#link-type-noreferrer](https://html.spec.whatwg.org/multipage/links.html#link-type-noreferrer)
 
+## Rails/NoVariablePrecisionDecimal
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Enabled | Yes | No | 2.3.3 | -
+
+# good
+  add_column :fees, :amount, :decimal, precision: 6, scale: 4
+
+### Configurable attributes
+
+Name | Default value | Configurable values
+--- | --- | ---
+Include | `db/migrate/*.rb` | Array
+
 ## Rails/NotNullColumn
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
