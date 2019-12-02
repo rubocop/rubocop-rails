@@ -17,11 +17,11 @@ module RuboCop
         MSG = 'Do not write to stdout. ' \
               "Use Rails's logger if you want to log."
 
-        def_node_matcher :output?, <<-PATTERN
+        def_node_matcher :output?, <<~PATTERN
           (send nil? {:ap :p :pp :pretty_print :print :puts} ...)
         PATTERN
 
-        def_node_matcher :io_output?, <<-PATTERN
+        def_node_matcher :io_output?, <<~PATTERN
           (send
             {
               (gvar #match_gvar?)

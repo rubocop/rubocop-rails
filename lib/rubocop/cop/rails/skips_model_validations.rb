@@ -49,7 +49,7 @@ module RuboCop
                                     update_columns
                                     update_counters].freeze
 
-        def_node_matcher :good_touch?, <<-PATTERN
+        def_node_matcher :good_touch?, <<~PATTERN
           (send (const nil? :FileUtils) :touch ...)
         PATTERN
 

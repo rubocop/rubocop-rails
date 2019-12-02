@@ -23,27 +23,27 @@ module RuboCop
       class HasManyOrHasOneDependent < Cop
         MSG = 'Specify a `:dependent` option.'
 
-        def_node_search :active_resource_class?, <<-PATTERN
+        def_node_search :active_resource_class?, <<~PATTERN
           (const (const nil? :ActiveResource) :Base)
         PATTERN
 
-        def_node_matcher :association_without_options?, <<-PATTERN
+        def_node_matcher :association_without_options?, <<~PATTERN
           (send nil? {:has_many :has_one} _)
         PATTERN
 
-        def_node_matcher :association_with_options?, <<-PATTERN
+        def_node_matcher :association_with_options?, <<~PATTERN
           (send nil? {:has_many :has_one} _ (hash $...))
         PATTERN
 
-        def_node_matcher :dependent_option?, <<-PATTERN
+        def_node_matcher :dependent_option?, <<~PATTERN
           (pair (sym :dependent) !nil)
         PATTERN
 
-        def_node_matcher :present_option?, <<-PATTERN
+        def_node_matcher :present_option?, <<~PATTERN
           (pair (sym :through) !nil)
         PATTERN
 
-        def_node_matcher :with_options_block, <<-PATTERN
+        def_node_matcher :with_options_block, <<~PATTERN
           (block
             (send nil? :with_options
               (hash $...))

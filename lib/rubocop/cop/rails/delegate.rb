@@ -55,7 +55,7 @@ module RuboCop
       class Delegate < Cop
         MSG = 'Use `delegate` to define delegations.'
 
-        def_node_matcher :delegate?, <<-PATTERN
+        def_node_matcher :delegate?, <<~PATTERN
           (def _method_name _args
             (send (send nil? _) _ ...))
         PATTERN

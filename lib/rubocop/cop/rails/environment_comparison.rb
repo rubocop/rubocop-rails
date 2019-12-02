@@ -21,7 +21,7 @@ module RuboCop
         SYM_MSG = 'Do not compare `Rails.env` with a symbol, it will always ' \
           'evaluate to `false`.'
 
-        def_node_matcher :environment_str_comparison?, <<-PATTERN
+        def_node_matcher :environment_str_comparison?, <<~PATTERN
           (send
             (send (const {nil? cbase} :Rails) :env)
             :==
@@ -29,7 +29,7 @@ module RuboCop
           )
         PATTERN
 
-        def_node_matcher :environment_sym_comparison?, <<-PATTERN
+        def_node_matcher :environment_sym_comparison?, <<~PATTERN
           (send
             (send (const {nil? cbase} :Rails) :env)
             :==
@@ -59,7 +59,7 @@ module RuboCop
           "#{node.receiver.source}.#{content(node.first_argument)}?"
         end
 
-        def_node_matcher :content, <<-PATTERN
+        def_node_matcher :content, <<~PATTERN
           ({str sym} $_)
         PATTERN
       end

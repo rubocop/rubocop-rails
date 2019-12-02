@@ -4,7 +4,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
   subject(:cop) { described_class.new(config) }
 
   let(:source) do
-    <<-RUBY
+    <<~RUBY
       class ExampleMigration < ActiveRecord::Migration
         def change
           #{code}
@@ -31,22 +31,22 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     end
   end
 
-  it_behaves_like 'accepts', 'create_table', <<-RUBY
+  it_behaves_like 'accepts', 'create_table', <<~RUBY
     create_table :users do |t|
       t.string :name
     end
   RUBY
 
-  it_behaves_like 'offense', 'execute', <<-RUBY
+  it_behaves_like 'offense', 'execute', <<~RUBY
     execute "ALTER TABLE `pages_linked_pages` ADD UNIQUE `page_id_linked_page_id` (`page_id`,`linked_page_id`)"
   RUBY
 
-  it_behaves_like 'accepts', 'up_only', <<-RUBY
+  it_behaves_like 'accepts', 'up_only', <<~RUBY
     up_only { execute "UPDATE posts SET published = 'true'" }
   RUBY
 
   context 'within block' do
-    it_behaves_like 'accepts', 'create_table', <<-RUBY
+    it_behaves_like 'accepts', 'create_table', <<~RUBY
       [:users, :articles].each do |table|
         create_table table do |t|
           t.string :name
@@ -54,7 +54,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
       end
     RUBY
 
-    it_behaves_like 'offense', 'execute', <<-RUBY
+    it_behaves_like 'offense', 'execute', <<~RUBY
       [:pages_linked_pages, :pages_unlinked_pages].each do |table|
         execute "ALTER TABLE `table` ADD UNIQUE `page_id_linked_page_id` (`page_id`,`linked_page_id`)"
       end
@@ -62,7 +62,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
   end
 
   context 'when using variable assignment' do
-    it_behaves_like 'accepts', 'create_table', <<-RUBY
+    it_behaves_like 'accepts', 'create_table', <<~RUBY
       def change
         change_table :invoices do |t|
           decimals_params = {precision: 10, scale: 2}
@@ -74,7 +74,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
   end
 
   context 'when block argument is empty' do
-    it_behaves_like 'accepts', 'create_table', <<-RUBY
+    it_behaves_like 'accepts', 'create_table', <<~RUBY
       def change
         change_table :invoices do |t|
         end
@@ -83,7 +83,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
   end
 
   context 'within #reversible' do
-    it_behaves_like 'accepts', 'execute', <<-RUBY
+    it_behaves_like 'accepts', 'execute', <<~RUBY
       reversible do |dir|
         dir.up do
           execute "ALTER TABLE `pages_linked_pages` ADD UNIQUE `page_id_linked_page_id` (`page_id`,`linked_page_id`)"
@@ -97,13 +97,13 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
   end
 
   context 'drop_table' do
-    it_behaves_like 'accepts', 'drop_table(with block)', <<-RUBY
+    it_behaves_like 'accepts', 'drop_table(with block)', <<~RUBY
       drop_table :users do |t|
         t.string :name
       end
     RUBY
 
-    it_behaves_like 'offense', 'drop_table(without block)', <<-RUBY
+    it_behaves_like 'offense', 'drop_table(without block)', <<~RUBY
       drop_table :users
     RUBY
   end
@@ -151,31 +151,31 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
   end
 
   context 'remove_column' do
-    it_behaves_like 'accepts', 'remove_column(with type)', <<-RUBY
+    it_behaves_like 'accepts', 'remove_column(with type)', <<~RUBY
       remove_column(:suppliers, :qualification, :string)
     RUBY
 
-    it_behaves_like 'accepts', 'remove_column(with type and options)', <<-RUBY
+    it_behaves_like 'accepts', 'remove_column(with type and options)', <<~RUBY
       remove_column(:suppliers, :qualification, :string, null: false)
     RUBY
 
-    it_behaves_like 'offense', 'remove_column(without type)', <<-RUBY
+    it_behaves_like 'offense', 'remove_column(without type)', <<~RUBY
       remove_column(:suppliers, :qualification)
     RUBY
   end
 
   context 'remove_foreign_key' do
-    it_behaves_like 'accepts', 'remove_foreign_key(with table)', <<-RUBY
+    it_behaves_like 'accepts', 'remove_foreign_key(with table)', <<~RUBY
       remove_foreign_key :accounts, :branches
     RUBY
 
-    it_behaves_like 'offense', 'remove_foreign_key(without table)', <<-RUBY
+    it_behaves_like 'offense', 'remove_foreign_key(without table)', <<~RUBY
       remove_foreign_key :accounts, column: :owner_id
     RUBY
   end
 
   context 'change_table' do
-    it_behaves_like 'accepts', 'change_table(with reversible calls)', <<-RUBY
+    it_behaves_like 'accepts', 'change_table(with reversible calls)', <<~RUBY
       change_table :users do |t|
         t.column :name, :string
         t.text :description
@@ -183,7 +183,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
       end
     RUBY
 
-    it_behaves_like 'offense', 'change_table(with change)', <<-RUBY
+    it_behaves_like 'offense', 'change_table(with change)', <<~RUBY
       change_table :users do |t|
         t.change :description, :text
       end
@@ -196,13 +196,13 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
       end
     RUBY
 
-    it_behaves_like 'offense', 'change_table(with change_default)', <<-RUBY
+    it_behaves_like 'offense', 'change_table(with change_default)', <<~RUBY
       change_table :users do |t|
         t.change_default :authorized, 1
       end
     RUBY
 
-    it_behaves_like 'offense', 'change_table(with remove)', <<-RUBY
+    it_behaves_like 'offense', 'change_table(with remove)', <<~RUBY
       change_table :users do |t|
         t.remove :qualification
       end

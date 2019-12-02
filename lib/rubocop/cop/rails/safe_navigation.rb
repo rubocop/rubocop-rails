@@ -41,7 +41,7 @@ module RuboCop
 
         MSG = 'Use safe navigation (`&.`) instead of `%<try>s`.'
 
-        def_node_matcher :try_call, <<-PATTERN
+        def_node_matcher :try_call, <<~PATTERN
           (send !nil? ${:try :try!} $_ ...)
         PATTERN
 

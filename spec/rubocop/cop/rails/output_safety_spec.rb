@@ -85,14 +85,14 @@ RSpec.describe RuboCop::Cop::Rails::OutputSafety do
 
   context 'when using `#raw`' do
     it 'registers an offense with no receiver and a variable argument' do
-      expect_offense(<<-RUBY)
+      expect_offense(<<~RUBY)
         raw(foo)
         ^^^ Tagging a string as html safe may be a security risk.
       RUBY
     end
 
     it 'registers an offense with no receiver and a literal argument' do
-      expect_offense(<<-RUBY)
+      expect_offense(<<~RUBY)
         raw("foo")
         ^^^ Tagging a string as html safe may be a security risk.
       RUBY

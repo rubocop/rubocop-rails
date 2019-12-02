@@ -34,15 +34,15 @@ module RuboCop
         MSG_ARGUMENTS = 'Please use `Rails.root.join(\'path\', \'to\')` ' \
                         'instead.'
 
-        def_node_matcher :file_join_nodes?, <<-PATTERN
+        def_node_matcher :file_join_nodes?, <<~PATTERN
           (send (const nil? :File) :join ...)
         PATTERN
 
-        def_node_search :rails_root_nodes?, <<-PATTERN
+        def_node_search :rails_root_nodes?, <<~PATTERN
           (send (const nil? :Rails) :root)
         PATTERN
 
-        def_node_matcher :rails_root_join_nodes?, <<-PATTERN
+        def_node_matcher :rails_root_join_nodes?, <<~PATTERN
           (send (send (const nil? :Rails) :root) :join ...)
         PATTERN
 

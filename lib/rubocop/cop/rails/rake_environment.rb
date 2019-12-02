@@ -28,7 +28,7 @@ module RuboCop
       class RakeEnvironment < Cop
         MSG = 'Set `:environment` task as a dependency to all rake task.'
 
-        def_node_matcher :task_definition?, <<-PATTERN
+        def_node_matcher :task_definition?, <<~PATTERN
           (send nil? :task ...)
         PATTERN
 

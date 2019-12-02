@@ -62,7 +62,7 @@ module RuboCop
 
         MSG = 'Redundant receiver in `with_options`.'
 
-        def_node_matcher :with_options?, <<-PATTERN
+        def_node_matcher :with_options?, <<~PATTERN
           (block
             (send nil? :with_options
               (...))
@@ -71,11 +71,11 @@ module RuboCop
             $_body)
         PATTERN
 
-        def_node_search :all_block_nodes_in, <<-PATTERN
+        def_node_search :all_block_nodes_in, <<~PATTERN
           (block ...)
         PATTERN
 
-        def_node_search :all_send_nodes_in, <<-PATTERN
+        def_node_search :all_send_nodes_in, <<~PATTERN
           (send ...)
         PATTERN
 

@@ -24,7 +24,7 @@ module RuboCop
           'Avoid calling `blank?` with the safe navigation operator ' \
           'in conditionals.'
 
-        def_node_matcher :safe_navigation_blank_in_conditional?, <<-PATTERN
+        def_node_matcher :safe_navigation_blank_in_conditional?, <<~PATTERN
           (if $(csend ... :blank?) ...)
         PATTERN
 

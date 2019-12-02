@@ -19,19 +19,19 @@ module RuboCop
       class NotNullColumn < Cop
         MSG = 'Do not add a NOT NULL column without a default value.'
 
-        def_node_matcher :add_not_null_column?, <<-PATTERN
+        def_node_matcher :add_not_null_column?, <<~PATTERN
           (send nil? :add_column _ _ _ (hash $...))
         PATTERN
 
-        def_node_matcher :add_not_null_reference?, <<-PATTERN
+        def_node_matcher :add_not_null_reference?, <<~PATTERN
           (send nil? :add_reference _ _ (hash $...))
         PATTERN
 
-        def_node_matcher :null_false?, <<-PATTERN
+        def_node_matcher :null_false?, <<~PATTERN
           (pair (sym :null) (false))
         PATTERN
 
-        def_node_matcher :default_option?, <<-PATTERN
+        def_node_matcher :default_option?, <<~PATTERN
           (pair (sym :default) !nil)
         PATTERN
 

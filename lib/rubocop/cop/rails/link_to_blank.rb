@@ -23,15 +23,15 @@ module RuboCop
       class LinkToBlank < Cop
         MSG = 'Specify a `:rel` option containing noopener.'
 
-        def_node_matcher :blank_target?, <<-PATTERN
+        def_node_matcher :blank_target?, <<~PATTERN
           (pair {(sym :target) (str "target")} {(str "_blank") (sym :_blank)})
         PATTERN
 
-        def_node_matcher :includes_noopener?, <<-PATTERN
+        def_node_matcher :includes_noopener?, <<~PATTERN
           (pair {(sym :rel) (str "rel")} ({str sym} #contains_noopener?))
         PATTERN
 
-        def_node_matcher :rel_node?, <<-PATTERN
+        def_node_matcher :rel_node?, <<~PATTERN
           (pair {(sym :rel) (str "rel")} (str _))
         PATTERN
 

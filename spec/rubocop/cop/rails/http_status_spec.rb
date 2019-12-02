@@ -46,7 +46,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
     end
 
     it 'does not register an offense when using custom HTTP code' do
-      expect_no_offenses(<<-RUBY)
+      expect_no_offenses(<<~RUBY)
         render :foo, status: 550
         render json: { foo: bar }, status: 550
         render plain: 'foo/bar', status: 550

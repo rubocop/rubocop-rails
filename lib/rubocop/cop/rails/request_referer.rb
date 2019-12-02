@@ -25,7 +25,7 @@ module RuboCop
         MSG = 'Use `request.%<prefer>s` instead of ' \
               '`request.%<current>s`.'
 
-        def_node_matcher :referer?, <<-PATTERN
+        def_node_matcher :referer?, <<~PATTERN
           (send (send nil? :request) {:referer :referrer})
         PATTERN
 

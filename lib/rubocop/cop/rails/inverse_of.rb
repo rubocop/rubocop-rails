@@ -137,39 +137,39 @@ module RuboCop
         NIL_MSG = 'You specified `inverse_of: nil`, you probably meant to ' \
           'use `inverse_of: false`.'
 
-        def_node_matcher :association_recv_arguments, <<-PATTERN
+        def_node_matcher :association_recv_arguments, <<~PATTERN
           (send $_ {:has_many :has_one :belongs_to} _ $...)
         PATTERN
 
-        def_node_matcher :options_from_argument, <<-PATTERN
+        def_node_matcher :options_from_argument, <<~PATTERN
           (hash $...)
         PATTERN
 
-        def_node_matcher :conditions_option?, <<-PATTERN
+        def_node_matcher :conditions_option?, <<~PATTERN
           (pair (sym :conditions) !nil)
         PATTERN
 
-        def_node_matcher :through_option?, <<-PATTERN
+        def_node_matcher :through_option?, <<~PATTERN
           (pair (sym :through) !nil)
         PATTERN
 
-        def_node_matcher :polymorphic_option?, <<-PATTERN
+        def_node_matcher :polymorphic_option?, <<~PATTERN
           (pair (sym :polymorphic) !nil)
         PATTERN
 
-        def_node_matcher :as_option?, <<-PATTERN
+        def_node_matcher :as_option?, <<~PATTERN
           (pair (sym :as) !nil)
         PATTERN
 
-        def_node_matcher :foreign_key_option?, <<-PATTERN
+        def_node_matcher :foreign_key_option?, <<~PATTERN
           (pair (sym :foreign_key) !nil)
         PATTERN
 
-        def_node_matcher :inverse_of_option?, <<-PATTERN
+        def_node_matcher :inverse_of_option?, <<~PATTERN
           (pair (sym :inverse_of) !nil)
         PATTERN
 
-        def_node_matcher :inverse_of_nil_option?, <<-PATTERN
+        def_node_matcher :inverse_of_nil_option?, <<~PATTERN
           (pair (sym :inverse_of) nil)
         PATTERN
 

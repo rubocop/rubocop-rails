@@ -6,7 +6,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   let(:config) { RuboCop::Config.new }
 
   it 'registers an offense when string node method is not defined' do
-    expect_offense <<-RUBY
+    expect_offense <<~RUBY
       class LoginController < ApplicationController
         before_action :require_login, except: 'health_check'
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `health_check` is not explicitly defined on the class.
@@ -18,7 +18,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it 'registers an offense when symbol node method is not defined' do
-    expect_offense <<-RUBY
+    expect_offense <<~RUBY
       class LoginController < ApplicationController
         skip_before_action :require_login, only: :health_check
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `health_check` is not explicitly defined on the class.
@@ -30,7 +30,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it 'registers an offense when array string node methods are not defined' do
-    expect_offense <<-RUBY
+    expect_offense <<~RUBY
       class LoginController < ApplicationController
         before_action :require_login, only: %w[index settings]
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `settings` is not explicitly defined on the class.
@@ -42,7 +42,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it 'registers an offense when array symbol node methods are not defined' do
-    expect_offense <<-RUBY
+    expect_offense <<~RUBY
       class LoginController < ApplicationController
         before_action :require_login, only: %i[index settings logout]
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `settings`, `logout` are not explicitly defined on the class.
@@ -54,7 +54,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it 'register an offense when using action filter in module' do
-    expect_offense <<-RUBY
+    expect_offense <<~RUBY
       module FooMixin
         extend ActiveSupport::Concern
 
@@ -67,7 +67,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it "doesn't register an offense when string node method is defined" do
-    expect_no_offenses <<-RUBY
+    expect_no_offenses <<~RUBY
       class LoginController < ApplicationController
         before_action :require_login, except: 'health_check'
 
@@ -78,7 +78,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it "doesn't register an offense when symbol node method is defined" do
-    expect_no_offenses <<-RUBY
+    expect_no_offenses <<~RUBY
       class LoginController < ApplicationController
         skip_before_action :require_login, only: :health_check
 
@@ -89,7 +89,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it "doesn't register an offense when array string node methods are defined" do
-    expect_no_offenses <<-RUBY
+    expect_no_offenses <<~RUBY
       class LoginController < ApplicationController
         before_action :require_login, only: %w[index settings]
 
@@ -103,7 +103,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it "doesn't register an offense when array symbol node methods are defined" do
-    expect_no_offenses <<-RUBY
+    expect_no_offenses <<~RUBY
       class LoginController < ApplicationController
         before_action :require_login, only: %i[index settings logout]
 
@@ -120,7 +120,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it "doesn't register an offense when using conditional statements" do
-    expect_no_offenses <<-RUBY
+    expect_no_offenses <<~RUBY
       class Test < ActionController
         before_action(:authenticate, only: %i[update cancel]) unless foo
 
@@ -132,7 +132,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it "doesn't register an offense when using mixin" do
-    expect_no_offenses <<-RUBY
+    expect_no_offenses <<~RUBY
       module FooMixin
         extend ActiveSupport::Concern
 
@@ -146,7 +146,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter do
   end
 
   it "doesn't register an offense when using %I literal" do
-    expect_no_offenses <<-RUBY
+    expect_no_offenses <<~RUBY
       class FooController < ApplicationController
         before_action :foo, except: %I[index show]
 

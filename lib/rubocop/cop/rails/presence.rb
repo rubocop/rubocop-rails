@@ -42,7 +42,7 @@ module RuboCop
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
 
-        def_node_matcher :redundant_receiver_and_other, <<-PATTERN
+        def_node_matcher :redundant_receiver_and_other, <<~PATTERN
           {
             (if
               (send $_recv :present?)
@@ -57,7 +57,7 @@ module RuboCop
           }
         PATTERN
 
-        def_node_matcher :redundant_negative_receiver_and_other, <<-PATTERN
+        def_node_matcher :redundant_negative_receiver_and_other, <<~PATTERN
           {
             (if
               (send (send $_recv :present?) :!)

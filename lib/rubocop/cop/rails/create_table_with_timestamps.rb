@@ -43,22 +43,22 @@ module RuboCop
       class CreateTableWithTimestamps < Cop
         MSG = 'Add timestamps when creating a new table.'
 
-        def_node_matcher :create_table_with_block?, <<-PATTERN
+        def_node_matcher :create_table_with_block?, <<~PATTERN
           (block
             (send nil? :create_table ...)
             (args (arg _var))
             _)
         PATTERN
 
-        def_node_matcher :create_table_with_timestamps_proc?, <<-PATTERN
+        def_node_matcher :create_table_with_timestamps_proc?, <<~PATTERN
           (send nil? :create_table (sym _) ... (block-pass (sym :timestamps)))
         PATTERN
 
-        def_node_search :timestamps_included?, <<-PATTERN
+        def_node_search :timestamps_included?, <<~PATTERN
           (send _var :timestamps ...)
         PATTERN
 
-        def_node_search :created_at_or_updated_at_included?, <<-PATTERN
+        def_node_search :created_at_or_updated_at_included?, <<~PATTERN
           (send _var :datetime
             {(sym {:created_at :updated_at})(str {"created_at" "updated_at"})}
             ...)
