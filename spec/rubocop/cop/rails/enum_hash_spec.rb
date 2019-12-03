@@ -112,6 +112,50 @@ RSpec.describe RuboCop::Cop::Rails::EnumHash do
         enum status: {STATUS::OLD => 0, STATUS::ACTIVE => 1}
       RUBY
     end
+
+    it 'autocorrects %w[] syntax' do
+      expect_offense(<<~RUBY)
+        enum status: %w[active archived]
+                     ^^^^^^^^^^^^^^^^^^^ Enum defined as an array found in `status` enum declaration. Use hash syntax instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        enum status: {"active" => 0, "archived" => 1}
+      RUBY
+    end
+
+    it 'autocorrect %w() syntax' do
+      expect_offense(<<~RUBY)
+        enum status: %w(active archived)
+                     ^^^^^^^^^^^^^^^^^^^ Enum defined as an array found in `status` enum declaration. Use hash syntax instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        enum status: {"active" => 0, "archived" => 1}
+      RUBY
+    end
+
+    it 'autocorrect %i[] syntax' do
+      expect_offense(<<~RUBY)
+        enum status: %i[active archived]
+                     ^^^^^^^^^^^^^^^^^^^ Enum defined as an array found in `status` enum declaration. Use hash syntax instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        enum status: {:active => 0, :archived => 1}
+      RUBY
+    end
+
+    it 'autocorrect %i() syntax' do
+      expect_offense(<<~RUBY)
+        enum status: %i(active archived)
+                     ^^^^^^^^^^^^^^^^^^^ Enum defined as an array found in `status` enum declaration. Use hash syntax instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        enum status: {:active => 0, :archived => 1}
+      RUBY
+    end
   end
 
   context 'when hash syntax is used' do
