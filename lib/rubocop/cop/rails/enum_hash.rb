@@ -42,7 +42,7 @@ module RuboCop
 
         def autocorrect(node)
           hash = node.children.each_with_index.map do |elem, index|
-            "#{elem.source} => #{index}"
+            "#{source(elem)} => #{index}"
           end.join(', ')
 
           ->(corrector) { corrector.replace(node.loc.expression, "{#{hash}}") }
@@ -56,6 +56,17 @@ module RuboCop
             key.value
           else
             key.source
+          end
+        end
+
+        def source(elem)
+          case elem.type
+          when :str
+            elem.value.dump
+          when :sym
+            elem.value.inspect
+          else
+            elem.source
           end
         end
       end

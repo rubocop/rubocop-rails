@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#159](https://github.com/rubocop-hq/rubocop-rails/issues/159): Fix autocorrect for `Rails/EnumHash` when using % arrays notations. ([@ngouy][])
+
 ## 2.4.0 (2019-11-27)
 
 ### New features
@@ -108,3 +112,4 @@
 [@pocke]: https://github.com/pocke
 [@gyfis]: https:/github.com/gyfis
 [@DNA]: https://github.com/DNA
+[@ngouy]: https://github.com/ngouy
