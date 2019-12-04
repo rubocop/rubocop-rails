@@ -334,7 +334,7 @@ Rails/Present:
   UnlessBlank: true
 
 Rails/RakeEnvironment:
-  Description: 'Set `:environment` task as a dependency to all rake task.'
+  Description: 'Include `:environment` as a dependency for all Rake tasks.'
   Enabled: true
   Safe: false
   VersionAdded: '2.4'

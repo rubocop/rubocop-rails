@@ -8,7 +8,7 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment do
   it 'registers an offense to task without :environment' do
     expect_offense(<<~RUBY)
       task :foo do
-      ^^^^^^^^^ Set `:environment` task as a dependency to all rake task.
+      ^^^^^^^^^ Include `:environment` task as a dependency for all Rake tasks.
       end
     RUBY
   end
