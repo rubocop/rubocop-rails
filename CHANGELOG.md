@@ -7,6 +7,10 @@
 * [#170](https://github.com/rubocop-hq/rubocop-rails/pull/170): Make `Rails/BulkChangeTable` not suggest combining methods with an intervening block. ([@mvz][])
 * [#159](https://github.com/rubocop-hq/rubocop-rails/issues/159): Fix autocorrect for `Rails/EnumHash` when using % arrays notations. ([@ngouy][])
 
+### Changes
+
+* [#166](https://github.com/rubocop-hq/rubocop-rails/issues/166): Add db/schema.rb and bin/* to the excluded files. ([@fidalgo][])
+
 ## 2.4.0 (2019-11-27)
 
 ### New features
@@ -115,3 +119,4 @@
 [@DNA]: https://github.com/DNA
 [@ngouy]: https://github.com/ngouy
 [@mvz]: https://github.com/mvz
+[@fidalgo]: https://github.com/fidalgo
