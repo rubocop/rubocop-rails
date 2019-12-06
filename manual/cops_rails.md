@@ -1666,16 +1666,16 @@ Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChan
 --- | --- | --- | --- | ---
 Enabled | No | No | 2.4 | -
 
-This cop checks rake task definition without `environment` dependency.
-`environment` dependency is important because it loads application code
-for the rake task. The rake task cannot use application code, such as
-models, without `environment` dependency.
+This cop checks for Rake tasks without the `:environment` task
+dependency. The `:environment` task loads application code for other
+Rake tasks. Without it, tasks cannot make use of application code like
+models.
 
 You can ignore the offense if the task satisfies at least one of the
 following conditions:
 
 * The task does not need application code.
-* The task invokes :environment task.
+* The task invokes the `:environment` task.
 
 ### Examples
 
