@@ -138,9 +138,9 @@ module RuboCop
 
           recorder = AlterMethodsRecorder.new
 
-          node.body.each_child_node(:send) do |send_node|
-            if combinable_alter_methods.include?(send_node.method_name)
-              recorder.process(send_node)
+          node.body.child_nodes.each do |child_node|
+            if call_to_combinable_alter_method? child_node
+              recorder.process(child_node)
             else
               recorder.flush
             end
@@ -216,6 +216,11 @@ module RuboCop
           else
             false
           end
+        end
+
+        def call_to_combinable_alter_method?(child_node)
+          child_node.send_type? &&
+            combinable_alter_methods.include?(child_node.method_name)
         end
 
         def combinable_alter_methods
