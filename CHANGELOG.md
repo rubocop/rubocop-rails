@@ -4,6 +4,7 @@
 
 ### Bug fixes
 
+* [#170](https://github.com/rubocop-hq/rubocop-rails/pull/170): Make `Rails/BulkChangeTable` not suggest combining methods with an intervening block. ([@mvz][])
 * [#159](https://github.com/rubocop-hq/rubocop-rails/issues/159): Fix autocorrect for `Rails/EnumHash` when using % arrays notations. ([@ngouy][])
 
 ## 2.4.0 (2019-11-27)
@@ -113,3 +114,4 @@
 [@gyfis]: https:/github.com/gyfis
 [@DNA]: https://github.com/DNA
 [@ngouy]: https://github.com/ngouy
+[@mvz]: https://github.com/mvz

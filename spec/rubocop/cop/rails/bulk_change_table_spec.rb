@@ -306,6 +306,18 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
+    it 'does not register an offense when including a block between' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          add_column :users, :name, :string, null: false
+          User.find_each do |user|
+            user.update(name: user.nickname)
+          end
+          remove_column :users, :nickname
+        end
+      RUBY
+    end
+
     it 'does not register an offense' \
        'when including a combinable alter method' do
       expect_no_offenses(<<~RUBY)
