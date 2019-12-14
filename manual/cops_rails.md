@@ -1902,6 +1902,15 @@ end
 
 # good
 class SomeClass
+  EXPIRES = 1.week
+
+  def self.expired_at
+    EXPIRES.since
+  end
+end
+
+# good
+class SomeClass
   def self.expired_at
     1.week.since
   end
