@@ -36,7 +36,7 @@ module RuboCop
         PATTERN
 
         def_node_matcher :dependent_option?, <<~PATTERN
-          (pair (sym :dependent) !nil)
+          (pair (sym :dependent))
         PATTERN
 
         def_node_matcher :present_option?, <<~PATTERN
