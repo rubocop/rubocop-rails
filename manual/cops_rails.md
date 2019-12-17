@@ -818,6 +818,9 @@ This cop is used to identify usages of file path joining process
 to use `Rails.root.join` clause. It is used to add uniformity when
 joining paths.
 
+`Rails.root.join` is not a drop-in replacement. It returns a `Pathname`
+object which may require further changes to your code.
+
 ### Examples
 
 #### EnforcedStyle: arguments

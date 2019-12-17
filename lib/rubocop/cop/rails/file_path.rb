@@ -7,6 +7,9 @@ module RuboCop
       # to use `Rails.root.join` clause. It is used to add uniformity when
       # joining paths.
       #
+      # `Rails.root.join` is not a drop-in replacement. It returns a `Pathname`
+      # object which may require further changes to your code.
+      #
       # @example EnforcedStyle: arguments
       #   # bad
       #   Rails.root.join('app/models/goober')
