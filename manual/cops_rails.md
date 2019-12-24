@@ -1841,8 +1841,9 @@ Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChan
 --- | --- | --- | --- | ---
 Enabled | Yes | No | 0.64 | -
 
-This cop checks if the value of the option `class_name`, in
-the definition of a reflection is a string.
+This cop checks the definition of model associations to only allow
+string values on the reflection option `class_name`, preventing
+the accidental autoloading of other model constants.
 
 ### Examples
 
@@ -1853,6 +1854,7 @@ has_many :accounts, class_name: Account.name
 
 # good
 has_many :accounts, class_name: 'Account'
+has_many :children, class_name: self.name
 ```
 
 ## Rails/RefuteMethods
