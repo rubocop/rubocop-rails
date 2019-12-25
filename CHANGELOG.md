@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.4.1 (2019-12-25)
+
 ### Bug fixes
 
 * [#170](https://github.com/rubocop-hq/rubocop-rails/pull/170): Make `Rails/BulkChangeTable` not suggest combining methods with an intervening block. ([@mvz][])
