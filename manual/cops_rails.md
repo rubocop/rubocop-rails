@@ -1912,6 +1912,8 @@ Use `assert_not` methods instead of `refute` methods.
 
 ### Examples
 
+#### EnforcedStyle: assert_not (default)
+
 ```ruby
 # bad
 refute false
@@ -1923,11 +1925,25 @@ assert_not false
 assert_not_empty [1, 2, 3]
 assert_not_equal true, false
 ```
+#### EnforcedStyle: refute
+
+```ruby
+# bad
+assert_not false
+assert_not_empty [1, 2, 3]
+assert_not_equal true, false
+
+# good
+refute false
+refute_empty [1, 2, 3]
+refute_equal true, false
+```
 
 ### Configurable attributes
 
 Name | Default value | Configurable values
 --- | --- | ---
+EnforcedStyle | `assert_not` | `assert_not`, `refute`
 Include | `**/test/**/*` | Array
 
 ## Rails/RelativeDateConstant
