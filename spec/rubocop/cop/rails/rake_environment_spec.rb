@@ -83,4 +83,10 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment do
       task default: :spec
     RUBY
   end
+
+  it 'does not register an offense to task with no block' do
+    expect_no_offenses(<<~RUBY)
+      task(:foo).do_something
+    RUBY
+  end
 end
