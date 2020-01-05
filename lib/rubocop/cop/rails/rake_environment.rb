@@ -29,15 +29,16 @@ module RuboCop
         MSG = 'Include `:environment` task as a dependency for all Rake tasks.'
 
         def_node_matcher :task_definition?, <<~PATTERN
-          (send nil? :task ...)
+          (block $(send nil? :task ...) ...)
         PATTERN
 
-        def on_send(node)
-          return unless task_definition?(node)
-          return if task_name(node) == :default
-          return if with_dependencies?(node)
+        def on_block(node)
+          task_definition?(node) do |task_method|
+            return if task_name(task_method) == :default
+            return if with_dependencies?(task_method)
 
-          add_offense(node)
+            add_offense(task_method)
+          end
         end
 
         private
