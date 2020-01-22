@@ -12,7 +12,8 @@ module RuboCop
       # - update or save calls, assigned to a variable,
       #   or used as a condition in an if/unless/case statement.
       # - create calls, assigned to a variable that then has a
-      #   call to `persisted?`.
+      #   call to `persisted?`, or whose return value is checked by
+      #   `persisted?` immediately
       # - calls if the result is explicitly returned from methods and blocks,
       #   or provided as arguments.
       # - calls whose signature doesn't look like an ActiveRecord
@@ -137,16 +138,19 @@ module RuboCop
           add_offense_for_node(node, CREATE_MSG)
         end
 
-        def on_send(node) # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        def on_send(node)
           return unless persist_method?(node)
           return if return_value_assigned?(node)
           return if implicit_return?(node)
           return if check_used_in_condition_or_compound_boolean(node)
           return if argument?(node)
           return if explicit_return?(node)
+          return if checked_immediately?(node)
 
           add_offense_for_node(node)
         end
+        # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         alias on_csend on_send
 
         def autocorrect(node)
@@ -236,6 +240,10 @@ module RuboCop
 
         def conditional?(parent)
           parent.if_type? || parent.case_type?
+        end
+
+        def checked_immediately?(node)
+          node.parent && call_to_persisted?(node.parent)
         end
 
         def allowed_receiver?(node)

@@ -571,6 +571,12 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       RUBY
     end
 
+    it "when using persisted? directly on #{method} return value" do
+      expect_no_offenses(<<~RUBY)
+        return unless object.#{method}.persisted?
+      RUBY
+    end
+
     it "when using #{method} with `||`" do
       expect_no_offenses(<<~RUBY)
         def find_or_create(**opts)
