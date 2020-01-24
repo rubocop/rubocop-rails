@@ -6,6 +6,7 @@
 
 * [#184](https://github.com/rubocop-hq/rubocop-rails/issues/184): Fix `Rake/Environment` to allow task with no block. ([@hanachin][])
 * [#122](https://github.com/rubocop-hq/rubocop-rails/issues/122): Fix `Exclude` paths that were not inherited. ([@koic][])
+* [#187](https://github.com/rubocop-hq/rubocop-rails/pull/187): Fix an issue that excluded files in rubocop-rails did not work. ([@sinsoku][])
 
 ## 2.4.1 (2019-12-25)
 
