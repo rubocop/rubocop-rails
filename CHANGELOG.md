@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.4.2 (2020-01-26)
+
 ### Bug fixes
 
 * [#184](https://github.com/rubocop-hq/rubocop-rails/issues/184): Fix `Rake/Environment` to allow task with no block. ([@hanachin][])
