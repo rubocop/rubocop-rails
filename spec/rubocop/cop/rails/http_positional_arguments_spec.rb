@@ -113,6 +113,12 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments do
       RUBY
     end
 
+    it 'registers an offense for get method with `:to` option' do
+      expect_no_offenses(<<~RUBY)
+        get '/test', to: 'admin/admin#test'
+      RUBY
+    end
+
     it 'registers an offense for post method' do
       expect_offense(<<~RUBY)
         post :create, user_id: @user.id
