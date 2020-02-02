@@ -22,7 +22,7 @@ module RuboCop
         MSG = 'Use keyword arguments instead of ' \
               'positional arguments for http call: `%<verb>s`.'
         KEYWORD_ARGS = %i[
-          method params session body flash xhr as headers env
+          method params session body flash xhr as headers env to
         ].freeze
         HTTP_METHODS = %i[get post put patch delete head].freeze
 
