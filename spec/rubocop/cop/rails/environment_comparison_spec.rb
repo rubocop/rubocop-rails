@@ -5,26 +5,104 @@ RSpec.describe RuboCop::Cop::Rails::EnvironmentComparison do
 
   let(:config) { RuboCop::Config.new }
 
-  it 'registers an offense and corrects comparing Rails.env to a string' do
-    expect_offense(<<~RUBY)
-      Rails.env == 'production'
-      ^^^^^^^^^^^^^^^^^^^^^^^^^ Favor `Rails.env.production?` over `Rails.env == 'production'`.
-    RUBY
+  context 'when comparing `Rails.env` to a string' do
+    context 'when using equals' do
+      it 'registers an offense and corrects when `Rails.env` is used on LHS' do
+        expect_offense(<<~RUBY)
+          Rails.env == 'production'
+          ^^^^^^^^^^^^^^^^^^^^^^^^^ Favor `Rails.env.production?` over `Rails.env == 'production'`.
+        RUBY
 
-    expect_correction(<<~RUBY)
-      Rails.env.production?
-    RUBY
+        expect_correction(<<~RUBY)
+          Rails.env.production?
+        RUBY
+      end
+
+      it 'registers an offense and corrects when `Rails.env` is used on RHS' do
+        expect_offense(<<~RUBY)
+          'production' == Rails.env
+          ^^^^^^^^^^^^^^^^^^^^^^^^^ Favor `Rails.env.production?` over `'production' == Rails.env`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.env.production?
+        RUBY
+      end
+    end
+
+    context 'when using not equals' do
+      it 'registers an offense and corrects when `Rails.env` is used on LHS' do
+        expect_offense(<<~RUBY)
+          Rails.env != 'production'
+          ^^^^^^^^^^^^^^^^^^^^^^^^^ Favor `!Rails.env.production?` over `Rails.env != 'production'`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          !Rails.env.production?
+        RUBY
+      end
+
+      it 'registers an offense and corrects when `Rails.env` is used on RHS' do
+        expect_offense(<<~RUBY)
+          'production' != Rails.env
+          ^^^^^^^^^^^^^^^^^^^^^^^^^ Favor `!Rails.env.production?` over `'production' != Rails.env`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          !Rails.env.production?
+        RUBY
+      end
+    end
   end
 
-  it 'registers an offense and corrects comparing Rails.env to a symbol' do
-    expect_offense(<<~RUBY)
-      Rails.env == :production
-      ^^^^^^^^^^^^^^^^^^^^^^^^ Do not compare `Rails.env` with a symbol, it will always evaluate to `false`.
-    RUBY
+  context 'when comparing `Rails.env` to a symbol' do
+    context 'when using equals' do
+      it 'registers an offense and corrects when `Rails.env` is used on LHS' do
+        expect_offense(<<~RUBY)
+          Rails.env == :production
+          ^^^^^^^^^^^^^^^^^^^^^^^^ Do not compare `Rails.env` with a symbol, it will always evaluate to `false`.
+        RUBY
 
-    expect_correction(<<~RUBY)
-      Rails.env.production?
-    RUBY
+        expect_correction(<<~RUBY)
+          Rails.env.production?
+        RUBY
+      end
+
+      it 'registers an offense and corrects when `Rails.env` is used on RHS' do
+        expect_offense(<<~RUBY)
+          :production == Rails.env
+          ^^^^^^^^^^^^^^^^^^^^^^^^ Do not compare `Rails.env` with a symbol, it will always evaluate to `false`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.env.production?
+        RUBY
+      end
+    end
+
+    context 'when using not equals' do
+      it 'registers an offense and corrects when `Rails.env` is used on LHS' do
+        expect_offense(<<~RUBY)
+          Rails.env != :production
+          ^^^^^^^^^^^^^^^^^^^^^^^^ Do not compare `Rails.env` with a symbol, it will always evaluate to `false`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          !Rails.env.production?
+        RUBY
+      end
+
+      it 'registers an offense and corrects when `Rails.env` is used on RHS' do
+        expect_offense(<<~RUBY)
+          :production != Rails.env
+          ^^^^^^^^^^^^^^^^^^^^^^^^ Do not compare `Rails.env` with a symbol, it will always evaluate to `false`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          !Rails.env.production?
+        RUBY
+      end
+    end
   end
 
   it 'does not register an offense when using `#good_method`' do

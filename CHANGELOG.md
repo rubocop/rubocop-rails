@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#180](https://github.com/rubocop-hq/rubocop-rails/issues/180): Fix a false positive for `HttpPositionalArguments` when using `get` method with `:to` option. ([@koic][])
+* [#193](https://github.com/rubocop-hq/rubocop-rails/issues/193): Make `Rails/EnvironmentComparison` aware of `Rails.env` is used in RHS or when `!=` is used for comparison. ([@koic][])
 
 ## 2.4.2 (2020-01-26)
 
