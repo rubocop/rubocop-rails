@@ -496,6 +496,13 @@ Rails/UniqBeforePluck:
     - aggressive
   AutoCorrect: false
 
+Rails/UniqueValidationWithoutIndex:
+  Description: 'Uniqueness validation should be with a unique index.'
+  Enabled: true
+  VersionAdded: '2.5'
+  Include:
+    - app/models/**/*.rb
+
 Rails/UnknownEnv:
   Description: 'Use correct environment name.'
   Enabled: true

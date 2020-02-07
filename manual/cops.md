@@ -56,6 +56,7 @@
 * [Rails/SkipsModelValidations](cops_rails.md#railsskipsmodelvalidations)
 * [Rails/TimeZone](cops_rails.md#railstimezone)
 * [Rails/UniqBeforePluck](cops_rails.md#railsuniqbeforepluck)
+* [Rails/UniqueValidationWithoutIndex](cops_rails.md#railsuniquevalidationwithoutindex)
 * [Rails/UnknownEnv](cops_rails.md#railsunknownenv)
 * [Rails/Validation](cops_rails.md#railsvalidation)
 

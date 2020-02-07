@@ -82,6 +82,7 @@ Metrics/BlockLength:
     - 'Rakefile'
     - '**/*.rake'
     - 'spec/**/*.rb'
+    - '*.gemspec'
 
 Naming/FileName:
   Exclude:
