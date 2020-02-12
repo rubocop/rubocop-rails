@@ -55,10 +55,7 @@ module RuboCop
       #     end
       #   end
       class RedundantReceiverInWithOptions < Cop
-        extend TargetRailsVersion
         include RangeHelp
-
-        minimum_target_rails_version 4.2
 
         MSG = 'Redundant receiver in `with_options`.'
 

@@ -1,13 +1,5 @@
 # frozen_string_literal: true
 
-RSpec.shared_context 'with Rails 4.0', :rails40 do
-  let(:rails_version) { 4.0 }
-end
-
-RSpec.shared_context 'with Rails 4.1', :rails41 do
-  let(:rails_version) { 4.1 }
-end
-
 RSpec.shared_context 'with Rails 4.2', :rails42 do
   let(:rails_version) { 4.2 }
 end

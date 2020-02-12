@@ -8,7 +8,7 @@ module RuboCop
       # change them to use keyword args. This cop only applies to Rails >= 5.
       # If you are running Rails < 5 you should disable the
       # Rails/HttpPositionalArguments cop or set your TargetRailsVersion in your
-      # .rubocop.yml file to 4.0, etc.
+      # .rubocop.yml file to 4.2.
       #
       # @example
       #   # bad

@@ -84,7 +84,7 @@ You can read a lot more about RuboCop Rails in its [official docs](https://docs.
 
 Rails cops support the following versions:
 
-- Rails 4.0+
+- Rails 4.2+
 
 ## Contributing
 

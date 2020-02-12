@@ -129,10 +129,6 @@ module RuboCop
       # @see https://guides.rubyonrails.org/association_basics.html#bi-directional-associations
       # @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Setting+Inverses
       class InverseOf < Cop
-        extend TargetRailsVersion
-
-        minimum_target_rails_version 4.1
-
         SPECIFY_MSG = 'Specify an `:inverse_of` option.'
         NIL_MSG = 'You specified `inverse_of: nil`, you probably meant to ' \
           'use `inverse_of: false`.'
