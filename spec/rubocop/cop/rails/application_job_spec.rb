@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ApplicationJob do
-  context 'rails 4', :rails4, :config do
+  context 'Rails 4.2', :rails42, :config do
     subject(:cop) { described_class.new(config) }
 
     it 'allows ApplicationJob to be defined' do
@@ -55,7 +55,7 @@ RSpec.describe RuboCop::Cop::Rails::ApplicationJob do
     end
   end
 
-  context 'rails 5', :rails5 do
+  context 'Rails 5.0', :rails50 do
     subject(:cop) { described_class.new }
 
     it 'allows `ApplicationJob` to be defined' do

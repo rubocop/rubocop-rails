@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::InverseOf do
+RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
   subject(:cop) { described_class.new(config) }
-
-  let(:config) { RuboCop::Config.new }
 
   context 'with scope' do
     it 'registers an offense when not specifying `:inverse_of`' do
@@ -90,7 +88,7 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf do
   end
 
   context '`:as` option' do
-    context 'Rails < 5.2', :rails5 do
+    context 'Rails <= 5.1', :rails51 do
       it 'registers an offense when not specifying `:inverse_of`' do
         expect_offense(<<~RUBY)
           class Person
@@ -101,9 +99,7 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf do
       end
     end
 
-    context 'Rails >= 5.2', :config do
-      let(:rails_version) { 5.2 }
-
+    context 'Rails >= 5.2', :rails52 do
       it 'does not register an offense when not specifying `:inverse_of`' do
         expect_no_offenses(
           'has_many :pictures, as: :imageable'

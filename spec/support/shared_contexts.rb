@@ -1,9 +1,29 @@
 # frozen_string_literal: true
 
-RSpec.shared_context 'with Rails 4', :rails4 do
+RSpec.shared_context 'with Rails 4.0', :rails40 do
   let(:rails_version) { 4.0 }
 end
 
-RSpec.shared_context 'with Rails 5', :rails5 do
+RSpec.shared_context 'with Rails 4.1', :rails41 do
+  let(:rails_version) { 4.1 }
+end
+
+RSpec.shared_context 'with Rails 4.2', :rails42 do
+  let(:rails_version) { 4.2 }
+end
+
+RSpec.shared_context 'with Rails 5.0', :rails50 do
   let(:rails_version) { 5.0 }
+end
+
+RSpec.shared_context 'with Rails 5.1', :rails51 do
+  let(:rails_version) { 5.1 }
+end
+
+RSpec.shared_context 'with Rails 5.2', :rails52 do
+  let(:rails_version) { 5.2 }
+end
+
+RSpec.shared_context 'with Rails 6.0', :rails60 do
+  let(:rails_version) { 6.0 }
 end
