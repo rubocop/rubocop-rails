@@ -3,9 +3,7 @@
 RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
   subject(:cop) { described_class.new(config) }
 
-  context 'rails >= 4.2' do
-    let(:rails_version) { 4.2 }
-
+  context 'Rails >= 4.2', :rails42 do
     it 'registers an offense and corrects using explicit receiver ' \
       'in `with_options`' do
       expect_offense(<<~RUBY)
@@ -96,9 +94,7 @@ RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
     end
   end
 
-  context 'rails <= 4.1' do
-    let(:rails_version) { 4.1 }
-
+  context 'Rails <= 4.1', :rails41 do
     it 'does not register an offense when using explicit receiver in ' \
        '`with_options`' do
       expect_no_offenses(<<~RUBY)

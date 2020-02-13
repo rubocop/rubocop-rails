@@ -399,17 +399,13 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       }
     end
 
-    context 'with Rails 5.2' do
-      let(:rails_version) { 5.2 }
-
+    context 'with Rails 5.2', :rails52 do
       it_behaves_like 'offense'
       it_behaves_like 'no offense for mysql'
       it_behaves_like 'offense for postgresql'
     end
 
-    context 'with Rails 5.1' do
-      let(:rails_version) { 5.1 }
-
+    context 'with Rails 5.1', :rails51 do
       it_behaves_like 'no offense'
       it_behaves_like 'no offense for mysql'
       it_behaves_like 'no offense for postgresql'
@@ -449,15 +445,11 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
         }
       end
 
-      context 'with Rails 5.2' do
-        let(:rails_version) { 5.2 }
-
+      context 'with Rails 5.2', :rails52 do
         it_behaves_like 'offense for postgresql'
       end
 
-      context 'with Rails 5.1' do
-        let(:rails_version) { 5.1 }
-
+      context 'with Rails 5.1', :rails51 do
         it_behaves_like 'no offense for postgresql'
       end
     end

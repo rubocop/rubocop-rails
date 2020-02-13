@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments do
-  context 'rails 4', :rails4, :config do
+  context 'Rails 4.2', :rails42, :config do
     subject(:cop) { described_class.new(config) }
 
     it 'does not register an offense for get method' do
@@ -99,7 +99,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments do
     end
   end
 
-  context 'rails 5 and above', :rails5 do
+  context 'Rails 5.0 and above', :rails50 do
     subject(:cop) { described_class.new }
 
     it 'registers an offense for get method' do
