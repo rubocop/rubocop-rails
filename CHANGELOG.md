@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#197](https://github.com/rubocop-hq/rubocop-rails/pull/197): Add `Rails/UniqueValidationWithoutIndex` cop. ([@pocke][])
+
 ### Bug fixes
 
 * [#180](https://github.com/rubocop-hq/rubocop-rails/issues/180): Fix a false positive for `HttpPositionalArguments` when using `get` method with `:to` option. ([@koic][])

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'mixin/active_record_helper'
 require_relative 'mixin/target_rails_version'
 
 require_relative 'rails/action_filter'
@@ -57,5 +58,6 @@ require_relative 'rails/scope_args'
 require_relative 'rails/skips_model_validations'
 require_relative 'rails/time_zone'
 require_relative 'rails/uniq_before_pluck'
+require_relative 'rails/unique_validation_without_index'
 require_relative 'rails/unknown_env'
 require_relative 'rails/validation'
