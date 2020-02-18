@@ -118,11 +118,11 @@ module RuboCop
 
       # Reprecent an index
       class Index
-        attr_reader :name, :columns, :unique
+        attr_reader :name, :columns, :expression, :unique
 
         def initialize(node)
           node.first_argument
-          @columns = build_columns(node)
+          @columns, @expression = build_columns_or_expr(node)
           @unique = nil
 
           analyze_keywords!(node)
@@ -130,8 +130,13 @@ module RuboCop
 
         private
 
-        def build_columns(node)
-          node.first_argument.values.map(&:value)
+        def build_columns_or_expr(node)
+          arg = node.first_argument
+          if arg.array_type?
+            [arg.values.map(&:value), nil]
+          else
+            [[], arg.value]
+          end
         end
 
         def analyze_keywords!(node)
