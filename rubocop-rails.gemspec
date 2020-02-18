@@ -24,10 +24,10 @@ Gem::Specification.new do |s|
   s.summary = 'Automatic Rails code style checking tool.'
 
   s.metadata = {
-    'homepage_uri' => 'https://docs.rubocop.org/projects/rails',
+    'homepage_uri' => 'https://docs.rubocop.org/projects/rails/',
     'changelog_uri' => 'https://github.com/rubocop-hq/rubocop-rails/blob/master/CHANGELOG.md',
     'source_code_uri' => 'https://github.com/rubocop-hq/rubocop-rails/',
-    'documentation_uri' => 'https://docs.rubocop.org/projects/rails',
+    'documentation_uri' => 'https://docs.rubocop.org/projects/rails/',
     'bug_tracker_uri' => 'https://github.com/rubocop-hq/rubocop-rails/issues'
   }
 
