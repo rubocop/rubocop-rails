@@ -76,6 +76,10 @@ Rails/FindBy:
     - lib/example.rb
 ```
 
+## Documentation
+
+You can read a lot more about RuboCop Rails in its [official docs](https://docs.rubocop.org/projects/rails/).
+
 ## Compatibility
 
 Rails cops support the following versions:
