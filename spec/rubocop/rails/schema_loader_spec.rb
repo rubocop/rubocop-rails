@@ -33,6 +33,7 @@ RSpec.describe RuboCop::Rails::SchemaLoader do
           create_table "articles", force: :cascade do |t|
             t.string "title", null: false
             t.bigint "user_id"
+            t.index 'lower(title)', name: 'index_title_lower_unique', unique: true
           end
         end
       RUBY
@@ -76,6 +77,13 @@ RSpec.describe RuboCop::Rails::SchemaLoader do
 
           expect(table.columns.size).to eq 2
           expect(table.columns.last.type).to eq :bigint
+        end
+
+        it 'has an index in articles table' do
+          table = loaded_schema.table_by(name: 'articles')
+          expect(table.indices.size).to eq 1
+          expect(table.indices.first.name).to eq 'index_title_lower_unique'
+          expect(table.indices.first.unique).to be true
         end
       end
 
