@@ -2053,6 +2053,11 @@ end
 def change
   remove_foreign_key :accounts, :branches
 end
+
+# good
+def change
+  remove_foreign_key :accounts, to_table: :branches
+end
 ```
 ```ruby
 # change_table

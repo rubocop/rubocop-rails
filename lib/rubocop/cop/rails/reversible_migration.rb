@@ -90,6 +90,11 @@ module RuboCop
       #     remove_foreign_key :accounts, :branches
       #   end
       #
+      #   # good
+      #   def change
+      #     remove_foreign_key :accounts, to_table: :branches
+      #   end
+      #
       # @example
       #   # change_table
       #
@@ -210,7 +215,7 @@ module RuboCop
 
         def check_remove_foreign_key_node(node)
           remove_foreign_key_call(node) do |arg|
-            if arg.hash_type?
+            if arg.hash_type? && !all_hash_key?(arg, :to_table)
               add_offense(
                 node,
                 message: format(MSG,
