@@ -169,6 +169,10 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
       remove_foreign_key :accounts, :branches
     RUBY
 
+    it_behaves_like 'accepts', 'remove_foreign_key(with :to_table)', <<~RUBY
+      remove_foreign_key :accounts, to_table: :branches
+    RUBY
+
     it_behaves_like 'offense', 'remove_foreign_key(without table)', <<~RUBY
       remove_foreign_key :accounts, column: :owner_id
     RUBY
