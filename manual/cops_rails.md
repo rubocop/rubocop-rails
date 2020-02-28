@@ -1696,6 +1696,7 @@ end
 Name | Default value | Configurable values
 --- | --- | ---
 Include | `**/Rakefile`, `**/*.rake` | Array
+Exclude | `lib/capistrano/tasks/**/*.rake` | Array
 
 ## Rails/ReadWriteAttribute
 

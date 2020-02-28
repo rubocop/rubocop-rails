@@ -346,6 +346,8 @@ Rails/RakeEnvironment:
   Include:
     - '**/Rakefile'
     - '**/*.rake'
+  Exclude:
+    - 'lib/capistrano/tasks/**/*.rake'
 
 Rails/ReadWriteAttribute:
   Description: >-

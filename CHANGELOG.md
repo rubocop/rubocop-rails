@@ -11,6 +11,7 @@
 * [#180](https://github.com/rubocop-hq/rubocop-rails/issues/180): Fix a false positive for `HttpPositionalArguments` when using `get` method with `:to` option. ([@koic][])
 * [#193](https://github.com/rubocop-hq/rubocop-rails/issues/193): Make `Rails/EnvironmentComparison` aware of `Rails.env` is used in RHS or when `!=` is used for comparison. ([@koic][])
 * [#205](https://github.com/rubocop-hq/rubocop-rails/pull/205): Make `Rails/ReversibleMigration` aware of `:to_table` option of `remove_foreign_key`. ([@joshpencheon][])
+* [#207](https://github.com/rubocop-hq/rubocop-rails/pull/207): Fix a false positive for `Rails/RakeEnvironment` when using Capistrano. ([@sinsoku][])
 
 ## 2.4.2 (2020-01-26)
 
