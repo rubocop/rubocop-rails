@@ -5,6 +5,7 @@
 ### New features
 
 * [#197](https://github.com/rubocop-hq/rubocop-rails/pull/197): Add `Rails/UniqueValidationWithoutIndex` cop. ([@pocke][])
+* [#208](https://github.com/rubocop-hq/rubocop-rails/pull/208): Add new `Rails/IndexBy` and `Rails/IndexWith` cops. ([@djudd][], [@eugeneius][])
 
 ### Bug fixes
 
@@ -144,3 +145,4 @@
 [@fidalgo]: https://github.com/fidalgo
 [@hanachin]: https://github.com/hanachin
 [@joshpencheon]: https://github.com/joshpencheon
+[@djudd]: https://github.com/djudd

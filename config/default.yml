@@ -268,6 +268,16 @@ Rails/IgnoredSkipActionFilterOption:
   Include:
     - app/controllers/**/*.rb
 
+Rails/IndexBy:
+  Description: 'Prefer `index_by` over `each_with_object` or `map`.'
+  Enabled: true
+  VersionAdded: '2.5'
+
+Rails/IndexWith:
+  Description: 'Prefer `index_with` over `each_with_object` or `map`.'
+  Enabled: true
+  VersionAdded: '2.5'
+
 Rails/InverseOf:
   Description: 'Checks for associations where the inverse cannot be determined automatically.'
   Enabled: true

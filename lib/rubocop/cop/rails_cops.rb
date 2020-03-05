@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'mixin/active_record_helper'
+require_relative 'mixin/index_method'
 require_relative 'mixin/target_rails_version'
 
 require_relative 'rails/action_filter'
@@ -33,6 +34,8 @@ require_relative 'rails/helper_instance_variable'
 require_relative 'rails/http_positional_arguments'
 require_relative 'rails/http_status'
 require_relative 'rails/ignored_skip_action_filter_option'
+require_relative 'rails/index_by'
+require_relative 'rails/index_with'
 require_relative 'rails/inverse_of'
 require_relative 'rails/lexically_scoped_action_filter'
 require_relative 'rails/link_to_blank'
