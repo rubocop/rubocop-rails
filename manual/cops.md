@@ -31,6 +31,8 @@
 * [Rails/HttpPositionalArguments](cops_rails.md#railshttppositionalarguments)
 * [Rails/HttpStatus](cops_rails.md#railshttpstatus)
 * [Rails/IgnoredSkipActionFilterOption](cops_rails.md#railsignoredskipactionfilteroption)
+* [Rails/IndexBy](cops_rails.md#railsindexby)
+* [Rails/IndexWith](cops_rails.md#railsindexwith)
 * [Rails/InverseOf](cops_rails.md#railsinverseof)
 * [Rails/LexicallyScopedActionFilter](cops_rails.md#railslexicallyscopedactionfilter)
 * [Rails/LinkToBlank](cops_rails.md#railslinktoblank)
