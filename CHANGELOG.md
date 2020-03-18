@@ -6,6 +6,7 @@
 
 * [#197](https://github.com/rubocop-hq/rubocop-rails/pull/197): Add `Rails/UniqueValidationWithoutIndex` cop. ([@pocke][])
 * [#208](https://github.com/rubocop-hq/rubocop-rails/pull/208): Add new `Rails/IndexBy` and `Rails/IndexWith` cops. ([@djudd][], [@eugeneius][])
+* [#150](https://github.com/rubocop-hq/rubocop-rails/issues/150): Add `EnforcedStyle: refute` for `Rails/RefuteMethods` cop. ([@koic][])
 
 ### Bug fixes
 
