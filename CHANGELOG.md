@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.5.0 (2020-03-24)
+
 ### New features
 
 * [#197](https://github.com/rubocop-hq/rubocop-rails/pull/197): Add `Rails/UniqueValidationWithoutIndex` cop. ([@pocke][])
