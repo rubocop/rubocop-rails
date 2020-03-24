@@ -42,7 +42,7 @@ module RuboCop
         end
       end
 
-      # Reprecent a table
+      # Represent a table
       class Table
         attr_reader :name, :columns, :indices
 
@@ -90,7 +90,7 @@ module RuboCop
         end
       end
 
-      # Reprecent a column
+      # Represent a column
       class Column
         attr_reader :name, :type, :not_null
 
@@ -116,7 +116,7 @@ module RuboCop
         end
       end
 
-      # Reprecent an index
+      # Represent an index
       class Index
         attr_reader :name, :columns, :expression, :unique
 
