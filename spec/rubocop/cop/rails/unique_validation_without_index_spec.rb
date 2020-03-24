@@ -102,7 +102,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         end
       RUBY
 
-      it 'registers no offense' do
+      it 'does not register an offense' do
         expect_no_offenses(<<~RUBY)
           class User
             validates :account, uniqueness: true
@@ -145,7 +145,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           end
         RUBY
 
-        it 'registers an offense' do
+        it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)
             class WrittenArticles
               validates :user_id, uniqueness: { scope: :article_id }
@@ -192,7 +192,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           end
         RUBY
 
-        it 'registers an offense' do
+        it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)
             class WrittenArticles
               validates :a_id, uniqueness: { scope: [:b_id, :c_id] }
@@ -234,11 +234,49 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           end
         RUBY
 
-        it 'does not register offense' do
+        it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)
             class Article
               belongs_to :user
               validates :user, uniqueness: true
+            end
+          RUBY
+        end
+      end
+
+      context 'with an if condition on the validation' do
+        let(:schema) { <<~RUBY }
+          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+            create_table "articles", force: :cascade do |t|
+              t.bitint "user_id", null: false
+            end
+          end
+        RUBY
+
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            class Article
+              belongs_to :user
+              validates :user, uniqueness: true, if: -> { false }
+            end
+          RUBY
+        end
+      end
+
+      context 'with an unless condition on the validation' do
+        let(:schema) { <<~RUBY }
+          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+            create_table "articles", force: :cascade do |t|
+              t.bitint "user_id", null: false
+            end
+          end
+        RUBY
+
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            class Article
+              belongs_to :user
+              validates :user, uniqueness: true, unless: -> { true }
             end
           RUBY
         end
@@ -297,7 +335,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           end
         RUBY
 
-        it 'does not register offense' do
+        it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)
             class Article
               belongs_to :member, foreign_key: :user_id

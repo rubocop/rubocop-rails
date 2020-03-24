@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* Fix a false positive for `Rails/UniqueValidationWithoutIndex` when using conditions. ([@sunny][])
+
 ## 2.5.0 (2020-03-24)
 
 ### New features
@@ -149,3 +153,4 @@
 [@hanachin]: https://github.com/hanachin
 [@joshpencheon]: https://github.com/joshpencheon
 [@djudd]: https://github.com/djudd
+[@sunny]: https://github.com/sunny
