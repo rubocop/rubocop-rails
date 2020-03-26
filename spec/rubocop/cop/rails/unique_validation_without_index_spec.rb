@@ -406,5 +406,46 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         RUBY
       end
     end
+
+    context 'with expression indexes' do
+      context 'when column name is included in expression index' do
+        let(:schema) { <<~RUBY }
+          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+            create_table 'emails', force: :cascade do |t|
+              t.string 'address', null: false
+              t.index 'lower(address)', name: 'index_emails_on_lower_address', unique: true
+            end
+          end
+        RUBY
+
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            class Email < ApplicationRecord
+              validates :address, presence: true, uniqueness: { case_sensitive: false }, email: true
+            end
+          RUBY
+        end
+      end
+
+      context 'when column name is not included in expression index' do
+        let(:schema) { <<~RUBY }
+          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+            create_table 'emails', force: :cascade do |t|
+              t.string 'address', null: false
+              t.index 'lower(unexpected_column_name)', name: 'index_emails_on_lower_address', unique: true
+            end
+          end
+        RUBY
+
+        it 'registers an offense' do
+          expect_offense(<<~RUBY)
+            class Email < ApplicationRecord
+              validates :address, presence: true, uniqueness: { case_sensitive: false }, email: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+            end
+          RUBY
+        end
+      end
+    end
   end
 end
