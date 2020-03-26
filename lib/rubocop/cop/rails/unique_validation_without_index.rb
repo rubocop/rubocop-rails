@@ -47,6 +47,8 @@ module RuboCop
           table = schema.table_by(name: table_name(klass))
           return true unless table # Skip analysis if it can't find the table
 
+          return true if condition_part?(node)
+
           names = column_names(node)
           return true unless names
 
@@ -110,6 +112,18 @@ module RuboCop
             next unless pair.key.sym_type? && pair.key.value == :uniqueness
 
             break pair.value
+          end
+        end
+
+        def condition_part?(node)
+          pairs = node.arguments.last
+          return unless pairs.hash_type?
+
+          pairs.each_pair.any? do |pair|
+            key = pair.key
+            next unless key.sym_type?
+
+            key.value == :if || key.value == :unless
           end
         end
 
