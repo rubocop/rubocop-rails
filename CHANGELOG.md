@@ -6,6 +6,7 @@
 
 * [#213](https://github.com/rubocop-hq/rubocop-rails/pull/213): Fix a false positive for `Rails/UniqueValidationWithoutIndex` when using conditions. ([@sunny][])
 * [#215](https://github.com/rubocop-hq/rubocop-rails/issues/215): Fix a false positive for `Rails/UniqueValidationWithoutIndex` when using Expression Indexes. ([@koic][])
+* [#214](https://github.com/rubocop-hq/rubocop-rails/issues/214): Fix an error for `Rails/UniqueValidationWithoutIndex`when a table has no column definition. ([@koic][])
 
 ## 2.5.0 (2020-03-24)
 

@@ -60,7 +60,7 @@ module RuboCop
 
         def build_columns(node)
           each_content(node).map do |child|
-            next unless child.send_type?
+            next unless child&.send_type?
             next if child.method?(:index)
 
             Column.new(child)
@@ -69,7 +69,7 @@ module RuboCop
 
         def build_indices(node)
           each_content(node).map do |child|
-            next unless child.send_type?
+            next unless child&.send_type?
             next unless child.method?(:index)
 
             Index.new(child)
@@ -79,7 +79,7 @@ module RuboCop
         def each_content(node)
           return enum_for(__method__, node) unless block_given?
 
-          case node.body.type
+          case node.body&.type
           when :begin
             node.body.children.each do |child|
               yield(child)

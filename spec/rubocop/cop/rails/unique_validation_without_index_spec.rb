@@ -303,6 +303,23 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
       end
     end
 
+    context 'when a table has no column definition' do
+      let(:schema) { <<~RUBY }
+        ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+          create_table "users", force: :cascade do |t|
+          end
+        end
+      RUBY
+
+      it 'ignores it' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates :account, uniqueness: true
+          end
+        RUBY
+      end
+    end
+
     context 'when the validation is for a relation with foreign_key: option' do
       context 'without proper index' do
         let(:schema) { <<~RUBY }
