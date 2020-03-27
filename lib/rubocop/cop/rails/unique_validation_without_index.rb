@@ -32,6 +32,7 @@ module RuboCop
         def on_send(node)
           return unless node.method?(:validates)
           return unless uniqueness_part(node)
+          return if condition_part?(node)
           return unless schema
           return if with_index?(node)
 
@@ -47,13 +48,21 @@ module RuboCop
           table = schema.table_by(name: table_name(klass))
           return true unless table # Skip analysis if it can't find the table
 
-          return true if condition_part?(node)
-
           names = column_names(node)
           return true unless names
 
           table.indices.any? do |index|
-            index.unique && index.columns.to_set == names
+            index.unique &&
+              (index.columns.to_set == names ||
+               include_column_names_in_expression_index?(index, names))
+          end
+        end
+
+        def include_column_names_in_expression_index?(index, column_names)
+          return false unless (expression_index = index.expression)
+
+          column_names.all? do |column_name|
+            expression_index.include?(column_name)
           end
         end
 
