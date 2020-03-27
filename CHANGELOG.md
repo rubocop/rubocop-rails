@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#220](https://github.com/rubocop-hq/rubocop-rails/pull/220): Add `Rails/BeforeDestroy` cop. ([@osdakira][])
+
 ### Bug fixes
 
 * [#213](https://github.com/rubocop-hq/rubocop-rails/pull/213): Fix a false positive for `Rails/UniqueValidationWithoutIndex` when using conditions. ([@sunny][])
@@ -154,3 +158,4 @@
 [@joshpencheon]: https://github.com/joshpencheon
 [@djudd]: https://github.com/djudd
 [@sunny]: https://github.com/sunny
+[@osdakira]: https://github.com/osdakira
