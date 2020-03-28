@@ -9,6 +9,10 @@
 * [#214](https://github.com/rubocop-hq/rubocop-rails/issues/214): Fix an error for `Rails/UniqueValidationWithoutIndex`when a table has no column definition. ([@koic][])
 * [#221](https://github.com/rubocop-hq/rubocop-rails/issues/221): Make `Rails/UniqueValidationWithoutIndex` aware of `add_index` in db/schema.rb. ([@koic][])
 
+### Changes
+
+* [#223](https://github.com/rubocop-hq/rubocop-rails/pull/223): Mark `Rails/ApplicationController`, `Rails/ApplicationJob`, `Rails/ApplicationMailer`, and `Rails/ApplicationRecord` as unsafe autocorrect. ([@hoshinotsuyoshi][])
+
 ## 2.5.0 (2020-03-24)
 
 ### New features
@@ -157,3 +161,4 @@
 [@joshpencheon]: https://github.com/joshpencheon
 [@djudd]: https://github.com/djudd
 [@sunny]: https://github.com/sunny
+[@hoshinotsuyoshi]: https://github.com/hoshinotsuyoshi
