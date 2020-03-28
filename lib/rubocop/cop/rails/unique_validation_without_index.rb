@@ -51,7 +51,10 @@ module RuboCop
           names = column_names(node)
           return true unless names
 
-          table.indices.any? do |index|
+          # Compatibility for Rails 4.2.
+          add_indicies = schema.add_indicies_by(table_name: table_name(klass))
+
+          (table.indices + add_indicies).any? do |index|
             index.unique &&
               (index.columns.to_set == names ||
                include_column_names_in_expression_index?(index, names))

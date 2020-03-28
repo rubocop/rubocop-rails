@@ -464,5 +464,46 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         end
       end
     end
+
+    context 'when db/schema.rb has been dumped using `add_index` for index' do
+      context 'when the table does not have any indices' do
+        let(:schema) { <<~RUBY }
+          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+            create_table "users", force: :cascade do |t|
+              t.string "account", null: false
+            end
+            add_index "users", "account", name: "index_users_on_account"
+          end
+        RUBY
+
+        it 'registers an offense' do
+          expect_offense(<<~RUBY)
+            class User
+              validates :account, uniqueness: true
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+            end
+          RUBY
+        end
+      end
+
+      context 'with a unique index' do
+        let(:schema) { <<~RUBY }
+          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+            create_table "users", force: :cascade do |t|
+              t.string "account", null: false
+            end
+            add_index "users", ["account"], name: "index_users_on_account", unique: true
+          end
+        RUBY
+
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            class User
+              validates :account, uniqueness: true
+            end
+          RUBY
+        end
+      end
+    end
   end
 end
