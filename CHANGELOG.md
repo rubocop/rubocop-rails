@@ -15,6 +15,7 @@
 
 * [#233](https://github.com/rubocop-hq/rubocop-rails/pull/233): **(BREAKING)** Drop support for Ruby 2.3. ([@koic][])
 * [#236](https://github.com/rubocop-hq/rubocop-rails/pull/236): **(BREAKING)** Drop support for Rails 4.1 or lower. ([@koic][])
+* [#210](https://github.com/rubocop-hq/rubocop-rails/issues/210): Accept `redirecto_to(...) and return` and similar cases. ([@koic][])
 
 ## 2.5.2 (2020-04-09)
 
