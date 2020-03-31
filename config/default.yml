@@ -81,6 +81,12 @@ Rails/AssertNot:
   Include:
     - '**/test/**/*'
 
+Rails/BeforeDestroy:
+  Description: 'Use `prepend: true` for `before_destroy` callback'
+  Enabled: false
+  Safe: false
+  VersionAdded: '2.5'
+
 Rails/BelongsTo:
   Description: >-
                   Use `optional: true` instead of `required: false` for

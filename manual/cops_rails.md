@@ -239,6 +239,41 @@ Name | Default value | Configurable values
 --- | --- | ---
 Include | `**/test/**/*` | Array
 
+## Rails/BeforeDestroy
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Disabled | No | No | 2.5 | -
+
+This cop looks for `before_destroy` callbacks that don't
+specify a `:prepend` option.
+
+### Examples
+
+```ruby
+# bad
+class Letter < ActiveRecord::Base
+  before_destroy :read?
+end
+
+# bad
+class Letter < ActiveRecord::Base
+  before_destroy do
+  end
+end
+
+# good
+class Letter < ActiveRecord::Base
+  before_destroy :read?, prepend: true
+end
+
+# good
+class Letter < ActiveRecord::Base
+  before_destroy prepend: true do
+  end
+end
+```
+
 ## Rails/BelongsTo
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
