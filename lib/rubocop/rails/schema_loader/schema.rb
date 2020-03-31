@@ -5,16 +5,24 @@ module RuboCop
     module SchemaLoader
       # Represent db/schema.rb
       class Schema
-        attr_reader :tables
+        attr_reader :tables, :add_indicies
 
         def initialize(ast)
           @tables = []
+          @add_indicies = []
+
           build!(ast)
         end
 
         def table_by(name:)
           tables.find do |table|
             table.name == name
+          end
+        end
+
+        def add_indicies_by(table_name:)
+          add_indicies.select do |add_index|
+            add_index.table_name == table_name
           end
         end
 
@@ -25,6 +33,11 @@ module RuboCop
 
           each_table(ast) do |table_def|
             @tables << Table.new(table_def)
+          end
+
+          # Compatibility for Rails 4.2.
+          each_add_index(ast) do |add_index_def|
+            @add_indicies << AddIndex.new(add_index_def)
           end
         end
 
@@ -38,6 +51,14 @@ module RuboCop
             end
           else
             yield ast.body
+          end
+        end
+
+        def each_add_index(ast)
+          ast.body.children.each do |node|
+            next if !node&.send_type? || !node.method?(:add_index)
+
+            yield(node)
           end
         end
       end
@@ -121,8 +142,7 @@ module RuboCop
         attr_reader :name, :columns, :expression, :unique
 
         def initialize(node)
-          node.first_argument
-          @columns, @expression = build_columns_or_expr(node)
+          @columns, @expression = build_columns_or_expr(node.first_argument)
           @unique = nil
 
           analyze_keywords!(node)
@@ -130,12 +150,11 @@ module RuboCop
 
         private
 
-        def build_columns_or_expr(node)
-          arg = node.first_argument
-          if arg.array_type?
-            [arg.values.map(&:value), nil]
+        def build_columns_or_expr(columns)
+          if columns.array_type?
+            [columns.values.map(&:value), nil]
           else
-            [[], arg.value]
+            [[], columns.value]
           end
         end
 
@@ -151,6 +170,19 @@ module RuboCop
               @unique = true
             end
           end
+        end
+      end
+
+      # Represent an `add_index`
+      class AddIndex < Index
+        attr_reader :table_name
+
+        def initialize(node)
+          @table_name = node.first_argument.value
+          @columns, @expression = build_columns_or_expr(node.arguments[1])
+          @unique = nil
+
+          analyze_keywords!(node)
         end
       end
     end

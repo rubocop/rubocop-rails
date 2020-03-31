@@ -85,6 +85,28 @@ RSpec.describe RuboCop::Rails::SchemaLoader do
           expect(table.indices.first.name).to eq 'index_title_lower_unique'
           expect(table.indices.first.unique).to be true
         end
+
+        context 'when an index in users table specified by `add_index`' do
+          let(:schema) { <<~RUBY }
+            ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+              create_table "users", force: :cascade do |t|
+                t.string "account", null: false
+              end
+              add_index "users", ["account"], name: "index_users_on_account", unique: true
+              add_index "users", ["email"], name: "index_users_on_email", unique: true
+              add_index "books", ["isbn"], name: "index_books_on_isbn", unique: true
+            end
+          RUBY
+
+          it 'has an `add_index` for users table' do
+            add_indicies = loaded_schema.add_indicies_by(table_name: 'users')
+            expect(add_indicies.size).to eq 2
+            expect(add_indicies.first.name).to eq 'index_users_on_account'
+            expect(add_indicies.first.table_name).to eq 'users'
+            expect(add_indicies.first.columns).to eq ['account']
+            expect(add_indicies.first.unique).to be true
+          end
+        end
       end
 
       context 'when the current directory is Rails.root' do
