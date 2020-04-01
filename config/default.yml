@@ -57,22 +57,30 @@ Rails/ActiveSupportAliases:
 Rails/ApplicationController:
   Description: 'Check that controllers subclass ApplicationController.'
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '2.4'
+  VersionChanged: '2.5'
 
 Rails/ApplicationJob:
   Description: 'Check that jobs subclass ApplicationJob.'
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '0.49'
+  VersionChanged: '2.5'
 
 Rails/ApplicationMailer:
   Description: 'Check that mailers subclass ApplicationMailer.'
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '2.4'
+  VersionChanged: '2.5'
 
 Rails/ApplicationRecord:
   Description: 'Check that models subclass ApplicationRecord.'
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '0.49'
+  VersionChanged: '2.5'
 
 Rails/AssertNot:
   Description: 'Use `assert_not` instead of `assert !`.'

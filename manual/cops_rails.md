@@ -131,7 +131,7 @@ are not used.
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | Yes  | 2.4 | -
+Enabled | Yes | Yes (Unsafe) | 2.4 | 2.5
 
 This cop checks that controllers subclass ApplicationController.
 
@@ -153,7 +153,7 @@ end
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | Yes  | 0.49 | -
+Enabled | Yes | Yes (Unsafe) | 0.49 | 2.5
 
 This cop checks that jobs subclass ApplicationJob with Rails 5.0.
 
@@ -175,7 +175,7 @@ end
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | Yes  | 2.4 | -
+Enabled | Yes | Yes (Unsafe) | 2.4 | 2.5
 
 This cop checks that mailers subclass ApplicationMailer with Rails 5.0.
 
@@ -197,7 +197,7 @@ end
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | Yes | Yes  | 0.49 | -
+Enabled | Yes | Yes (Unsafe) | 0.49 | 2.5
 
 This cop checks that models subclass ApplicationRecord with Rails 5.0.
 
