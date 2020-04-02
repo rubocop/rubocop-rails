@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.5.1 (2020-04-02)
+
 ### Bug fixes
 
 * [#213](https://github.com/rubocop-hq/rubocop-rails/pull/213): Fix a false positive for `Rails/UniqueValidationWithoutIndex` when using conditions. ([@sunny][])
