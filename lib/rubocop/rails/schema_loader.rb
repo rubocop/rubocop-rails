@@ -24,16 +24,6 @@ module RuboCop
         remove_instance_variable(:@schema)
       end
 
-      private
-
-      def load!(target_ruby_version)
-        path = db_schema_path
-        return unless path
-
-        ast = parse(path, target_ruby_version)
-        Schema.new(ast)
-      end
-
       def db_schema_path
         path = Pathname.pwd
         until path.root?
@@ -44,6 +34,16 @@ module RuboCop
         end
 
         nil
+      end
+
+      private
+
+      def load!(target_ruby_version)
+        path = db_schema_path
+        return unless path
+
+        ast = parse(path, target_ruby_version)
+        Schema.new(ast)
       end
 
       def parse(path, target_ruby_version)

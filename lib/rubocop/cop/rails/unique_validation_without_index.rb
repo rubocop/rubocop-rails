@@ -149,10 +149,6 @@ module RuboCop
             end
           end
         end
-
-        def schema
-          RuboCop::Rails::SchemaLoader.load(target_ruby_version)
-        end
       end
     end
   end
