@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#227](https://github.com/rubocop-hq/rubocop-rails/issues/227): Make `Rails/UniqueValidationWithoutIndex` aware of updating db/schema.rb. ([@koic][])
+
 ## 2.5.1 (2020-04-02)
 
 ### Bug fixes

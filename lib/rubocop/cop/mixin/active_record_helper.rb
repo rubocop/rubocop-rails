@@ -14,6 +14,23 @@ module RuboCop
         (send nil? :belongs_to {str sym} ...)
       PATTERN
 
+      def external_dependency_checksum
+        if defined?(@external_dependency_checksum)
+          return @external_dependency_checksum
+        end
+
+        schema_path = RuboCop::Rails::SchemaLoader.db_schema_path
+        return nil if schema_path.nil?
+
+        schema_code = File.read(schema_path)
+
+        @external_dependency_checksum ||= Digest::SHA1.hexdigest(schema_code)
+      end
+
+      def schema
+        RuboCop::Rails::SchemaLoader.load(target_ruby_version)
+      end
+
       def table_name(class_node)
         table_name = find_set_table_name(class_node).to_a.last&.first_argument
         return table_name.value.to_s if table_name
