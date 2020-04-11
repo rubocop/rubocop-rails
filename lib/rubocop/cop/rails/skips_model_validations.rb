@@ -50,7 +50,10 @@ module RuboCop
                                     update_counters].freeze
 
         def_node_matcher :good_touch?, <<~PATTERN
-          (send (const nil? :FileUtils) :touch ...)
+          {
+            (send (const nil? :FileUtils) :touch ...)
+            (send _ :touch {true false})
+          }
         PATTERN
 
         def on_send(node)
