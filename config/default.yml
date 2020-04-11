@@ -92,7 +92,7 @@ Rails/AssertNot:
 Rails/BelongsTo:
   Description: >-
                   Use `optional: true` instead of `required: false` for
-                  `belongs_to` relations'
+                  `belongs_to` relations.
   Enabled: true
   VersionAdded: '0.62'
 
@@ -184,7 +184,7 @@ Rails/EnumUniqueness:
     - app/models/**/*.rb
 
 Rails/EnvironmentComparison:
-  Description: "Favor `Rails.env.production?` over `Rails.env == 'production'`"
+  Description: "Favor `Rails.env.production?` over `Rails.env == 'production'`."
   Enabled: true
   VersionAdded: '0.52'
 
@@ -245,7 +245,7 @@ Rails/HasManyOrHasOneDependent:
     - app/models/**/*.rb
 
 Rails/HelperInstanceVariable:
-  Description: 'Do not use instance variables in helpers'
+  Description: 'Do not use instance variables in helpers.'
   Enabled: true
   VersionAdded: '2.0'
   Include:
@@ -312,7 +312,7 @@ Rails/LinkToBlank:
   VersionAdded: '0.62'
 
 Rails/NotNullColumn:
-  Description: 'Do not add a NOT NULL column without a default value'
+  Description: 'Do not add a NOT NULL column without a default value.'
   Enabled: true
   VersionAdded: '0.43'
   Include:
@@ -434,7 +434,7 @@ Rails/ReversibleMigration:
     - db/migrate/*.rb
 
 Rails/SafeNavigation:
-  Description: "Use Ruby's safe navigation operator (`&.`) instead of `try!`"
+  Description: "Use Ruby's safe navigation operator (`&.`) instead of `try!`."
   Enabled: true
   VersionAdded: '0.43'
   # This will convert usages of `try` to use safe navigation as well as `try!`.
