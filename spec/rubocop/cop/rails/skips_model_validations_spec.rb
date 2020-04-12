@@ -35,6 +35,14 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
     it 'accepts FileUtils.touch' do
       expect_no_offenses("FileUtils.touch('file')")
     end
+
+    it 'accepts touch with literal true' do
+      expect_no_offenses('belongs_to(:user).touch(true)')
+    end
+
+    it 'accepts touch with literal false' do
+      expect_no_offenses('belongs_to(:user).touch(false)')
+    end
   end
 
   context 'with methods that require at least an argument' do
