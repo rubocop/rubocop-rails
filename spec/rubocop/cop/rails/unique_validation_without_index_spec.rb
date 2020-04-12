@@ -96,8 +96,8 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "written_articles", force: :cascade do |t|
-              t.bitint "user_id", null: false
-              t.bitint "article_id", null: false
+              t.bigint "user_id", null: false
+              t.bigint "article_id", null: false
               t.index ["user_id"], name: "idx_uid", unique: true
               t.index ["article_id"], name: "idx_aid", unique: true
             end
@@ -118,8 +118,8 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "written_articles", force: :cascade do |t|
-              t.bitint "user_id", null: false
-              t.bitint "article_id", null: false
+              t.bigint "user_id", null: false
+              t.bigint "article_id", null: false
               t.index ["user_id", "article_id"], name: "idx_uid_aid", unique: true
             end
           end
@@ -140,9 +140,9 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "written_articles", force: :cascade do |t|
-              t.bitint "a_id", null: false
-              t.bitint "b_id", null: false
-              t.bitint "c_id", null: false
+              t.bigint "a_id", null: false
+              t.bigint "b_id", null: false
+              t.bigint "c_id", null: false
               t.index ["a_id"], name: "idx_aid", unique: true
               t.index ["b_id"], name: "idx_bid", unique: true
               t.index ["c_id"], name: "idx_cid", unique: true
@@ -164,9 +164,9 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "written_articles", force: :cascade do |t|
-              t.bitint "a_id", null: false
-              t.bitint "b_id", null: false
-              t.bitint "c_id", null: false
+              t.bigint "a_id", null: false
+              t.bigint "b_id", null: false
+              t.bigint "c_id", null: false
               t.index ["a_id", "b_id", "c_id"], name: "idx_ids", unique: true
             end
           end
@@ -187,7 +187,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "articles", force: :cascade do |t|
-              t.bitint "user_id", null: false
+              t.bigint "user_id", null: false
               t.index ["user_id"], name: "idx_user_id"
             end
           end
@@ -208,7 +208,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "articles", force: :cascade do |t|
-              t.bitint "user_id", null: false
+              t.bigint "user_id", null: false
               t.index ["user_id"], name: "idx_user_id", unique: true
             end
           end
@@ -228,7 +228,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "articles", force: :cascade do |t|
-              t.bitint "user_id", null: false
+              t.bigint "user_id", null: false
             end
           end
         RUBY
@@ -247,7 +247,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "articles", force: :cascade do |t|
-              t.bitint "user_id", null: false
+              t.bigint "user_id", null: false
             end
           end
         RUBY
@@ -266,7 +266,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "articles", force: :cascade do |t|
-              t.bitint "member_id", null: false
+              t.bigint "member_id", null: false
               t.index ["user_id"], name: "idx_user_id", unique: true
             end
           end
@@ -305,7 +305,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "articles", force: :cascade do |t|
-              t.bitint "user_id", null: false
+              t.bigint "user_id", null: false
               t.index ["user_id"], name: "idx_user_id"
             end
           end
@@ -326,7 +326,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "articles", force: :cascade do |t|
-              t.bitint "user_id", null: false
+              t.bigint "user_id", null: false
               t.index ["user_id"], name: "idx_user_id", unique: true
             end
           end
@@ -346,7 +346,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "articles", force: :cascade do |t|
-              t.bitint "foo_id", null: false
+              t.bigint "foo_id", null: false
               t.index ["user_id"], name: "idx_user_id", unique: true
             end
           end
