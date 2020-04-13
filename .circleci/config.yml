@@ -24,9 +24,6 @@ workflows:
   build:
     jobs:
       - rake_default:
-          name: Ruby 2.3
-          image: circleci/ruby:2.3
-      - rake_default:
           name: Ruby 2.4
           image: circleci/ruby:2.4
       - rake_default:
