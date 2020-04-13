@@ -6,6 +6,10 @@
 
 * [#12](https://github.com/rubocop-hq/rubocop-rails/issues/12): Fix a false positive for `Rails/SkipsModelValidations` when passing a boolean literal to `touch`. ([@eugeneius][])
 
+### Changes
+
+* [#233](https://github.com/rubocop-hq/rubocop-rails/pull/233): **(BREAKING)** Drop support for Ruby 2.3. ([@koic][])
+
 ## 2.5.2 (2020-04-09)
 
 ### Bug fixes
