@@ -41,7 +41,24 @@ module RuboCop
           end
         end
 
+        def autocorrect(node)
+          lambda do |corrector|
+            task_name = node.arguments[0]
+            task_dependency = correct_task_dependency(task_name)
+
+            corrector.replace(task_name.loc.expression, task_dependency)
+          end
+        end
+
         private
+
+        def correct_task_dependency(task_name)
+          if task_name.sym_type?
+            task_name.source.delete(':|\'|"') + ': :environment'
+          else
+            "#{task_name.source} => :environment"
+          end
+        end
 
         def task_name(node)
           first_arg = node.arguments[0]

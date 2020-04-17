@@ -1722,7 +1722,7 @@ UnlessBlank | `true` | Boolean
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 --- | --- | --- | --- | ---
-Enabled | No | No | 2.4 | -
+Enabled | No | Yes  | 2.4 | 2.6
 
 This cop checks for Rake tasks without the `:environment` task
 dependency. The `:environment` task loads application code for other

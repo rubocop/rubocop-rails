@@ -367,6 +367,7 @@ Rails/RakeEnvironment:
   Enabled: true
   Safe: false
   VersionAdded: '2.4'
+  VersionChanged: '2.6'
   Include:
     - '**/Rakefile'
     - '**/*.rake'

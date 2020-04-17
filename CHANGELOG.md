@@ -5,6 +5,7 @@
 ### New features
 
 * [#51](https://github.com/rubocop-hq/rubocop-rails/issues/51): Add allowed receiver class names option for `Rails/DynamicFindBy`. ([@tejasbubane][])
+* [#211](https://github.com/rubocop-hq/rubocop-rails/issues/211): Add autocorrect to `Rails/RakeEnvironment` cop. ([@tejasbubane][])
 
 ### Bug fixes
 

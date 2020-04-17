@@ -11,6 +11,37 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment do
       ^^^^^^^^^ Include `:environment` task as a dependency for all Rake tasks.
       end
     RUBY
+
+    expect_correction(<<~RUBY)
+      task foo: :environment do
+      end
+    RUBY
+  end
+
+  it 'registers an offense for string task name' do
+    expect_offense(<<~RUBY)
+      task 'bar' do
+      ^^^^^^^^^^ Include `:environment` task as a dependency for all Rake tasks.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      task 'bar' => :environment do
+      end
+    RUBY
+  end
+
+  it 'registers an offense for namespaced task name' do
+    expect_offense(<<~RUBY)
+      task 'foo:bar:baz' do
+      ^^^^^^^^^^^^^^^^^^ Include `:environment` task as a dependency for all Rake tasks.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      task 'foo:bar:baz' => :environment do
+      end
+    RUBY
   end
 
   it 'does not register an offense to task with :environment ' \
@@ -87,6 +118,12 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment do
   it 'does not register an offense to task with no block' do
     expect_no_offenses(<<~RUBY)
       task(:foo).do_something
+    RUBY
+  end
+
+  it 'does not register an offense to task with string name and arguments' do
+    expect_no_offenses(<<~RUBY)
+      task 'foo' => [dep, :bar]
     RUBY
   end
 end
