@@ -165,8 +165,14 @@ Rails/DynamicFindBy:
   StyleGuide: 'https://rails.rubystyle.guide#find_by'
   Enabled: true
   VersionAdded: '0.44'
+  VersionChanged: '2.6'
+  # The `Whitelist` has been deprecated, Please use `AllowedMethods` instead.
   Whitelist:
     - find_by_sql
+  AllowedMethods:
+    - find_by_sql
+  AllowedReceivers:
+    - Gem::Specification
 
 Rails/EnumHash:
   Description: 'Prefer hash syntax over array syntax when defining enums.'
