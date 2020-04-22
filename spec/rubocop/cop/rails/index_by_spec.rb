@@ -94,6 +94,34 @@ RSpec.describe RuboCop::Cop::Rails::IndexBy, :config do
     end
   end
 
+  context 'when `to_h` is on a different line' do
+    it 'registers an offense for `map { ... }.to_h`' do
+      expect_offense(<<~RUBY)
+        x.map { |el| [el.to_sym, el] }.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `map { ... }.to_h`.
+          to_h
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x.index_by { |el| el.to_sym }
+      RUBY
+    end
+  end
+
+  context 'when `.to_h` is on a different line' do
+    it 'registers an offense for `map { ... }.to_h`' do
+      expect_offense(<<~RUBY)
+        x.map { |el| [el.to_sym, el] }
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `map { ... }.to_h`.
+          .to_h
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x.index_by { |el| el.to_sym }
+      RUBY
+    end
+  end
+
   context 'when to_h is not called on the result' do
     it 'does not register an offense for `map { ... }.to_h`' do
       expect_no_offenses('x.map { |el| [el.to_sym, el] }')
