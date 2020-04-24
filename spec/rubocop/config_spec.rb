@@ -27,7 +27,7 @@ RSpec.describe RuboCop::Config do
       end
 
       context 'correctly' do
-        let(:rails_version) { 4.0 }
+        let(:rails_version) { 6.0 }
 
         it 'uses TargetRailsVersion' do
           expect(configuration.target_rails_version).to eq rails_version
