@@ -549,3 +549,7 @@ Rails/Validation:
   VersionChanged: '0.41'
   Include:
     - app/models/**/*.rb
+
+# Accept `redirecto_to(...) and return` and similar cases.
+Style/AndOr:
+  EnforcedStyle: conditionals
