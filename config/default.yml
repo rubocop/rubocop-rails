@@ -119,6 +119,14 @@ Rails/BulkChangeTable:
   Include:
     - db/migrate/*.rb
 
+Rails/ContentTag:
+  Description: 'Use `tag` instead of `content_tag`.'
+  Reference:
+    - 'https://github.com/rails/rails/issues/25195'
+    - 'https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-content_tag'
+  Enabled: true
+  VersionAdded: '2.6'
+
 Rails/CreateTableWithTimestamps:
   Description: >-
                   Checks the migration for which timestamps are not included

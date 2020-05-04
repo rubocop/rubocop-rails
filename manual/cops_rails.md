@@ -443,6 +443,32 @@ Name | Default value | Configurable values
 Database | `<none>` | `mysql`, `postgresql`
 Include | `db/migrate/*.rb` | Array
 
+## Rails/ContentTag
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Enabled | Yes | Yes  | 2.6 | -
+
+This cop checks that `tag` is used instead of `content_tag`
+because `content_tag` is legacy syntax.
+
+### Examples
+
+```ruby
+# bad
+content_tag(:p, 'Hello world!')
+content_tag(:br)
+
+# good
+tag.p('Hello world!')
+tag.br
+```
+
+### References
+
+* [https://github.com/rails/rails/issues/25195](https://github.com/rails/rails/issues/25195)
+* [https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-content_tag](https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-content_tag)
+
 ## Rails/CreateTableWithTimestamps
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged

@@ -13,6 +13,7 @@
 * [Rails/BelongsTo](cops_rails.md#railsbelongsto)
 * [Rails/Blank](cops_rails.md#railsblank)
 * [Rails/BulkChangeTable](cops_rails.md#railsbulkchangetable)
+* [Rails/ContentTag](cops_rails.md#railscontenttag)
 * [Rails/CreateTableWithTimestamps](cops_rails.md#railscreatetablewithtimestamps)
 * [Rails/Date](cops_rails.md#railsdate)
 * [Rails/Delegate](cops_rails.md#railsdelegate)
