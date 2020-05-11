@@ -15,8 +15,6 @@ module RuboCop
       #   Rails.env.production?
       #   Rails.env == 'production'
       class UnknownEnv < Cop
-        include NameSimilarity
-
         MSG = 'Unknown environment `%<name>s`.'
         MSG_SIMILAR = 'Unknown environment `%<name>s`. ' \
                       'Did you mean `%<similar>s`?'
@@ -57,11 +55,14 @@ module RuboCop
 
         def message(name)
           name = name.to_s.chomp('?')
-          similar = find_similar_name(name, [])
-          if similar
-            format(MSG_SIMILAR, name: name, similar: similar)
-          else
+
+          spell_checker = DidYouMean::SpellChecker.new(dictionary: environments)
+          similar_names = spell_checker.correct(name)
+
+          if similar_names.empty?
             format(MSG, name: name)
+          else
+            format(MSG_SIMILAR, name: name, similar: similar_names.join(', '))
           end
         end
 
