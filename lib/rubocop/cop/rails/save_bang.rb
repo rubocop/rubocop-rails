@@ -218,9 +218,7 @@ module RuboCop
         def check_used_in_condition_or_compound_boolean(node)
           return false unless in_condition_or_compound_boolean?(node)
 
-          unless MODIFY_PERSIST_METHODS.include?(node.method_name)
-            add_offense_for_node(node, CREATE_CONDITIONAL_MSG)
-          end
+          add_offense_for_node(node, CREATE_CONDITIONAL_MSG) unless MODIFY_PERSIST_METHODS.include?(node.method_name)
 
           true
         end

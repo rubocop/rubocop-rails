@@ -42,9 +42,7 @@ module RuboCop
 
           option_nodes.map(&:children).each do |options|
             blank = options.find { |o| blank_target?(o) }
-            if blank && options.none? { |o| includes_noopener?(o) }
-              add_offense(blank)
-            end
+            add_offense(blank) if blank && options.none? { |o| includes_noopener?(o) }
           end
         end
 

@@ -85,9 +85,7 @@ module RuboCop
             end
 
             # prefer `Time` over `DateTime` class
-            if strict?
-              corrector.replace(node.children.first.source_range, 'Time')
-            end
+            corrector.replace(node.children.first.source_range, 'Time') if strict?
             remove_redundant_in_time_zone(corrector, node)
           end
         end

@@ -70,9 +70,7 @@ module RuboCop
           parent = node.parent
 
           if create_table_with_block?(parent)
-            if parent.body.nil? || !time_columns_included?(parent.body)
-              add_offense(parent)
-            end
+            add_offense(parent) if parent.body.nil? || !time_columns_included?(parent.body)
           elsif create_table_with_timestamps_proc?(node)
             # nothing to do
           else

@@ -15,9 +15,7 @@ module RuboCop
       PATTERN
 
       def external_dependency_checksum
-        if defined?(@external_dependency_checksum)
-          return @external_dependency_checksum
-        end
+        return @external_dependency_checksum if defined?(@external_dependency_checksum)
 
         schema_path = RuboCop::Rails::SchemaLoader.db_schema_path
         return nil if schema_path.nil?
