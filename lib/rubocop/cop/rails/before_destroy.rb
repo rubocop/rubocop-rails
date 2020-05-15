@@ -54,14 +54,34 @@ module RuboCop
         def_node_search :associations_with_dependent_destroy, <<~PATTERN
           (send nil? {:has_many :has_one} _ (hash $...))
         PATTERN
-        # (send nil? {:has_many :has_one} _ (hash (pair (sym :dependent) (sym :destroy)) ...))
+
+        def_node_matcher :dependent_destroy, <<~PATTERN
+          (pair (sym :dependent) (sym :destroy))
+        PATTERN
+
+        def_node_matcher :prepend_true, <<~PATTERN
+          (pair (sym :prepend) true)
+        PATTERN
 
         def on_send(node)
           return unless before_destroy?(node)
 
           root_class_node = node.each_ancestor(:class).first
+          add_offense(node) if check_associations(root_class_node)
+        end
 
-          add_offense(node) if associations_with_dependent_destroy(root_class_node).count.positive?
+        private
+
+        def check_associations(root_class_node)
+          associations_with_dependent_destroy(root_class_node).each do |association_options|
+            next if association_options.empty?
+
+            has_dependent_destroy = association_options.any?(&method(:dependent_destroy))
+            has_prepend_true = association_options.any?(&method(:prepend_true))
+            return true if has_dependent_destroy && !has_prepend_true
+          end
+
+          false
         end
       end
     end
