@@ -5,44 +5,47 @@ RSpec.describe RuboCop::Cop::Rails::BeforeDestroy do
 
   let(:config) { RuboCop::Config.new }
 
-  context 'association precedes before_destroy' do
-    it 'registers an offense if the association has dependent destroy' do
-      expect_offense(<<~RUBY)
-        class MyRecord < ApplicationRecord
-          has_many :entities, dependent: :destroy
-          before_destroy { do_something }
-          ^^^^^^^^^^^^^^ "before_destroy" callbacks must run before "dependent: :destroy" associations.
-        end
-      RUBY
+  ASSOCIATION_METHODS = %i[has_many has_one belongs_to]
+  ASSOCIATION_METHODS.each do |association_method|
+    context "#{association_method} precedes before_destroy" do
+      it "registers an offense if #{association_method} has dependent destroy" do
+        expect_offense(<<~RUBY)
+          class MyRecord < ApplicationRecord
+            #{association_method} :entities, dependent: :destroy
+            before_destroy { do_something }
+            ^^^^^^^^^^^^^^ "before_destroy" callbacks must run before "dependent: :destroy" associations.
+          end
+        RUBY
+      end
+
+      it "does not register an offense if #{association_method} has prepend: true" do
+        expect_no_offenses(<<~RUBY)
+          class MyRecord < ApplicationRecord
+            #{association_method} :entities, prepend: true, dependent: :destroy
+            before_destroy { do_something }
+          end
+        RUBY
+      end
+
+      it "does not register an offense if #{association_method} is not dependent destroy" do
+        expect_no_offenses(<<~RUBY)
+          class MyRecord < ApplicationRecord
+            #{association_method} :entities
+            before_destroy { do_something }
+          end
+        RUBY
+      end
     end
 
-    it 'does not register an offense if the dependent destroy association has prepend true' do
-      expect_no_offenses(<<~RUBY)
-        class MyRecord < ApplicationRecord
-          has_many :entities, prepend: true, dependent: :destroy
-          before_destroy { do_something }
-        end
-      RUBY
-    end
-
-    it 'does not register an offense if the association is not dependent destroy' do
-      expect_no_offenses(<<~RUBY)
-        class MyRecord < ApplicationRecord
-          has_many :entities
-          before_destroy { do_something }
-        end
-      RUBY
-    end
-  end
-
-  context 'before_destroy precedes association' do
-    it 'does not register an offense' do
-      expect_no_offenses(<<~RUBY)
-        class MyRecord < ApplicationRecord
-          before_destroy { do_something }
-          has_many :entities, dependent: :destroy
-        end
-      RUBY
+    context "before_destroy precedes #{association_method} with dependent: :destroy" do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          class MyRecord < ApplicationRecord
+            before_destroy { do_something }
+            #{association_method} :entities, dependent: :destroy
+          end
+        RUBY
+      end
     end
   end
 end

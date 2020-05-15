@@ -4,13 +4,12 @@
 module RuboCop
   module Cop
     module Rails
-      # TODO: Write cop description and example of bad / good code. For every
-      # `SupportedStyle` and unique configuration, there needs to be examples.
-      # Examples must have valid Ruby syntax. Do not use upticks.
+      # This cop checks that `before_destroy` callbacks
+      # are executed before ActiveRecord assoctiations
+      # that are marked as `dependant: :destroy`.
+      # See: https://guides.rubyonrails.org/active_record_callbacks.html#destroying-an-object
       #
-      # @example EnforcedStyle: bar (default)
-      #   # Description of the `bar` style.
-      #
+      # @example
       #   # bad
       #   bad_bar_method
       #
@@ -46,7 +45,7 @@ module RuboCop
         PATTERN
 
         def_node_search :association_nodes, <<~PATTERN
-          (send nil? {:has_many :has_one} _ (hash ...))
+          (send nil? {:has_many :has_one :belongs_to} _ (hash ...))
         PATTERN
 
         def_node_matcher :hash_options, <<~PATTERN
