@@ -35,10 +35,14 @@ RSpec.describe RuboCop::Cop::Rails::BeforeDestroy do
     end
   end
 
-  xit 'does not register an offense when using `#good_method`' do
-    expect_no_offenses(<<~RUBY)
-      before_destroy { do_something }
-      has_many :entities, dependent: :destroy
-    RUBY
+  context 'before_destroy precedes association' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class MyRecord < ApplicationRecord
+          before_destroy { do_something }
+          has_many :entities, dependent: :destroy
+        end
+      RUBY
+    end
   end
 end
