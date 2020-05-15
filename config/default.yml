@@ -89,6 +89,12 @@ Rails/AssertNot:
   Include:
     - '**/test/**/*'
 
+Rails/BeforeDestroy:
+  Description: 'Ensure proper placement of before_destroy'
+  Enabled: pending
+  Reference: 'https://guides.rubyonrails.org/active_record_callbacks.html#destroying-an-object'
+  VersionAdded: '0.84'
+
 Rails/BelongsTo:
   Description: >-
                   Use `optional: true` instead of `required: false` for
