@@ -5,19 +5,20 @@ RSpec.describe RuboCop::Cop::Rails::BeforeDestroy do
 
   let(:config) { RuboCop::Config.new }
 
-  # TODO: Write test code
-  #
-  # For example
   it 'registers an offense when using `#bad_method`' do
     expect_offense(<<~RUBY)
-      bad_method
-      ^^^^^^^^^^ Use `#good_method` instead of `#bad_method`.
+      class MyRecord < ApplicationRecord
+        has_many :entities, dependent: :destroy
+        before_destroy { do_something }
+        ^^^^^^^^^^^^^^ TEST TEST
+      end
     RUBY
   end
 
-  it 'does not register an offense when using `#good_method`' do
+  xit 'does not register an offense when using `#good_method`' do
     expect_no_offenses(<<~RUBY)
-      good_method
+      before_destroy { do_something }
+      has_many :entities, dependent: :destroy
     RUBY
   end
 end

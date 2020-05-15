@@ -45,16 +45,23 @@ module RuboCop
         # See https://github.com/rubocop-hq/rubocop-ast/blob/master/lib/rubocop/node_pattern.rb
         #
         # For example
-        MSG = 'Use `#good_method` instead of `#bad_method`.'
+        MSG = 'TEST TEST'
 
-        def_node_matcher :bad_method?, <<~PATTERN
-          (send nil? :bad_method ...)
+        def_node_matcher :before_destroy?, <<~PATTERN
+          (send _ :before_destroy)
         PATTERN
 
-        def on_send(node)
-          return unless bad_method?(node)
+        def_node_search :associations_with_dependent_destroy, <<~PATTERN
+          (send nil? {:has_many :has_one} _ (hash $...))
+        PATTERN
+        # (send nil? {:has_many :has_one} _ (hash (pair (sym :dependent) (sym :destroy)) ...))
 
-          add_offense(node)
+        def on_send(node)
+          return unless before_destroy?(node)
+
+          root_class_node = node.each_ancestor(:class).first
+
+          add_offense(node) if associations_with_dependent_destroy(root_class_node).count.positive?
         end
       end
     end
