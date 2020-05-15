@@ -39,13 +39,7 @@ module RuboCop
       #   good_foo_method(args)
       #
       class BeforeDestroy < Cop
-        # TODO: Implement the cop in here.
-        #
-        # In many cases, you can use a node matcher for matching node pattern.
-        # See https://github.com/rubocop-hq/rubocop-ast/blob/master/lib/rubocop/node_pattern.rb
-        #
-        # For example
-        MSG = 'TEST TEST'
+        MSG = '"before_destroy" callbacks must run before "dependent: :destroy" associations.'
 
         def_node_matcher :before_destroy?, <<~PATTERN
           (send _ :before_destroy)

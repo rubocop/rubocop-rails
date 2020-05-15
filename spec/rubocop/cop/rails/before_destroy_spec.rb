@@ -11,7 +11,7 @@ RSpec.describe RuboCop::Cop::Rails::BeforeDestroy do
         class MyRecord < ApplicationRecord
           has_many :entities, dependent: :destroy
           before_destroy { do_something }
-          ^^^^^^^^^^^^^^ TEST TEST
+          ^^^^^^^^^^^^^^ "before_destroy" callbacks must run before "dependent: :destroy" associations.
         end
       RUBY
     end
