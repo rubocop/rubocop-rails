@@ -41,7 +41,7 @@ module RuboCop
         MSG = '"before_destroy" callbacks must run before "dependent: :destroy" associations.'
 
         def_node_matcher :before_destroy?, <<~PATTERN
-          (send _ :before_destroy)
+          (send _ :before_destroy ...)
         PATTERN
 
         def_node_search :association_nodes, <<~PATTERN
@@ -52,20 +52,21 @@ module RuboCop
           `(hash $...)
         PATTERN
 
-        def_node_matcher :dependent_destroy, <<~PATTERN
+        def_node_matcher :dependent_destroy?, <<~PATTERN
           (pair (sym :dependent) (sym :destroy))
         PATTERN
 
-        def_node_matcher :prepend_true, <<~PATTERN
+        def_node_matcher :prepend_true?, <<~PATTERN
           (pair (sym :prepend) true)
         PATTERN
 
         def on_send(node)
           return unless before_destroy?(node)
+          return if has_prepend_true?(node)
 
           root_class_node = node.each_ancestor(:class).first
-          return unless check_potential_violation_associations(root_class_node).any? do |v|
-            v.first_line < node.first_line
+          return unless potentially_offending_association_nodes(root_class_node).any? do |association_node|
+            association_node.first_line < node.first_line
           end
 
           add_offense(node)
@@ -73,16 +74,22 @@ module RuboCop
 
         private
 
-        def check_potential_violation_associations(root_class_node)
+        def has_prepend_true?(before_destroy_node)
+          node_hash_options = hash_options(before_destroy_node)
+          return false unless node_hash_options
+
+          node_hash_options.any?(&method(:prepend_true?))
+        end
+
+        def potentially_offending_association_nodes(root_class_node)
           potential_violations = []
 
           association_nodes(root_class_node).each do |association_node|
             association_options = hash_options(association_node)
-            next if association_options.empty?
+            next unless association_options
 
-            has_dependent_destroy = association_options.any?(&method(:dependent_destroy))
-            has_prepend_true = association_options.any?(&method(:prepend_true))
-            potential_violations << association_node if has_dependent_destroy && !has_prepend_true
+            has_dependent_destroy = association_options.any?(&method(:dependent_destroy?))
+            potential_violations << association_node if has_dependent_destroy
           end
 
           potential_violations

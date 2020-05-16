@@ -18,11 +18,20 @@ RSpec.describe RuboCop::Cop::Rails::BeforeDestroy do
         RUBY
       end
 
-      it "does not register an offense if #{association_method} has prepend: true" do
+      it "does not register an offense if before_destroy with block has prepend: true" do
         expect_no_offenses(<<~RUBY)
           class MyRecord < ApplicationRecord
-            #{association_method} :entities, prepend: true, dependent: :destroy
-            before_destroy { do_something }
+            #{association_method} :entities, dependent: :destroy
+            before_destroy(prepend: true) { do_something }
+          end
+        RUBY
+      end
+
+      it "does not register an offense if before_destroy with method reference has prepend: true" do
+        expect_no_offenses(<<~RUBY)
+          class MyRecord < ApplicationRecord
+            #{association_method} :entities, dependent: :destroy
+            before_destroy :some_method, prepend: true
           end
         RUBY
       end
