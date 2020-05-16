@@ -18,6 +18,16 @@ RSpec.describe RuboCop::Cop::Rails::BeforeDestroy do
         RUBY
       end
 
+      it 'registers an offense in a mix-in' do
+        expect_offense(<<~RUBY)
+          module MyMixin
+            #{association_method} :entities, dependent: :destroy
+            before_destroy { do_something }
+            ^^^^^^^^^^^^^^ "before_destroy" callbacks must run before "dependent: :destroy" associations.
+          end
+        RUBY
+      end
+
       it 'does not register an offense if before_destroy with block has prepend: true' do
         expect_no_offenses(<<~RUBY)
           class MyRecord < ApplicationRecord

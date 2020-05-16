@@ -49,7 +49,7 @@ module RuboCop
           return unless before_destroy?(node)
           return if acceptable_before_destroy_node?(node)
 
-          root_class_node = node.each_ancestor(:class).first
+          root_class_node = node.each_ancestor(:class, :module).first
           return unless potentially_offending_association_nodes(root_class_node).any? do |association_node|
             association_node.first_line < node.first_line
           end
