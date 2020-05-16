@@ -5,37 +5,22 @@ module RuboCop
   module Cop
     module Rails
       # This cop checks that `before_destroy` callbacks
-      # are executed before ActiveRecord assoctiations
-      # that are marked as `dependant: :destroy`.
+      # are executed before ActiveRecord associations
+      # that are marked as `dependent: :destroy`.
       # See: https://guides.rubyonrails.org/active_record_callbacks.html#destroying-an-object
       #
       # @example
       #   # bad
-      #   bad_bar_method
-      #
-      #   # bad
-      #   bad_bar_method(args)
+      #   has_many :entities, dependent: :destroy
+      #   before_destroy { do_something }
       #
       #   # good
-      #   good_bar_method
+      #   before_destroy { do_something }
+      #   has_many :entities, dependent: :destroy
       #
       #   # good
-      #   good_bar_method(args)
-      #
-      # @example EnforcedStyle: foo
-      #   # Description of the `foo` style.
-      #
-      #   # bad
-      #   bad_foo_method
-      #
-      #   # bad
-      #   bad_foo_method(args)
-      #
-      #   # good
-      #   good_foo_method
-      #
-      #   # good
-      #   good_foo_method(args)
+      #   has_many :entities, dependent: :destroy
+      #   before_destroy(prepend: true) { do_something }
       #
       class BeforeDestroy < Cop
         MSG = '"before_destroy" callbacks must run before "dependent: :destroy" associations.'
