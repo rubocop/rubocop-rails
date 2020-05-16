@@ -47,7 +47,7 @@ module RuboCop
 
         def on_send(node)
           return unless before_destroy?(node)
-          return if has_prepend_true?(node)
+          return if acceptable_before_destroy_node?(node)
 
           root_class_node = node.each_ancestor(:class).first
           return unless potentially_offending_association_nodes(root_class_node).any? do |association_node|
@@ -59,7 +59,7 @@ module RuboCop
 
         private
 
-        def has_prepend_true?(before_destroy_node)
+        def acceptable_before_destroy_node?(before_destroy_node)
           node_hash_options = hash_options(before_destroy_node)
           return false unless node_hash_options
 

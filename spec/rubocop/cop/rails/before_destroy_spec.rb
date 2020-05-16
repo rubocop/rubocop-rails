@@ -5,7 +5,7 @@ RSpec.describe RuboCop::Cop::Rails::BeforeDestroy do
 
   let(:config) { RuboCop::Config.new }
 
-  ASSOCIATION_METHODS = %i[has_many has_one belongs_to]
+  ASSOCIATION_METHODS = %i[has_many has_one belongs_to].freeze
   ASSOCIATION_METHODS.each do |association_method|
     context "#{association_method} precedes before_destroy" do
       it "registers an offense if #{association_method} has dependent destroy" do
@@ -18,7 +18,7 @@ RSpec.describe RuboCop::Cop::Rails::BeforeDestroy do
         RUBY
       end
 
-      it "does not register an offense if before_destroy with block has prepend: true" do
+      it 'does not register an offense if before_destroy with block has prepend: true' do
         expect_no_offenses(<<~RUBY)
           class MyRecord < ApplicationRecord
             #{association_method} :entities, dependent: :destroy
@@ -27,7 +27,7 @@ RSpec.describe RuboCop::Cop::Rails::BeforeDestroy do
         RUBY
       end
 
-      it "does not register an offense if before_destroy with method reference has prepend: true" do
+      it 'does not register an offense if before_destroy with method reference has prepend: true' do
         expect_no_offenses(<<~RUBY)
           class MyRecord < ApplicationRecord
             #{association_method} :entities, dependent: :destroy
