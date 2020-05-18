@@ -114,5 +114,48 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
         tag.div() { tag.strong('Hi') }
       RUBY
     end
+
+    context 'when the first argument is a variable' do
+      it 'does not register an offence when the first argument is a lvar' do
+        expect_no_offenses(<<~RUBY)
+          name = do_something
+          content_tag(name, "Hello world!", class: ["strong", "highlight"])
+        RUBY
+      end
+
+      it 'does not register an offence when the first argument is an ivar' do
+        expect_no_offenses(<<~RUBY)
+          content_tag(@name, "Hello world!", class: ["strong", "highlight"])
+        RUBY
+      end
+
+      it 'does not register an offence when the first argument is a cvar' do
+        expect_no_offenses(<<~RUBY)
+          content_tag(@@name, "Hello world!", class: ["strong", "highlight"])
+        RUBY
+      end
+
+      it 'does not register an offence when the first argument is a gvar' do
+        expect_no_offenses(<<~RUBY)
+          content_tag($name, "Hello world!", class: ["strong", "highlight"])
+        RUBY
+      end
+    end
+
+    context 'when the first argument is a method' do
+      it 'does not register an offence' do
+        expect_no_offenses(<<~RUBY)
+          content_tag(name, "Hello world!", class: ["strong", "highlight"])
+        RUBY
+      end
+    end
+
+    context 'when the first argument is a constant' do
+      it 'does not register an offence' do
+        expect_no_offenses(<<~RUBY)
+          content_tag(CONST, "Hello world!", class: ["strong", "highlight"])
+        RUBY
+      end
+    end
   end
 end

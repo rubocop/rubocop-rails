@@ -6,6 +6,11 @@ module RuboCop
       # This cop checks that `tag` is used instead of `content_tag`
       # because `content_tag` is legacy syntax.
       #
+      # !!! Note
+      #
+      #    Allow `content_tag` when the first argument is a variable because
+      #    `content_tag(name)` is simpler rather than `tag.public_send(name)`.
+      #
       # @example
       #  # bad
       #  content_tag(:p, 'Hello world!')
@@ -14,6 +19,7 @@ module RuboCop
       #  # good
       #  tag.p('Hello world!')
       #  tag.br
+      #  content_tag(name, 'Hello world!')
       class ContentTag < Cop
         include RangeHelp
         extend TargetRailsVersion
@@ -24,6 +30,9 @@ module RuboCop
 
         def on_send(node)
           return unless node.method?(:content_tag)
+
+          first_argument = node.first_argument
+          return if first_argument.variable? || first_argument.send_type? || first_argument.const_type?
 
           add_offense(node)
         end
