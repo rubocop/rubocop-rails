@@ -17,6 +17,7 @@ task generate_cops_documentation: :yard_for_generate_documentation do
 
   def cops_body(config, cop, description, examples_objects, pars)
     content = h2(cop.cop_name)
+    content << required_ruby_version(cop)
     content << properties(config, cop)
     content << "#{description}\n"
     content << examples(examples_objects) if examples_objects.count.positive?
@@ -30,6 +31,17 @@ task generate_cops_documentation: :yard_for_generate_documentation do
       content << h4(example.name) unless example.name == ''
       content << code_example(example)
     end
+  end
+
+  def required_ruby_version(cop)
+    return '' unless cop.respond_to?(:required_minimum_ruby_version)
+
+    <<~NOTE
+      !!! Note
+
+          Required Ruby version: #{cop.required_minimum_ruby_version}
+
+    NOTE
   end
 
   # rubocop:disable Metrics/MethodLength
