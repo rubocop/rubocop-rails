@@ -40,6 +40,7 @@
 * [Rails/NotNullColumn](cops_rails.md#railsnotnullcolumn)
 * [Rails/Output](cops_rails.md#railsoutput)
 * [Rails/OutputSafety](cops_rails.md#railsoutputsafety)
+* [Rails/Pick](cops_rails.md#railspick)
 * [Rails/PluralizationGrammar](cops_rails.md#railspluralizationgrammar)
 * [Rails/Presence](cops_rails.md#railspresence)
 * [Rails/Present](cops_rails.md#railspresent)

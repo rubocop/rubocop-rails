@@ -348,6 +348,12 @@ Rails/OutputSafety:
   Enabled: true
   VersionAdded: '0.41'
 
+Rails/Pick:
+  Description: 'Prefer `pick` over `pluck(...).first`.'
+  Enabled: true
+  Safe: false
+  VersionAdded: '2.6'
+
 Rails/PluralizationGrammar:
   Description: 'Checks for incorrect grammar when using methods like `3.day.ago`.'
   Enabled: true
