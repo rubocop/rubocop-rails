@@ -607,4 +607,8 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
   it 'properly ignores lvasign without right hand side' do
     expect_no_offenses('variable += 1')
   end
+
+  it 'ignores update when called on ENV' do
+    expect_no_offenses('ENV.update("DISABLE_SPRING" => "1")')
+  end
 end
