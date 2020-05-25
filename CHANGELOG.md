@@ -12,6 +12,7 @@
 
 * [#12](https://github.com/rubocop-hq/rubocop-rails/issues/12): Fix a false positive for `Rails/SkipsModelValidations` when passing a boolean literal to `touch`. ([@eugeneius][])
 * [#238](https://github.com/rubocop-hq/rubocop-rails/issues/238): Fix auto correction for `Rails/IndexBy` when the `.to_h` invocation is separated in multiple lines. ([@diogoosorio][])
+* [#248](https://github.com/rubocop-hq/rubocop-rails/pull/248): Fix a false positive for `Rails/SaveBang` when `update` is called on `ENV`. ([@eugeneius][])
 
 ### Changes
 

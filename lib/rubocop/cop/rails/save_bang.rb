@@ -246,6 +246,7 @@ module RuboCop
 
         def allowed_receiver?(node)
           return false unless node.receiver
+          return true if node.receiver.const_name == 'ENV'
           return false unless cop_config['AllowedReceivers']
 
           cop_config['AllowedReceivers'].any? do |allowed_receiver|
