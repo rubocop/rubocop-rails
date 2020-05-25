@@ -10,6 +10,7 @@
 * [Rails/ApplicationMailer](cops_rails.md#railsapplicationmailer)
 * [Rails/ApplicationRecord](cops_rails.md#railsapplicationrecord)
 * [Rails/AssertNot](cops_rails.md#railsassertnot)
+* [Rails/BeforeDestroy](cops_rails.md#railsbeforedestroy)
 * [Rails/BelongsTo](cops_rails.md#railsbelongsto)
 * [Rails/Blank](cops_rails.md#railsblank)
 * [Rails/BulkChangeTable](cops_rails.md#railsbulkchangetable)

@@ -239,6 +239,37 @@ Name | Default value | Configurable values
 --- | --- | ---
 Include | `**/test/**/*` | Array
 
+## Rails/BeforeDestroy
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Enabled | Yes | No | 0.84 | -
+
+This cop checks that `before_destroy` callbacks
+are executed before ActiveRecord associations
+that are marked as `dependent: :destroy`.
+See: https://guides.rubyonrails.org/active_record_callbacks.html#destroying-an-object
+
+### Examples
+
+```ruby
+# bad
+has_many :entities, dependent: :destroy
+before_destroy { do_something }
+
+# good
+before_destroy { do_something }
+has_many :entities, dependent: :destroy
+
+# good
+has_many :entities, dependent: :destroy
+before_destroy(prepend: true) { do_something }
+```
+
+### References
+
+* [https://guides.rubyonrails.org/active_record_callbacks.html#destroying-an-object](https://guides.rubyonrails.org/active_record_callbacks.html#destroying-an-object)
+
 ## Rails/BelongsTo
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
