@@ -48,6 +48,7 @@ module RuboCop
 
         def on_dstr(node)
           return unless rails_root_nodes?(node)
+          return unless node.children.last.str_type?
           return unless node.children.last.source.start_with?('.') ||
                         node.children.last.source.include?(File::SEPARATOR)
 

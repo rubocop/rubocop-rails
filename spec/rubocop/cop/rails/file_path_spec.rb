@@ -24,6 +24,14 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
+    context 'when using Rails.root.join in string interpolation with nothing after it' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root.join('log/production.log')}"
+        RUBY
+      end
+    end
+
     context 'when using string interpolation without Rails.root' do
       it 'does not register an offense' do
         expect_no_offenses(<<~'RUBY')
@@ -131,6 +139,14 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'does not registers an offense' do
         expect_no_offenses(<<~'RUBY')
           'system "rm -rf #{Rails.root.join(\'a\', \'b.png\')}"'
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join in string interpolation with nothing after it' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root.join('log', 'production.log')}"
         RUBY
       end
     end
