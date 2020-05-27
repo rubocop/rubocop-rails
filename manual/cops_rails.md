@@ -1621,6 +1621,26 @@ safe_join([user_content, " ", content_tag(:span, user_content)])
 #    "&lt;b&gt;hi&lt;/b&gt; <span>&lt;b&gt;hi&lt;/b&gt;</span>"
 ```
 
+## Rails/Pick
+
+Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+--- | --- | --- | --- | ---
+Enabled | No | Yes  | 2.6 | -
+
+This cop enforces the use `pick` over `pluck(...).first`.
+
+### Examples
+
+```ruby
+# bad
+Model.pluck(:a).first
+Model.pluck(:a, :b).first
+
+# good
+Model.pick(:a)
+Model.pick(:a, :b)
+```
+
 ## Rails/PluralizationGrammar
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
