@@ -565,6 +565,6 @@ Rails/Validation:
   Include:
     - app/models/**/*.rb
 
-# Accept `redirecto_to(...) and return` and similar cases.
+# Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
   EnforcedStyle: conditionals
