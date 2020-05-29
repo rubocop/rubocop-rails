@@ -3,8 +3,9 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks if the value of the option `class_name`, in
-      # the definition of a reflection is a string.
+      # This cop checks the definition of model associations to only allow
+      # string values on the reflection option `class_name`, preventing
+      # the accidental autoloading of other model constants.
       #
       # @example
       #   # bad
@@ -13,6 +14,7 @@ module RuboCop
       #
       #   # good
       #   has_many :accounts, class_name: 'Account'
+      #   has_many :children, class_name: self.name
       class ReflectionClassName < Cop
         MSG = 'Use a string value for `class_name`.'
 
@@ -23,7 +25,7 @@ module RuboCop
         PATTERN
 
         def_node_matcher :reflection_class_name, <<~PATTERN
-          (pair (sym :class_name) [!dstr !str !sym])
+          (pair (sym :class_name) {const (send const ...)})
         PATTERN
 
         def on_send(node)
