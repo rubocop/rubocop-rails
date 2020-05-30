@@ -1,0 +1,5 @@
+= RuboCop Rails
+
+A https://github.com/rubocop-hq/rubocop[RuboCop] extension focused on enforcing Rails best practices and coding conventions.
+
+It's based on the community-driven https://rails.rubystyle.guide[Rails style guide].

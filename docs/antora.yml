@@ -1,0 +1,5 @@
+name: rubocop-rails
+title: RuboCop Rails
+version: master
+nav:
+  - modules/ROOT/nav.adoc
