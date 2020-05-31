@@ -31,7 +31,7 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
       end
     end
 
-    it 'have a period at EOL of description' do
+    it 'has a period at EOL of description' do
       cop_names.each do |name|
         description = config[name]['Description']
 
