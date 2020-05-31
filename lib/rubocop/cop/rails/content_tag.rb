@@ -6,10 +6,8 @@ module RuboCop
       # This cop checks that `tag` is used instead of `content_tag`
       # because `content_tag` is legacy syntax.
       #
-      # !!! Note
-      #
-      #    Allow `content_tag` when the first argument is a variable because
-      #    `content_tag(name)` is simpler rather than `tag.public_send(name)`.
+      # NOTE: Allow `content_tag` when the first argument is a variable because
+      #      `content_tag(name)` is simpler rather than `tag.public_send(name)`.
       #
       # @example
       #  # bad

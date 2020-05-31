@@ -9,14 +9,14 @@ module RuboCop
       #
       # This will allow:
       #
-      # - update or save calls, assigned to a variable,
+      # * update or save calls, assigned to a variable,
       #   or used as a condition in an if/unless/case statement.
-      # - create calls, assigned to a variable that then has a
+      # * create calls, assigned to a variable that then has a
       #   call to `persisted?`, or whose return value is checked by
       #   `persisted?` immediately
-      # - calls if the result is explicitly returned from methods and blocks,
+      # * calls if the result is explicitly returned from methods and blocks,
       #   or provided as arguments.
-      # - calls whose signature doesn't look like an ActiveRecord
+      # * calls whose signature doesn't look like an ActiveRecord
       #   persistence method.
       #
       # By default it will also allow implicit returns from methods and blocks.
