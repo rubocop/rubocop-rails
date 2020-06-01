@@ -2571,6 +2571,93 @@ EnforcedStyle | `flexible` | `strict`, `flexible`
 * [https://rails.rubystyle.guide#time](https://rails.rubystyle.guide#time)
 * [http://danilenko.org/2012/7/6/rails_timezones](http://danilenko.org/2012/7/6/rails_timezones)
 
+## Rails/Timecop
+
+Enabled by default | Supports autocorrection
+--- | ---
+Enabled | Yes
+
+This cop disallows all usage of `Timecop`, in favour of
+`ActiveSupport::Testing::TimeHelpers`.
+
+## Migration
+`Timecop.freeze` should be replaced with `freeze_time` when used
+without arguments. Where a `duration` has been passed to `freeze`, it
+should be replaced with `travel`. Likewise, where a `time` has been
+passed to `freeze`, it should be replaced with `travel_to`.
+
+`Timecop.return` should be replaced with `travel_back`, when used
+without a block. `travel_back` does not accept a block, so where
+`return` is used with a block, it should be replaced by explicitly
+calling `freeze_time` with a block, and passing the `time` to
+temporarily return to.
+
+`Timecop.scale` should be replaced by explicitly calling `travel` or
+`travel_to` with the expected `durations` or `times`, respectively,
+rather than relying on allowing time to continue to flow.
+
+`Timecop.travel` should be replaced by `travel` or `travel_to` when
+passed a `duration` or `time`, respectively. As with `Timecop.scale`,
+rather than relying on time continuing to flow, it should be travelled
+to explicitly.
+
+All other usages of `Timecop` are similarly disallowed.
+
+## Caveats
+
+Note that if using RSpec, `TimeHelpers` are not included by default,
+and must be manually included by updating `spec_helper` (or
+`rails_helper`):
+
+```ruby
+RSpec.configure do |config|
+  config.include ActiveSupport::Testing::TimeHelpers
+end
+```
+
+### Examples
+
+```ruby
+# bad
+Timecop
+
+# bad
+Timecop.freeze
+Timecop.freeze(duration)
+Timecop.freeze(time)
+
+# good
+freeze_time
+travel(duration)
+travel_to(time)
+
+# bad
+Timecop.freeze { assert true }
+Timecop.freeze(duration) { assert true }
+Timecop.freeze(time) { assert true }
+
+# good
+freeze_time { assert true }
+travel(duration) { assert true }
+travel_to(time) { assert true }
+
+# bad
+Timecop.travel(duration)
+Timecop.travel(time)
+
+# good
+travel(duration)
+travel_to(time)
+
+# bad
+Timecop.return
+Timecop.return { assert true }
+
+# good
+travel_back
+travel_to(time) { assert true }
+```
+
 ## Rails/UniqBeforePluck
 
 Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
