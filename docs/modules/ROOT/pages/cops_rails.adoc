@@ -59,7 +59,7 @@ skip_after_filter :do_stuff
 | `action`, `filter`
 
 | Include
-| `+app/controllers/**/*.rb+`
+| `app/controllers/**/*.rb`
 | Array
 |===
 
@@ -132,7 +132,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -339,10 +339,10 @@ can be controlled through the use of `optional: true`.
 
 From the release notes:
 
- belongs_to will now trigger a validation error by default if the
- association is not present. You can turn this off on a
- per-association basis with optional: true. Also deprecate required
- option in favor of optional for belongs_to. (Pull Request)
+    belongs_to will now trigger a validation error by default if the
+    association is not present. You can turn this off on a
+    per-association basis with optional: true. Also deprecate required
+    option in favor of optional for belongs_to. (Pull Request)
 
 In the case that the developer is doing `required: false`, we
 definitely want to autocorrect to `optional: true`.
@@ -582,10 +582,8 @@ end
 This cop checks that `tag` is used instead of `content_tag`
 because `content_tag` is legacy syntax.
 
-!!! Note
-
-Allow `content_tag` when the first argument is a variable because
-   `content_tag(name)` is simpler rather than `tag.public_send(name)`.
+NOTE: Allow `content_tag` when the first argument is a variable because
+     `content_tag(name)` is simpler rather than `tag.public_send(name)`.
 
 === Examples
 
@@ -964,7 +962,7 @@ enum status: { active: 0, archived: 1 }
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -1009,7 +1007,7 @@ enum status: [:active, :archived]
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -1085,11 +1083,11 @@ raise 'a bad error has happened'
 | Name | Default value | Configurable values
 
 | Include
-| `+app/**/*.rb+`, `+config/**/*.rb+`, `+lib/**/*.rb+`
+| `app/**/*.rb`, `config/**/*.rb`, `lib/**/*.rb`
 | Array
 
 | Exclude
-| `+lib/**/*.rake+`
+| `lib/**/*.rake`
 | Array
 |===
 
@@ -1180,7 +1178,7 @@ User.find_by(name: 'Bruce')
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -1220,7 +1218,7 @@ User.all.find_each
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -1259,7 +1257,7 @@ This cop checks for the use of the has_and_belongs_to_many macro.
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -1307,7 +1305,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -1358,7 +1356,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+app/helpers/**/*.rb+`
+| `app/helpers/**/*.rb`
 | Array
 |===
 
@@ -1398,7 +1396,7 @@ get :new, params: { user_id: 1 }
 | Name | Default value | Configurable values
 
 | Include
-| `+spec/**/*+`, `+test/**/*+`
+| `spec/**/*`, `test/**/*`
 | Array
 |===
 
@@ -1519,7 +1517,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+app/controllers/**/*.rb+`
+| `app/controllers/**/*.rb`
 | Array
 |===
 
@@ -1539,8 +1537,8 @@ end
 | -
 |===
 
-This cop looks for uses of `+each_with_object({}) { ... }+`,
-`+map { ... }.to_h+`, and `+Hash[map { ... }]+` that are transforming
+This cop looks for uses of `each_with_object({}) { ... }`,
+`map { ... }.to_h`, and `Hash[map { ... }]` that are transforming
 an enumerable into a hash where the values are the original elements.
 Rails provides the `index_by` method for this purpose.
 
@@ -1569,8 +1567,8 @@ Hash[[1, 2, 3].collect { |el| [foo(el), el] }]
 | -
 |===
 
-This cop looks for uses of `+each_with_object({}) { ... }+`,
-`+map { ... }.to_h+`, and `+Hash[map { ... }]+` that are transforming
+This cop looks for uses of `each_with_object({}) { ... }`,
+`map { ... }.to_h`, and `Hash[map { ... }]` that are transforming
 an enumerable into a hash where the keys are the original elements.
 Rails provides the `index_with` method for this purpose.
 
@@ -1738,7 +1736,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -1848,7 +1846,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+app/controllers/**/*.rb+`
+| `app/controllers/**/*.rb`
 | Array
 |===
 
@@ -1969,7 +1967,7 @@ Rails.logger.debug 'A debug message'
 | Name | Default value | Configurable values
 
 | Include
-| `+app/**/*.rb+`, `+config/**/*.rb+`, `+db/**/*.rb+`, `+lib/**/*.rb+`
+| `app/**/*.rb`, `config/**/*.rb`, `db/**/*.rb`, `lib/**/*.rb`
 | Array
 |===
 
@@ -2056,12 +2054,12 @@ safe_join([user_content, " ", content_tag(:span, user_content)])
 
 | Enabled
 | No
-| Yes
+| Yes (Unsafe)
 | 2.6
 | -
 |===
 
-This cop enforces the use `pick` over `+pluck(...).first+`.
+This cop enforces the use `pick` over `pluck(...).first`.
 
 === Examples
 
@@ -2249,7 +2247,7 @@ something if foo.present?
 
 | Enabled
 | No
-| Yes
+| Yes (Unsafe)
 | 2.4
 | 2.6
 |===
@@ -2290,7 +2288,7 @@ end
 | Array
 
 | Exclude
-| `+lib/capistrano/tasks/**/*.rake+`
+| `lib/capistrano/tasks/**/*.rake`
 | Array
 |===
 
@@ -2336,7 +2334,7 @@ self[:attr] = val
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -2389,7 +2387,7 @@ validates :x, length: { is: 5 }, allow_nil: true, allow_blank: false
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -2934,14 +2932,14 @@ save and an exception is better than unhandled failure.
 This will allow:
 
 * update or save calls, assigned to a variable,
-or used as a condition in an if/unless/case statement.
+  or used as a condition in an if/unless/case statement.
 * create calls, assigned to a variable that then has a
-call to `persisted?`, or whose return value is checked by
-`persisted?` immediately
+  call to `persisted?`, or whose return value is checked by
+  `persisted?` immediately
 * calls if the result is explicitly returned from methods and blocks,
-or provided as arguments.
+  or provided as arguments.
 * calls whose signature doesn't look like an ActiveRecord
-persistence method.
+  persistence method.
 
 By default it will also allow implicit returns from methods and blocks.
 that behavior can be turned off with `AllowImplicitReturn: false`.
@@ -3084,7 +3082,7 @@ scope :something, -> { where(something: true) }
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -3165,7 +3163,7 @@ user.touch
 
 | Enabled
 | No
-| Yes
+| Yes (Unsafe)
 | 0.30
 | 0.68
 |===
@@ -3354,7 +3352,7 @@ validates :account, length: { minimum: MIN_LENGTH }
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
 
@@ -3447,6 +3445,6 @@ validates :foo, uniqueness: true
 | Name | Default value | Configurable values
 
 | Include
-| `+app/models/**/*.rb+`
+| `app/models/**/*.rb`
 | Array
 |===
