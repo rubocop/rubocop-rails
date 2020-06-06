@@ -8,6 +8,7 @@
 * [#211](https://github.com/rubocop-hq/rubocop-rails/issues/211): Add autocorrect to `Rails/RakeEnvironment` cop. ([@tejasbubane][])
 * [#242](https://github.com/rubocop-hq/rubocop-rails/pull/242): Add `Rails/ContentTag` cop. ([@tabuchi0919][])
 * [#249](https://github.com/rubocop-hq/rubocop-rails/pull/249): Add new `Rails/Pick` cop. ([@eugeneius][])
+* [#257](https://github.com/rubocop-hq/rubocop-rails/pull/257): Add new `Rails/RedundantForeignKey` cop. ([@eugeneius][])
 
 ### Bug fixes
 

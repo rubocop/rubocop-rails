@@ -48,6 +48,7 @@
 * xref:cops_rails.adoc#railsrakeenvironment[Rails/RakeEnvironment]
 * xref:cops_rails.adoc#railsreadwriteattribute[Rails/ReadWriteAttribute]
 * xref:cops_rails.adoc#railsredundantallownil[Rails/RedundantAllowNil]
+* xref:cops_rails.adoc#railsredundantforeignkey[Rails/RedundantForeignKey]
 * xref:cops_rails.adoc#railsredundantreceiverinwithoptions[Rails/RedundantReceiverInWithOptions]
 * xref:cops_rails.adoc#railsreflectionclassname[Rails/ReflectionClassName]
 * xref:cops_rails.adoc#railsrefutemethods[Rails/RefuteMethods]

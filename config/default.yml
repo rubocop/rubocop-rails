@@ -408,6 +408,11 @@ Rails/RedundantAllowNil:
   Include:
     - app/models/**/*.rb
 
+Rails/RedundantForeignKey:
+  Description: 'Checks for associations where the `:foreign_key` option is redundant.'
+  Enabled: true
+  VersionAdded: '2.6'
+
 Rails/RedundantReceiverInWithOptions:
   Description: 'Checks for redundant receiver in `with_options`.'
   Enabled: true
