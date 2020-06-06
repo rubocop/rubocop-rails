@@ -115,6 +115,12 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
+    it 'does not register an offense when `content_tag` is called with no arguments' do
+      expect_no_offenses(<<~RUBY)
+        content_tag
+      RUBY
+    end
+
     context 'when the first argument is a variable' do
       it 'does not register an offence when the first argument is a lvar' do
         expect_no_offenses(<<~RUBY)

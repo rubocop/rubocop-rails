@@ -30,6 +30,8 @@ module RuboCop
           return unless node.method?(:content_tag)
 
           first_argument = node.first_argument
+          return unless first_argument
+
           return if first_argument.variable? || first_argument.send_type? || first_argument.const_type?
 
           add_offense(node)
