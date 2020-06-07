@@ -534,7 +534,7 @@ Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'
   Enabled: true
   VersionAdded: '0.40'
-  VersionChanged: '0.47'
+  VersionChanged: '2.6'
   EnforcedStyle: conservative
   SupportedStyles:
     - conservative

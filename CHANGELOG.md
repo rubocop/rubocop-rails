@@ -15,6 +15,7 @@
 * [#238](https://github.com/rubocop-hq/rubocop-rails/issues/238): Fix auto correction for `Rails/IndexBy` when the `.to_h` invocation is separated in multiple lines. ([@diogoosorio][])
 * [#248](https://github.com/rubocop-hq/rubocop-rails/pull/248): Fix a false positive for `Rails/SaveBang` when `update` is called on `ENV`. ([@eugeneius][])
 * [#251](https://github.com/rubocop-hq/rubocop-rails/pull/251): Fix a false positive for `Rails/FilePath` when the result of `Rails.root.join` is interpolated at the end of a string. ([@eugeneius][])
+* [#91](https://github.com/rubocop-hq/rubocop-rails/issues/91): Fix `Rails/UniqBeforePluck` to not recommend using `uniq` in `ActiveRecord::Relation`s anymore since it was deprecated in Rails 5.0. ([@santib][], [@ghiculescu][])
 
 ### Changes
 
@@ -193,3 +194,4 @@
 [@tejasbubane]: https://github.com/tejasbubane
 [@diogoosorio]: https://github.com/diogoosorio
 [@tabuchi0919]: https://github.com/tabuchi0919
+[@ghiculescu]: https://github.com/ghiculescu
