@@ -8,9 +8,9 @@ RSpec.describe RuboCop::Cop::Rails::UniqBeforePluck, :config do
       if action == :correct
         it "finds the use of #{method} after pluck in #{source}" do
           inspect_source(source)
-          expect(cop.messages).to eq(["Use `#{method}` before `pluck`."])
+          expect(cop.messages).to eq(['Use `distinct` before `pluck`.'])
           expect(cop.highlights).to eq([method])
-          corrected_source = corrected || "Model.#{method}.pluck(:id)"
+          corrected_source = corrected || 'Model.distinct.pluck(:id)'
           expect(autocorrect_source(source)).to eq(corrected_source)
         end
       else
@@ -57,11 +57,11 @@ RSpec.describe RuboCop::Cop::Rails::UniqBeforePluck, :config do
   shared_examples_for 'mode dependent offenses' do |method, action|
     it_behaves_like 'UniqBeforePluck cop', method,
                     "Model.scope.pluck(:id).#{method}", action,
-                    "Model.scope.#{method}.pluck(:id)"
+                    'Model.scope.distinct.pluck(:id)'
 
     it_behaves_like 'UniqBeforePluck cop', method,
                     "instance.assoc.pluck(:id).#{method}", action,
-                    "instance.assoc.#{method}.pluck(:id)"
+                    'instance.assoc.distinct.pluck(:id)'
   end
 
   %w[uniq distinct].each do |method|
