@@ -2391,6 +2391,44 @@ validates :x, length: { is: 5 }, allow_nil: true, allow_blank: false
 | Array
 |===
 
+== Rails/RedundantForeignKey
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| Yes
+| Yes
+| 2.6
+| -
+|===
+
+This cop detects cases where the `:foreign_key` option on associations
+is redundant.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class Post
+  has_many :comments, foreign_key: 'post_id'
+end
+
+class Comment
+  belongs_to :post, foreign_key: 'post_id'
+end
+
+# good
+class Post
+  has_many :comments
+end
+
+class Comment
+  belongs_to :author, foreign_key: 'user_id'
+end
+----
+
 == Rails/RedundantReceiverInWithOptions
 
 |===
