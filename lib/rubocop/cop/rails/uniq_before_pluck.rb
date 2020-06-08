@@ -67,8 +67,7 @@ module RuboCop
 
           return unless method
 
-          add_offense(node, location: :selector,
-                            message: format(MSG, method: method))
+          add_offense(node, location: :selector)
         end
 
         def autocorrect(node)
