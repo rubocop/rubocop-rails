@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.6.0 (2020-06-08)
+
 ### New features
 
 * [#51](https://github.com/rubocop-hq/rubocop-rails/issues/51): Add allowed receiver class names option for `Rails/DynamicFindBy`. ([@tejasbubane][])
