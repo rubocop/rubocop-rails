@@ -90,7 +90,7 @@ module RuboCop
         end
 
         def string_with_slash?(node)
-          node.str_type? && node.source =~ %r{/}
+          node.str_type? && node.source.match?(%r{/})
         end
 
         def register_offense(node)

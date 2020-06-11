@@ -48,7 +48,7 @@ module RuboCop
         def on_send(node)
           try_call(node) do |try_method, dispatch|
             return if try_method == :try && !cop_config['ConvertTry']
-            return unless dispatch.sym_type? && dispatch.value =~ /\w+[=!?]?/
+            return unless dispatch.sym_type? && dispatch.value.match?(/\w+[=!?]?/)
 
             add_offense(node, message: format(MSG, try: try_method))
           end

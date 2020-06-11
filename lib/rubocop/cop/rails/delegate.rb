@@ -122,7 +122,7 @@ module RuboCop
         end
 
         def private_or_protected_inline(line)
-          processed_source[line - 1].strip =~ /\A(private )|(protected )/
+          processed_source[line - 1].strip.match?(/\A(private )|(protected )/)
         end
       end
     end
