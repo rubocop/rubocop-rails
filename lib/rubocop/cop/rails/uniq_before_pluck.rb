@@ -23,7 +23,7 @@ module RuboCop
       #
       # @example EnforcedStyle: conservative (default)
       #   # bad
-      #   Model.pluck(:id).distinct
+      #   Model.pluck(:id).uniq
       #
       #   # good
       #   Model.distinct.pluck(:id)
@@ -31,14 +31,14 @@ module RuboCop
       # @example EnforcedStyle: aggressive
       #   # bad
       #   # this will return a Relation that pluck is called on
-      #   Model.where(cond: true).pluck(:id).distinct
+      #   Model.where(cond: true).pluck(:id).uniq
       #
       #   # bad
       #   # an association on an instance will return a CollectionProxy
-      #   instance.assoc.pluck(:id).distinct
+      #   instance.assoc.pluck(:id).uniq
       #
       #   # bad
-      #   Model.pluck(:id).distinct
+      #   Model.pluck(:id).uniq
       #
       #   # good
       #   Model.distinct.pluck(:id)
