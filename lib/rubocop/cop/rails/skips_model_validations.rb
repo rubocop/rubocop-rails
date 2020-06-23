@@ -57,8 +57,8 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return if whitelist.include?(node.method_name.to_s)
-          return unless blacklist.include?(node.method_name.to_s)
+          return if allowed_methods.include?(node.method_name.to_s)
+          return unless forbidden_methods.include?(node.method_name.to_s)
           return if allowed_method?(node)
           return if good_touch?(node)
 
@@ -77,12 +77,12 @@ module RuboCop
             !node.arguments?
         end
 
-        def blacklist
-          cop_config['Blacklist'] || []
+        def forbidden_methods
+          cop_config['ForbiddenMethods'] || []
         end
 
-        def whitelist
-          cop_config['Whitelist'] || []
+        def allowed_methods
+          cop_config['AllowedMethods'] || []
         end
       end
     end
