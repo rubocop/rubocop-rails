@@ -124,4 +124,35 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
       expect_no_offenses('User.touch(:attr)')
     end
   end
+
+  context 'with obsolete Blacklist configuration' do
+    let(:cop_config) do
+      {
+        'Blacklist' => %w[toggle! touch]
+      }
+    end
+
+    it 'warns about renamed forbidden methods' do
+      expect do
+        expect_offense(<<~RUBY)
+          user&.toggle!(:active)
+                ^^^^^^^ Avoid using `toggle!` because it skips validations.
+        RUBY
+      end.to output("`Blacklist` has been renamed to `ForbiddenMethods`.\n").to_stderr
+    end
+  end
+
+  context 'with obsolete Whitelist configuration' do
+    let(:cop_config) do
+      {
+        'Whitelist' => %w[touch]
+      }
+    end
+
+    it 'warns about renamed allowed methods' do
+      expect do
+        expect_no_offenses('User.touch(:attr)')
+      end.to output("`Whitelist` has been renamed to `AllowedMethods`.\n").to_stderr
+    end
+  end
 end

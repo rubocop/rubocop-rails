@@ -1,6 +1,9 @@
 # Change log
 
 ## master (unreleased)
+
+### Changes
+
 * [#263](https://github.com/rubocop-hq/rubocop-rails/pull/263): Change terminology to `ForbiddenMethods` and `AllowedMethods`. ([@jcoyne][])
 
 ## 2.6.0 (2020-06-08)

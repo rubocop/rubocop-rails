@@ -66,6 +66,12 @@ module RuboCop
         end
         alias on_csend on_send
 
+        def initialize(*)
+          super
+          @displayed_allowed_warning = false
+          @displayed_forbidden_warning = false
+        end
+
         private
 
         def message(node)
@@ -78,10 +84,25 @@ module RuboCop
         end
 
         def forbidden_methods
+          obsolete_result = cop_config['Blacklist']
+          if obsolete_result
+            warn '`Blacklist` has been renamed to `ForbiddenMethods`.' unless @displayed_forbidden_warning
+            @displayed_forbidden_warning = true
+            return obsolete_result
+          end
+
           cop_config['ForbiddenMethods'] || []
         end
 
         def allowed_methods
+          obsolete_result = cop_config['Whitelist']
+          if obsolete_result
+            warn '`Whitelist` has been renamed to `AllowedMethods`.' unless @displayed_allowed_warning
+            @displayed_allowed_warning = true
+
+            return obsolete_result
+          end
+
           cop_config['AllowedMethods'] || []
         end
       end
