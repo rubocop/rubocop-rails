@@ -35,6 +35,7 @@ module RuboCop
           (pair {(sym :rel) (str "rel")} (str _))
         PATTERN
 
+        # rubocop:disable Metrics/CyclomaticComplexity
         def on_send(node)
           return unless node.method?(:link_to)
 
@@ -45,6 +46,7 @@ module RuboCop
             add_offense(blank) if blank && options.none? { |o| includes_noopener?(o) }
           end
         end
+        # rubocop:enable Metrics/CyclomaticComplexity
 
         def autocorrect(node)
           lambda do |corrector|
