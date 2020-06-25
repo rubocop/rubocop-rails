@@ -17,6 +17,7 @@
 * xref:cops_rails.adoc#railscontenttag[Rails/ContentTag]
 * xref:cops_rails.adoc#railscreatetablewithtimestamps[Rails/CreateTableWithTimestamps]
 * xref:cops_rails.adoc#railsdate[Rails/Date]
+* xref:cops_rails.adoc#railsdefaultscope[Rails/DefaultScope]
 * xref:cops_rails.adoc#railsdelegate[Rails/Delegate]
 * xref:cops_rails.adoc#railsdelegateallowblank[Rails/DelegateAllowBlank]
 * xref:cops_rails.adoc#railsdynamicfindby[Rails/DynamicFindBy]

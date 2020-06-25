@@ -740,6 +740,45 @@ date.in_time_zone
 | `strict`, `flexible`
 |===
 
+== Rails/DefaultScope
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Disabled
+| Yes
+| No
+| 2.7
+| -
+|===
+
+This cop looks for uses of `default_scope`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+default_scope -> { where(hidden: false) }
+
+# good
+scope :published, -> { where(hidden: false) }
+
+# bad
+def self.default_scope
+  where(hidden: false)
+end
+
+# good
+def self.published
+  where(hidden: false)
+end
+----
+
+=== References
+
+* https://rails.rubystyle.guide#avoid-default-scope
+
 == Rails/Delegate
 
 |===
