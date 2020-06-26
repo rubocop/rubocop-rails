@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#261](https://github.com/rubocop-hq/rubocop-rails/issues/261): Fix auto correction for `Rails/ContentTag` when `content_tag` is called with options hash and block. ([@fatkodima][])
+
 ### Changes
 
 * [#263](https://github.com/rubocop-hq/rubocop-rails/pull/263): Change terminology to `ForbiddenMethods` and `AllowedMethods`. ([@jcoyne][])
@@ -204,3 +208,4 @@
 [@tabuchi0919]: https://github.com/tabuchi0919
 [@ghiculescu]: https://github.com/ghiculescu
 [@jcoyne]: https://github.com/jcoyne
+[@fatkodima]: https://github.com/fatkodima
