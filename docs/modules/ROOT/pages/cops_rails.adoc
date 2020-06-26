@@ -2102,6 +2102,35 @@ Model.pick(:a)
 Model.pick(:a, :b)
 ----
 
+== Rails/PluckInWhere
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| No
+| Yes (Unsafe)
+| 2.7
+| -
+|===
+
+This cop identifies places where `pluck` is used in `where` query methods
+and can be replaced with `select`.
+
+Since `pluck` is an eager method and hits the database immediately,
+using `select` helps to avoid additional database queries.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+Post.where(user_id: User.active.pluck(:id))
+
+# good
+Post.where(user_id: User.active.select(:id))
+----
+
 == Rails/PluralizationGrammar
 
 |===

@@ -359,6 +359,12 @@ Rails/Pick:
   Safe: false
   VersionAdded: '2.6'
 
+Rails/PluckInWhere:
+  Description: 'Use `select` instead of `pluck` in `where` query methods.'
+  Enabled: 'pending'
+  Safe: false
+  VersionAdded: '2.7'
+
 Rails/PluralizationGrammar:
   Description: 'Checks for incorrect grammar when using methods like `3.day.ago`.'
   Enabled: true
