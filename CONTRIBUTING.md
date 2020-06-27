@@ -13,6 +13,7 @@ do so.
 * Be clear, concise and precise in your description of the problem.
 * Open an issue with a descriptive title and a summary in grammatically correct,
   complete sentences.
+* Consider using [Real World Rails](https://github.com/eliotsykes/real-world-rails) for research or testing.
 * Include the output of `rubocop -V`:
 
 ```
