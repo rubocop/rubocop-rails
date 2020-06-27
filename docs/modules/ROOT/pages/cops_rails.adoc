@@ -4134,3 +4134,39 @@ User.exists?(name: 'john')
 User.where('length(name) > 10').exists?
 user.posts.exists?(published: true)
 ----
+
+== Rails/WhereNot
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.8
+| -
+|===
+
+This cop identifies places where manually constructed SQL
+in `where` can be replaced with `where.not(...)`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+User.where('name != ?', 'Gabe')
+User.where('name != :name', name: 'Gabe')
+User.where('name IS NOT NULL')
+User.where('name NOT IN (?)', ['john', 'jane'])
+User.where('name NOT IN (:names)', names: ['john', 'jane'])
+
+# good
+User.where.not(name: 'Gabe')
+User.where.not(name: nil)
+User.where.not(name: ['john', 'jane'])
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#where-not

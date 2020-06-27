@@ -687,6 +687,12 @@ Rails/WhereExists:
   Enabled: 'pending'
   VersionAdded: '2.7'
 
+Rails/WhereNot:
+  Description: 'Use `where.not(...)` instead of manually constructing negated SQL in `where`.'
+  StyleGuide: 'https://rails.rubystyle.guide/#where-not'
+  Enabled: 'pending'
+  VersionAdded: '2.8'
+
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
   EnforcedStyle: conditionals

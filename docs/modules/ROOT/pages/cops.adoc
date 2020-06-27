@@ -80,5 +80,6 @@
 * xref:cops_rails.adoc#railsunknownenv[Rails/UnknownEnv]
 * xref:cops_rails.adoc#railsvalidation[Rails/Validation]
 * xref:cops_rails.adoc#railswhereexists[Rails/WhereExists]
+* xref:cops_rails.adoc#railswherenot[Rails/WhereNot]
 
 // END_COP_LIST
