@@ -2779,6 +2779,47 @@ end
 | Boolean
 |===
 
+== Rails/RenderInline
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| No
+| 2.7
+| -
+|===
+
+This cop looks for inline rendering within controller actions.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class ProductsController < ApplicationController
+  def index
+    render inline: "<% products.each do |p| %><p><%= p.name %></p><% end %>", type: :erb
+  end
+end
+
+# good
+# app/views/products/index.html.erb
+# <% products.each do |p| %>
+#   <p><%= p.name %></p>
+# <% end %>
+
+class ProductsController < ApplicationController
+  def index
+  end
+end
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#inline-rendering
+
 == Rails/RequestReferer
 
 |===

@@ -465,6 +465,12 @@ Rails/RelativeDateConstant:
   VersionChanged: '0.59'
   AutoCorrect: false
 
+Rails/RenderInline:
+  Description: 'Prefer using a template over inline rendering.'
+  StyleGuide: 'https://rails.rubystyle.guide/#inline-rendering'
+  Enabled: 'pending'
+  VersionAdded: '2.7'
+
 Rails/RequestReferer:
   Description: 'Use consistent syntax for request.referer.'
   Enabled: true
