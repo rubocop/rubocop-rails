@@ -506,7 +506,7 @@ Rails/SkipsModelValidations:
   Enabled: true
   VersionAdded: '0.47'
   VersionChanged: '0.60'
-  Blacklist:
+  ForbiddenMethods:
     - decrement!
     - decrement_counter
     - increment!
@@ -518,7 +518,7 @@ Rails/SkipsModelValidations:
     - update_column
     - update_columns
     - update_counters
-  Whitelist: []
+  AllowedMethods: []
 
 Rails/TimeZone:
   Description: 'Checks the correct usage of time zone aware methods.'

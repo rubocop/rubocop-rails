@@ -2499,8 +2499,8 @@ user.touch
 
 Name | Default value | Configurable values
 --- | --- | ---
-Blacklist | `decrement!`, `decrement_counter`, `increment!`, `increment_counter`, `toggle!`, `touch`, `update_all`, `update_attribute`, `update_column`, `update_columns`, `update_counters` | Array
-Whitelist | `[]` | Array
+ForbiddenMethods | `decrement!`, `decrement_counter`, `increment!`, `increment_counter`, `toggle!`, `touch`, `update_all`, `update_attribute`, `update_column`, `update_columns`, `update_counters` | Array
+AllowedMethods | `[]` | Array
 
 ### References
 

@@ -2,17 +2,17 @@
 
 RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
   cop_config = {
-    'Blacklist' => %w[decrement!
-                      decrement_counter
-                      increment!
-                      increment_counter
-                      toggle!
-                      touch
-                      update_all
-                      update_attribute
-                      update_column
-                      update_columns
-                      update_counters]
+    'ForbiddenMethods' => %w[decrement!
+                             decrement_counter
+                             increment!
+                             increment_counter
+                             toggle!
+                             touch
+                             update_all
+                             update_attribute
+                             update_column
+                             update_columns
+                             update_counters]
   }
 
   subject(:cop) { described_class.new(config) }
@@ -22,8 +22,8 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
 
   methods_with_arguments = described_class::METHODS_WITH_ARGUMENTS
 
-  context 'with default blacklist' do
-    cop_config['Blacklist'].each do |method_name|
+  context 'with default forbidden methods' do
+    cop_config['ForbiddenMethods'].each do |method_name|
       it "registers an offense for `#{method_name}`" do
         inspect_source("User.#{method_name}(:attr)")
         expect(cop.offenses.size).to eq(1)
@@ -54,7 +54,7 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
   end
 
   context "with methods that don't require an argument" do
-    (cop_config['Blacklist'] - methods_with_arguments).each do |method_name|
+    (cop_config['ForbiddenMethods'] - methods_with_arguments).each do |method_name|
       it "registers an offense for `#{method_name}`" do
         inspect_source("User.#{method_name}")
         expect(cop.offenses.size).to eq(1)
@@ -64,16 +64,16 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
     end
   end
 
-  context 'with `update_attribute` method in blacklist' do
+  context 'with `update_attribute` method in forbidden methods' do
     let(:cop_config) do
-      { 'Blacklist' => %w[update_attribute] }
+      { 'ForbiddenMethods' => %w[update_attribute] }
     end
 
-    whitelist = cop_config['Blacklist'].reject do |val|
+    allowed_methods = cop_config['ForbiddenMethods'].reject do |val|
       val == 'update_attribute'
     end
 
-    whitelist.each do |method_name|
+    allowed_methods.each do |method_name|
       it "accepts `#{method_name}`" do
         expect_no_offenses("User.#{method_name}")
       end
@@ -96,15 +96,15 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
     end
   end
 
-  context 'with whitelist' do
+  context 'with allowed methods' do
     let(:cop_config) do
       {
-        'Blacklist' => %w[toggle! touch],
-        'Whitelist' => %w[touch]
+        'ForbiddenMethods' => %w[toggle! touch],
+        'AllowedMethods' => %w[touch]
       }
     end
 
-    it 'registers an offense for method not in whitelist' do
+    it 'registers an offense for method not in allowed methods' do
       expect_offense(<<~RUBY)
         user.toggle!(:active)
              ^^^^^^^ Avoid using `toggle!` because it skips validations.
@@ -112,7 +112,7 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
     end
 
     context 'when using safe navigation operator' do
-      it 'registers an offense for method not in whitelist' do
+      it 'registers an offense for method not in allowed methods' do
         expect_offense(<<~RUBY)
           user&.toggle!(:active)
                 ^^^^^^^ Avoid using `toggle!` because it skips validations.
@@ -120,8 +120,39 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
       end
     end
 
-    it 'accepts method in whitelist, superseding the blacklist' do
+    it 'accepts method in allowed methods, superseding the forbidden methods' do
       expect_no_offenses('User.touch(:attr)')
+    end
+  end
+
+  context 'with obsolete Blacklist configuration' do
+    let(:cop_config) do
+      {
+        'Blacklist' => %w[toggle! touch]
+      }
+    end
+
+    it 'warns about renamed forbidden methods' do
+      expect do
+        expect_offense(<<~RUBY)
+          user&.toggle!(:active)
+                ^^^^^^^ Avoid using `toggle!` because it skips validations.
+        RUBY
+      end.to output("`Blacklist` has been renamed to `ForbiddenMethods`.\n").to_stderr
+    end
+  end
+
+  context 'with obsolete Whitelist configuration' do
+    let(:cop_config) do
+      {
+        'Whitelist' => %w[touch]
+      }
+    end
+
+    it 'warns about renamed allowed methods' do
+      expect do
+        expect_no_offenses('User.touch(:attr)')
+      end.to output("`Whitelist` has been renamed to `AllowedMethods`.\n").to_stderr
     end
   end
 end

@@ -57,14 +57,20 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return if whitelist.include?(node.method_name.to_s)
-          return unless blacklist.include?(node.method_name.to_s)
+          return if allowed_methods.include?(node.method_name.to_s)
+          return unless forbidden_methods.include?(node.method_name.to_s)
           return if allowed_method?(node)
           return if good_touch?(node)
 
           add_offense(node, location: :selector)
         end
         alias on_csend on_send
+
+        def initialize(*)
+          super
+          @displayed_allowed_warning = false
+          @displayed_forbidden_warning = false
+        end
 
         private
 
@@ -77,12 +83,27 @@ module RuboCop
             !node.arguments?
         end
 
-        def blacklist
-          cop_config['Blacklist'] || []
+        def forbidden_methods
+          obsolete_result = cop_config['Blacklist']
+          if obsolete_result
+            warn '`Blacklist` has been renamed to `ForbiddenMethods`.' unless @displayed_forbidden_warning
+            @displayed_forbidden_warning = true
+            return obsolete_result
+          end
+
+          cop_config['ForbiddenMethods'] || []
         end
 
-        def whitelist
-          cop_config['Whitelist'] || []
+        def allowed_methods
+          obsolete_result = cop_config['Whitelist']
+          if obsolete_result
+            warn '`Whitelist` has been renamed to `AllowedMethods`.' unless @displayed_allowed_warning
+            @displayed_allowed_warning = true
+
+            return obsolete_result
+          end
+
+          cop_config['AllowedMethods'] || []
         end
       end
     end
