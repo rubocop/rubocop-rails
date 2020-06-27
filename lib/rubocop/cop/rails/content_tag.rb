@@ -40,8 +40,12 @@ module RuboCop
         def autocorrect(node)
           lambda do |corrector|
             if method_name?(node.first_argument)
-              replace_method_with_tag_method(corrector, node)
-              remove_first_argument(corrector, node)
+              range = correction_range(node)
+
+              rest_args = node.arguments.drop(1)
+              replacement = "tag.#{node.first_argument.value}(#{rest_args.map(&:source).join(', ')})"
+
+              corrector.replace(range, replacement)
             else
               corrector.replace(node.loc.selector, 'tag')
             end
@@ -56,25 +60,8 @@ module RuboCop
           /^[a-zA-Z_][a-zA-Z_0-9]*$/.match?(node.value)
         end
 
-        def replace_method_with_tag_method(corrector, node)
-          corrector.replace(
-            node.loc.selector,
-            "tag.#{node.first_argument.value}"
-          )
-        end
-
-        def remove_first_argument(corrector, node)
-          if node.arguments.length > 1
-            corrector.remove(
-              range_between(child_node_beg(node, 0), child_node_beg(node, 1))
-            )
-          elsif node.arguments.length == 1
-            corrector.remove(node.arguments[0].loc.expression)
-          end
-        end
-
-        def child_node_beg(node, index)
-          node.arguments[index].loc.expression.begin_pos
+        def correction_range(node)
+          range_between(node.loc.selector.begin_pos, node.loc.expression.end_pos)
         end
       end
     end

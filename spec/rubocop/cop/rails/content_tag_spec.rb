@@ -91,6 +91,20 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
+    it 'corrects an offense when called with options hash and block' do
+      expect_offense(<<~RUBY)
+        content_tag :div, { class: 'strong' } do
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
+          'body'
+        end
+      RUBY
+      expect_correction(<<~RUBY)
+        tag.div({ class: 'strong' }) do
+          'body'
+        end
+      RUBY
+    end
+
     it 'does not register an offence when `tag` is used with an argument' do
       expect_no_offenses(<<~RUBY)
         tag.p('Hello world!')
