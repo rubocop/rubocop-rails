@@ -6,6 +6,8 @@ module RuboCop
     module ActiveRecordHelper
       extend NodePattern::Macros
 
+      WHERE_METHODS = %i[where rewhere].freeze
+
       def_node_search :find_set_table_name, <<~PATTERN
         (send self :table_name= {str sym})
       PATTERN
@@ -71,6 +73,11 @@ module RuboCop
 
           break pair.value.value.to_s
         end
+      end
+
+      def in_where?(node)
+        send_node = node.each_ancestor(:send).first
+        send_node && WHERE_METHODS.include?(send_node.method_name)
       end
     end
   end

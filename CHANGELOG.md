@@ -12,6 +12,7 @@
 * [#246](https://github.com/rubocop-hq/rubocop-rails/issues/246): Add new `Rails/PluckInWhere` cop. ([@fatkodima][])
 * [#17](https://github.com/rubocop-hq/rubocop-rails/issues/17): Add new `Rails/NegateInclude` cop. ([@fatkodima][])
 * [#278](https://github.com/rubocop-hq/rubocop-rails/pull/278): Add new `Rails/Pluck` cop. ([@eugeneius][])
+* [#272](https://github.com/rubocop-hq/rubocop-rails/pull/272): Add new `Rails/PluckId` cop. ([@fatkodima][])
 
 ### Bug fixes
 
