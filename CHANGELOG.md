@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#17](https://github.com/rubocop-hq/rubocop-rails/issues/17): Add new `Rails/NegateInclude` cop. ([@fatkodima][])
+
 ### Bug fixes
 
 * [#261](https://github.com/rubocop-hq/rubocop-rails/issues/261): Fix auto correction for `Rails/ContentTag` when `content_tag` is called with options hash and block. ([@fatkodima][])

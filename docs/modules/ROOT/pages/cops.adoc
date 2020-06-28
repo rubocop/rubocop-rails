@@ -38,6 +38,7 @@
 * xref:cops_rails.adoc#railsinverseof[Rails/InverseOf]
 * xref:cops_rails.adoc#railslexicallyscopedactionfilter[Rails/LexicallyScopedActionFilter]
 * xref:cops_rails.adoc#railslinktoblank[Rails/LinkToBlank]
+* xref:cops_rails.adoc#railsnegateinclude[Rails/NegateInclude]
 * xref:cops_rails.adoc#railsnotnullcolumn[Rails/NotNullColumn]
 * xref:cops_rails.adoc#railsoutput[Rails/Output]
 * xref:cops_rails.adoc#railsoutputsafety[Rails/OutputSafety]

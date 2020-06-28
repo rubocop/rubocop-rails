@@ -1894,6 +1894,34 @@ link_to 'Click here', url, target: '_blank', rel: 'noreferrer'
 * https://html.spec.whatwg.org/multipage/links.html#link-type-noopener
 * https://html.spec.whatwg.org/multipage/links.html#link-type-noreferrer
 
+== Rails/NegateInclude
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.7
+| -
+|===
+
+This cop enforces the use of `collection.exclude?(obj)`
+over `!collection.include?(obj)`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+!array.include?(2)
+!hash.include?(:key)
+
+# good
+array.exclude?(2)
+hash.exclude?(:key)
+----
+
 == Rails/NotNullColumn
 
 |===
