@@ -39,6 +39,7 @@
 * xref:cops_rails.adoc#railslexicallyscopedactionfilter[Rails/LexicallyScopedActionFilter]
 * xref:cops_rails.adoc#railslinktoblank[Rails/LinkToBlank]
 * xref:cops_rails.adoc#railsmailername[Rails/MailerName]
+* xref:cops_rails.adoc#railsmatchroute[Rails/MatchRoute]
 * xref:cops_rails.adoc#railsnegateinclude[Rails/NegateInclude]
 * xref:cops_rails.adoc#railsnotnullcolumn[Rails/NotNullColumn]
 * xref:cops_rails.adoc#railsoutput[Rails/Output]
