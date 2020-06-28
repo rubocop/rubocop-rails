@@ -60,6 +60,7 @@
 * xref:cops_rails.adoc#railsrefutemethods[Rails/RefuteMethods]
 * xref:cops_rails.adoc#railsrelativedateconstant[Rails/RelativeDateConstant]
 * xref:cops_rails.adoc#railsrenderinline[Rails/RenderInline]
+* xref:cops_rails.adoc#railsrenderplaintext[Rails/RenderPlainText]
 * xref:cops_rails.adoc#railsrequestreferer[Rails/RequestReferer]
 * xref:cops_rails.adoc#railsreversiblemigration[Rails/ReversibleMigration]
 * xref:cops_rails.adoc#railssafenavigation[Rails/SafeNavigation]

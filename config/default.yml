@@ -490,6 +490,14 @@ Rails/RenderInline:
   Enabled: 'pending'
   VersionAdded: '2.7'
 
+Rails/RenderPlainText:
+  Description: 'Prefer `render plain:` over `render text:`.'
+  StyleGuide: 'https://rails.rubystyle.guide/#plain-text-rendering'
+  Enabled: 'pending'
+  VersionAdded: '2.7'
+  # Convert only when `content_type` is explicitly set to `text/plain`.
+  ContentTypeCompatibility: true
+
 Rails/RequestReferer:
   Description: 'Use consistent syntax for request.referer.'
   Enabled: true
