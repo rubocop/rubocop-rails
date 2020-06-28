@@ -374,6 +374,15 @@ Rails/FindEach:
     - select
     - lock
 
+Rails/ForeignKeyName:
+  Description: 'Name your foreign keys explicitly instead of relying on Rails auto-generated FK names.'
+  StyleGuide: 'https://rails.rubystyle.guide/#meaningful-foreign-key-naming'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  StartAfterMigrationVersion: null
+  Include:
+    - db/**/*.rb
+
 Rails/HasAndBelongsToMany:
   Description: 'Prefer has_many :through to has_and_belongs_to_many.'
   StyleGuide: 'https://rails.rubystyle.guide#has-many-through'
