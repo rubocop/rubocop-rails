@@ -2087,7 +2087,11 @@ safe_join([user_content, " ", content_tag(:span, user_content)])
 | -
 |===
 
-This cop enforces the use `pick` over `pluck(...).first`.
+This cop enforces the use of `pick` over `pluck(...).first`.
+
+Using `pluck` followed by `first` creates an intermediate array, which
+`pick` avoids. When called on an Active Record relation, `pick` adds a
+limit to the query so that only one value is fetched from the database.
 
 === Examples
 
@@ -2095,11 +2099,11 @@ This cop enforces the use `pick` over `pluck(...).first`.
 ----
 # bad
 Model.pluck(:a).first
-Model.pluck(:a, :b).first
+[{ a: :b, c: :d }].pluck(:a, :b).first
 
 # good
 Model.pick(:a)
-Model.pick(:a, :b)
+[{ a: :b, c: :d }].pick(:a, :b)
 ----
 
 == Rails/PluckInWhere
