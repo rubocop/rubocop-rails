@@ -359,6 +359,11 @@ Rails/Pick:
   Safe: false
   VersionAdded: '2.6'
 
+Rails/Pluck:
+  Description: 'Prefer `pluck` over `map { ... }`.'
+  Enabled: 'pending'
+  VersionAdded: '2.7'
+
 Rails/PluckInWhere:
   Description: 'Use `select` instead of `pluck` in `where` query methods.'
   Enabled: 'pending'
