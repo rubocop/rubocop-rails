@@ -4,6 +4,7 @@
 
 ### New features
 
+* [#281](https://github.com/rubocop-hq/rubocop-rails/pull/281): Add new `Rails/MailerName` cop. ([@fatkodima][])
 * [#246](https://github.com/rubocop-hq/rubocop-rails/issues/246): Add new `Rails/PluckInWhere` cop. ([@fatkodima][])
 * [#17](https://github.com/rubocop-hq/rubocop-rails/issues/17): Add new `Rails/NegateInclude` cop. ([@fatkodima][])
 * [#278](https://github.com/rubocop-hq/rubocop-rails/pull/278): Add new `Rails/Pluck` cop. ([@eugeneius][])

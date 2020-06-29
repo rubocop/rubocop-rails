@@ -1894,6 +1894,56 @@ link_to 'Click here', url, target: '_blank', rel: 'noreferrer'
 * https://html.spec.whatwg.org/multipage/links.html#link-type-noopener
 * https://html.spec.whatwg.org/multipage/links.html#link-type-noreferrer
 
+== Rails/MailerName
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.7
+| -
+|===
+
+This cop enforces that mailer names end with `Mailer` suffix.
+
+Without the `Mailer` suffix it isn't immediately apparent what's a mailer
+and which views are related to the mailer.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class User < ActionMailer::Base
+end
+
+class User < ApplicationMailer
+end
+
+# good
+class UserMailer < ActionMailer::Base
+end
+
+class UserMailer < ApplicationMailer
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `app/mailers/**/*.rb`
+| Array
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#mailer-name
+
 == Rails/NegateInclude
 
 |===
