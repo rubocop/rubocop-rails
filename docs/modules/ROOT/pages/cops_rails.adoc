@@ -1618,6 +1618,45 @@ Hash[[1, 2, 3].collect { |el| [el, foo(el)] }]
 [1, 2, 3].index_with { |el| foo(el) }
 ----
 
+== Rails/Inquiry
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| No
+| 2.7
+| -
+|===
+
+This cop checks that Active Support's `inquiry` method is not used.
+
+=== Examples
+
+[source,ruby]
+----
+# bad - String#inquiry
+ruby = 'two'.inquiry
+ruby.two?
+
+# good
+ruby = 'two'
+ruby == 'two'
+
+# bad - Array#inquiry
+pets = %w(cat dog).inquiry
+pets.gopher?
+
+# good
+pets = %w(cat dog)
+pets.include? 'cat'
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#inquiry
+
 == Rails/InverseOf
 
 |===

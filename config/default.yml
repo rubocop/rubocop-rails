@@ -308,6 +308,12 @@ Rails/IndexWith:
   Enabled: true
   VersionAdded: '2.5'
 
+Rails/Inquiry:
+  Description: "Prefer Ruby's comparison operators over Active Support's `Array#inquiry` and `String#inquiry`."
+  StyleGuide: 'https://rails.rubystyle.guide/#inquiry'
+  Enabled: 'pending'
+  VersionAdded: '2.7'
+
 Rails/InverseOf:
   Description: 'Checks for associations where the inverse cannot be determined automatically.'
   Enabled: true

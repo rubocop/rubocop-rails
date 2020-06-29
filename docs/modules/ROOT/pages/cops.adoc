@@ -36,6 +36,7 @@
 * xref:cops_rails.adoc#railsignoredskipactionfilteroption[Rails/IgnoredSkipActionFilterOption]
 * xref:cops_rails.adoc#railsindexby[Rails/IndexBy]
 * xref:cops_rails.adoc#railsindexwith[Rails/IndexWith]
+* xref:cops_rails.adoc#railsinquiry[Rails/Inquiry]
 * xref:cops_rails.adoc#railsinverseof[Rails/InverseOf]
 * xref:cops_rails.adoc#railslexicallyscopedactionfilter[Rails/LexicallyScopedActionFilter]
 * xref:cops_rails.adoc#railslinktoblank[Rails/LinkToBlank]
