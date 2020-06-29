@@ -668,6 +668,47 @@ end
 | Array
 |===
 
+== Rails/CustomValidator
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| No
+| 2.7
+| -
+|===
+
+This cop suggests extracting custom validator classes from format validations.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class User < ApplicationRecord
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
+end
+
+# good
+class EmailValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    unless value =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+      record.errors[attribute] << (options[:message] || 'is not a valid email')
+    end
+  end
+end
+
+class User < ApplicationRecord
+  validates :email, email: true
+end
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#custom-validator-file
+
 == Rails/Date
 
 |===
