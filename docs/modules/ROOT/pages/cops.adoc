@@ -43,6 +43,7 @@
 * xref:cops_rails.adoc#railsoutput[Rails/Output]
 * xref:cops_rails.adoc#railsoutputsafety[Rails/OutputSafety]
 * xref:cops_rails.adoc#railspick[Rails/Pick]
+* xref:cops_rails.adoc#railspluck[Rails/Pluck]
 * xref:cops_rails.adoc#railspluckinwhere[Rails/PluckInWhere]
 * xref:cops_rails.adoc#railspluralizationgrammar[Rails/PluralizationGrammar]
 * xref:cops_rails.adoc#railspresence[Rails/Presence]
