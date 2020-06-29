@@ -136,6 +136,12 @@ Rails/CreateTableWithTimestamps:
   Include:
     - db/migrate/*.rb
 
+Rails/CustomValidator:
+  Description: 'Consider extracting custom validator classes from format validations.'
+  StyleGuide: 'https://rails.rubystyle.guide/#custom-validator-file'
+  Enabled: 'pending'
+  VersionAdded: '2.7'
+
 Rails/Date:
   Description: >-
                   Checks the correct usage of date aware methods,
