@@ -26,6 +26,7 @@
 * xref:cops_rails.adoc#railsexit[Rails/Exit]
 * xref:cops_rails.adoc#railsfilepath[Rails/FilePath]
 * xref:cops_rails.adoc#railsfindby[Rails/FindBy]
+* xref:cops_rails.adoc#railsfindbyid[Rails/FindById]
 * xref:cops_rails.adoc#railsfindeach[Rails/FindEach]
 * xref:cops_rails.adoc#railshasandbelongstomany[Rails/HasAndBelongsToMany]
 * xref:cops_rails.adoc#railshasmanyorhasonedependent[Rails/HasManyOrHasOneDependent]

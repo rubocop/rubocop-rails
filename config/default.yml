@@ -234,6 +234,14 @@ Rails/FindBy:
   Include:
     - app/models/**/*.rb
 
+Rails/FindById:
+  Description: >-
+                Favor the use of `find` over `where.take!`, `find_by!`, and `find_by_id!` when you
+                need to retrieve a single record by primary key when you expect it to be found.
+  StyleGuide: 'https://rails.rubystyle.guide/#find'
+  Enabled: 'pending'
+  VersionAdded: '2.7'
+
 Rails/FindEach:
   Description: 'Prefer all.find_each over all.find.'
   StyleGuide: 'https://rails.rubystyle.guide#find-each'
