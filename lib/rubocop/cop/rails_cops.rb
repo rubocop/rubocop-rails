@@ -6,6 +6,7 @@ require_relative 'mixin/target_rails_version'
 
 require_relative 'rails/action_filter'
 require_relative 'rails/active_record_aliases'
+require_relative 'rails/active_record_callbacks_order'
 require_relative 'rails/active_record_override'
 require_relative 'rails/active_support_aliases'
 require_relative 'rails/application_controller'
