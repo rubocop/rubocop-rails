@@ -4,6 +4,7 @@
 
 ### New features
 
+* [#275](https://github.com/rubocop-hq/rubocop-rails/pull/275): Add new `Rails/MatchRoute` cop. ([@fatkodima][])
 * [#271](https://github.com/rubocop-hq/rubocop-rails/pull/271): Add new `Rails/RenderInline` cop. ([@fatkodima][])
 * [#281](https://github.com/rubocop-hq/rubocop-rails/pull/281): Add new `Rails/MailerName` cop. ([@fatkodima][])
 * [#246](https://github.com/rubocop-hq/rubocop-rails/issues/246): Add new `Rails/PluckInWhere` cop. ([@fatkodima][])
