@@ -2900,6 +2900,65 @@ end
 
 * https://rails.rubystyle.guide/#inline-rendering
 
+== Rails/RenderPlainText
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.7
+| -
+|===
+
+This cop identifies places where `render text:` can be
+replaced with `render plain:`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad - explicit MIME type to `text/plain`
+render text: 'Ruby!', content_type: 'text/plain'
+
+# good - short and precise
+render plain: 'Ruby!'
+
+# good - explicit MIME type not to `text/plain`
+render text: 'Ruby!', content_type: 'text/html'
+----
+
+==== ContentTypeCompatibility: true (default)
+
+[source,ruby]
+----
+# good - sets MIME type to `text/html`
+render text: 'Ruby!'
+----
+
+==== ContentTypeCompatibility: false
+
+[source,ruby]
+----
+# bad - sets MIME type to `text/html`
+render text: 'Ruby!'
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| ContentTypeCompatibility
+| `true`
+| Boolean
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#plain-text-rendering
+
 == Rails/RequestReferer
 
 |===
