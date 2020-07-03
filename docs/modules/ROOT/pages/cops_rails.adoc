@@ -1186,6 +1186,39 @@ User.find_by(name: 'Bruce')
 
 * https://rails.rubystyle.guide#find_by
 
+== Rails/FindById
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.7
+| -
+|===
+
+This cop enforces that `ActiveRecord#find` is used instead of
+`where.take!`, `find_by!`, and `find_by_id!` to retrieve a single record
+by primary key when you expect it to be found.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+User.where(id: id).take!
+User.find_by_id!(id)
+User.find_by!(id: id)
+
+# good
+User.find(id)
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#find
+
 == Rails/FindEach
 
 |===
