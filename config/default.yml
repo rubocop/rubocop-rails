@@ -62,6 +62,14 @@ Rails/ActiveSupportAliases:
   Enabled: true
   VersionAdded: '0.48'
 
+Rails/AfterCommitOverride:
+  Description: >-
+                  This cop enforces that there is only one call to `after_commit`
+                  (and its aliases - `after_create_commit`, `after_update_commit`,
+                  and `after_destroy_commit`) with the same callback name per model.
+  Enabled: 'pending'
+  VersionAdded: '2.8'
+
 Rails/ApplicationController:
   Description: 'Check that controllers subclass ApplicationController.'
   Enabled: true

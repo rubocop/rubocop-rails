@@ -214,6 +214,50 @@ are not used.
 [1, 2, 'a'].prepend('b')
 ----
 
+== Rails/AfterCommitOverride
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| No
+| 2.8
+| -
+|===
+
+This cop enforces that there is only one call to `after_commit`
+(and its aliases - `after_create_commit`, `after_update_commit`,
+and `after_destroy_commit`) with the same callback name per model.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+# This won't be triggered.
+after_create_commit :log_action
+
+# This will override the callback added by
+# after_create_commit.
+after_update_commit :log_action
+
+# bad
+# This won't be triggered.
+after_commit :log_action, on: :create
+# This won't be triggered.
+after_update_commit :log_action
+# This will override both previous callbacks.
+after_commit :log_action, on: :destroy
+
+# good
+after_save_commit :log_action
+
+# good
+after_create_commit :log_create_action
+after_update_commit :log_update_action
+----
+
 == Rails/ApplicationController
 
 |===
