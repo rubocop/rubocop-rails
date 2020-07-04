@@ -627,6 +627,11 @@ Rails/Validation:
   Include:
     - app/models/**/*.rb
 
+Rails/WhereExists:
+  Description: 'Prefer `exists?(...)` over `where(...).exists?`.'
+  Enabled: 'pending'
+  VersionAdded: '2.7'
+
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
   EnforcedStyle: conditionals
