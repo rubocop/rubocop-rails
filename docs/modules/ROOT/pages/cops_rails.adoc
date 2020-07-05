@@ -2052,6 +2052,10 @@ array.exclude?(2)
 hash.exclude?(:key)
 ----
 
+=== References
+
+* https://rails.rubystyle.guide#exclude
+
 == Rails/NotNullColumn
 
 |===
@@ -2236,6 +2240,10 @@ Model.pick(:a)
 [{ a: :b, c: :d }].pick(:a, :b)
 ----
 
+=== References
+
+* https://rails.rubystyle.guide#pick
+
 == Rails/Pluck
 
 |===
@@ -2266,6 +2274,10 @@ Post.published.map { |post| post[:title] }
 Post.published.pluck(:title)
 [{ a: :b, c: :d }].pluck(:a)
 ----
+
+=== References
+
+* https://rails.rubystyle.guide#pluck
 
 == Rails/PluckInWhere
 
