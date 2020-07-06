@@ -67,6 +67,7 @@
 * xref:cops_rails.adoc#railssafenavigationwithblank[Rails/SafeNavigationWithBlank]
 * xref:cops_rails.adoc#railssavebang[Rails/SaveBang]
 * xref:cops_rails.adoc#railsscopeargs[Rails/ScopeArgs]
+* xref:cops_rails.adoc#railsshorti18n[Rails/ShortI18n]
 * xref:cops_rails.adoc#railsskipsmodelvalidations[Rails/SkipsModelValidations]
 * xref:cops_rails.adoc#railstimezone[Rails/TimeZone]
 * xref:cops_rails.adoc#railsuniqbeforepluck[Rails/UniqBeforePluck]

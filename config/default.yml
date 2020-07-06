@@ -558,6 +558,16 @@ Rails/ScopeArgs:
   Include:
     - app/models/**/*.rb
 
+Rails/ShortI18n:
+  Description: 'Use the short form of the I18n methods: `t` instead of `translate` and `l` instead of `localize`.'
+  StyleGuide: 'https://rails.rubystyle.guide/#short-i18n'
+  Enabled: 'pending'
+  VersionAdded: '2.7'
+  EnforcedStyle: conservative
+  SupportedStyles:
+    - conservative
+    - aggressive
+
 Rails/SkipsModelValidations:
   Description: >-
                  Use methods that skips model validations with caution.
