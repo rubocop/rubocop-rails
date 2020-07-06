@@ -2279,6 +2279,45 @@ Post.published.pluck(:title)
 
 * https://rails.rubystyle.guide#pluck
 
+== Rails/PluckId
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| No
+| Yes (Unsafe)
+| 2.7
+| -
+|===
+
+This cop enforces the use of `ids` over `pluck(:id)` and `pluck(primary_key)`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+User.pluck(:id)
+user.posts.pluck(:id)
+
+def self.user_ids
+  pluck(primary_key)
+end
+
+# good
+User.ids
+user.posts.ids
+
+def self.user_ids
+  ids
+end
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#ids
+
 == Rails/PluckInWhere
 
 |===

@@ -394,6 +394,13 @@ Rails/Pluck:
   Enabled: 'pending'
   VersionAdded: '2.7'
 
+Rails/PluckId:
+  Description: 'Use `ids` instead of `pluck(:id)` or `pluck(primary_key)`.'
+  StyleGuide: 'https://rails.rubystyle.guide/#ids'
+  Enabled: 'pending'
+  Safe: false
+  VersionAdded: '2.7'
+
 Rails/PluckInWhere:
   Description: 'Use `select` instead of `pluck` in `where` query methods.'
   Enabled: 'pending'

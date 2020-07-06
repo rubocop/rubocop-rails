@@ -17,8 +17,9 @@ module RuboCop
       #   Post.where(user_id: User.active.select(:id))
       #
       class PluckInWhere < Cop
+        include ActiveRecordHelper
+
         MSG = 'Use `select` instead of `pluck` within `where` query method.'
-        WHERE_METHODS = %i[where rewhere].freeze
 
         def on_send(node)
           add_offense(node, location: :selector) if node.method?(:pluck) && in_where?(node)
@@ -28,13 +29,6 @@ module RuboCop
           lambda do |corrector|
             corrector.replace(node.loc.selector, 'select')
           end
-        end
-
-        private
-
-        def in_where?(node)
-          send_node = node.each_ancestor(:send).first
-          send_node && WHERE_METHODS.include?(send_node.method_name)
         end
       end
     end
