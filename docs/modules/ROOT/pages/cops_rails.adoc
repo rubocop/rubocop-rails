@@ -3618,7 +3618,7 @@ l Time.now
 | Yes
 | No
 | 0.47
-| 0.60
+| 2.7
 |===
 
 This cop checks for the use of methods which skip
@@ -3667,7 +3667,7 @@ user.touch
 | Name | Default value | Configurable values
 
 | ForbiddenMethods
-| `decrement!`, `decrement_counter`, `increment!`, `increment_counter`, `toggle!`, `touch`, `update_all`, `update_attribute`, `update_column`, `update_columns`, `update_counters`
+| `decrement!`, `decrement_counter`, `increment!`, `increment_counter`, `insert`, `insert!`, `insert_all`, `insert_all!`, `toggle!`, `touch`, `touch_all`, `update_all`, `update_attribute`, `update_column`, `update_columns`, `update_counters`, `upsert`, `upsert_all`
 | Array
 
 | AllowedMethods
