@@ -50,6 +50,53 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
     it 'accepts touch with literal false' do
       expect_no_offenses('belongs_to(:user).touch(false)')
     end
+
+    %w[insert insert!].each do |method|
+      it "does not register an offense for #{method} that looks like String#insert" do
+        expect_no_offenses(<<~RUBY)
+          string.#{method}(0, 'b')
+        RUBY
+      end
+
+      it "does not register an offense for #{method} that looks like Array#insert" do
+        expect_no_offenses(<<~RUBY)
+          array.#{method}(1, :a, :b)
+        RUBY
+      end
+
+      it "registers an offense for #{method} with `:returning` keyword argument" do
+        expect_offense(<<~RUBY, method: method)
+          %{method}(attributes, returning: false)
+          ^{method} Avoid using `#{method}` because it skips validations.
+        RUBY
+      end
+
+      it "registers an offense for #{method} with `:unique_by` keyword argument" do
+        expect_offense(<<~RUBY, method: method)
+          %{method}(attributes, unique_by: :username)
+          ^{method} Avoid using `#{method}` because it skips validations.
+        RUBY
+      end
+
+      it "registers an offense for #{method} with both `:returning` and `:unique_by` keyword arguments" do
+        expect_offense(<<~RUBY, method: method)
+          %{method}(attributes, returning: false, unique_by: :username)
+          ^{method} Avoid using `#{method}` because it skips validations.
+        RUBY
+      end
+
+      it "does not register an offense for #{method} with another keyword argument" do
+        expect_no_offenses(<<~RUBY)
+          insert(attributes, something_else: true)
+        RUBY
+      end
+
+      it "does not register an offense for #{method} with mixed keyword arguments" do
+        expect_no_offenses(<<~RUBY)
+          insert(attributes, returning: false, something_else: true)
+        RUBY
+      end
+    end
   end
 
   context 'with methods that require at least an argument' do
