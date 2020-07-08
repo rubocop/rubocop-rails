@@ -42,12 +42,18 @@ module RuboCop
                                     decrement_counter
                                     increment!
                                     increment_counter
+                                    insert
+                                    insert!
+                                    insert_all
+                                    insert_all!
                                     toggle!
                                     update_all
                                     update_attribute
                                     update_column
                                     update_columns
-                                    update_counters].freeze
+                                    update_counters
+                                    upsert
+                                    upsert_all].freeze
 
         def_node_matcher :good_touch?, <<~PATTERN
           {
