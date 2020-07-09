@@ -40,6 +40,7 @@
 
 ### New features
 
+* [#291](https://github.com/rubocop-hq/rubocop-rails/pull/291): Add new `Rails/SquishedSQLHeredocs` cop. ([@mobilutz][])
 * [#283](https://github.com/rubocop-hq/rubocop-rails/pull/283): Add new `Rails/FindById` cop. ([@fatkodima][])
 * [#285](https://github.com/rubocop-hq/rubocop-rails/pull/285): Add new `Rails/ActiveRecordCallbacksOrder` cop. ([@fatkodima][])
 * [#276](https://github.com/rubocop-hq/rubocop-rails/pull/276): Add new `Rails/RenderPlainText` cop. ([@fatkodima][])
@@ -269,3 +270,4 @@
 [@philcoggins]: https://github.com/philcoggins
 [@kunitoo]: https://github.com/kunitoo
 [@jaredmoody]: https://github.com/jaredmoody
+[@mobilutz]: https://github.com/mobilutz
