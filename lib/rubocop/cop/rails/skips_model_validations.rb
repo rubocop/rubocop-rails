@@ -62,11 +62,19 @@ module RuboCop
           }
         PATTERN
 
+        def_node_matcher :good_insert?, <<~PATTERN
+          (send _ {:insert :insert!} _ {
+            !(hash ...)
+            (hash <(pair (sym !{:returning :unique_by}) _) ...>)
+          } ...)
+        PATTERN
+
         def on_send(node)
           return if allowed_methods.include?(node.method_name.to_s)
           return unless forbidden_methods.include?(node.method_name.to_s)
           return if allowed_method?(node)
           return if good_touch?(node)
+          return if good_insert?(node)
 
           add_offense(node, location: :selector)
         end
