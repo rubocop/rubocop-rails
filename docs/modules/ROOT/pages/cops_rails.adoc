@@ -3977,10 +3977,10 @@ Time.at(timestamp).in_time_zone
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
 | Enabled
-| Yes
-| Yes
+| No
+| Yes (Unsafe)
 | 0.40
-| 2.6
+| 2.8
 |===
 
 Prefer the use of distinct, before pluck instead of after.
@@ -3998,6 +3998,8 @@ as the cop cannot distinguish between calls to pluck on an
 ActiveRecord::Relation vs a call to pluck on an
 ActiveRecord::Associations::CollectionProxy.
 
+This cop is unsafe because the behavior may change depending on the
+database collation.
 Autocorrect is disabled by default for this cop since it may generate
 false positives.
 
