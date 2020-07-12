@@ -69,6 +69,7 @@ namespace :cut_release do
 
     add_header_to_changelog(new_version)
     create_release_notes(new_version)
+    update_antora_yml(new_version)
 
     puts "Changed version from #{old_version} to #{new_version}."
   end
