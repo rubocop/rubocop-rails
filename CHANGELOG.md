@@ -6,6 +6,7 @@
 
 * [#283](https://github.com/rubocop-hq/rubocop-rails/pull/283): Add new `Rails/FindById` cop. ([@fatkodima][])
 * [#276](https://github.com/rubocop-hq/rubocop-rails/pull/276): Add new `Rails/RenderPlainText` cop. ([@fatkodima][])
+* [#76](https://github.com/rubocop-hq/rubocop-rails/issues/76): Add new `Rails/DefaultScope` cop. ([@fatkodima][])
 * [#275](https://github.com/rubocop-hq/rubocop-rails/pull/275): Add new `Rails/MatchRoute` cop. ([@fatkodima][])
 * [#271](https://github.com/rubocop-hq/rubocop-rails/pull/271): Add new `Rails/RenderInline` cop. ([@fatkodima][])
 * [#281](https://github.com/rubocop-hq/rubocop-rails/pull/281): Add new `Rails/MailerName` cop. ([@fatkodima][])

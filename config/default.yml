@@ -153,6 +153,12 @@ Rails/Date:
     - strict
     - flexible
 
+Rails/DefaultScope:
+  Description: 'Avoid use of `default_scope`.'
+  StyleGuide: 'https://rails.rubystyle.guide#avoid-default-scope'
+  Enabled: false
+  VersionAdded: '2.7'
+
 Rails/Delegate:
   Description: 'Prefer delegate method for delegations.'
   Enabled: true
