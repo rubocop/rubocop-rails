@@ -37,6 +37,14 @@ Rails/ActiveRecordAliases:
   VersionAdded: '0.53'
   SafeAutoCorrect: false
 
+Rails/ActiveRecordCallbacksOrder:
+  Description: 'Order callback declarations in the order in which they will be executed.'
+  StyleGuide: 'https://rails.rubystyle.guide/#callbacks-order'
+  Enabled: 'pending'
+  VersionAdded: '2.7'
+  Include:
+    - app/models/**/*.rb
+
 Rails/ActiveRecordOverride:
   Description: >-
                   Check for overriding Active Record methods instead of using

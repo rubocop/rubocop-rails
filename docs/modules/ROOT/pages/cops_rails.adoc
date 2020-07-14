@@ -89,6 +89,52 @@ Book.update_attributes!(author: 'Alice')
 Book.update!(author: 'Alice')
 ----
 
+== Rails/ActiveRecordCallbacksOrder
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.7
+| -
+|===
+
+This cop checks that Active Record callbacks are declared
+in the order in which they will be executed.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class Person < ApplicationRecord
+  after_commit :after_commit_callback
+  before_validation :before_validation_callback
+end
+
+# good
+class Person < ApplicationRecord
+  before_validation :before_validation_callback
+  after_commit :after_commit_callback
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `app/models/**/*.rb`
+| Array
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#callbacks-order
+
 == Rails/ActiveRecordOverride
 
 |===

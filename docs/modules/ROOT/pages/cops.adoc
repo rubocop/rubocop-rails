@@ -4,6 +4,7 @@
 
 * xref:cops_rails.adoc#railsactionfilter[Rails/ActionFilter]
 * xref:cops_rails.adoc#railsactiverecordaliases[Rails/ActiveRecordAliases]
+* xref:cops_rails.adoc#railsactiverecordcallbacksorder[Rails/ActiveRecordCallbacksOrder]
 * xref:cops_rails.adoc#railsactiverecordoverride[Rails/ActiveRecordOverride]
 * xref:cops_rails.adoc#railsactivesupportaliases[Rails/ActiveSupportAliases]
 * xref:cops_rails.adoc#railsapplicationcontroller[Rails/ApplicationController]
