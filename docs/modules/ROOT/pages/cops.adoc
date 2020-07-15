@@ -78,5 +78,6 @@
 * xref:cops_rails.adoc#railsuniquevalidationwithoutindex[Rails/UniqueValidationWithoutIndex]
 * xref:cops_rails.adoc#railsunknownenv[Rails/UnknownEnv]
 * xref:cops_rails.adoc#railsvalidation[Rails/Validation]
+* xref:cops_rails.adoc#railswhereexists[Rails/WhereExists]
 
 // END_COP_LIST
