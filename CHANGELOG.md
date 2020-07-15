@@ -27,6 +27,7 @@
 
 * [#263](https://github.com/rubocop-hq/rubocop-rails/pull/263): Change terminology to `ForbiddenMethods` and `AllowedMethods`. ([@jcoyne][])
 * [#289](https://github.com/rubocop-hq/rubocop-rails/pull/289): Update `Rails/SkipsModelValidations` to register an offense for `insert_all`, `touch_all`, `upsert_all`, etc. ([@eugeneius][])
+* [#293](https://github.com/rubocop-hq/rubocop-rails/pull/293): Require RuboCop 0.87 or higher. ([@koic][])
 
 ## 2.6.0 (2020-06-08)
 
