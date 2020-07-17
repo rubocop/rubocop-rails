@@ -212,4 +212,40 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
       end
     RUBY
   end
+
+  context 'remove_columns' do
+    context 'Rails >= 6.1', :rails61 do
+      it_behaves_like 'accepts', 'remove_columns(with type)', <<~RUBY
+        remove_columns(:posts, :title, :body, type: :text)
+      RUBY
+
+      it_behaves_like 'offense', 'remove_columns(without type)', <<~RUBY
+        remove_columns(:posts, :title, :body)
+      RUBY
+    end
+
+    context 'Rails < 6.1', :rails60 do
+      it_behaves_like 'offense', 'remove_columns', <<~RUBY
+        remove_columns(:posts, :title, :body, type: :text)
+      RUBY
+    end
+
+    it_behaves_like 'offense', 'remove_columns', <<~RUBY
+      remove_columns(:posts, :title, :body)
+    RUBY
+  end
+
+  context 'remove_index' do
+    it_behaves_like 'accepts', 'remove_index (with column)', <<~RUBY
+      remove_index(:posts, column: :body)
+    RUBY
+
+    it_behaves_like 'accepts', 'remove_index (with two args)', <<~RUBY
+      remove_index(:posts, :body)
+    RUBY
+
+    it_behaves_like 'offense', 'remove_index(without column)', <<~RUBY
+      remove_index(:posts, name: :index_columns_on_body)
+    RUBY
+  end
 end

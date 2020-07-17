@@ -129,6 +129,51 @@ module RuboCop
       #     end
       #   end
       #
+      # @example
+      #   # remove_columns
+      #
+      #   # bad
+      #   def change
+      #     remove_columns :users, :name, :email
+      #   end
+      #
+      #   # good
+      #   def change
+      #     reversible do |dir|
+      #       dir.up do
+      #         remove_columns :users, :name, :email
+      #       end
+      #
+      #       dir.down do
+      #         add_column :users, :name, :string
+      #         add_column :users, :email, :string
+      #       end
+      #     end
+      #   end
+      #
+      #   # good (Rails >= 6.1, see https://github.com/rails/rails/pull/36589)
+      #   def change
+      #     remove_columns :users, :name, :email, type: :string
+      #   end
+      #
+      # @example
+      #   # remove_index
+      #
+      #   # bad
+      #   def change
+      #     remove_index :users, name: :index_users_on_email
+      #   end
+      #
+      #   # good
+      #   def change
+      #     remove_index :users, :email
+      #   end
+      #
+      #   # good
+      #   def change
+      #     remove_index :users, column: :email
+      #   end
+      #
       # @see https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
       class ReversibleMigration < Cop
         MSG = '%<action>s is not reversible.'
@@ -153,6 +198,14 @@ module RuboCop
           (send nil? :change_table $_ ...)
         PATTERN
 
+        def_node_matcher :remove_columns_call, <<~PATTERN
+          (send nil? :remove_columns ... $_)
+        PATTERN
+
+        def_node_matcher :remove_index_call, <<~PATTERN
+          (send nil? :remove_index _ $_)
+        PATTERN
+
         def on_send(node)
           return unless within_change_method?(node)
           return if within_reversible_or_up_only_block?(node)
@@ -162,6 +215,8 @@ module RuboCop
           check_reversible_hash_node(node)
           check_remove_column_node(node)
           check_remove_foreign_key_node(node)
+          check_remove_columns_node(node)
+          check_remove_index_node(node)
         end
 
         def on_block(node)
@@ -233,6 +288,30 @@ module RuboCop
               block.each_child_node(:send) do |child_node|
                 check_change_table_offense(arg, child_node)
               end
+            end
+          end
+        end
+
+        def check_remove_columns_node(node)
+          remove_columns_call(node) do |args|
+            unless all_hash_key?(args, :type) && target_rails_version >= 6.1
+              action = target_rails_version >= 6.1 ? 'remove_columns(without type)' : 'remove_columns'
+
+              add_offense(
+                node,
+                message: format(MSG, action: action)
+              )
+            end
+          end
+        end
+
+        def check_remove_index_node(node)
+          remove_index_call(node) do |args|
+            if args.hash_type? && !all_hash_key?(args, :column)
+              add_offense(
+                node,
+                message: format(MSG, action: 'remove_index(without column)')
+              )
             end
           end
         end
