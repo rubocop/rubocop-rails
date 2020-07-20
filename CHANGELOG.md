@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.7.0 (2020-07-21)
+
 ### New features
 
 * [#283](https://github.com/rubocop-hq/rubocop-rails/pull/283): Add new `Rails/FindById` cop. ([@fatkodima][])
