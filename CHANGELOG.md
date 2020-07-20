@@ -6,6 +6,10 @@
 
 * [#297](https://github.com/rubocop-hq/rubocop-rails/pull/297): Handle an upstream Ruby issue where the DidYouMean module is not available, which would break the `Rails/UnknownEnv` cop. ([@taylorthurlow][])
 
+### New features
+
+* [#299](https://github.com/rubocop-hq/rubocop-rails/pull/299): Add autocorrection for `Rails/ReflectionClassName`. ([@tejasbubane][])
+
 ## 2.7.0 (2020-07-21)
 
 ### New features
