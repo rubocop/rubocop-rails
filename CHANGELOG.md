@@ -6,6 +6,10 @@
 
 * [#297](https://github.com/rubocop-hq/rubocop-rails/pull/297): Handle an upstream Ruby issue where the DidYouMean module is not available, which would break the `Rails/UnknownEnv` cop. ([@taylorthurlow][])
 
+### Changes
+
+* [#301](https://github.com/rubocop-hq/rubocop-rails/issues/301): Set disalbed by default for `Rails/PluckId`. ([@koic][])
+
 ## 2.7.0 (2020-07-21)
 
 ### New features

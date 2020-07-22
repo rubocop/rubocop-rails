@@ -417,7 +417,7 @@ Rails/Pluck:
 Rails/PluckId:
   Description: 'Use `ids` instead of `pluck(:id)` or `pluck(primary_key)`.'
   StyleGuide: 'https://rails.rubystyle.guide/#ids'
-  Enabled: 'pending'
+  Enabled: false
   Safe: false
   VersionAdded: '2.7'
 

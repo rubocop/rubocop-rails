@@ -2408,7 +2408,7 @@ Post.published.pluck(:title)
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Pending
+| Disabled
 | No
 | Yes (Unsafe)
 | 2.7
