@@ -54,7 +54,7 @@ module RuboCop
 
         def correct_task_dependency(task_name)
           if task_name.sym_type?
-            task_name.source.delete(':|\'|"') + ': :environment'
+            "#{task_name.source.delete(':|\'|"')}: :environment"
           else
             "#{task_name.source} => :environment"
           end
