@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#297](https://github.com/rubocop-hq/rubocop-rails/pull/297): Handle an upstream Ruby issue where the DidYouMean module is not available, which would break the `Rails/UnknownEnv` cop. ([@taylorthurlow][])
+* [#300](https://github.com/rubocop-hq/rubocop-rails/issues/300): Fix `Rails/RenderInline` error on variable key in render options. ([@tejasbubane][])
 
 ### Changes
 

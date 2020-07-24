@@ -22,4 +22,17 @@ RSpec.describe RuboCop::Cop::Rails::RenderInline do
       render :index
     RUBY
   end
+
+  it 'does not register an offense when passing other options to render' do
+    expect_no_offenses(<<~RUBY)
+      render json: users, serializer: UserSerializer
+    RUBY
+  end
+
+  it 'does not register an offense when passing other options where key is a variable' do
+    expect_no_offenses(<<~RUBY)
+      serializer = users.respond_to?(:each) ? :each_serializer : :serializer
+      render json: users, serializer => UserSerializer
+    RUBY
+  end
 end

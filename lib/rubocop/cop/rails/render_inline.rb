@@ -27,20 +27,12 @@ module RuboCop
       class RenderInline < Cop
         MSG = 'Prefer using a template over inline rendering.'
 
-        def_node_matcher :render_with_options?, <<~PATTERN
-          (send nil? :render $(hash ...))
+        def_node_matcher :render_with_inline_option?, <<~PATTERN
+          (send nil? :render (hash <(pair {(sym :inline) (str "inline")} _) ...>))
         PATTERN
 
         def on_send(node)
-          render_with_options?(node) do |options|
-            add_offense(node) if includes_inline_key?(options)
-          end
-        end
-
-        private
-
-        def includes_inline_key?(node)
-          node.keys.find { |key| key.value.to_sym == :inline }
+          add_offense(node) if render_with_inline_option?(node)
         end
       end
     end
