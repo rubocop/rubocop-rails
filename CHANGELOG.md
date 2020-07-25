@@ -6,6 +6,7 @@
 
 * [#297](https://github.com/rubocop-hq/rubocop-rails/pull/297): Handle an upstream Ruby issue where the DidYouMean module is not available, which would break the `Rails/UnknownEnv` cop. ([@taylorthurlow][])
 * [#300](https://github.com/rubocop-hq/rubocop-rails/issues/300): Fix `Rails/RenderInline` error on variable key in render options. ([@tejasbubane][])
+* [#305](https://github.com/rubocop-hq/rubocop-rails/issues/305): Fix crash in `Rails/MatchRoute` cop when `via` option is a variable. ([@tejasbubane][])
 
 ### Changes
 

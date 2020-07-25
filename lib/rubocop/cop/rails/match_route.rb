@@ -77,6 +77,8 @@ module RuboCop
             [via.value]
           elsif via.array_type?
             via.values.map(&:value)
+          else
+            []
           end
         end
 
