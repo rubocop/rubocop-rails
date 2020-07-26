@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.7.1 (2020-07-26)
+
 ### Bug fixes
 
 * [#297](https://github.com/rubocop-hq/rubocop-rails/pull/297): Handle an upstream Ruby issue where the DidYouMean module is not available, which would break the `Rails/UnknownEnv` cop. ([@taylorthurlow][])
