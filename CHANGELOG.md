@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#52](https://github.com/rubocop-hq/rubocop-rails/issues/52): Add new `Rails/AfterCommitOverride` cop. ([@fatkodima][])
+
 ## 2.7.1 (2020-07-26)
 
 ### Bug fixes
