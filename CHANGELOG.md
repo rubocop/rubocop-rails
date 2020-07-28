@@ -5,6 +5,7 @@
 ### New features
 
 * [#52](https://github.com/rubocop-hq/rubocop-rails/issues/52): Add new `Rails/AfterCommitOverride` cop. ([@fatkodima][])
+* [#274](https://github.com/rubocop-hq/rubocop-rails/pull/274): Add new `Rails/WhereNot` cop. ([@fatkodima][])
 
 ## 2.7.1 (2020-07-26)
 
