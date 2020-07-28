@@ -1,6 +1,6 @@
 // START_COP_LIST
 
-= Department xref:cops_rails.adoc[Rails]
+=== Department xref:cops_rails.adoc[Rails]
 
 * xref:cops_rails.adoc#railsactionfilter[Rails/ActionFilter]
 * xref:cops_rails.adoc#railsactiverecordaliases[Rails/ActiveRecordAliases]
