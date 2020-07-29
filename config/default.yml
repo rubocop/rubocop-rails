@@ -365,6 +365,7 @@ Rails/MailerName:
   Description: 'Mailer should end with `Mailer` suffix.'
   StyleGuide: 'https://rails.rubystyle.guide/#mailer-name'
   Enabled: 'pending'
+  SafeAutoCorrect: false
   VersionAdded: '2.7'
   Include:
     - app/mailers/**/*.rb

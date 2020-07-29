@@ -18,6 +18,7 @@
 ### Changes
 
 * [#301](https://github.com/rubocop-hq/rubocop-rails/issues/301): Set disalbed by default for `Rails/PluckId`. ([@koic][])
+* [#312](https://github.com/rubocop-hq/rubocop-rails/pull/312): Mark `Rails/MailerName` as unsafe for auto-correct. ([@eugeneius][])
 
 ## 2.7.0 (2020-07-21)
 
