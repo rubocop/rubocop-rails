@@ -2102,7 +2102,7 @@ link_to 'Click here', url, target: '_blank', rel: 'noreferrer'
 
 | Pending
 | Yes
-| Yes
+| Yes (Unsafe)
 | 2.7
 | -
 |===
