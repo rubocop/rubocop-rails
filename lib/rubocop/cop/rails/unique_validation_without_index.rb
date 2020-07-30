@@ -34,23 +34,25 @@ module RuboCop
           return unless uniqueness_part(node)
           return if condition_part?(node)
           return unless schema
-          return if with_index?(node)
+
+          klass, table, names = find_schema_information(node)
+          return unless names
+          return if with_index?(klass, table, names)
 
           add_offense(node)
         end
 
         private
 
-        def with_index?(node)
+        def find_schema_information(node)
           klass = class_node(node)
-          return true unless klass # Skip analysis
-
           table = schema.table_by(name: table_name(klass))
-          return true unless table # Skip analysis if it can't find the table
-
           names = column_names(node)
-          return true unless names
 
+          [klass, table, names]
+        end
+
+        def with_index?(klass, table, names)
           # Compatibility for Rails 4.2.
           add_indicies = schema.add_indicies_by(table_name: table_name(klass))
 

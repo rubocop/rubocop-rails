@@ -49,8 +49,7 @@ module RuboCop
 
             relative_date?(value) do |method_name|
               add_offense(node,
-                          location: range_between(name.loc.expression.begin_pos,
-                                                  value.loc.expression.end_pos),
+                          location: offense_range(name, value),
                           message: format(MSG, method_name: method_name))
             end
           end
@@ -76,6 +75,10 @@ module RuboCop
         end
 
         private
+
+        def offense_range(name, value)
+          range_between(name.loc.expression.begin_pos, value.loc.expression.end_pos)
+        end
 
         def_node_matcher :relative_date_assignment?, <<~PATTERN
           {
