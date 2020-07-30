@@ -44,9 +44,7 @@ module RuboCop
           after_touch
         ].freeze
 
-        CALLBACKS_ORDER_MAP = Hash[
-          CALLBACKS_IN_ORDER.map.with_index { |name, index| [name, index] }
-        ].freeze
+        CALLBACKS_ORDER_MAP = CALLBACKS_IN_ORDER.each_with_index.to_h.freeze
 
         def on_class(class_node)
           previous_index = -1
@@ -68,7 +66,7 @@ module RuboCop
 
         # Autocorrect by swapping between two nodes autocorrecting them
         def autocorrect(node)
-          previous = left_siblings_of(node).find do |sibling|
+          previous = left_siblings_of(node).reverse_each.find do |sibling|
             callback?(sibling)
           end
 

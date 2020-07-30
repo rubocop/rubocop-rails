@@ -7,6 +7,14 @@
 * [#52](https://github.com/rubocop-hq/rubocop-rails/issues/52): Add new `Rails/AfterCommitOverride` cop. ([@fatkodima][])
 * [#274](https://github.com/rubocop-hq/rubocop-rails/pull/274): Add new `Rails/WhereNot` cop. ([@fatkodima][])
 
+### Bug fixes
+
+* [#313](https://github.com/rubocop-hq/rubocop-rails/pull/313): Fix `Rails/ActiveRecordCallbacksOrder` to preserve the original callback execution order. ([@eugeneius][])
+
+### Changes
+
+* [#312](https://github.com/rubocop-hq/rubocop-rails/pull/312): Mark `Rails/MailerName` as unsafe for auto-correct. ([@eugeneius][])
+
 ## 2.7.1 (2020-07-26)
 
 ### Bug fixes
@@ -18,7 +26,6 @@
 ### Changes
 
 * [#301](https://github.com/rubocop-hq/rubocop-rails/issues/301): Set disalbed by default for `Rails/PluckId`. ([@koic][])
-* [#312](https://github.com/rubocop-hq/rubocop-rails/pull/312): Mark `Rails/MailerName` as unsafe for auto-correct. ([@eugeneius][])
 
 ## 2.7.0 (2020-07-21)
 

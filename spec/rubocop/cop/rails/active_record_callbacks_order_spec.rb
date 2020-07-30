@@ -83,6 +83,25 @@ RSpec.describe RuboCop::Cop::Rails::ActiveRecordCallbacksOrder do
     RUBY
   end
 
+  it 'preserves the original order of callbacks of the same type' do
+    expect_offense(<<~RUBY)
+      class User < ApplicationRecord
+        after_commit :after_commit_callback
+        after_save :after_save_callback1
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `after_save` is supposed to appear before `after_commit`.
+        after_save :after_save_callback2
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      class User < ApplicationRecord
+        after_save :after_save_callback1
+        after_save :after_save_callback2
+        after_commit :after_commit_callback
+      end
+    RUBY
+  end
+
   it 'does not register an offense when declared callbacks are correctly ordered' do
     expect_no_offenses(<<~RUBY)
       class User < ApplicationRecord
