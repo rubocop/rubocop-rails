@@ -138,7 +138,7 @@ module RuboCop
           add_offense_for_node(node, CREATE_MSG)
         end
 
-        # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        # rubocop:disable Metrics/CyclomaticComplexity
         def on_send(node)
           return unless persist_method?(node)
           return if return_value_assigned?(node)
@@ -150,7 +150,7 @@ module RuboCop
 
           add_offense_for_node(node)
         end
-        # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        # rubocop:enable Metrics/CyclomaticComplexity
         alias on_csend on_send
 
         def autocorrect(node)
