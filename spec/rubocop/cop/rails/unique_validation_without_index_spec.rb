@@ -179,6 +179,16 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
             end
           RUBY
         end
+
+        context 'when scope is frozen' do
+          it 'does not register an offense' do
+            expect_no_offenses(<<~RUBY)
+              class WrittenArticles
+                validates :a_id, uniqueness: { scope: [:b_id, :c_id].freeze }
+              end
+            RUBY
+          end
+        end
       end
     end
 
