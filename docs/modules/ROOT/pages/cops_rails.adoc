@@ -3379,6 +3379,55 @@ def change
 end
 ----
 
+[source,ruby]
+----
+# remove_columns
+
+# bad
+def change
+  remove_columns :users, :name, :email
+end
+
+# good
+def change
+  reversible do |dir|
+    dir.up do
+      remove_columns :users, :name, :email
+    end
+
+    dir.down do
+      add_column :users, :name, :string
+      add_column :users, :name, :email
+    end
+  end
+end
+
+# good (Rails >= 6.1, see https://github.com/rails/rails/pull/36589)
+def change
+  remove_columns :users, :name, :email, type: :string
+end
+----
+
+[source,ruby]
+----
+# remove_index
+
+# bad
+def change
+  remove_index :users, name: :index_users_on_email
+end
+
+# good
+def change
+  remove_index :users, :email
+end
+
+# good
+def change
+  remove_index :users, column: :email
+end
+----
+
 === Configurable attributes
 
 |===

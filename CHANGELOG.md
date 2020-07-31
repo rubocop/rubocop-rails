@@ -15,6 +15,7 @@
 ### Changes
 
 * [#312](https://github.com/rubocop-hq/rubocop-rails/pull/312): Mark `Rails/MailerName` as unsafe for auto-correct. ([@eugeneius][])
+* [#294](https://github.com/rubocop-hq/rubocop-rails/pull/294): Update `Rails/ReversibleMigration` to register offenses for `remove_columns` and `remove_index`. ([@philcoggins][])
 
 ## 2.7.1 (2020-07-26)
 
@@ -258,3 +259,4 @@
 [@fatkodima]: https://github.com/fatkodima
 [@taylorthurlow]: https://github.com/taylorthurlow
 [@krim]: https://github.com/krim
+[@philcoggins]: https://github.com/philcoggins
