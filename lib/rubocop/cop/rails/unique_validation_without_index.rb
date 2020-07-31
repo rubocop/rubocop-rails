@@ -97,6 +97,8 @@ module RuboCop
           scope = find_scope(uniq)
           return unless scope
 
+          scope = unfreeze_scope(scope)
+
           case scope.type
           when :sym, :str
             [scope.value]
@@ -112,6 +114,10 @@ module RuboCop
 
             break pair.value
           end
+        end
+
+        def unfreeze_scope(scope)
+          scope.send_type? && scope.method?(:freeze) ? scope.children.first : scope
         end
 
         def class_node(node)

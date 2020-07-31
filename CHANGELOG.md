@@ -9,6 +9,7 @@
 
 ### Bug fixes
 
+* [#315](https://github.com/rubocop-hq/rubocop-rails/pull/315): Allow to use frozen scope for `Rails/UniqueValidationWithoutIndex`. ([@krim][])
 * [#313](https://github.com/rubocop-hq/rubocop-rails/pull/313): Fix `Rails/ActiveRecordCallbacksOrder` to preserve the original callback execution order. ([@eugeneius][])
 
 ### Changes
@@ -256,3 +257,4 @@
 [@jcoyne]: https://github.com/jcoyne
 [@fatkodima]: https://github.com/fatkodima
 [@taylorthurlow]: https://github.com/taylorthurlow
+[@krim]: https://github.com/krim
