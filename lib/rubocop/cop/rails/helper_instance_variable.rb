@@ -31,6 +31,8 @@ module RuboCop
         end
 
         def on_ivasgn(node)
+          return if node.parent.or_asgn_type?
+
           add_offense(node, location: :name)
         end
       end

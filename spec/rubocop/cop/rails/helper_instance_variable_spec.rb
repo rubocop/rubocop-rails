@@ -28,4 +28,12 @@ RSpec.describe RuboCop::Cop::Rails::HelperInstanceVariable do
       end
     RUBY
   end
+
+  it 'does not register an offense when using memoization' do
+    expect_no_offenses(<<~'RUBY')
+      def foo
+        @cache ||= heavy_load
+      end
+    RUBY
+  end
 end
