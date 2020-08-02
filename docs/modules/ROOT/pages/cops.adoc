@@ -1,3 +1,17 @@
+= Cops
+
+In RuboCop lingo the various checks performed on the code are called cops.
+Each cop is responsible for detecting one particular offense.
+RuboCop Rails has only one Rails department.
+
+Some of the Rails cops have configuration options, allowing them to
+enforce different coding conventions.
+
+== Rails
+
+Rails cops check for Rails best practices and coding conventions. Many of the them are
+based on the https://rails.rubystyle.guide/[Rails Style Guide].
+
 // START_COP_LIST
 
 === Department xref:cops_rails.adoc[Rails]
