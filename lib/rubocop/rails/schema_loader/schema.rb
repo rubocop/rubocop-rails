@@ -97,14 +97,12 @@ module RuboCop
           end.compact
         end
 
-        def each_content(node)
+        def each_content(node, &block)
           return enum_for(__method__, node) unless block_given?
 
           case node.body&.type
           when :begin
-            node.body.children.each do |child|
-              yield(child)
-            end
+            node.body.children.each(&block)
           else
             yield(node.body)
           end
