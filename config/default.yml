@@ -435,6 +435,11 @@ Rails/PluckInWhere:
   Enabled: 'pending'
   Safe: false
   VersionAdded: '2.7'
+  VersionChanged: '2.8'
+  EnforcedStyle: conservative
+  SupportedStyles:
+    - conservative
+    - aggressive
 
 Rails/PluralizationGrammar:
   Description: 'Checks for incorrect grammar when using methods like `3.day.ago`.'
