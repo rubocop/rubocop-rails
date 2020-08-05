@@ -26,7 +26,11 @@ module RuboCop
         MSG = "Prefer Ruby's comparison operators over Active Support's `inquiry`."
 
         def on_send(node)
-          add_offense(node, location: :selector) if node.method?(:inquiry) && node.arguments.empty?
+          return unless node.method?(:inquiry) && node.arguments.empty?
+          return unless (receiver = node.receiver)
+          return if !receiver.str_type? && !receiver.array_type?
+
+          add_offense(node, location: :selector)
         end
       end
     end
