@@ -18,6 +18,8 @@ module RuboCop
       # ActiveRecord::Relation vs a call to pluck on an
       # ActiveRecord::Associations::CollectionProxy.
       #
+      # This cop is unsafe because the behavior may change depending on the
+      # database collation.
       # Autocorrect is disabled by default for this cop since it may generate
       # false positives.
       #
