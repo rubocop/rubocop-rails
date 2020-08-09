@@ -5,6 +5,7 @@
 ### New features
 
 * [#52](https://github.com/rubocop-hq/rubocop-rails/issues/52): Add new `Rails/AfterCommitOverride` cop. ([@fatkodima][])
+* [#323](https://github.com/rubocop-hq/rubocop-rails/pull/323): Add new `Rails/OrderById` cop. ([@fatkodima][])
 * [#274](https://github.com/rubocop-hq/rubocop-rails/pull/274): Add new `Rails/WhereNot` cop. ([@fatkodima][])
 * [#311](https://github.com/rubocop-hq/rubocop-rails/issues/311): Make `Rails/HelperInstanceVariable` aware of memoization. ([@koic][])
 

@@ -2266,6 +2266,43 @@ add_reference :products, :category, null: false, default: 1
 | Array
 |===
 
+== Rails/OrderById
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Disabled
+| Yes
+| No
+| 2.8
+| -
+|===
+
+This cop checks for places where ordering by `id` column is used.
+
+Don't use the `id` column for ordering. The sequence of ids is not guaranteed
+to be in any particular order, despite often (incidentally) being chronological.
+Use a timestamp column to order chronologically. As a bonus the intent is clearer.
+
+NOTE: Make sure the changed order column does not introduce performance
+bottlenecks and appropriate database indexes are added.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+scope :chronological, -> { order(id: :asc) }
+scope :chronological, -> { order(primary_key => :asc) }
+
+# good
+scope :chronological, -> { order(created_at: :asc) }
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#order-by-id
+
 == Rails/Output
 
 |===
