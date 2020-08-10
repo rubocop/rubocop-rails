@@ -1696,7 +1696,7 @@ end
 | Yes
 | Yes
 | 2.5
-| -
+| 2.8
 |===
 
 This cop looks for uses of `each_with_object({}) { ... }`,
@@ -1710,6 +1710,7 @@ Rails provides the `index_by` method for this purpose.
 ----
 # bad
 [1, 2, 3].each_with_object({}) { |el, h| h[foo(el)] = el }
+[1, 2, 3].to_h { |el| [foo(el), el] }
 [1, 2, 3].map { |el| [foo(el), el] }.to_h
 Hash[[1, 2, 3].collect { |el| [foo(el), el] }]
 
@@ -1726,7 +1727,7 @@ Hash[[1, 2, 3].collect { |el| [foo(el), el] }]
 | Yes
 | Yes
 | 2.5
-| -
+| 2.8
 |===
 
 This cop looks for uses of `each_with_object({}) { ... }`,
@@ -1740,6 +1741,7 @@ Rails provides the `index_with` method for this purpose.
 ----
 # bad
 [1, 2, 3].each_with_object({}) { |el, h| h[el] = foo(el) }
+[1, 2, 3].to_h { |el| [el, foo(el)] }
 [1, 2, 3].map { |el| [el, foo(el)] }.to_h
 Hash[[1, 2, 3].collect { |el| [el, foo(el)] }]
 

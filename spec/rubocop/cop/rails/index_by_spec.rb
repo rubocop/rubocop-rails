@@ -69,7 +69,7 @@ RSpec.describe RuboCop::Cop::Rails::IndexBy, :config do
   end
 
   context 'when `to_h` is given a block' do
-    it 'registers an offense for `map { ... }.to_h' do
+    it 'registers an offense for `map { ... }.to_h`' do
       expect_offense(<<~RUBY)
         x.map { |el| [el.to_sym, el] }.to_h { |k, v| [v, k] }
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `map { ... }.to_h`.
@@ -137,5 +137,26 @@ RSpec.describe RuboCop::Cop::Rails::IndexBy, :config do
     expect_correction(<<~RUBY)
       x.index_by { |el| el.to_sym }
     RUBY
+  end
+
+  context 'when using Ruby 2.6 or newer', :ruby26 do
+    it 'registers an offense for `to_h { ... }`' do
+      expect_offense(<<~RUBY)
+        x.to_h { |el| [el.to_sym, el] }
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `to_h { ... }`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x.index_by { |el| el.to_sym }
+      RUBY
+    end
+  end
+
+  context 'when using Ruby 2.5 or older', :ruby25 do
+    it 'does not register an offense for `to_h { ... }`' do
+      expect_no_offenses(<<~RUBY)
+        x.to_h { |el| [el.to_sym, el] }
+      RUBY
+    end
   end
 end

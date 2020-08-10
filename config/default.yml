@@ -321,14 +321,16 @@ Rails/IgnoredSkipActionFilterOption:
     - app/controllers/**/*.rb
 
 Rails/IndexBy:
-  Description: 'Prefer `index_by` over `each_with_object` or `map`.'
+  Description: 'Prefer `index_by` over `each_with_object`, `to_h`, or `map`.'
   Enabled: true
   VersionAdded: '2.5'
+  VersionChanged: '2.8'
 
 Rails/IndexWith:
-  Description: 'Prefer `index_with` over `each_with_object` or `map`.'
+  Description: 'Prefer `index_with` over `each_with_object`, `to_h`, or `map`.'
   Enabled: true
   VersionAdded: '2.5'
+  VersionChanged: '2.8'
 
 Rails/Inquiry:
   Description: "Prefer Ruby's comparison operators over Active Support's `Array#inquiry` and `String#inquiry`."

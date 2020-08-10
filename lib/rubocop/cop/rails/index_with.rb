@@ -11,6 +11,7 @@ module RuboCop
       # @example
       #   # bad
       #   [1, 2, 3].each_with_object({}) { |el, h| h[el] = foo(el) }
+      #   [1, 2, 3].to_h { |el| [el, foo(el)] }
       #   [1, 2, 3].map { |el| [el, foo(el)] }.to_h
       #   Hash[[1, 2, 3].collect { |el| [el, foo(el)] }]
       #
@@ -27,6 +28,13 @@ module RuboCop
             ({send csend} _ :each_with_object (hash))
             (args (arg $_el) (arg _memo))
             ({send csend} (lvar _memo) :[]= (lvar _el) $_))
+        PATTERN
+
+        def_node_matcher :on_bad_to_h, <<~PATTERN
+          (block
+            ({send csend} _ :to_h)
+            (args (arg $_el))
+            (array (lvar _el) $_))
         PATTERN
 
         def_node_matcher :on_bad_map_to_h, <<~PATTERN
