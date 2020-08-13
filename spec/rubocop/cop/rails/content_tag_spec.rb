@@ -83,11 +83,11 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
 
     it 'corrects an offence when first argument is non-identifier string' do
       expect_offense(<<~RUBY)
-        content_tag('foo-bar')
-        ^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
+        content_tag('foo-bar', 'baz', class: 'strong')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
       RUBY
       expect_correction(<<~RUBY)
-        tag('foo-bar')
+        tag.foo_bar('baz', class: 'strong')
       RUBY
     end
 

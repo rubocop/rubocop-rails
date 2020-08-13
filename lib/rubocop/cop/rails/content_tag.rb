@@ -43,7 +43,7 @@ module RuboCop
               range = correction_range(node)
 
               rest_args = node.arguments.drop(1)
-              replacement = "tag.#{node.first_argument.value}(#{rest_args.map(&:source).join(', ')})"
+              replacement = "tag.#{node.first_argument.value.to_s.underscore}(#{rest_args.map(&:source).join(', ')})"
 
               corrector.replace(range, replacement)
             else
@@ -57,7 +57,7 @@ module RuboCop
         def method_name?(node)
           return false unless node.str_type? || node.sym_type?
 
-          /^[a-zA-Z_][a-zA-Z_0-9]*$/.match?(node.value)
+          /^[a-zA-Z_][a-zA-Z_\-0-9]*$/.match?(node.value)
         end
 
         def correction_range(node)
