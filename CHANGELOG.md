@@ -13,6 +13,7 @@
 * [#315](https://github.com/rubocop-hq/rubocop-rails/pull/315): Allow to use frozen scope for `Rails/UniqueValidationWithoutIndex`. ([@krim][])
 * [#313](https://github.com/rubocop-hq/rubocop-rails/pull/313): Fix `Rails/ActiveRecordCallbacksOrder` to preserve the original callback execution order. ([@eugeneius][])
 * [#319](https://github.com/rubocop-hq/rubocop-rails/issues/319): Fix a false positive for `Rails/Inquiry` when `#inquiry`'s receiver is a variable. ([@koic][])
+* [#327](https://github.com/rubocop-hq/rubocop-rails/pull/327): Fix `Rails/ContentTag` autocorrect to handle html5 tag names with hyphens. ([@jaredmoody][])
 
 ### Changes
 
@@ -266,3 +267,4 @@
 [@krim]: https://github.com/krim
 [@philcoggins]: https://github.com/philcoggins
 [@kunitoo]: https://github.com/kunitoo
+[@jaredmoody]: https://github.com/jaredmoody
