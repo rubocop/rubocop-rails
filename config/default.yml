@@ -224,6 +224,11 @@ Rails/EnvironmentComparison:
   Enabled: true
   VersionAdded: '0.52'
 
+Rails/ExistsById:
+  Description: 'Prefer `exists?(id)` over `exists?(id: id)`.'
+  Enabled: 'pending'
+  VersionAdded: '2.8'
+
 Rails/Exit:
   Description: >-
                   Favor `fail`, `break`, `return`, etc. over `exit` in
