@@ -190,6 +190,12 @@ Rails/DelegateAllowBlank:
   Enabled: true
   VersionAdded: '0.44'
 
+Rails/DotSeparatedKeys:
+  Description: 'Enforces the use of dot-separated keys instead of `:scope` options in `I18n` translation methods.'
+  StyleGuide: 'https://rails.rubystyle.guide/#dot-separated-keys'
+  Enabled: pending
+  VersionAdded: '2.8'
+
 Rails/DynamicFindBy:
   Description: 'Use `find_by` instead of dynamic `find_by_*`.'
   StyleGuide: 'https://rails.rubystyle.guide#find_by'

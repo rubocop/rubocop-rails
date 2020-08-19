@@ -980,6 +980,37 @@ delegate :foo, to: :bar, allow_blank: true
 delegate :foo, to: :bar, allow_nil: true
 ----
 
+== Rails/DotSeparatedKeys
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.8
+| -
+|===
+
+This cop enforces the use of dot-separated keys instead of `:scope` options
+in `I18n` translation methods.
+The dot-separated call is easier to read and trace the hierarchy.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+I18n.t :record_invalid, scope: [:activerecord, :errors, :messages]
+
+# good
+I18n.t 'activerecord.errors.messages.record_invalid'
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#dot-separated-keys
+
 == Rails/DynamicFindBy
 
 |===
