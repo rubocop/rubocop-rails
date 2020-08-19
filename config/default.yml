@@ -664,7 +664,7 @@ Rails/UniqBeforePluck:
   SupportedStyles:
     - conservative
     - aggressive
-  Safe: false
+  SafeAutoCorrect: false
   AutoCorrect: false
 
 Rails/UniqueValidationWithoutIndex:

@@ -3979,7 +3979,7 @@ Time.at(timestamp).in_time_zone
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
 | Enabled
-| No
+| Yes
 | Yes (Unsafe)
 | 0.40
 | 2.8

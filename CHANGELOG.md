@@ -20,7 +20,7 @@
 * [#312](https://github.com/rubocop-hq/rubocop-rails/pull/312): Mark `Rails/MailerName` as unsafe for auto-correct. ([@eugeneius][])
 * [#294](https://github.com/rubocop-hq/rubocop-rails/pull/294): Update `Rails/ReversibleMigration` to register offenses for `remove_columns` and `remove_index`. ([@philcoggins][])
 * [#310](https://github.com/rubocop-hq/rubocop-rails/issues/310): Add `EnforcedStyle` to `Rails/PluckInWhere`. By default, it does not register an offense if `pluck` method's receiver is a variable. ([@koic][])
-* [#320](https://github.com/rubocop-hq/rubocop-rails/pull/320): Mark `Rails/UniqBeforePluck` as unsafe. ([@kunitoo][])
+* [#320](https://github.com/rubocop-hq/rubocop-rails/pull/320): Mark `Rails/UniqBeforePluck` as unsafe auto-correction. ([@kunitoo][])
 * [#324](https://github.com/rubocop-hq/rubocop-rails/pull/324): Make `Rails/IndexBy` and `Rails/IndexWith` aware of `to_h` with block. ([@eugeneius][])
 
 ## 2.7.1 (2020-07-26)
