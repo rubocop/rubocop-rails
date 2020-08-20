@@ -8,6 +8,7 @@
 * [#323](https://github.com/rubocop-hq/rubocop-rails/pull/323): Add new `Rails/OrderById` cop. ([@fatkodima][])
 * [#274](https://github.com/rubocop-hq/rubocop-rails/pull/274): Add new `Rails/WhereNot` cop. ([@fatkodima][])
 * [#311](https://github.com/rubocop-hq/rubocop-rails/issues/311): Make `Rails/HelperInstanceVariable` aware of memoization. ([@koic][])
+* [#330](https://github.com/rubocop-hq/rubocop-rails/pull/330): Add new `Rails/ExistsById` cop. ([@tabakazu][])
 
 ### Bug fixes
 
@@ -269,3 +270,4 @@
 [@philcoggins]: https://github.com/philcoggins
 [@kunitoo]: https://github.com/kunitoo
 [@jaredmoody]: https://github.com/jaredmoody
+[@tabakazu]: https://github.com/tabakazu

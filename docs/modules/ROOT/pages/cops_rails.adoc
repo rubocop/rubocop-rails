@@ -1169,6 +1169,35 @@ Rails.env == :test
 Rails.env.production?
 ----
 
+== Rails/ExistsById
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.8
+| -
+|===
+
+This cop enforces the use of `exists?(id)` over `exists?(id: id)`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+User.exists?(id: 1)
+User.exists?(id: '1')
+
+# good
+User.exists?(1)
+User.exists?('1')
+User.exists?(id: [1, 2, 3])
+User.exists?(id: 1, email: 'test@example.com')
+----
+
 == Rails/Exit
 
 |===
