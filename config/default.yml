@@ -648,6 +648,12 @@ Rails/SkipsModelValidations:
     - upsert_all
   AllowedMethods: []
 
+Rails/SquishedSQLHeredocs:
+  Description: 'Checks SQL heredocs to use `.squish`.'
+  StyleGuide: 'https://rails.rubystyle.guide/#squished-heredocs'
+  Enabled: 'pending'
+  VersionAdded: '2.8'
+
 Rails/TimeZone:
   Description: 'Checks the correct usage of time zone aware methods.'
   StyleGuide: 'https://rails.rubystyle.guide#time'
