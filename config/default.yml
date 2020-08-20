@@ -396,6 +396,14 @@ Rails/NotNullColumn:
   Include:
     - db/migrate/*.rb
 
+Rails/OrderById:
+  Description: >-
+                  Do not use the `id` column for ordering.
+                  Use a timestamp column to order chronologically.
+  StyleGuide: 'https://rails.rubystyle.guide/#order-by-id'
+  Enabled: false
+  VersionAdded: '2.8'
+
 Rails/Output:
   Description: 'Checks for calls to puts, print, etc.'
   Enabled: true

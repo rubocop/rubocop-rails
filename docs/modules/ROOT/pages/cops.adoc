@@ -61,6 +61,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsmatchroute[Rails/MatchRoute]
 * xref:cops_rails.adoc#railsnegateinclude[Rails/NegateInclude]
 * xref:cops_rails.adoc#railsnotnullcolumn[Rails/NotNullColumn]
+* xref:cops_rails.adoc#railsorderbyid[Rails/OrderById]
 * xref:cops_rails.adoc#railsoutput[Rails/Output]
 * xref:cops_rails.adoc#railsoutputsafety[Rails/OutputSafety]
 * xref:cops_rails.adoc#railspick[Rails/Pick]
