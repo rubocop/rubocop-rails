@@ -45,6 +45,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsfindby[Rails/FindBy]
 * xref:cops_rails.adoc#railsfindbyid[Rails/FindById]
 * xref:cops_rails.adoc#railsfindeach[Rails/FindEach]
+* xref:cops_rails.adoc#railsforeignkeyname[Rails/ForeignKeyName]
 * xref:cops_rails.adoc#railshasandbelongstomany[Rails/HasAndBelongsToMany]
 * xref:cops_rails.adoc#railshasmanyorhasonedependent[Rails/HasManyOrHasOneDependent]
 * xref:cops_rails.adoc#railshelperinstancevariable[Rails/HelperInstanceVariable]

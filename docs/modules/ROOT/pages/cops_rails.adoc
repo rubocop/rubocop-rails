@@ -1388,6 +1388,47 @@ User.all.find_each
 
 * https://rails.rubystyle.guide#find-each
 
+== Rails/ForeignKeyName
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| No
+| 2.8
+| -
+|===
+
+This cop enforces that foreign keys are created with explicitly specified names.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+add_foreign_key :articles, :authors
+t.foreign_key :authors
+
+# good
+add_foreign_key :articles, :authors, name: :articles_authors_fk
+t.foreign_key :authors, name: :articles_authors_fk
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `db/migrate/*.rb`
+| Array
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#meaningful-foreign-key-naming
+
 == Rails/HasAndBelongsToMany
 
 |===

@@ -4,6 +4,7 @@
 
 ### New features
 
+* [#277](https://github.com/rubocop-hq/rubocop-rails/pull/277): Add new `Rails/ForeignKeyName` cop. ([@fatkodima][])
 * [#52](https://github.com/rubocop-hq/rubocop-rails/issues/52): Add new `Rails/AfterCommitOverride` cop. ([@fatkodima][])
 * [#323](https://github.com/rubocop-hq/rubocop-rails/pull/323): Add new `Rails/OrderById` cop. ([@fatkodima][])
 * [#274](https://github.com/rubocop-hq/rubocop-rails/pull/274): Add new `Rails/WhereNot` cop. ([@fatkodima][])
