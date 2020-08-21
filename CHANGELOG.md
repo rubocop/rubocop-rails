@@ -4,6 +4,7 @@
 
 ### New features
 
+* [#291](https://github.com/rubocop-hq/rubocop-rails/pull/291): Add new `Rails/SquishedSQLHeredocs` cop. ([@mobilutz][])
 * [#52](https://github.com/rubocop-hq/rubocop-rails/issues/52): Add new `Rails/AfterCommitOverride` cop. ([@fatkodima][])
 * [#323](https://github.com/rubocop-hq/rubocop-rails/pull/323): Add new `Rails/OrderById` cop. ([@fatkodima][])
 * [#274](https://github.com/rubocop-hq/rubocop-rails/pull/274): Add new `Rails/WhereNot` cop. ([@fatkodima][])
@@ -40,7 +41,6 @@
 
 ### New features
 
-* [#291](https://github.com/rubocop-hq/rubocop-rails/pull/291): Add new `Rails/SquishedSQLHeredocs` cop. ([@mobilutz][])
 * [#283](https://github.com/rubocop-hq/rubocop-rails/pull/283): Add new `Rails/FindById` cop. ([@fatkodima][])
 * [#285](https://github.com/rubocop-hq/rubocop-rails/pull/285): Add new `Rails/ActiveRecordCallbacksOrder` cop. ([@fatkodima][])
 * [#276](https://github.com/rubocop-hq/rubocop-rails/pull/276): Add new `Rails/RenderPlainText` cop. ([@fatkodima][])
