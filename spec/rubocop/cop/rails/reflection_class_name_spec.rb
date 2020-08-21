@@ -35,6 +35,15 @@ RSpec.describe RuboCop::Cop::Rails::ReflectionClassName do
     end
   end
 
+  context 'when a relation has a scope parameter' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        belongs_to :account, -> { distinct }, class_name: Account
+                                              ^^^^^^^^^^^^^^^^^^^ Use a string value for `class_name`.
+      RUBY
+    end
+  end
+
   it 'does not register an offense when using string with interpolation' do
     expect_no_offenses(<<~'RUBY')
       has_many :accounts, class_name: "#{prefix}Account"
