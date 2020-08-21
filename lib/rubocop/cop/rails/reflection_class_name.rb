@@ -17,7 +17,7 @@ module RuboCop
         MSG = 'Use a string value for `class_name`.'
 
         def_node_matcher :association_with_reflection, <<~PATTERN
-          (send nil? {:has_many :has_one :belongs_to} _
+          (send nil? {:has_many :has_one :belongs_to} _ _ ?
             (hash <$#reflection_class_name ...>)
           )
         PATTERN

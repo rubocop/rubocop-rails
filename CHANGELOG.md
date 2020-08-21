@@ -9,6 +9,7 @@
 * [#323](https://github.com/rubocop-hq/rubocop-rails/pull/323): Add new `Rails/OrderById` cop. ([@fatkodima][])
 * [#274](https://github.com/rubocop-hq/rubocop-rails/pull/274): Add new `Rails/WhereNot` cop. ([@fatkodima][])
 * [#311](https://github.com/rubocop-hq/rubocop-rails/issues/311): Make `Rails/HelperInstanceVariable` aware of memoization. ([@koic][])
+* [#332](https://github.com/rubocop-hq/rubocop-rails/issues/332): Fix `Rails/ReflectionClassName` cop false negative when relation had a scope parameter. ([@bubaflub][])
 
 ### Bug fixes
 
@@ -35,7 +36,7 @@
 
 ### Changes
 
-* [#301](https://github.com/rubocop-hq/rubocop-rails/issues/301): Set disalbed by default for `Rails/PluckId`. ([@koic][])
+* [#301](https://github.com/rubocop-hq/rubocop-rails/issues/301): Set disabled by default for `Rails/PluckId`. ([@koic][])
 
 ## 2.7.0 (2020-07-21)
 
@@ -271,3 +272,4 @@
 [@kunitoo]: https://github.com/kunitoo
 [@jaredmoody]: https://github.com/jaredmoody
 [@mobilutz]: https://github.com/mobilutz
+[@bubaflub]: https://github.com/bubaflub
