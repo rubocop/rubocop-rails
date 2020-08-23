@@ -52,11 +52,7 @@ module RuboCop
 
         def on_send(node)
           return if active_resource?(node.parent)
-
-          unless association_without_options?(node)
-            return if valid_options?(association_with_options?(node))
-          end
-
+          return if !association_without_options?(node) && valid_options?(association_with_options?(node))
           return if valid_options_in_with_options_block?(node)
 
           add_offense(node, location: :selector)
