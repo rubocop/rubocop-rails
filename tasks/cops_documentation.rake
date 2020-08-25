@@ -37,7 +37,7 @@ task documentation_syntax_check: :yard_for_generate_documentation do
 
   ok = true
   YARD::Registry.load!
-  cops = RuboCop::Cop::Cop.registry
+  cops = RuboCop::Cop::Registry.global
   cops.each do |cop|
     examples = YARD::Registry.all(:class).find do |code_object|
       next unless RuboCop::Cop::Badge.for(code_object.to_s) == cop.badge

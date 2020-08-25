@@ -4,7 +4,7 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
   describe 'default configuration file' do
     subject(:config) { RuboCop::ConfigLoader.load_file('config/default.yml') }
 
-    let(:registry) { RuboCop::Cop::Cop.registry }
+    let(:registry) { RuboCop::Cop::Registry.global }
     let(:cop_names) do
       registry.with_department(:Rails).cops.map(&:cop_name)
     end
