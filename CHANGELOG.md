@@ -5,6 +5,7 @@
 ### New features
 
 * [#362](https://github.com/rubocop-hq/rubocop-rails/pull/362): Add new `Rails/WhereEquals` cop. ([@eugeneius][])
+* [#339](https://github.com/rubocop-hq/rubocop-rails/pull/339): Add new `Rails/AttributeDefaultBlockValue` cop. ([@cilim][])
 
 ### Bug fixes
 
@@ -298,3 +299,4 @@
 [@bubaflub]: https://github.com/bubaflub
 [@dvandersluis]: https://github.com/dvandersluis
 [@Tietew]: https://github.com/Tietew
+[@cilim]: https://github.com/cilim

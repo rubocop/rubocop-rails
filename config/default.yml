@@ -105,6 +105,13 @@ Rails/AssertNot:
   Include:
     - '**/test/**/*'
 
+Rails/AttributeDefaultBlockValue:
+  Description: 'Pass method call in block for attribute option `default`.'
+  Enabled: pending
+  VersionAdded: '2.9'
+  Include:
+    - 'models/**/*'
+
 Rails/BelongsTo:
   Description: >-
                   Use `optional: true` instead of `required: false` for
