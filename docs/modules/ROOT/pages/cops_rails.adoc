@@ -4293,12 +4293,20 @@ validates :foo, uniqueness: true
 | Yes
 | Yes
 | 2.7
-| -
+| 2.8
 |===
 
-This cop enforces the use of `exists?(...)` over `where(...).exists?`.
+This cop enforces consistent style when using `exists?`.
+
+Two styles are supported for this cop. When EnforcedStyle is 'exists'
+then the cop enforces `exists?(...)` over `where(...).exists?`.
+
+When EnforcedStyle is 'where' then the cop enforces
+`where(...).exists?` over `exists?(...)`.
 
 === Examples
+
+==== EnforcedStyle: exists (default)
 
 [source,ruby]
 ----
@@ -4313,6 +4321,34 @@ User.exists?(name: 'john')
 User.where('length(name) > 10').exists?
 user.posts.exists?(published: true)
 ----
+
+==== EnforcedStyle: where
+
+[source,ruby]
+----
+# bad
+User.exists?(name: 'john')
+User.exists?(['name = ?', 'john'])
+User.exists?('name = ?', 'john')
+user.posts.exists?(published: true)
+
+# good
+User.where(name: 'john').exists?
+User.where(['name = ?', 'john']).exists?
+User.where('name = ?', 'john').exists?
+user.posts.where(published: true).exists?
+User.where('length(name) > 10').exists?
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| EnforcedStyle
+| `exists`
+| `exists`, `where`
+|===
 
 == Rails/WhereNot
 

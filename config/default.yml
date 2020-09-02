@@ -708,7 +708,12 @@ Rails/Validation:
 Rails/WhereExists:
   Description: 'Prefer `exists?(...)` over `where(...).exists?`.'
   Enabled: 'pending'
+  EnforcedStyle: exists
+  SupportedStyles:
+    - exists
+    - where
   VersionAdded: '2.7'
+  VersionChanged: '2.8'
 
 Rails/WhereNot:
   Description: 'Use `where.not(...)` instead of manually constructing negated SQL in `where`.'
