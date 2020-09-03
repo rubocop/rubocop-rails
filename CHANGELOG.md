@@ -25,6 +25,7 @@
 * [#310](https://github.com/rubocop-hq/rubocop-rails/issues/310): Add `EnforcedStyle` to `Rails/PluckInWhere`. By default, it does not register an offense if `pluck` method's receiver is a variable. ([@koic][])
 * [#320](https://github.com/rubocop-hq/rubocop-rails/pull/320): Mark `Rails/UniqBeforePluck` as unsafe auto-correction. ([@kunitoo][])
 * [#324](https://github.com/rubocop-hq/rubocop-rails/pull/324): Make `Rails/IndexBy` and `Rails/IndexWith` aware of `to_h` with block. ([@eugeneius][])
+* [#341](https://github.com/rubocop-hq/rubocop-rails/pull/341): Make `Rails/WhereExists` configurable to allow `where(...).exists?` to be the prefered style. ([@dvandersluis][])
 
 ## 2.7.1 (2020-07-26)
 
@@ -273,3 +274,4 @@
 [@jaredmoody]: https://github.com/jaredmoody
 [@mobilutz]: https://github.com/mobilutz
 [@bubaflub]: https://github.com/bubaflub
+[@dvandersluis]: https://github.com/dvandersluis
