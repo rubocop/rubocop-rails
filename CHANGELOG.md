@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.8.0 (2020-09-04)
+
 ### New features
 
 * [#291](https://github.com/rubocop-hq/rubocop-rails/pull/291): Add new `Rails/SquishedSQLHeredocs` cop. ([@mobilutz][])
