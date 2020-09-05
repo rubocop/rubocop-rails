@@ -41,6 +41,7 @@ module RuboCop
           method_name = node.method_name
           static_name = static_method_name(method_name)
           return unless static_name
+          return if node.arguments.any?(&:splat_type?)
 
           add_offense(node,
                       message: format(MSG, static_name: static_name,
