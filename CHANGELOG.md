@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#345](https://github.com/rubocop-hq/rubocop-rails/issues/345): Fix error of `Rails/AfterCommitOverride` on `after_commit` with a lambda. ([@pocke][])
+
 ## 2.8.0 (2020-09-04)
 
 ### New features
