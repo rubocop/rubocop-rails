@@ -59,7 +59,7 @@ module RuboCop
 
         def each_after_commit_callback(class_node)
           class_send_nodes(class_node).each do |node|
-            yield node if after_commit_callback?(node)
+            yield node if after_commit_callback?(node) && named_callback?(node)
           end
         end
 
@@ -77,6 +77,13 @@ module RuboCop
 
         def after_commit_callback?(node)
           AFTER_COMMIT_CALLBACKS.include?(node.method_name)
+        end
+
+        def named_callback?(node)
+          name = node.first_argument
+          return false unless name
+
+          name.sym_type?
         end
       end
     end
