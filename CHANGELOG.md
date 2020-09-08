@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#345](https://github.com/rubocop-hq/rubocop-rails/issues/345): Fix error of `Rails/AfterCommitOverride` on `after_commit` with a lambda. ([@pocke][])
+* [#349](https://github.com/rubocop-hq/rubocop-rails/pull/349): Fix errors of `Rails/UniqueValidationWithoutIndex`. ([@Tietew][])
 
 ## 2.8.0 (2020-09-04)
 
@@ -281,3 +282,4 @@
 [@mobilutz]: https://github.com/mobilutz
 [@bubaflub]: https://github.com/bubaflub
 [@dvandersluis]: https://github.com/dvandersluis
+[@Tietew]: https://github.com/Tietew

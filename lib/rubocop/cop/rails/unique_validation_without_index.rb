@@ -46,6 +46,8 @@ module RuboCop
 
         def find_schema_information(node)
           klass = class_node(node)
+          return unless klass
+
           table = schema.table_by(name: table_name(klass))
           names = column_names(node)
 
