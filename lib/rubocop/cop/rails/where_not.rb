@@ -10,6 +10,8 @@ module RuboCop
       #   # bad
       #   User.where('name != ?', 'Gabe')
       #   User.where('name != :name', name: 'Gabe')
+      #   User.where('name <> ?', 'Gabe')
+      #   User.where('name <> :name', name: 'Gabe')
       #   User.where('name IS NOT NULL')
       #   User.where('name NOT IN (?)', ['john', 'jane'])
       #   User.where('name NOT IN (:names)', names: ['john', 'jane'])
@@ -62,9 +64,9 @@ module RuboCop
           end
         end
 
-        NOT_EQ_ANONYMOUS_RE = /\A([\w.]+)\s+!=\s+\?\z/.freeze                  # column != ?
+        NOT_EQ_ANONYMOUS_RE = /\A([\w.]+)\s+(?:!=|<>)\s+\?\z/.freeze           # column != ?, column <> ?
         NOT_IN_ANONYMOUS_RE = /\A([\w.]+)\s+NOT\s+IN\s+\(\?\)\z/i.freeze       # column NOT IN (?)
-        NOT_EQ_NAMED_RE     = /\A([\w.]+)\s+!=\s+:(\w+)\z/.freeze              # column != :column
+        NOT_EQ_NAMED_RE     = /\A([\w.]+)\s+(?:!=|<>)\s+:(\w+)\z/.freeze       # column != :column, column <> :column
         NOT_IN_NAMED_RE     = /\A([\w.]+)\s+NOT\s+IN\s+\(:(\w+)\)\z/i.freeze   # column NOT IN (:column)
         IS_NOT_NULL_RE      = /\A([\w.]+)\s+IS\s+NOT\s+NULL\z/i.freeze         # column IS NOT NULL
 
