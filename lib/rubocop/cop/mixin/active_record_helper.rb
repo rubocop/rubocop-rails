@@ -52,6 +52,7 @@ module RuboCop
       # @param table [RuboCop::Rails::SchemaLoader::Table]
       # @return [String, nil]
       def resolve_relation_into_column(name:, class_node:, table:)
+        return unless table
         return name if table.with_column?(name: name)
 
         find_belongs_to(class_node) do |belongs_to|
