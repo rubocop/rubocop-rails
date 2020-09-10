@@ -6,6 +6,7 @@
 
 * [#345](https://github.com/rubocop-hq/rubocop-rails/issues/345): Fix error of `Rails/AfterCommitOverride` on `after_commit` with a lambda. ([@pocke][])
 * [#349](https://github.com/rubocop-hq/rubocop-rails/pull/349): Fix errors of `Rails/UniqueValidationWithoutIndex`. ([@Tietew][])
+* [#338](https://github.com/rubocop-hq/rubocop-rails/issues/338): Fix a false positive for `Rails/IndexBy` and `Rails/IndexWith` when the `each_with_object` hash is used in the transformed key or value. ([@eugeneius][])
 
 ## 2.8.0 (2020-09-04)
 
