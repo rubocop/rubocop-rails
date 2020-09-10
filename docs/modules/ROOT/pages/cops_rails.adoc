@@ -4372,6 +4372,8 @@ in `where` can be replaced with `where.not(...)`.
 # bad
 User.where('name != ?', 'Gabe')
 User.where('name != :name', name: 'Gabe')
+User.where('name <> ?', 'Gabe')
+User.where('name <> :name', name: 'Gabe')
 User.where('name IS NOT NULL')
 User.where('name NOT IN (?)', ['john', 'jane'])
 User.where('name NOT IN (:names)', names: ['john', 'jane'])

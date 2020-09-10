@@ -25,6 +25,28 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot do
     RUBY
   end
 
+  it 'registers an offense and corrects when using `<>` and anonymous placeholder' do
+    expect_offense(<<~RUBY)
+      User.where('name <> ?', 'Gabe')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not(name: 'Gabe')` instead of manually constructing negated SQL in `where`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      User.where.not(name: 'Gabe')
+    RUBY
+  end
+
+  it 'registers an offense and corrects when using `<>` and named placeholder' do
+    expect_offense(<<~RUBY)
+      User.where('name <> :name', name: 'Gabe')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not(name: 'Gabe')` instead of manually constructing negated SQL in `where`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      User.where.not(name: 'Gabe')
+    RUBY
+  end
+
   it 'registers an offense and corrects when using `IS NOT NULL`' do
     expect_offense(<<~RUBY)
       User.where('name IS NOT NULL')
@@ -58,9 +80,20 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot do
     RUBY
   end
 
-  it 'registers an offense and corrects when using namespaced columns' do
+  it 'registers an offense and corrects when using `!=` and namespaced columns' do
     expect_offense(<<~RUBY)
       Course.where('enrollments.student_id != ?', student.id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not('enrollments.student_id' => student.id)` instead of manually constructing negated SQL in `where`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Course.where.not('enrollments.student_id' => student.id)
+    RUBY
+  end
+
+  it 'registers an offense and corrects when using `<>` and namespaced columns' do
+    expect_offense(<<~RUBY)
+      Course.where('enrollments.student_id <> ?', student.id)
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not('enrollments.student_id' => student.id)` instead of manually constructing negated SQL in `where`.
     RUBY
 
@@ -84,6 +117,28 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot do
     it 'registers an offense and corrects when using `!=` and named placeholder' do
       expect_offense(<<~RUBY)
         User.where(['name != :name', { name: 'Gabe' }])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not(name: 'Gabe')` instead of manually constructing negated SQL in `where`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        User.where.not(name: 'Gabe')
+      RUBY
+    end
+
+    it 'registers an offense and corrects when using `<>` and anonymous placeholder' do
+      expect_offense(<<~RUBY)
+        User.where(['name <> ?', 'Gabe'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not(name: 'Gabe')` instead of manually constructing negated SQL in `where`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        User.where.not(name: 'Gabe')
+      RUBY
+    end
+
+    it 'registers an offense and corrects when using `<>` and named placeholder' do
+      expect_offense(<<~RUBY)
+        User.where(['name <> :name', { name: 'Gabe' }])
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not(name: 'Gabe')` instead of manually constructing negated SQL in `where`.
       RUBY
 
@@ -125,9 +180,20 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot do
       RUBY
     end
 
-    it 'registers an offense and corrects when using namespaced columns' do
+    it 'registers an offense and corrects when using `!=` and namespaced columns' do
       expect_offense(<<~RUBY)
         Course.where(['enrollments.student_id != ?', student.id])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not('enrollments.student_id' => student.id)` instead of manually constructing negated SQL in `where`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Course.where.not('enrollments.student_id' => student.id)
+      RUBY
+    end
+
+    it 'registers an offense and corrects when using `<>` and namespaced columns' do
+      expect_offense(<<~RUBY)
+        Course.where(['enrollments.student_id <> ?', student.id])
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not('enrollments.student_id' => student.id)` instead of manually constructing negated SQL in `where`.
       RUBY
 
@@ -155,9 +221,15 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot do
     RUBY
   end
 
-  it 'does not register an offense when template string contains negation and additional boolean logic' do
+  it 'does not register an offense when template string contains `!=` and additional boolean logic' do
     expect_no_offenses(<<~RUBY)
       User.where('name != ? AND age != ?', 'john', 19)
+    RUBY
+  end
+
+  it 'does not register an offense when template string contains `<>` and additional boolean logic' do
+    expect_no_offenses(<<~RUBY)
+      User.where('name <> ? AND age <> ?', 'john', 19)
     RUBY
   end
 end
