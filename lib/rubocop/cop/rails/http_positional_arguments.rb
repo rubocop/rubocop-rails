@@ -16,6 +16,7 @@ module RuboCop
       #
       #   # good
       #   get :new, params: { user_id: 1 }
+      #   get :new, **options
       class HttpPositionalArguments < Cop
         extend TargetRailsVersion
 
@@ -30,6 +31,10 @@ module RuboCop
 
         def_node_matcher :http_request?, <<~PATTERN
           (send nil? {#{HTTP_METHODS.map(&:inspect).join(' ')}} !nil? $_ ...)
+        PATTERN
+
+        def_node_matcher :kwsplat_hash?, <<~PATTERN
+          (hash (kwsplat _))
         PATTERN
 
         def on_send(node)
@@ -61,6 +66,7 @@ module RuboCop
 
         def needs_conversion?(data)
           return true unless data.hash_type?
+          return false if kwsplat_hash?(data)
 
           data.each_pair.none? do |pair|
             special_keyword_arg?(pair.key) ||

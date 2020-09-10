@@ -8,6 +8,7 @@
 * [#349](https://github.com/rubocop-hq/rubocop-rails/pull/349): Fix errors of `Rails/UniqueValidationWithoutIndex`. ([@Tietew][])
 * [#338](https://github.com/rubocop-hq/rubocop-rails/issues/338): Fix a false positive for `Rails/IndexBy` and `Rails/IndexWith` when the `each_with_object` hash is used in the transformed key or value. ([@eugeneius][])
 * [#351](https://github.com/rubocop-hq/rubocop-rails/pull/351): Add `<>` operator to `Rails/WhereNot` cop. ([@Tietew][])
+* [#352](https://github.com/rubocop-hq/rubocop-rails/pull/352): Do not register offense if given a splatted hash. ([@dvandersluis][])
 
 ## 2.8.0 (2020-09-04)
 
