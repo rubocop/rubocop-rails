@@ -24,7 +24,7 @@ module RuboCop
           (block
             ({send csend} _ :each_with_object (hash))
             (args (arg $_el) (arg _memo))
-            ({send csend} (lvar _memo) :[]= $_ (lvar _el)))
+            ({send csend} (lvar _memo) :[]= $!`_memo (lvar _el)))
         PATTERN
 
         def_node_matcher :on_bad_to_h, <<~PATTERN

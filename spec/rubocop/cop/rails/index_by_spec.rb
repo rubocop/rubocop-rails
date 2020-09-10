@@ -68,6 +68,14 @@ RSpec.describe RuboCop::Cop::Rails::IndexBy, :config do
     end
   end
 
+  context 'when the given hash is used in the key' do
+    it 'does not register an offense for `each_with_object`' do
+      expect_no_offenses(<<~RUBY)
+        x.each_with_object({}) { |el, h| h[h[el]] = el }
+      RUBY
+    end
+  end
+
   context 'when `to_h` is given a block' do
     it 'registers an offense for `map { ... }.to_h`' do
       expect_offense(<<~RUBY)
