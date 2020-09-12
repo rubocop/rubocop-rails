@@ -411,5 +411,16 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments do
         post user_attrs, params: params.merge(foo: bar)
       RUBY
     end
+
+    context 'when given a kwsplat hash' do
+      # See https://github.com/rubocop-hq/rubocop-rails/issues/352
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          [{ format: :json }, { format: :html }].each do |args|
+            get :nothing, **args
+          end
+        RUBY
+      end
+    end
   end
 end
