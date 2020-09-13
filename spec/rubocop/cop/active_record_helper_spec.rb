@@ -3,16 +3,8 @@
 RSpec.describe RuboCop::Cop::ActiveRecordHelper, :isolated_environment do
   include FileHelper
 
-  module RuboCop
-    module Cop
-      class Example < Cop
-        include ActiveRecordHelper
-      end
-    end
-  end
-
   let(:cop) do
-    RuboCop::Cop::Example.new
+    Class.new.extend RuboCop::Cop::ActiveRecordHelper
   end
 
   let(:schema_path) { 'db/schema.rb' }
