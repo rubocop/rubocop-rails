@@ -133,6 +133,14 @@ RSpec.describe RuboCop::Cop::Rails::DynamicFindBy, :config do
     expect_no_offenses('User.find_by(name: name)')
   end
 
+  it 'accepts splat argument' do
+    expect_no_offenses('User.find_by_scan(*args)')
+  end
+
+  it 'accepts any of the arguments are splat argument' do
+    expect_no_offenses('User.find_by_foo_and_bar(arg, *args)')
+  end
+
   it 'accepts method in whitelist' do
     expect_no_offenses(<<~RUBY)
       User.find_by_sql(["select * from users where name = ?", name])
