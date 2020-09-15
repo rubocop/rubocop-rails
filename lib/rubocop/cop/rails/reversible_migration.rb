@@ -360,7 +360,7 @@ module RuboCop
             key.children.first.to_sym
           end
 
-          hash_keys & keys == keys
+          (hash_keys & keys).sort == keys
         end
       end
     end

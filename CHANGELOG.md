@@ -10,6 +10,7 @@
 * [#351](https://github.com/rubocop-hq/rubocop-rails/pull/351): Add `<>` operator to `Rails/WhereNot` cop. ([@Tietew][])
 * [#352](https://github.com/rubocop-hq/rubocop-rails/pull/352): Do not register offense if given a splatted hash. ([@dvandersluis][])
 * [#346](https://github.com/rubocop-hq/rubocop-rails/pull/346): Fix a false positive for `Rails/DynamicFindBy` when any of the arguments are splat argument. ([@koic][])
+* [#357](https://github.com/rubocop-hq/rubocop-rails/issues/357): Fix a false positive for `Rails/ReversibleMigration` when keyword arguments of `change_column_default` are in the order of `to`, `from`. ([@koic][])
 
 ## 2.8.0 (2020-09-04)
 
