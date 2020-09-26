@@ -4285,6 +4285,42 @@ validates :foo, uniqueness: true
 | Array
 |===
 
+== Rails/WhereEquals
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.9
+| -
+|===
+
+This cop identifies places where manually constructed SQL
+in `where` can be replaced with `where(attribute: value)`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+User.where('name = ?', 'Gabe')
+User.where('name = :name', name: 'Gabe')
+User.where('name IS NULL')
+User.where('name IN (?)', ['john', 'jane'])
+User.where('name IN (:names)', names: ['john', 'jane'])
+
+# good
+User.where(name: 'Gabe')
+User.where(name: nil)
+User.where(name: ['john', 'jane'])
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#hash-conditions
+
 == Rails/WhereExists
 
 |===
@@ -4387,4 +4423,4 @@ User.where.not(name: ['john', 'jane'])
 
 === References
 
-* https://rails.rubystyle.guide/#where-not
+* https://rails.rubystyle.guide/#hash-conditions
