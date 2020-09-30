@@ -4056,12 +4056,14 @@ user.touch
 
 | Pending
 | Yes
-| Yes
+| Yes (Unsafe)
 | 2.8
-| -
+| 2.9
 |===
 
 Checks SQL heredocs to use `.squish`.
+Some SQL syntax (e.g. PostgreSQL comments and functions) requires newlines
+to be preserved in order to work, thus auto-correction for this cop is not safe.
 
 === Examples
 
