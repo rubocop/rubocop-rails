@@ -393,7 +393,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
       end
     end
 
-    context 'with nested class' do
+    context 'with namespaced model' do
       let(:schema) { <<~RUBY }
         ActiveRecord::Schema.define(version: 2020_02_02_075409) do
           create_table "admin_users", force: :cascade do |t|
@@ -402,13 +402,22 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         end
       RUBY
 
-      it 'registers an offense' do
+      it 'registers an offense for nested class' do
         expect_offense(<<~RUBY)
           module Admin
             class User
               validates :account, uniqueness: true
               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
             end
+          end
+        RUBY
+      end
+
+      it 'registers an offense for compact styled class' do
+        expect_offense(<<~RUBY)
+          class Admin::User
+            validates :account, uniqueness: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
           end
         RUBY
       end
