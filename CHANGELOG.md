@@ -6,6 +6,10 @@
 
 * [#362](https://github.com/rubocop-hq/rubocop-rails/pull/362): Add new `Rails/WhereEquals` cop. ([@eugeneius][])
 
+### Bug fixes
+
+* [#364](https://github.com/rubocop-hq/rubocop-rails/pull/364): Fix a problem that `Rails/UniqueValidationWithoutIndex` doesn't work in classes defined with compact style. ([@sinsoku][])
+
 ## 2.8.1 (2020-09-16)
 
 ### Bug fixes

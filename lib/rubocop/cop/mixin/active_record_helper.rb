@@ -35,10 +35,11 @@ module RuboCop
         table_name = find_set_table_name(class_node).to_a.last&.first_argument
         return table_name.value.to_s if table_name
 
-        namespaces = class_node.each_ancestor(:class, :module)
-        [class_node, *namespaces]
+        class_nodes = class_node.defined_module.each_node
+        namespaces = class_node.each_ancestor(:class, :module).map(&:identifier)
+        [*class_nodes, *namespaces]
           .reverse
-          .map { |klass| klass.identifier.children[1] }.join('_')
+          .map { |node| node.children[1] }.join('_')
           .tableize
       end
 
