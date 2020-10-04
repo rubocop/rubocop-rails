@@ -30,6 +30,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsbelongsto[Rails/BelongsTo]
 * xref:cops_rails.adoc#railsblank[Rails/Blank]
 * xref:cops_rails.adoc#railsbulkchangetable[Rails/BulkChangeTable]
+* xref:cops_rails.adoc#railscalendartypesuffix[Rails/CalendarTypeSuffix]
 * xref:cops_rails.adoc#railscontenttag[Rails/ContentTag]
 * xref:cops_rails.adoc#railscreatetablewithtimestamps[Rails/CreateTableWithTimestamps]
 * xref:cops_rails.adoc#railsdate[Rails/Date]

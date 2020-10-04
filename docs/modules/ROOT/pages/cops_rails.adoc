@@ -657,6 +657,60 @@ end
 | Array
 |===
 
+== Rails/CalendarTypeSuffix
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Disabled
+| Yes
+| No
+| 2.9
+| -
+|===
+
+It is convenient to follow a convention when naming database columns.
+For calendar-type columns, a reasonable convention is:
+
+date     => * _on
+datetime => *_at (e.g. timestamps)
+time     => *_time
+
+"Inspired" by https://github.com/thoughtbot/guides/tree/master/rails
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+t.date "started_at"
+t.datetime "created_datetime"
+t.time "end_at"
+
+# good
+t.date "started_on"
+t.datetime "created_at"
+t.time "end_time"
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| DateSuffix
+| `on`
+| String
+
+| DateTimeSuffix
+| `at`
+| String
+
+| TimeSuffix
+| `time`
+| String
+|===
+
 == Rails/ContentTag
 
 |===

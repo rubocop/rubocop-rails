@@ -5,6 +5,7 @@
 ### New features
 
 * [#362](https://github.com/rubocop-hq/rubocop-rails/pull/362): Add new `Rails/WhereEquals` cop. ([@eugeneius][])
+* [#367](https://github.com/rubocop-hq/rubocop-rails/pull/367): Add new `Rails/CalendarTypeSuffix` cop. ([@jmks][])
 
 ### Bug fixes
 
@@ -298,3 +299,4 @@
 [@bubaflub]: https://github.com/bubaflub
 [@dvandersluis]: https://github.com/dvandersluis
 [@Tietew]: https://github.com/Tietew
+[@jmks]: https://github.com/jmks

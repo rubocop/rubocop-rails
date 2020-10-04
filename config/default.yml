@@ -135,6 +135,14 @@ Rails/BulkChangeTable:
   Include:
     - db/migrate/*.rb
 
+Rails/CalendarTypeSuffix:
+  Description: 'Check whether database columns for calendar types follow a naming convention.'
+  Enabled: false
+  DateSuffix: "on"
+  DateTimeSuffix: "at"
+  TimeSuffix: "time"
+  VersionAdded: '2.9'
+
 Rails/ContentTag:
   Description: 'Use `tag` instead of `content_tag`.'
   Reference:
