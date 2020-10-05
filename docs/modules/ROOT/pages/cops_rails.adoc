@@ -409,6 +409,68 @@ assert_not x
 | Array
 |===
 
+== Rails/AttributeDefaultBlockValue
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.9
+| -
+|===
+
+This cop looks for `attribute` class methods that specify a `:default` option
+which value is a method call without a block.
+It will accept all other values, such as literals and constants.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class User < ApplicationRecord
+  attribute :confirmed_at, :datetime, default: Time.zone.now
+end
+
+# good
+class User < ActiveRecord::Base
+  attribute :confirmed_at, :datetime, default: -> { Time.zone.now }
+end
+
+# good
+class User < ActiveRecord::Base
+  attribute :role, :string, default: :customer
+end
+
+# good
+class User < ActiveRecord::Base
+  attribute :activated, :boolean, default: false
+end
+
+# good
+class User < ActiveRecord::Base
+  attribute :login_count, :integer, default: 0
+end
+
+# good
+class User < ActiveRecord::Base
+  FOO = 123
+  attribute :custom_attribute, :integer, default: FOO
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `models/**/*`
+| Array
+|===
+
 == Rails/BelongsTo
 
 |===
