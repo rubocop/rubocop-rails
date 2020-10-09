@@ -6,6 +6,7 @@
 
 * [#362](https://github.com/rubocop-hq/rubocop-rails/pull/362): Add new `Rails/WhereEquals` cop. ([@eugeneius][])
 * [#339](https://github.com/rubocop-hq/rubocop-rails/pull/339): Add new `Rails/AttributeDefaultBlockValue` cop. ([@cilim][])
+* [#344](https://github.com/rubocop-hq/rubocop-rails/pull/344): Add new `Rails/ArelStar` cop which checks for quoted literal asterisks in `arel_table` calls. ([@flanger001][])
 
 ### Bug fixes
 
@@ -300,3 +301,4 @@
 [@dvandersluis]: https://github.com/dvandersluis
 [@Tietew]: https://github.com/Tietew
 [@cilim]: https://github.com/cilim
+[@flanger001]: https://github.com/flanger001

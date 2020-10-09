@@ -26,6 +26,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsapplicationjob[Rails/ApplicationJob]
 * xref:cops_rails.adoc#railsapplicationmailer[Rails/ApplicationMailer]
 * xref:cops_rails.adoc#railsapplicationrecord[Rails/ApplicationRecord]
+* xref:cops_rails.adoc#railsarelstar[Rails/ArelStar]
 * xref:cops_rails.adoc#railsassertnot[Rails/AssertNot]
 * xref:cops_rails.adoc#railsattributedefaultblockvalue[Rails/AttributeDefaultBlockValue]
 * xref:cops_rails.adoc#railsbelongsto[Rails/BelongsTo]

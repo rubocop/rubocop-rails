@@ -374,6 +374,36 @@ class Rails4Model < ActiveRecord::Base
 end
 ----
 
+== Rails/ArelStar
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| Yes
+| Yes (Unsafe)
+| 2.9
+| -
+|===
+
+This cop prevents usage of `"*"` on an Arel::Table column reference.
+
+Using `arel_table["*"]` causes the outputted string to be a literal
+quoted asterisk (e.g. <tt>`my_model`.`*`</tt>). This causes the
+database to look for a column named <tt>`*`</tt> (or `"*"`) as opposed
+to expanding the column list as one would likely expect.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+MyTable.arel_table["*"]
+
+# good
+MyTable.arel_table[Arel.star]
+----
+
 == Rails/AssertNot
 
 |===
