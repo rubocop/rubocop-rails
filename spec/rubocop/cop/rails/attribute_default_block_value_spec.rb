@@ -24,6 +24,20 @@ RSpec.describe RuboCop::Cop::Rails::AttributeDefaultBlockValue do
       RUBY
     end
 
+    it 'disallows array literals' do
+      expect_offense(<<~RUBY)
+        attribute :foo, :string, array: true, default: []
+                                                       ^^ #{message}
+      RUBY
+    end
+
+    it 'disallows hash literals' do
+      expect_offense(<<~RUBY)
+        attribute :foo, default: {}
+                                 ^^ #{message}
+      RUBY
+    end
+
     it 'autocorrects `:default` method value in same row' do
       expect_offense(<<~RUBY)
         attribute :foo, :string, default: Foo.bar
