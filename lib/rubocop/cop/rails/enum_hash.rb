@@ -20,6 +20,7 @@ module RuboCop
       class EnumHash < Cop
         MSG = 'Enum defined as an array found in `%<enum>s` enum declaration. '\
               'Use hash syntax instead.'
+        RESTRICT_ON_SEND = %i[enum].freeze
 
         def_node_matcher :enum?, <<~PATTERN
           (send nil? :enum (hash $...))

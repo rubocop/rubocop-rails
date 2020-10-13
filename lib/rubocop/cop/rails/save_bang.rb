@@ -113,8 +113,7 @@ module RuboCop
                                     first_or_create find_or_create_by].freeze
         MODIFY_PERSIST_METHODS = %i[save
                                     update update_attributes destroy].freeze
-        PERSIST_METHODS = (CREATE_PERSIST_METHODS +
-                           MODIFY_PERSIST_METHODS).freeze
+        RESTRICT_ON_SEND = (CREATE_PERSIST_METHODS + MODIFY_PERSIST_METHODS).freeze
 
         def join_force?(force_class)
           force_class == VariableForce
@@ -318,7 +317,7 @@ module RuboCop
           assignment&.lvasgn_type?
         end
 
-        def persist_method?(node, methods = PERSIST_METHODS)
+        def persist_method?(node, methods = RESTRICT_ON_SEND)
           methods.include?(node.method_name) &&
             expected_signature?(node) &&
             !allowed_receiver?(node)

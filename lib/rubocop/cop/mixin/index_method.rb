@@ -4,6 +4,8 @@ module RuboCop
   module Cop
     # Common functionality for Rails/IndexBy and Rails/IndexWith
     module IndexMethod # rubocop:disable Metrics/ModuleLength
+      RESTRICT_ON_SEND = %i[each_with_object to_h map collect []].freeze
+
       def on_block(node)
         on_bad_each_with_object(node) do |*match|
           handle_possible_offense(node, match, 'each_with_object')

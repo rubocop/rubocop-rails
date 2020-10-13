@@ -61,6 +61,7 @@ module RuboCop
       #   end
       class AttributeDefaultBlockValue < Cop
         MSG = 'Pass method in a block to `:default` option.'
+        RESTRICT_ON_SEND = %i[attribute].freeze
         TYPE_OFFENDERS = %i[send array hash].freeze
 
         def_node_matcher :default_attribute, <<~PATTERN

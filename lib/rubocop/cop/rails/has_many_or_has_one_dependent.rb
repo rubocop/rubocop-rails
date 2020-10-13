@@ -22,6 +22,7 @@ module RuboCop
       #   end
       class HasManyOrHasOneDependent < Cop
         MSG = 'Specify a `:dependent` option.'
+        RESTRICT_ON_SEND = %i[has_many has_one].freeze
 
         def_node_search :active_resource_class?, <<~PATTERN
           (const (const nil? :ActiveResource) :Base)

@@ -26,6 +26,7 @@ module RuboCop
       #
       class RenderInline < Cop
         MSG = 'Prefer using a template over inline rendering.'
+        RESTRICT_ON_SEND = %i[render].freeze
 
         def_node_matcher :render_with_inline_option?, <<~PATTERN
           (send nil? :render (hash <(pair {(sym :inline) (str "inline")} _) ...>))

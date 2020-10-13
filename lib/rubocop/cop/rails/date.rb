@@ -52,6 +52,8 @@ module RuboCop
         MSG_SEND = 'Do not use `%<method>s` on Date objects, because they ' \
                    'know nothing about the time zone in use.'
 
+        RESTRICT_ON_SEND = %i[to_time to_time_in_current_zone].freeze
+
         BAD_DAYS = %i[today current yesterday tomorrow].freeze
 
         DEPRECATED_METHODS = [

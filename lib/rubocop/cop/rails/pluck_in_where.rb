@@ -39,9 +39,10 @@ module RuboCop
         include ConfigurableEnforcedStyle
 
         MSG = 'Use `select` instead of `pluck` within `where` query method.'
+        RESTRICT_ON_SEND = %i[pluck].freeze
 
         def on_send(node)
-          return unless node.method?(:pluck) && in_where?(node)
+          return unless in_where?(node)
           return if style == :conservative && !root_receiver(node)&.const_type?
 
           add_offense(node, location: :selector)

@@ -33,6 +33,7 @@ module RuboCop
                       'instead.'
         MSG_ARGUMENTS = 'Please use `Rails.root.join(\'path\', \'to\')` ' \
                         'instead.'
+        RESTRICT_ON_SEND = %i[join].freeze
 
         def_node_matcher :file_join_nodes?, <<~PATTERN
           (send (const nil? :File) :join ...)

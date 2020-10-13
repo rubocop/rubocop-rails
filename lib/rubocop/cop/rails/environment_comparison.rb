@@ -21,6 +21,8 @@ module RuboCop
         SYM_MSG = 'Do not compare `Rails.env` with a symbol, it will always ' \
           'evaluate to `false`.'
 
+        RESTRICT_ON_SEND = %i[== !=].freeze
+
         def_node_matcher :comparing_str_env_with_rails_env_on_lhs?, <<~PATTERN
           (send
             (send (const {nil? cbase} :Rails) :env)

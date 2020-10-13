@@ -22,6 +22,7 @@ module RuboCop
       #   link_to 'Click here', url, target: '_blank', rel: 'noreferrer'
       class LinkToBlank < Cop
         MSG = 'Specify a `:rel` option containing noopener.'
+        RESTRICT_ON_SEND = %i[link_to].freeze
 
         def_node_matcher :blank_target?, <<~PATTERN
           (pair {(sym :target) (str "target")} {(str "_blank") (sym :_blank)})
@@ -35,10 +36,7 @@ module RuboCop
           (pair {(sym :rel) (str "rel")} (str _))
         PATTERN
 
-        # rubocop:disable Metrics/CyclomaticComplexity
         def on_send(node)
-          return unless node.method?(:link_to)
-
           option_nodes = node.each_child_node(:hash)
 
           option_nodes.map(&:children).each do |options|
@@ -46,7 +44,6 @@ module RuboCop
             add_offense(blank) if blank && options.none? { |o| includes_noopener?(o) }
           end
         end
-        # rubocop:enable Metrics/CyclomaticComplexity
 
         def autocorrect(node)
           lambda do |corrector|

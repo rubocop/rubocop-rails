@@ -27,7 +27,7 @@ module RuboCop
         include ConfigurableEnforcedStyle
 
         MSG = 'Do not use `exit` in Rails applications.'
-        TARGET_METHODS = %i[exit exit!].freeze
+        RESTRICT_ON_SEND = %i[exit exit!].freeze
         EXPLICIT_RECEIVERS = %i[Kernel Process].freeze
 
         def on_send(node)
@@ -37,13 +37,7 @@ module RuboCop
         private
 
         def offending_node?(node)
-          right_method_name?(node.method_name) &&
-            right_argument_count?(node.arguments) &&
-            right_receiver?(node.receiver)
-        end
-
-        def right_method_name?(method_name)
-          TARGET_METHODS.include?(method_name)
+          right_argument_count?(node.arguments) && right_receiver?(node.receiver)
         end
 
         # More than 1 argument likely means it is a different

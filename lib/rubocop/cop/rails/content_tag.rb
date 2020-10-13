@@ -25,10 +25,9 @@ module RuboCop
         minimum_target_rails_version 5.1
 
         MSG = 'Use `tag` instead of `content_tag`.'
+        RESTRICT_ON_SEND = %i[content_tag].freeze
 
         def on_send(node)
-          return unless node.method?(:content_tag)
-
           first_argument = node.first_argument
           return unless first_argument
 

@@ -24,6 +24,8 @@ module RuboCop
                                       month: :months,
                                       year: :years }.freeze
 
+        RESTRICT_ON_SEND = SINGULAR_DURATION_METHODS.keys + SINGULAR_DURATION_METHODS.values
+
         PLURAL_DURATION_METHODS = SINGULAR_DURATION_METHODS.invert.freeze
 
         MSG = 'Prefer `%<number>s.%<correct>s`.'

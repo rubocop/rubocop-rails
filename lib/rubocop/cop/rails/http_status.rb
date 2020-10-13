@@ -34,6 +34,8 @@ module RuboCop
       class HttpStatus < Cop
         include ConfigurableEnforcedStyle
 
+        RESTRICT_ON_SEND = %i[render redirect_to].freeze
+
         def_node_matcher :http_status, <<~PATTERN
           {
             (send nil? {:render :redirect_to} _ $hash)

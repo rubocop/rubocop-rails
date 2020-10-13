@@ -50,11 +50,11 @@ module RuboCop
           uniqueness
         ].freeze
 
-        DENYLIST = TYPES.map { |p| "validates_#{p}_of".to_sym }.freeze
+        RESTRICT_ON_SEND = TYPES.map { |p| "validates_#{p}_of".to_sym }.freeze
         ALLOWLIST = TYPES.map { |p| "validates :column, #{p}: value" }.freeze
 
         def on_send(node)
-          return unless !node.receiver && DENYLIST.include?(node.method_name)
+          return if node.receiver
 
           add_offense(node, location: :selector)
         end
@@ -78,7 +78,7 @@ module RuboCop
         end
 
         def preferred_method(method)
-          ALLOWLIST[DENYLIST.index(method.to_sym)]
+          ALLOWLIST[RESTRICT_ON_SEND.index(method.to_sym)]
         end
 
         def correct_validate_type(corrector, node)

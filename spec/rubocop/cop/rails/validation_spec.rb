@@ -7,7 +7,7 @@ RSpec.describe RuboCop::Cop::Rails::Validation do
     expect_no_offenses('validates :name')
   end
 
-  described_class::DENYLIST.each_with_index do |validation, number|
+  described_class::RESTRICT_ON_SEND.each_with_index do |validation, number|
     it "registers an offense for #{validation}" do
       inspect_source("#{validation} :name")
       expect(cop.offenses.size).to eq(1)

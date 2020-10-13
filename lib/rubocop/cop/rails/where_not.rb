@@ -25,6 +25,7 @@ module RuboCop
         include RangeHelp
 
         MSG = 'Use `%<good_method>s` instead of manually constructing negated SQL in `where`.'
+        RESTRICT_ON_SEND = %i[where].freeze
 
         def_node_matcher :where_method_call?, <<~PATTERN
           {

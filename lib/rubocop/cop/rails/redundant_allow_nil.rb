@@ -35,9 +35,9 @@ module RuboCop
         MSG_ALLOW_NIL_FALSE =
           '`allow_nil: false` is redundant when `allow_blank` is true.'
 
-        def on_send(node)
-          return unless node.method?(:validates)
+        RESTRICT_ON_SEND = %i[validates].freeze
 
+        def on_send(node)
           allow_nil, allow_blank = find_allow_nil_and_allow_blank(node)
           return unless allow_nil && allow_blank
 

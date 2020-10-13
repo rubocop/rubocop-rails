@@ -9,4 +9,10 @@ RSpec.describe RuboCop::Cop::Rails::HasAndBelongsToMany do
       ^^^^^^^^^^^^^^^^^^^^^^^ Prefer `has_many :through` to `has_and_belongs_to_many`.
     RUBY
   end
+
+  it 'does not register an offense for has_and_belongs_to_many with receiver' do
+    expect_no_offenses(<<~RUBY)
+      obj.has_and_belongs_to_many :groups
+    RUBY
+  end
 end

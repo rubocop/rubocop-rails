@@ -28,9 +28,9 @@ module RuboCop
         include ActiveRecordHelper
 
         MSG = 'Uniqueness validation should be with a unique index.'
+        RESTRICT_ON_SEND = %i[validates].freeze
 
         def on_send(node)
-          return unless node.method?(:validates)
           return unless uniqueness_part(node)
           return if condition_part?(node)
           return unless schema

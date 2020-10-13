@@ -22,6 +22,7 @@ module RuboCop
       #
       class MatchRoute < Cop
         MSG = 'Use `%<http_method>s` instead of `match` to define a route.'
+        RESTRICT_ON_SEND = %i[match].freeze
         HTTP_METHODS = %i[get post put patch delete].freeze
 
         def_node_matcher :match_method_call?, <<~PATTERN

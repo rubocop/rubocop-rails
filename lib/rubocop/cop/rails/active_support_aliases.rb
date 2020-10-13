@@ -21,6 +21,7 @@ module RuboCop
       #
       class ActiveSupportAliases < Cop
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
+        RESTRICT_ON_SEND = %i[starts_with? ends_with? append prepend].freeze
 
         ALIASES = {
           starts_with?: {

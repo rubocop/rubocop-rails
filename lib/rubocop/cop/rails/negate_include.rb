@@ -17,6 +17,7 @@ module RuboCop
       #
       class NegateInclude < Cop
         MSG = 'Use `.exclude?` and remove the negation part.'
+        RESTRICT_ON_SEND = %i[!].freeze
 
         def_node_matcher :negate_include_call?, <<~PATTERN
           (send (send $_ :include? $_) :!)

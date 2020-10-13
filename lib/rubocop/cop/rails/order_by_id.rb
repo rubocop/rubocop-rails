@@ -25,6 +25,7 @@ module RuboCop
 
         MSG = 'Do not use the `id` column for ordering. '\
               'Use a timestamp column to order chronologically.'
+        RESTRICT_ON_SEND = %i[order].freeze
 
         def_node_matcher :order_by_id?, <<~PATTERN
           (send _ :order
@@ -37,8 +38,6 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless node.method?(:order)
-
           add_offense(offense_range(node)) if order_by_id?(node)
         end
 

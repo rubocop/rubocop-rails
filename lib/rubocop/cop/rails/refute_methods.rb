@@ -53,6 +53,8 @@ module RuboCop
         REFUTE_METHODS = CORRECTIONS.keys.freeze
         ASSERT_NOT_METHODS = CORRECTIONS.values.freeze
 
+        RESTRICT_ON_SEND = REFUTE_METHODS + ASSERT_NOT_METHODS
+
         def_node_matcher :offensive?, '(send nil? #bad_method? ...)'
 
         def on_send(node)

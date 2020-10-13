@@ -15,6 +15,7 @@ module RuboCop
       #   scope :something, -> { where(something: true) }
       class ScopeArgs < Cop
         MSG = 'Use `lambda`/`proc` instead of a plain method call.'
+        RESTRICT_ON_SEND = %i[scope].freeze
 
         def_node_matcher :scope?, '(send nil? :scope _ $send)'
 

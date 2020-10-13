@@ -85,21 +85,23 @@ module RuboCop
       class LexicallyScopedActionFilter < Cop
         MSG = '%<action>s not explicitly defined on the %<type>s.'
 
-        FILTERS = %w[
-          :after_action
-          :append_after_action
-          :append_around_action
-          :append_before_action
-          :around_action
-          :before_action
-          :prepend_after_action
-          :prepend_around_action
-          :prepend_before_action
-          :skip_after_action
-          :skip_around_action
-          :skip_before_action
-          :skip_action_callback
+        RESTRICT_ON_SEND = %i[
+          after_action
+          append_after_action
+          append_around_action
+          append_before_action
+          around_action
+          before_action
+          prepend_after_action
+          prepend_around_action
+          prepend_before_action
+          skip_after_action
+          skip_around_action
+          skip_before_action
+          skip_action_callback
         ].freeze
+
+        FILTERS = RESTRICT_ON_SEND.map { |method_name| ":#{method_name}" }
 
         def_node_matcher :only_or_except_filter_methods, <<~PATTERN
           (send

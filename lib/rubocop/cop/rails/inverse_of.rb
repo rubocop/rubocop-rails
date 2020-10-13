@@ -132,6 +132,7 @@ module RuboCop
         SPECIFY_MSG = 'Specify an `:inverse_of` option.'
         NIL_MSG = 'You specified `inverse_of: nil`, you probably meant to ' \
           'use `inverse_of: false`.'
+        RESTRICT_ON_SEND = %i[has_many has_one belongs_to].freeze
 
         def_node_matcher :association_recv_arguments, <<~PATTERN
           (send $_ {:has_many :has_one :belongs_to} _ $...)

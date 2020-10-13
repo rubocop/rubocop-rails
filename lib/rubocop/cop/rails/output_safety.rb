@@ -64,6 +64,7 @@ module RuboCop
       #   #    "&lt;b&gt;hi&lt;/b&gt; <span>&lt;b&gt;hi&lt;/b&gt;</span>"
       class OutputSafety < Cop
         MSG = 'Tagging a string as html safe may be a security risk.'
+        RESTRICT_ON_SEND = %i[html_safe raw safe_concat].freeze
 
         def on_send(node)
           return if non_interpolated_string?(node)
