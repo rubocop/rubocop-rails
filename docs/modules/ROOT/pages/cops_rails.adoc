@@ -3992,7 +3992,7 @@ This cop checks for the use of methods which skip
 validations which are listed in
 https://guides.rubyonrails.org/active_record_validations.html#skipping-validations
 
-Methods may be ignored from this rule by configuring a `Whitelist`.
+Methods may be ignored from this rule by configuring a `AllowedMethods`.
 
 === Examples
 
@@ -4015,7 +4015,7 @@ user.update(website: 'example.com')
 FileUtils.touch('file')
 ----
 
-==== Whitelist: ["touch"]
+==== AllowedMethods: ["touch"]
 
 [source,ruby]
 ----

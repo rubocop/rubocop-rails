@@ -7,7 +7,7 @@ module RuboCop
       # validations which are listed in
       # https://guides.rubyonrails.org/active_record_validations.html#skipping-validations
       #
-      # Methods may be ignored from this rule by configuring a `Whitelist`.
+      # Methods may be ignored from this rule by configuring a `AllowedMethods`.
       #
       # @example
       #   # bad
@@ -26,7 +26,7 @@ module RuboCop
       #   user.update(website: 'example.com')
       #   FileUtils.touch('file')
       #
-      # @example Whitelist: ["touch"]
+      # @example AllowedMethods: ["touch"]
       #   # bad
       #   DiscussionBoard.decrement_counter(:post_count, 5)
       #   DiscussionBoard.increment_counter(:post_count, 5)
