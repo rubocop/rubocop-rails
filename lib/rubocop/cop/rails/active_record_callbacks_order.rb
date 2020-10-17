@@ -121,13 +121,17 @@ module RuboCop
 
           processed_source.comments_before_line(annotation_line)
                           .reverse_each do |comment|
-            if comment.location.line == annotation_line
+            if comment.location.line == annotation_line && !inline_comment?(comment)
               first_comment = comment
               annotation_line -= 1
             end
           end
 
           start_line_position(first_comment || node)
+        end
+
+        def inline_comment?(comment)
+          !comment_line?(comment.loc.expression.source_line)
         end
 
         def start_line_position(node)

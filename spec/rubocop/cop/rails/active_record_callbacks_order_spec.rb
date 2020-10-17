@@ -37,7 +37,7 @@ RSpec.describe RuboCop::Cop::Rails::ActiveRecordCallbacksOrder do
     RUBY
   end
 
-  it 'correcly autocorrects when there is a comment for callback method' do
+  it 'correcly autocorrects when there is a preceding comment for callback method' do
     new_source = autocorrect_source(<<~RUBY)
       class User < ApplicationRecord
         # This is a
@@ -61,6 +61,22 @@ RSpec.describe RuboCop::Cop::Rails::ActiveRecordCallbacksOrder do
         # multiline
         # comment for after_commit.
         after_commit :after_commit_callback
+      end
+    RUBY
+  end
+
+  it 'correcly autocorrects when there is an inline comment for callback method' do
+    new_source = autocorrect_source(<<~RUBY)
+      class User < ApplicationRecord
+        after_commit :after_commit_callback # after_commit inline comment
+        after_save :after_save_callback # after_save inline comment
+      end
+    RUBY
+
+    expect(new_source).to eq(<<~RUBY)
+      class User < ApplicationRecord
+        after_save :after_save_callback # after_save inline comment
+        after_commit :after_commit_callback # after_commit inline comment
       end
     RUBY
   end
