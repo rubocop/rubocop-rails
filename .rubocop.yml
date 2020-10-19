@@ -93,6 +93,10 @@ Metrics/ModuleLength:
   Exclude:
     - 'spec/**/*.rb'
 
+# This disabling is a workaround for https://github.com/rubocop-hq/rubocop-rails/issues/374.
+RSpec/FactoryBot/CreateList:
+  Enabled: false
+
 RSpec/PredicateMatcher:
   EnforcedStyle: explicit
 
