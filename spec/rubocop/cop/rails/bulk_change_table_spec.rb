@@ -413,7 +413,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
   end
 
   context 'when `database.yml` is exists' do
-    let(:yaml) {}
+    let(:yaml) { nil }
 
     before do
       allow(File).to receive(:exist?)
