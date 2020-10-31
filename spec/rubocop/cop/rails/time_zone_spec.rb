@@ -285,13 +285,16 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
         let(:cop_config) do
           { 'AutoCorrect' => 'true', 'EnforcedStyle' => 'flexible' }
         end
+        let(:no_autocorrect_required_methods) do
+          %i[current new]
+        end
 
         it 'corrects the error' do
           source = <<~RUBY
             Time.#{a_method}
           RUBY
           new_source = autocorrect_source(source)
-          unless %i[current new].include?(a_method)
+          unless no_autocorrect_required_methods.include?(a_method)
             expect(new_source).to eq(<<~RUBY)
               Time.zone.#{a_method}
             RUBY
