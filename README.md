@@ -86,6 +86,22 @@ Rails cops support the following versions:
 
 - Rails 4.2+
 
+## Readme Badge
+
+If you use RuboCop Rails in your project, you can include one of these badges in your readme to let people know that your code is written following the community Rails Style Guide.
+
+[![Rails Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop-hq/rubocop-rails)
+
+[![Rails Style Guide](https://img.shields.io/badge/code_style-community-brightgreen.svg)](https://rails.rubystyle.guide)
+
+Here are the Markdown snippets for the two badges:
+
+``` markdown
+[![Rails Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop-hq/rubocop-rails)
+
+[![Rails Style Guide](https://img.shields.io/badge/code_style-community-brightgreen.svg)](https://rails.rubystyle.guide)
+```
+
 ## Contributing
 
 Checkout the [contribution guidelines](CONTRIBUTING.md).
