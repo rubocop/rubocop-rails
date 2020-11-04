@@ -13,15 +13,15 @@ module RuboCop
       #
       # @return [Schema, nil]
       def load(target_ruby_version)
-        return @schema if defined?(@schema)
+        return @load if defined?(@load)
 
-        @schema = load!(target_ruby_version)
+        @load = load!(target_ruby_version)
       end
 
       def reset!
-        return unless instance_variable_defined?(:@schema)
+        return unless instance_variable_defined?(:@load)
 
-        remove_instance_variable(:@schema)
+        remove_instance_variable(:@load)
       end
 
       def db_schema_path
