@@ -28,6 +28,7 @@ module RuboCop
         include RangeHelp
 
         MSG = 'Specifying the default value for `foreign_key` is redundant.'
+        RESTRICT_ON_SEND = %i[belongs_to has_one has_many has_and_belongs_to_many].freeze
 
         def_node_matcher :association_with_foreign_key, <<~PATTERN
           (send nil? ${:belongs_to :has_one :has_many :has_and_belongs_to_many} ({sym str} $_)

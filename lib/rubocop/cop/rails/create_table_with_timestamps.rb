@@ -42,6 +42,7 @@ module RuboCop
       #   end
       class CreateTableWithTimestamps < Cop
         MSG = 'Add timestamps when creating a new table.'
+        RESTRICT_ON_SEND = %i[create_table].freeze
 
         def_node_matcher :create_table_with_block?, <<~PATTERN
           (block

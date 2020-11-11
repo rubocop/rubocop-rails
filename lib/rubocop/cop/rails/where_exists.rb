@@ -40,6 +40,7 @@ module RuboCop
         include ConfigurableEnforcedStyle
 
         MSG = 'Prefer `%<good_method>s` over `%<bad_method>s`.'
+        RESTRICT_ON_SEND = %i[exists?].freeze
 
         def_node_matcher :where_exists_call?, <<~PATTERN
           (send (send _ :where $...) :exists?)

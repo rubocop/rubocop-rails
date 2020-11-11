@@ -17,7 +17,7 @@ module RuboCop
         include RangeHelp
 
         MSG = 'Use `find_by` instead of `where.%<method>s`.'
-        TARGET_SELECTORS = %i[first take].freeze
+        RESTRICT_ON_SEND = %i[first take].freeze
 
         def_node_matcher :where_first?, <<~PATTERN
           (send ({send csend} _ :where ...) {:first :take})

@@ -25,6 +25,7 @@ module RuboCop
       #   self[:attr] = val
       class ReadWriteAttribute < Cop
         MSG = 'Prefer `%<prefer>s` over `%<current>s`.'
+        RESTRICT_ON_SEND = %i[read_attribute write_attribute].freeze
 
         def_node_matcher :read_write_attribute?, <<~PATTERN
           {

@@ -15,6 +15,7 @@ module RuboCop
       #   has_many :accounts, class_name: 'Account'
       class ReflectionClassName < Cop
         MSG = 'Use a string value for `class_name`.'
+        RESTRICT_ON_SEND = %i[has_many has_one belongs_to].freeze
 
         def_node_matcher :association_with_reflection, <<~PATTERN
           (send nil? {:has_many :has_one :belongs_to} _ _ ?

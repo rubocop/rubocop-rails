@@ -50,6 +50,7 @@ module RuboCop
         include RangeHelp
 
         MSG = 'Use `distinct` before `pluck`.'
+        RESTRICT_ON_SEND = %i[uniq distinct pluck].freeze
         NEWLINE = "\n"
         PATTERN = '[!^block (send (send %<type>s :pluck ...) ' \
                   '${:uniq :distinct} ...)]'

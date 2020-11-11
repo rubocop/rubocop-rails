@@ -64,6 +64,7 @@ module RuboCop
           'option is deprecated and you want to use `optional: false`. ' \
           'In most configurations, this is the default and you can omit ' \
           'this option altogether'
+        RESTRICT_ON_SEND = %i[belongs_to].freeze
 
         def_node_matcher :match_belongs_to_with_options, <<~PATTERN
           (send _ :belongs_to _

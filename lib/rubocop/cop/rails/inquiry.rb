@@ -24,9 +24,10 @@ module RuboCop
       #
       class Inquiry < Cop
         MSG = "Prefer Ruby's comparison operators over Active Support's `inquiry`."
+        RESTRICT_ON_SEND = %i[inquiry].freeze
 
         def on_send(node)
-          return unless node.method?(:inquiry) && node.arguments.empty?
+          return unless node.arguments.empty?
           return unless (receiver = node.receiver)
           return if !receiver.str_type? && !receiver.array_type?
 

@@ -24,6 +24,7 @@ module RuboCop
 
         MSG = 'Use `request.%<prefer>s` instead of ' \
               '`request.%<current>s`.'
+        RESTRICT_ON_SEND = %i[referer referrer].freeze
 
         def_node_matcher :referer?, <<~PATTERN
           (send (send nil? :request) {:referer :referrer})

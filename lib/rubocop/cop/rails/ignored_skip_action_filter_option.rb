@@ -42,12 +42,14 @@ module RuboCop
           `%<ignore>s` option will be ignored when `%<prefer>s` and `%<ignore>s` are used together.
         MSG
 
-        FILTERS = %w[
-          :skip_after_action
-          :skip_around_action
-          :skip_before_action
-          :skip_action_callback
+        RESTRICT_ON_SEND = %i[
+          skip_after_action
+          skip_around_action
+          skip_before_action
+          skip_action_callback
         ].freeze
+
+        FILTERS = RESTRICT_ON_SEND.map { |method_name| ":#{method_name}" }
 
         def_node_matcher :filter_options, <<~PATTERN
           (send

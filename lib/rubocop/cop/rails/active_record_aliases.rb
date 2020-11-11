@@ -20,16 +20,17 @@ module RuboCop
           update_attributes!: :update!
         }.freeze
 
-        def on_send(node)
-          ALIASES.each do |bad, good|
-            next unless node.method?(bad)
+        RESTRICT_ON_SEND = ALIASES.keys.freeze
 
-            add_offense(node,
-                        message: format(MSG, prefer: good, current: bad),
-                        location: :selector,
-                        severity: :warning)
-            break
-          end
+        def on_send(node)
+          method_name = node.method_name
+
+          add_offense(
+            node,
+            message: format(MSG, prefer: ALIASES[method_name], current: method_name),
+            location: :selector,
+            severity: :warning
+          )
         end
 
         alias on_csend on_send

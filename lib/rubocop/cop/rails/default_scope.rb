@@ -24,6 +24,7 @@ module RuboCop
       #
       class DefaultScope < Cop
         MSG = 'Avoid use of `default_scope`. It is better to use explicitly named scopes.'
+        RESTRICT_ON_SEND = %i[default_scope].freeze
 
         def_node_matcher :method_call?, <<~PATTERN
           (send nil? :default_scope ...)

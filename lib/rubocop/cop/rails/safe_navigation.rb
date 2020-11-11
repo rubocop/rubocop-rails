@@ -40,6 +40,7 @@ module RuboCop
         include RangeHelp
 
         MSG = 'Use safe navigation (`&.`) instead of `%<try>s`.'
+        RESTRICT_ON_SEND = %i[try try!].freeze
 
         def_node_matcher :try_call, <<~PATTERN
           (send !nil? ${:try :try!} $_ ...)

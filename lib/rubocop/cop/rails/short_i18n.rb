@@ -48,6 +48,8 @@ module RuboCop
           localize: :l
         }.freeze
 
+        RESTRICT_ON_SEND = PREFERRED_METHODS.keys.freeze
+
         def_node_matcher :long_i18n?, <<~PATTERN
           (send {nil? (const nil? :I18n)} ${:translate :localize} ...)
         PATTERN

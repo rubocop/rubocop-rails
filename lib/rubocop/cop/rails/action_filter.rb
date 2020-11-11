@@ -66,6 +66,8 @@ module RuboCop
           skip_action_callback
         ].freeze
 
+        RESTRICT_ON_SEND = FILTER_METHODS + ACTION_METHODS
+
         def on_block(node)
           check_method_node(node.send_node)
         end

@@ -49,6 +49,7 @@ module RuboCop
                                    '`%<current>s`.'
         MSG_UNLESS_BLANK = 'Use `if %<prefer>s` instead of ' \
                            '`%<current>s`.'
+        RESTRICT_ON_SEND = %i[!].freeze
 
         def_node_matcher :exists_and_not_empty?, <<~PATTERN
           (and

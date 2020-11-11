@@ -26,6 +26,7 @@ module RuboCop
       #
       class RenderPlainText < Cop
         MSG = 'Prefer `render plain:` over `render text:`.'
+        RESTRICT_ON_SEND = %i[render].freeze
 
         def_node_matcher :render_plain_text?, <<~PATTERN
           (send nil? :render $(hash <$(pair (sym :text) $_) ...>))

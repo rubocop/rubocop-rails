@@ -27,6 +27,7 @@ module RuboCop
         include ActiveRecordHelper
 
         MSG = 'Use `ids` instead of `%<bad_method>s`.'
+        RESTRICT_ON_SEND = %i[pluck].freeze
 
         def_node_matcher :pluck_id_call?, <<~PATTERN
           (send _ :pluck {(sym :id) (send nil? :primary_key)})

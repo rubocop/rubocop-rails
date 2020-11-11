@@ -20,6 +20,7 @@ module RuboCop
         include RangeHelp
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
+        RESTRICT_ON_SEND = %i[take! find_by_id! find_by!].freeze
 
         def_node_matcher :where_take?, <<~PATTERN
           (send

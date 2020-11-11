@@ -21,6 +21,7 @@ module RuboCop
         extend TargetRailsVersion
 
         MSG = 'Prefer `pick(%<args>s)` over `pluck(%<args>s).first`.'
+        RESTRICT_ON_SEND = %i[first].freeze
 
         minimum_target_rails_version 6.0
 

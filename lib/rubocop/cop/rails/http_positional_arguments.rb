@@ -25,12 +25,12 @@ module RuboCop
         KEYWORD_ARGS = %i[
           method params session body flash xhr as headers env to
         ].freeze
-        HTTP_METHODS = %i[get post put patch delete head].freeze
+        RESTRICT_ON_SEND = %i[get post put patch delete head].freeze
 
         minimum_target_rails_version 5.0
 
         def_node_matcher :http_request?, <<~PATTERN
-          (send nil? {#{HTTP_METHODS.map(&:inspect).join(' ')}} !nil? $_ ...)
+          (send nil? {#{RESTRICT_ON_SEND.map(&:inspect).join(' ')}} !nil? $_ ...)
         PATTERN
 
         def_node_matcher :kwsplat_hash?, <<~PATTERN
