@@ -2314,14 +2314,17 @@ match 'photos/:id', to: 'photos#show', via: :all
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
 | Pending
-| Yes
-| Yes
+| No
+| Yes (Unsafe)
 | 2.7
-| -
+| 2.9
 |===
 
 This cop enforces the use of `collection.exclude?(obj)`
 over `!collection.include?(obj)`.
+
+It is marked as unsafe by default because false positive will occur for
+a receiver object that do not have `exclude?` method. (e.g. `IPAddr`)
 
 === Examples
 
