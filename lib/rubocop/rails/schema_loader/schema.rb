@@ -98,7 +98,7 @@ module RuboCop
         end
 
         def each_content(node, &block)
-          return enum_for(__method__, node) unless block_given?
+          return enum_for(__method__, node) unless block
 
           case node.body&.type
           when :begin
