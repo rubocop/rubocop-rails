@@ -62,7 +62,7 @@ module RuboCop
       #   safe_join([user_content, " ", content_tag(:span, user_content)])
       #   # => ActiveSupport::SafeBuffer
       #   #    "&lt;b&gt;hi&lt;/b&gt; <span>&lt;b&gt;hi&lt;/b&gt;</span>"
-      class OutputSafety < Cop
+      class OutputSafety < Base
         MSG = 'Tagging a string as html safe may be a security risk.'
         RESTRICT_ON_SEND = %i[html_safe raw safe_concat].freeze
 
@@ -73,7 +73,7 @@ module RuboCop
                         looks_like_rails_raw?(node) ||
                         looks_like_rails_safe_concat?(node)
 
-          add_offense(node, location: :selector)
+          add_offense(node.loc.selector)
         end
         alias on_csend on_send
 

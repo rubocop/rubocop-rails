@@ -15,7 +15,9 @@ module RuboCop
       #
       #   # good
       #   Rails.env.production?
-      class EnvironmentComparison < Cop
+      class EnvironmentComparison < Base
+        extend AutoCorrector
+
         MSG = 'Favor `%<bang>sRails.env.%<env>s?` over `%<source>s`.'
 
         SYM_MSG = 'Do not compare `Rails.env` with a symbol, it will always ' \
@@ -64,27 +66,27 @@ module RuboCop
                          comparing_str_env_with_rails_env_on_rhs?(node))
             env, = *env_node
             bang = node.method?(:!=) ? '!' : ''
+            message = format(MSG, bang: bang, env: env, source: node.source)
 
-            add_offense(node, message: format(
-              MSG, bang: bang, env: env, source: node.source
-            ))
+            add_offense(node, message: message) do |corrector|
+              autocorrect(corrector, node)
+            end
           end
 
-          if comparing_sym_env_with_rails_env_on_lhs?(node) ||
-             comparing_sym_env_with_rails_env_on_rhs?(node)
-            add_offense(node, message: SYM_MSG)
-          end
-        end
+          return unless comparing_sym_env_with_rails_env_on_lhs?(node) || comparing_sym_env_with_rails_env_on_rhs?(node)
 
-        def autocorrect(node)
-          lambda do |corrector|
-            replacement = build_predicate_method(node)
-
-            corrector.replace(node.source_range, replacement)
+          add_offense(node, message: SYM_MSG) do |corrector|
+            autocorrect(corrector, node)
           end
         end
 
         private
+
+        def autocorrect(corrector, node)
+          replacement = build_predicate_method(node)
+
+          corrector.replace(node.source_range, replacement)
+        end
 
         def build_predicate_method(node)
           if rails_env_on_lhs?(node)

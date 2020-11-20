@@ -19,8 +19,9 @@ module RuboCop
       #
       #   # good
       #   request.referrer
-      class RequestReferer < Cop
+      class RequestReferer < Base
         include ConfigurableEnforcedStyle
+        extend AutoCorrector
 
         MSG = 'Use `request.%<prefer>s` instead of ' \
               '`request.%<current>s`.'
@@ -34,17 +35,15 @@ module RuboCop
           referer?(node) do
             return unless node.method?(wrong_method_name)
 
-            add_offense(node.source_range, location: node.source_range)
+            add_offense(node.source_range) do |corrector|
+              corrector.replace(node, "request.#{style}")
+            end
           end
-        end
-
-        def autocorrect(node)
-          ->(corrector) { corrector.replace(node, "request.#{style}") }
         end
 
         private
 
-        def message(_node)
+        def message(_range)
           format(MSG, prefer: style, current: wrong_method_name)
         end
 

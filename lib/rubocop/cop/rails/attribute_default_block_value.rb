@@ -59,7 +59,9 @@ module RuboCop
       #     FOO = 123
       #     attribute :custom_attribute, :integer, default: FOO
       #   end
-      class AttributeDefaultBlockValue < Cop
+      class AttributeDefaultBlockValue < Base
+        extend AutoCorrector
+
         MSG = 'Pass method in a block to `:default` option.'
         RESTRICT_ON_SEND = %i[attribute].freeze
         TYPE_OFFENDERS = %i[send array hash].freeze
@@ -75,15 +77,11 @@ module RuboCop
             value = attribute.children.last
             return unless TYPE_OFFENDERS.any? { |type| value.type == type }
 
-            add_offense(node, location: value)
-          end
-        end
+            add_offense(value) do |corrector|
+              expression = default_attribute(node).children.last
 
-        def autocorrect(node)
-          expression = default_attribute(node).children.last
-
-          lambda do |corrector|
-            corrector.replace(expression, "-> { #{expression.source} }")
+              corrector.replace(value, "-> { #{expression.source} }")
+            end
           end
         end
       end

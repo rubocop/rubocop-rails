@@ -40,7 +40,7 @@ module RuboCop
       #
       #     t.datetime :updated_at, default: -> { 'CURRENT_TIMESTAMP' }
       #   end
-      class CreateTableWithTimestamps < Cop
+      class CreateTableWithTimestamps < Base
         MSG = 'Add timestamps when creating a new table.'
         RESTRICT_ON_SEND = %i[create_table].freeze
 

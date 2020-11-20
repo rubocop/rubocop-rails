@@ -16,8 +16,9 @@ module RuboCop
       #   # good
       #   User.find(id)
       #
-      class FindById < Cop
+      class FindById < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
         RESTRICT_ON_SEND = %i[take! find_by_id! find_by!].freeze
@@ -39,40 +40,29 @@ module RuboCop
         def on_send(node)
           where_take?(node) do |where, id_value|
             range = where_take_offense_range(node, where)
-
-            good_method = build_good_method(id_value)
             bad_method = build_where_take_bad_method(id_value)
-            message = format(MSG, good_method: good_method, bad_method: bad_method)
 
-            add_offense(node, location: range, message: message)
+            register_offense(range, id_value, bad_method)
           end
 
           find_by?(node) do |id_value|
             range = find_by_offense_range(node)
-
-            good_method = build_good_method(id_value)
             bad_method = build_find_by_bad_method(node, id_value)
-            message = format(MSG, good_method: good_method, bad_method: bad_method)
 
-            add_offense(node, location: range, message: message)
-          end
-        end
-
-        def autocorrect(node)
-          if (matches = where_take?(node))
-            where, id_value = *matches
-            range = where_take_offense_range(node, where)
-          elsif (id_value = find_by?(node))
-            range = find_by_offense_range(node)
-          end
-
-          lambda do |corrector|
-            replacement = build_good_method(id_value)
-            corrector.replace(range, replacement)
+            register_offense(range, id_value, bad_method)
           end
         end
 
         private
+
+        def register_offense(range, id_value, bad_method)
+          good_method = build_good_method(id_value)
+          message = format(MSG, good_method: good_method, bad_method: bad_method)
+
+          add_offense(range, message: message) do |corrector|
+            corrector.replace(range, good_method)
+          end
+        end
 
         def where_take_offense_range(node, where)
           range_between(where.loc.selector.begin_pos, node.loc.expression.end_pos)

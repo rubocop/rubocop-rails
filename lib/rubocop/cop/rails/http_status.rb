@@ -31,8 +31,9 @@ module RuboCop
       #   render plain: 'foo/bar', status: 304
       #   redirect_to root_url, status: 301
       #
-      class HttpStatus < Cop
+      class HttpStatus < Base
         include ConfigurableEnforcedStyle
+        extend AutoCorrector
 
         RESTRICT_ON_SEND = %i[render redirect_to].freeze
 
@@ -55,14 +56,9 @@ module RuboCop
             checker = checker_class.new(status)
             return unless checker.offensive?
 
-            add_offense(checker.node, message: checker.message)
-          end
-        end
-
-        def autocorrect(node)
-          lambda do |corrector|
-            checker = checker_class.new(node)
-            corrector.replace(node.loc.expression, checker.preferred_style)
+            add_offense(checker.node, message: checker.message) do |corrector|
+              corrector.replace(checker.node.loc.expression, checker.preferred_style)
+            end
           end
         end
 

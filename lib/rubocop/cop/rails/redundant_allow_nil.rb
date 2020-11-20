@@ -26,8 +26,9 @@ module RuboCop
       #   # Here, `nil` is valid but `''` is not
       #   validates :x, length: { is: 5 }, allow_nil: true, allow_blank: false
       #
-      class RedundantAllowNil < Cop
+      class RedundantAllowNil < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG_SAME =
           '`allow_nil` is redundant when `allow_blank` has the same value.'
@@ -44,31 +45,27 @@ module RuboCop
           allow_nil_val = allow_nil.children.last
           allow_blank_val = allow_blank.children.last
 
-          offense(allow_nil_val, allow_blank_val, allow_nil)
-        end
-
-        def autocorrect(node)
-          prv_sib = previous_sibling(node)
-          nxt_sib = next_sibling(node)
-
-          lambda do |corrector|
-            if nxt_sib
-              corrector.remove(range_between(node_beg(node), node_beg(nxt_sib)))
-            elsif prv_sib
-              corrector.remove(range_between(node_end(prv_sib), node_end(node)))
-            else
-              corrector.remove(node.loc.expression)
-            end
+          if allow_nil_val.type == allow_blank_val.type
+            register_offense(allow_nil, MSG_SAME)
+          elsif allow_nil_val.false_type? && allow_blank_val.true_type?
+            register_offense(allow_nil, MSG_ALLOW_NIL_FALSE)
           end
         end
 
         private
 
-        def offense(allow_nil_val, allow_blank_val, allow_nil)
-          if allow_nil_val.type == allow_blank_val.type
-            add_offense(allow_nil, message: MSG_SAME)
-          elsif allow_nil_val.false_type? && allow_blank_val.true_type?
-            add_offense(allow_nil, message: MSG_ALLOW_NIL_FALSE)
+        def register_offense(allow_nil, message)
+          add_offense(allow_nil, message: message) do |corrector|
+            prv_sib = previous_sibling(allow_nil)
+            nxt_sib = next_sibling(allow_nil)
+
+            if nxt_sib
+              corrector.remove(range_between(node_beg(allow_nil), node_beg(nxt_sib)))
+            elsif prv_sib
+              corrector.remove(range_between(node_end(prv_sib), node_end(allow_nil)))
+            else
+              corrector.remove(allow_nil.loc.expression)
+            end
           end
         end
 

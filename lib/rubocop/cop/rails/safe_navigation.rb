@@ -36,8 +36,9 @@ module RuboCop
       #   foo&.bar
       #   foo&.bar(baz)
       #   foo&.bar { |e| e.baz }
-      class SafeNavigation < Cop
+      class SafeNavigation < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use safe navigation (`&.`) instead of `%<try>s`.'
         RESTRICT_ON_SEND = %i[try try!].freeze
@@ -51,23 +52,22 @@ module RuboCop
             return if try_method == :try && !cop_config['ConvertTry']
             return unless dispatch.sym_type? && dispatch.value.match?(/\w+[=!?]?/)
 
-            add_offense(node, message: format(MSG, try: try_method))
-          end
-        end
-
-        def autocorrect(node)
-          method_node, *params = *node.arguments
-          method = method_node.source[1..-1]
-
-          range = range_between(node.loc.dot.begin_pos,
-                                node.loc.expression.end_pos)
-
-          lambda do |corrector|
-            corrector.replace(range, replacement(method, params))
+            add_offense(node, message: format(MSG, try: try_method)) do |corrector|
+              autocorrect(corrector, node)
+            end
           end
         end
 
         private
+
+        def autocorrect(corrector, node)
+          method_node, *params = *node.arguments
+          method = method_node.source[1..-1]
+
+          range = range_between(node.loc.dot.begin_pos, node.loc.expression.end_pos)
+
+          corrector.replace(range, replacement(method, params))
+        end
 
         def replacement(method, params)
           new_params = params.map(&:source).join(', ')

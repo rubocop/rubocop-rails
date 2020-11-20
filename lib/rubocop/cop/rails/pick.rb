@@ -17,7 +17,8 @@ module RuboCop
       #   # good
       #   Model.pick(:a)
       #   [{ a: :b, c: :d }].pick(:a, :b)
-      class Pick < Cop
+      class Pick < Base
+        extend AutoCorrector
         extend TargetRailsVersion
 
         MSG = 'Prefer `pick(%<args>s)` over `pluck(%<args>s).first`.'
@@ -31,24 +32,24 @@ module RuboCop
 
         def on_send(node)
           pick_candidate?(node) do
-            range = node.receiver.loc.selector.join(node.loc.selector)
-            add_offense(node, location: range)
-          end
-        end
+            receiver = node.receiver
+            receiver_selector = receiver.loc.selector
+            node_selector = node.loc.selector
+            range = receiver_selector.join(node_selector)
 
-        def autocorrect(node)
-          first_range = node.receiver.source_range.end.join(node.loc.selector)
+            add_offense(range, message: message(receiver)) do |corrector|
+              first_range = receiver.source_range.end.join(node_selector)
 
-          lambda do |corrector|
-            corrector.remove(first_range)
-            corrector.replace(node.receiver.loc.selector, 'pick')
+              corrector.remove(first_range)
+              corrector.replace(receiver_selector, 'pick')
+            end
           end
         end
 
         private
 
-        def message(node)
-          format(MSG, args: node.receiver.arguments.map(&:source).join(', '))
+        def message(receiver)
+          format(MSG, args: receiver.arguments.map(&:source).join(', '))
         end
       end
     end

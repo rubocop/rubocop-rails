@@ -23,7 +23,7 @@ module RuboCop
       #
       #   # good
       #   raise 'a bad error has happened'
-      class Exit < Cop
+      class Exit < Base
         include ConfigurableEnforcedStyle
 
         MSG = 'Do not use `exit` in Rails applications.'
@@ -31,7 +31,7 @@ module RuboCop
         EXPLICIT_RECEIVERS = %i[Kernel Process].freeze
 
         def on_send(node)
-          add_offense(node, location: :selector) if offending_node?(node)
+          add_offense(node.loc.selector) if offending_node?(node)
         end
 
         private

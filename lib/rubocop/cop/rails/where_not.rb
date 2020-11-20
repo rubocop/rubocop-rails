@@ -21,8 +21,9 @@ module RuboCop
       #   User.where.not(name: nil)
       #   User.where.not(name: ['john', 'jane'])
       #
-      class WhereNot < Cop
+      class WhereNot < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of manually constructing negated SQL in `where`.'
         RESTRICT_ON_SEND = %i[where].freeze
@@ -46,21 +47,8 @@ module RuboCop
             good_method = build_good_method(*column_and_value)
             message = format(MSG, good_method: good_method)
 
-            add_offense(node, location: range, message: message)
-          end
-        end
-
-        def autocorrect(node)
-          where_method_call?(node) do |template_node, value_node|
-            value_node = value_node.first
-
-            lambda do |corrector|
-              range = offense_range(node)
-
-              column, value = *extract_column_and_value(template_node, value_node)
-              replacement = build_good_method(column, value)
-
-              corrector.replace(range, replacement)
+            add_offense(range, message: message) do |corrector|
+              corrector.replace(range, good_method)
             end
           end
         end

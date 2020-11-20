@@ -35,7 +35,7 @@ module RuboCop
       #   # good
       #   user.touch
       #
-      class SkipsModelValidations < Cop
+      class SkipsModelValidations < Base
         MSG = 'Avoid using `%<method>s` because it skips validations.'
 
         METHODS_WITH_ARGUMENTS = %w[decrement!
@@ -76,7 +76,7 @@ module RuboCop
           return if good_touch?(node)
           return if good_insert?(node)
 
-          add_offense(node, location: :selector)
+          add_offense(node.loc.selector, message: message(node))
         end
         alias on_csend on_send
 

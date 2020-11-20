@@ -19,7 +19,9 @@ module RuboCop
       #   [1, 2, 'a'].append('b')
       #   [1, 2, 'a'].prepend('b')
       #
-      class ActiveSupportAliases < Cop
+      class ActiveSupportAliases < Base
+        extend AutoCorrector
+
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
         RESTRICT_ON_SEND = %i[starts_with? ends_with? append prepend].freeze
 
@@ -40,29 +42,17 @@ module RuboCop
 
         def on_send(node)
           ALIASES.each_key do |aliased_method|
-            register_offense(node, aliased_method) if
-              public_send(aliased_method, node)
+            next unless public_send(aliased_method, node)
+
+            preferred_method = ALIASES[aliased_method][:original]
+            message = format(MSG, prefer: preferred_method, current: aliased_method)
+
+            add_offense(node, message: message) do |corrector|
+              next if append(node)
+
+              corrector.replace(node.loc.selector, preferred_method)
+            end
           end
-        end
-
-        def autocorrect(node)
-          return false if append(node)
-
-          lambda do |corrector|
-            method_name = node.loc.selector.source
-            replacement = ALIASES[method_name.to_sym][:original]
-            corrector.replace(node.loc.selector, replacement.to_s)
-          end
-        end
-
-        private
-
-        def register_offense(node, method_name)
-          add_offense(
-            node,
-            message: format(MSG, prefer: ALIASES[method_name][:original],
-                                 current: method_name)
-          )
         end
       end
     end

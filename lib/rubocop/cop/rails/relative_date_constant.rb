@@ -27,15 +27,18 @@ module RuboCop
       #       1.week.since
       #     end
       #   end
-      class RelativeDateConstant < Cop
+      class RelativeDateConstant < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Do not assign %<method_name>s to constants as it ' \
               'will be evaluated only once.'
 
         def on_casgn(node)
           relative_date_assignment?(node) do |method_name|
-            add_offense(node, message: format(MSG, method_name: method_name))
+            add_offense(node, message: message(method_name)) do |corrector|
+              autocorrect(corrector, node)
+            end
           end
         end
 
@@ -48,9 +51,9 @@ module RuboCop
             next unless name.casgn_type?
 
             relative_date?(value) do |method_name|
-              add_offense(node,
-                          location: offense_range(name, value),
-                          message: format(MSG, method_name: method_name))
+              add_offense(offense_range(name, value), message: message(method_name)) do |corrector|
+                autocorrect(corrector, node)
+              end
             end
           end
         end
@@ -61,7 +64,9 @@ module RuboCop
           end
         end
 
-        def autocorrect(node)
+        private
+
+        def autocorrect(corrector, node)
           return unless node.casgn_type?
 
           scope, const_name, value = *node
@@ -71,10 +76,13 @@ module RuboCop
           new_code = ["def self.#{const_name.downcase}",
                       "#{indent}#{value.source}",
                       'end'].join("\n#{indent}")
-          ->(corrector) { corrector.replace(node.source_range, new_code) }
+
+          corrector.replace(node.source_range, new_code)
         end
 
-        private
+        def message(method_name)
+          format(MSG, method_name: method_name)
+        end
 
         def offense_range(name, value)
           range_between(name.loc.expression.begin_pos, value.loc.expression.end_pos)

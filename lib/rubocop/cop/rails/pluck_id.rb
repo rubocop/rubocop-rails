@@ -22,9 +22,10 @@ module RuboCop
       #     ids
       #   end
       #
-      class PluckId < Cop
+      class PluckId < Base
         include RangeHelp
         include ActiveRecordHelper
+        extend AutoCorrector
 
         MSG = 'Use `ids` instead of `%<bad_method>s`.'
         RESTRICT_ON_SEND = %i[pluck].freeze
@@ -39,11 +40,7 @@ module RuboCop
           range = offense_range(node)
           message = format(MSG, bad_method: range.source)
 
-          add_offense(node, location: range, message: message)
-        end
-
-        def autocorrect(node)
-          lambda do |corrector|
+          add_offense(range, message: message) do |corrector|
             corrector.replace(offense_range(node), 'ids')
           end
         end

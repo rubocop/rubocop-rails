@@ -31,7 +31,7 @@ module RuboCop
       #   after_create_commit :log_create_action
       #   after_update_commit :log_update_action
       #
-      class AfterCommitOverride < Cop
+      class AfterCommitOverride < Base
         MSG = 'There can only be one `after_*_commit :%<name>s` hook defined for a model.'
 
         AFTER_COMMIT_CALLBACKS = %i[

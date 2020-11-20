@@ -36,8 +36,9 @@ module RuboCop
       #   User.where('name = ?', 'john').exists?
       #   user.posts.where(published: true).exists?
       #   User.where('length(name) > 10').exists?
-      class WhereExists < Cop
+      class WhereExists < Base
         include ConfigurableEnforcedStyle
+        extend AutoCorrector
 
         MSG = 'Prefer `%<good_method>s` over `%<bad_method>s`.'
         RESTRICT_ON_SEND = %i[exists?].freeze
@@ -55,19 +56,12 @@ module RuboCop
             return unless convertable_args?(args)
 
             range = correction_range(node)
-            message = format(MSG, good_method: build_good_method(args), bad_method: range.source)
-            add_offense(node, location: range, message: message)
-          end
-        end
+            good_method = build_good_method(args)
+            message = format(MSG, good_method: good_method, bad_method: range.source)
 
-        def autocorrect(node)
-          args = find_offenses(node)
-
-          lambda do |corrector|
-            corrector.replace(
-              correction_range(node),
-              build_good_method(args)
-            )
+            add_offense(range, message: message) do |corrector|
+              corrector.replace(range, good_method)
+            end
           end
         end
 

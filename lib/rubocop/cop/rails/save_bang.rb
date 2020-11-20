@@ -98,8 +98,9 @@ module RuboCop
       #   Services::Service::Mailer.update(message: 'Message')
       #   Service::Mailer::update
       #
-      class SaveBang < Cop
+      class SaveBang < Base
         include NegativeConditional
+        extend AutoCorrector
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s` if the return ' \
               'value is not checked.'
@@ -115,8 +116,8 @@ module RuboCop
                                     update update_attributes destroy].freeze
         RESTRICT_ON_SEND = (CREATE_PERSIST_METHODS + MODIFY_PERSIST_METHODS).freeze
 
-        def join_force?(force_class)
-          force_class == VariableForce
+        def self.joining_forces
+          VariableForce
         end
 
         def after_leaving_scope(scope, _variable_table)
@@ -134,7 +135,7 @@ module RuboCop
           return unless persist_method?(node, CREATE_PERSIST_METHODS)
           return if persisted_referenced?(assignment)
 
-          add_offense_for_node(node, CREATE_MSG)
+          register_offense(node, CREATE_MSG)
         end
 
         # rubocop:disable Metrics/CyclomaticComplexity
@@ -147,25 +148,22 @@ module RuboCop
           return if explicit_return?(node)
           return if checked_immediately?(node)
 
-          add_offense_for_node(node)
+          register_offense(node, MSG)
         end
         # rubocop:enable Metrics/CyclomaticComplexity
         alias on_csend on_send
 
-        def autocorrect(node)
-          save_loc = node.loc.selector
-          new_method = "#{node.method_name}!"
-
-          ->(corrector) { corrector.replace(save_loc, new_method) }
-        end
-
         private
 
-        def add_offense_for_node(node, msg = MSG)
-          name = node.method_name
-          full_message = format(msg, prefer: "#{name}!", current: name.to_s)
+        def register_offense(node, msg)
+          current_method = node.method_name
+          bang_method = "#{current_method}!"
+          full_message = format(msg, prefer: bang_method, current: current_method)
 
-          add_offense(node, location: :selector, message: full_message)
+          range = node.loc.selector
+          add_offense(range, message: full_message) do |corrector|
+            corrector.replace(range, bang_method)
+          end
         end
 
         def right_assignment_node(assignment)
@@ -217,7 +215,7 @@ module RuboCop
         def check_used_in_condition_or_compound_boolean(node)
           return false unless in_condition_or_compound_boolean?(node)
 
-          add_offense_for_node(node, CREATE_CONDITIONAL_MSG) unless MODIFY_PERSIST_METHODS.include?(node.method_name)
+          register_offense(node, CREATE_CONDITIONAL_MSG) unless MODIFY_PERSIST_METHODS.include?(node.method_name)
 
           true
         end

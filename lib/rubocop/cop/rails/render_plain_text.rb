@@ -24,7 +24,9 @@ module RuboCop
       #   # bad - sets MIME type to `text/html`
       #   render text: 'Ruby!'
       #
-      class RenderPlainText < Cop
+      class RenderPlainText < Base
+        extend AutoCorrector
+
         MSG = 'Prefer `render plain:` over `render text:`.'
         RESTRICT_ON_SEND = %i[render].freeze
 
@@ -33,22 +35,14 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          render_plain_text?(node) do |options_node, _option_node, _option_value|
-            content_type_node = find_content_type(options_node)
-            add_offense(node) if compatible_content_type?(content_type_node)
-          end
-        end
-
-        def autocorrect(node)
           render_plain_text?(node) do |options_node, option_node, option_value|
             content_type_node = find_content_type(options_node)
-            rest_options = options_node.pairs - [option_node, content_type_node].compact
+            return unless compatible_content_type?(content_type_node)
 
-            lambda do |corrector|
-              corrector.replace(
-                node,
-                replacement(rest_options, option_value)
-              )
+            add_offense(node) do |corrector|
+              rest_options = options_node.pairs - [option_node, content_type_node].compact
+
+              corrector.replace(node, replacement(rest_options, option_value))
             end
           end
         end

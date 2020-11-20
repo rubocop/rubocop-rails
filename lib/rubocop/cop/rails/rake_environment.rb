@@ -25,7 +25,9 @@ module RuboCop
       #     do_something
       #   end
       #
-      class RakeEnvironment < Cop
+      class RakeEnvironment < Base
+        extend AutoCorrector
+
         MSG = 'Include `:environment` task as a dependency for all Rake tasks.'
 
         def_node_matcher :task_definition?, <<~PATTERN
@@ -37,16 +39,12 @@ module RuboCop
             return if task_name(task_method) == :default
             return if with_dependencies?(task_method)
 
-            add_offense(task_method)
-          end
-        end
+            add_offense(task_method) do |corrector|
+              task_name = task_method.arguments[0]
+              task_dependency = correct_task_dependency(task_name)
 
-        def autocorrect(node)
-          lambda do |corrector|
-            task_name = node.arguments[0]
-            task_dependency = correct_task_dependency(task_name)
-
-            corrector.replace(task_name.loc.expression, task_dependency)
+              corrector.replace(task_name.loc.expression, task_dependency)
+            end
           end
         end
 

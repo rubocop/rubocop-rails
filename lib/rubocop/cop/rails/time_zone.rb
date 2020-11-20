@@ -43,8 +43,9 @@ module RuboCop
       #   # good
       #   Time.current
       #   Time.at(timestamp).in_time_zone
-      class TimeZone < Cop
+      class TimeZone < Base
         include ConfigurableEnforcedStyle
+        extend AutoCorrector
 
         MSG = 'Do not use `%<current>s` without zone. Use `%<prefer>s` ' \
               'instead.'
@@ -71,26 +72,24 @@ module RuboCop
           check_time_node(klass, node.parent) if klass == :Time
         end
 
-        def autocorrect(node)
-          lambda do |corrector|
-            # add `.zone`: `Time.at` => `Time.zone.at`
-            corrector.insert_after(node.children[0].source_range, '.zone')
-
-            case node.method_name
-            when :current
-              # replace `Time.zone.current` => `Time.zone.now`
-              corrector.replace(node.loc.selector, 'now')
-            when :new
-              autocorrect_time_new(node, corrector)
-            end
-
-            # prefer `Time` over `DateTime` class
-            corrector.replace(node.children.first.source_range, 'Time') if strict?
-            remove_redundant_in_time_zone(corrector, node)
-          end
-        end
-
         private
+
+        def autocorrect(corrector, node)
+          # add `.zone`: `Time.at` => `Time.zone.at`
+          corrector.insert_after(node.children[0].source_range, '.zone')
+
+          case node.method_name
+          when :current
+            # replace `Time.zone.current` => `Time.zone.now`
+            corrector.replace(node.loc.selector, 'now')
+          when :new
+            autocorrect_time_new(node, corrector)
+          end
+
+          # prefer `Time` over `DateTime` class
+          corrector.replace(node.children.first.source_range, 'Time') if strict?
+          remove_redundant_in_time_zone(corrector, node)
+        end
 
         def autocorrect_time_new(node, corrector)
           if node.arguments?
@@ -128,7 +127,9 @@ module RuboCop
 
           message = build_message(klass, method_name, node)
 
-          add_offense(node, location: :selector, message: message)
+          add_offense(node.loc.selector, message: message) do |corrector|
+            autocorrect(corrector, node)
+          end
         end
 
         def build_message(klass, method_name, node)
@@ -193,8 +194,9 @@ module RuboCop
 
           return if node.arguments?
 
-          add_offense(selector_node,
-                      location: :selector, message: MSG_LOCALTIME)
+          add_offense(selector_node.loc.selector, message: MSG_LOCALTIME) do |corrector|
+            autocorrect(corrector, selector_node)
+          end
         end
 
         def not_danger_chain?(chain)

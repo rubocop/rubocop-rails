@@ -32,7 +32,9 @@ module RuboCop
       #   validates :foo, size: true
       #   validates :foo, uniqueness: true
       #
-      class Validation < Cop
+      class Validation < Base
+        extend AutoCorrector
+
         MSG = 'Prefer the new style validations `%<prefer>s` over ' \
               '`%<current>s`.'
 
@@ -56,16 +58,14 @@ module RuboCop
         def on_send(node)
           return if node.receiver
 
-          add_offense(node, location: :selector)
-        end
+          range = node.loc.selector
 
-        def autocorrect(node)
-          last_argument = node.arguments.last
-          return if !last_argument.literal? && !last_argument.splat_type? &&
-                    !frozen_array_argument?(last_argument)
+          add_offense(range, message: message(node)) do |corrector|
+            last_argument = node.arguments.last
+            return if !last_argument.literal? && !last_argument.splat_type? &&
+                      !frozen_array_argument?(last_argument)
 
-          lambda do |corrector|
-            corrector.replace(node.loc.selector, 'validates')
+            corrector.replace(range, 'validates')
             correct_validate_type(corrector, node)
           end
         end
@@ -73,8 +73,9 @@ module RuboCop
         private
 
         def message(node)
-          format(MSG, prefer: preferred_method(node.method_name),
-                      current: node.method_name)
+          method_name = node.method_name
+
+          format(MSG, prefer: preferred_method(method_name), current: method_name)
         end
 
         def preferred_method(method)

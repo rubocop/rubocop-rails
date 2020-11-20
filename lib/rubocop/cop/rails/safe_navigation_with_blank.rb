@@ -19,7 +19,9 @@ module RuboCop
       #   do_something if foo.blank?
       #   do_something unless foo.blank?
       #
-      class SafeNavigationWithBlank < Cop
+      class SafeNavigationWithBlank < Base
+        extend AutoCorrector
+
         MSG =
           'Avoid calling `blank?` with the safe navigation operator ' \
           'in conditionals.'
@@ -31,15 +33,8 @@ module RuboCop
         def on_if(node)
           return unless safe_navigation_blank_in_conditional?(node)
 
-          add_offense(node)
-        end
-
-        def autocorrect(node)
-          lambda do |corrector|
-            corrector.replace(
-              safe_navigation_blank_in_conditional?(node).location.dot,
-              '.'
-            )
+          add_offense(node) do |corrector|
+            corrector.replace(safe_navigation_blank_in_conditional?(node).location.dot, '.')
           end
         end
       end

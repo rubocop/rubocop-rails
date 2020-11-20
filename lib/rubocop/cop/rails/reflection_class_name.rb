@@ -13,7 +13,7 @@ module RuboCop
       #
       #   # good
       #   has_many :accounts, class_name: 'Account'
-      class ReflectionClassName < Cop
+      class ReflectionClassName < Base
         MSG = 'Use a string value for `class_name`.'
         RESTRICT_ON_SEND = %i[has_many has_one belongs_to].freeze
 
@@ -29,7 +29,7 @@ module RuboCop
 
         def on_send(node)
           association_with_reflection(node) do |reflection_class_name|
-            add_offense(node, location: reflection_class_name.loc.expression)
+            add_offense(reflection_class_name.loc.expression)
           end
         end
       end

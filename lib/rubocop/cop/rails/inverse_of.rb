@@ -128,7 +128,7 @@ module RuboCop
       #
       # @see https://guides.rubyonrails.org/association_basics.html#bi-directional-associations
       # @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Setting+Inverses
-      class InverseOf < Cop
+      class InverseOf < Base
         SPECIFY_MSG = 'Specify an `:inverse_of` option.'
         NIL_MSG = 'You specified `inverse_of: nil`, you probably meant to ' \
           'use `inverse_of: false`.'
@@ -186,7 +186,7 @@ module RuboCop
 
           return if options_contain_inverse_of?(options)
 
-          add_offense(node, message: message(options), location: :selector)
+          add_offense(node.loc.selector, message: message(options))
         end
 
         def scope?(arguments)

@@ -24,7 +24,7 @@ module RuboCop
       #     end
       #   end
       #
-      class ActiveRecordOverride < Cop
+      class ActiveRecordOverride < Base
         MSG =
           'Use %<prefer>s callbacks instead of overriding the Active Record ' \
           'method `%<bad>s`.'

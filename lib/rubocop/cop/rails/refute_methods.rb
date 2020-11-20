@@ -28,8 +28,9 @@ module RuboCop
       #   refute_empty [1, 2, 3]
       #   refute_equal true, false
       #
-      class RefuteMethods < Cop
+      class RefuteMethods < Base
         include ConfigurableEnforcedStyle
+        extend AutoCorrector
 
         MSG = 'Prefer `%<good_method>s` over `%<bad_method>s`.'
 
@@ -60,16 +61,12 @@ module RuboCop
         def on_send(node)
           return unless offensive?(node)
 
-          message = offense_message(node.method_name)
-          add_offense(node, location: :selector, message: message)
-        end
+          method_name = node.method_name
+          message = offense_message(method_name)
+          range = node.loc.selector
 
-        def autocorrect(node)
-          bad_method = node.method_name
-          good_method = convert_good_method(bad_method)
-
-          lambda do |corrector|
-            corrector.replace(node.loc.selector, good_method.to_s)
+          add_offense(range, message: message) do |corrector|
+            corrector.replace(range, convert_good_method(method_name))
           end
         end
 

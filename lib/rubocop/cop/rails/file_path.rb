@@ -25,7 +25,7 @@ module RuboCop
       #   # good
       #   Rails.root.join('app/models/goober')
       #
-      class FilePath < Cop
+      class FilePath < Base
         include ConfigurableEnforcedStyle
         include RangeHelp
 
@@ -98,10 +98,10 @@ module RuboCop
           line_range = node.loc.column...node.loc.last_column
           source_range = source_range(processed_source.buffer, node.first_line,
                                       line_range)
-          add_offense(node, location: source_range)
+          add_offense(source_range)
         end
 
-        def message(_node)
+        def message(_range)
           format(style == :arguments ? MSG_ARGUMENTS : MSG_SLASHES)
         end
       end

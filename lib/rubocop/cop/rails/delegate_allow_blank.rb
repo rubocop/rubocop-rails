@@ -13,7 +13,9 @@ module RuboCop
       #
       #   # good
       #   delegate :foo, to: :bar, allow_nil: true
-      class DelegateAllowBlank < Cop
+      class DelegateAllowBlank < Base
+        extend AutoCorrector
+
         MSG = '`allow_blank` is not a valid option, use `allow_nil`.'
         RESTRICT_ON_SEND = %i[delegate].freeze
 
@@ -22,14 +24,10 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          allow_blank_option(node) do |offending_node|
-            add_offense(offending_node)
-          end
-        end
+          return unless (offending_node = allow_blank_option(node))
 
-        def autocorrect(pair_node)
-          lambda do |corrector|
-            corrector.replace(pair_node.key.source_range, 'allow_nil')
+          add_offense(offending_node) do |corrector|
+            corrector.replace(offending_node.key.source_range, 'allow_nil')
           end
         end
       end

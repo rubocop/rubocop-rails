@@ -20,7 +20,9 @@ module RuboCop
       #   match 'photos/:id', to: 'photos#show', via: [:get, :post]
       #   match 'photos/:id', to: 'photos#show', via: :all
       #
-      class MatchRoute < Cop
+      class MatchRoute < Base
+        extend AutoCorrector
+
         MSG = 'Use `%<http_method>s` instead of `match` to define a route.'
         RESTRICT_ON_SEND = %i[match].freeze
         HTTP_METHODS = %i[get post put patch delete].freeze
@@ -36,29 +38,27 @@ module RuboCop
             options_node = path_node.hash_type? ? path_node : options_node.first
 
             if options_node.nil?
-              message = format(MSG, http_method: 'get')
-              add_offense(node, message: message)
+              register_offense(node, 'get')
             else
               via = extract_via(options_node)
-              if via.size == 1 && http_method?(via.first)
-                message = format(MSG, http_method: via.first)
-                add_offense(node, message: message)
-              end
-            end
-          end
-        end
+              return unless via.size == 1 && http_method?(via.first)
 
-        def autocorrect(node)
-          match_method_call?(node) do |path_node, options_node|
-            options_node = options_node.first
-
-            lambda do |corrector|
-              corrector.replace(node, replacement(path_node, options_node))
+              register_offense(node, via.first)
             end
           end
         end
 
         private
+
+        def register_offense(node, http_method)
+          add_offense(node, message: format(MSG, http_method: http_method)) do |corrector|
+            match_method_call?(node) do |path_node, options_node|
+              options_node = options_node.first
+
+              corrector.replace(node, replacement(path_node, options_node))
+            end
+          end
+        end
 
         def_node_matcher :routes_draw?, <<~PATTERN
           (send (send _ :routes) :draw)

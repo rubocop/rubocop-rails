@@ -37,7 +37,7 @@ module RuboCop
       #   end
       #
       # @see https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options
-      class IgnoredSkipActionFilterOption < Cop
+      class IgnoredSkipActionFilterOption < Base
         MSG = <<~MSG.chomp.freeze
           `%<ignore>s` option will be ignored when `%<prefer>s` and `%<ignore>s` are used together.
         MSG

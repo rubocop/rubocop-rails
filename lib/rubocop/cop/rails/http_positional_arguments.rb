@@ -17,7 +17,8 @@ module RuboCop
       #   # good
       #   get :new, params: { user_id: 1 }
       #   get :new, **options
-      class HttpPositionalArguments < Cop
+      class HttpPositionalArguments < Base
+        extend AutoCorrector
         extend TargetRailsVersion
 
         MSG = 'Use keyword arguments instead of ' \
@@ -41,24 +42,21 @@ module RuboCop
           http_request?(node) do |data|
             return unless needs_conversion?(data)
 
-            add_offense(node, location: :selector,
-                              message: format(MSG, verb: node.method_name))
-          end
-        end
+            message = format(MSG, verb: node.method_name)
 
-        # given a pre Rails 5 method: get :new, {user_id: @user.id}, {}
-        #
-        # @return lambda of auto correct procedure
-        # the result should look like:
-        #     get :new, params: { user_id: @user.id }, session: {}
-        # the http_method is the method used to call the controller
-        # the controller node can be a symbol, method, object or string
-        # that represents the path/action on the Rails controller
-        # the data is the http parameters and environment sent in
-        # the Rails 5 http call
-        def autocorrect(node)
-          lambda do |corrector|
-            corrector.replace(node.loc.expression, correction(node))
+            add_offense(node.loc.selector, message: message) do |corrector|
+              # given a pre Rails 5 method: get :new, {user_id: @user.id}, {}
+              #
+              # @return lambda of auto correct procedure
+              # the result should look like:
+              #     get :new, params: { user_id: @user.id }, session: {}
+              # the http_method is the method used to call the controller
+              # the controller node can be a symbol, method, object or string
+              # that represents the path/action on the Rails controller
+              # the data is the http parameters and environment sent in
+              # the Rails 5 http call
+              corrector.replace(node.loc.expression, correction(node))
+            end
           end
         end
 

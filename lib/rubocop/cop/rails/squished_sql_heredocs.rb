@@ -37,8 +37,9 @@ module RuboCop
       #       WHERE post_id = 1
       #   SQL
       #
-      class SquishedSQLHeredocs < Cop
+      class SquishedSQLHeredocs < Base
         include Heredoc
+        extend AutoCorrector
 
         SQL = 'SQL'
         SQUISH = '.squish'
@@ -47,11 +48,7 @@ module RuboCop
         def on_heredoc(node)
           return unless offense_detected?(node)
 
-          add_offense(node)
-        end
-
-        def autocorrect(node)
-          lambda do |corrector|
+          add_offense(node) do |corrector|
             corrector.insert_after(node, SQUISH)
           end
         end

@@ -43,7 +43,9 @@ module RuboCop
       #
       #   # good
       #   something if foo.present?
-      class Present < Cop
+      class Present < Base
+        extend AutoCorrector
+
         MSG_NOT_BLANK = 'Use `%<prefer>s` instead of `%<current>s`.'
         MSG_EXISTS_AND_NOT_EMPTY = 'Use `%<prefer>s` instead of ' \
                                    '`%<current>s`.'
@@ -75,10 +77,11 @@ module RuboCop
           return unless cop_config['NotBlank']
 
           not_blank?(node) do |receiver|
-            add_offense(node,
-                        message: format(MSG_NOT_BLANK,
-                                        prefer: replacement(receiver),
-                                        current: node.source))
+            message = format(MSG_NOT_BLANK, prefer: replacement(receiver), current: node.source)
+
+            add_offense(node, message: message) do |corrector|
+              autocorrect(corrector, node)
+            end
           end
         end
 
@@ -88,10 +91,11 @@ module RuboCop
           exists_and_not_empty?(node) do |var1, var2|
             return unless var1 == var2
 
-            add_offense(node,
-                        message: format(MSG_EXISTS_AND_NOT_EMPTY,
-                                        prefer: replacement(var1),
-                                        current: node.source))
+            message = format(MSG_EXISTS_AND_NOT_EMPTY, prefer: replacement(var1), current: node.source)
+
+            add_offense(node, message: message) do |corrector|
+              autocorrect(corrector, node)
+            end
           end
         end
 
@@ -101,7 +105,9 @@ module RuboCop
           exists_and_not_empty?(node) do |var1, var2|
             return unless var1 == var2
 
-            add_offense(node, message: MSG_EXISTS_AND_NOT_EMPTY)
+            add_offense(node, message: MSG_EXISTS_AND_NOT_EMPTY) do |corrector|
+              autocorrect(corrector, node)
+            end
           end
         end
 
@@ -114,25 +120,24 @@ module RuboCop
             range = unless_condition(node, method_call)
             msg = format(MSG_UNLESS_BLANK, prefer: replacement(receiver),
                                            current: range.source)
-            add_offense(node, location: range, message: msg)
+            add_offense(range, message: msg) do |corrector|
+              autocorrect(corrector, node)
+            end
           end
         end
 
-        def autocorrect(node)
-          lambda do |corrector|
-            method_call, variable1 = unless_blank?(node)
+        def autocorrect(corrector, node)
+          method_call, variable1 = unless_blank?(node)
 
-            if method_call
-              corrector.replace(node.loc.keyword, 'if')
-              range = method_call.loc.expression
-            else
-              variable1, _variable2 =
-                exists_and_not_empty?(node) || not_blank?(node)
-              range = node.loc.expression
-            end
-
-            corrector.replace(range, replacement(variable1))
+          if method_call
+            corrector.replace(node.loc.keyword, 'if')
+            range = method_call.loc.expression
+          else
+            variable1, _variable2 = exists_and_not_empty?(node) || not_blank?(node)
+            range = node.loc.expression
           end
+
+          corrector.replace(range, replacement(variable1))
         end
 
         private
