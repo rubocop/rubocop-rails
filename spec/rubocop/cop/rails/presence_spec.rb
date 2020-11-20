@@ -7,16 +7,16 @@ RSpec.describe RuboCop::Cop::Rails::Presence do
 
   shared_examples 'offense' do |source, correction, first_line, end_line|
     it 'registers an offense' do
-      inspect_source(source)
+      offenses = inspect_source(source)
 
-      expect(cop.offenses.count).to eq 1
-      expect(cop.offenses).to all(
+      expect(offenses.count).to eq 1
+      expect(offenses).to all(
         have_attributes(
           first_line: first_line,
           last_line: end_line
         )
       )
-      expect(cop.offenses).to all(
+      expect(offenses).to all(
         have_attributes(
           message: "Use `#{correction}` instead of `#{source}`."
         )

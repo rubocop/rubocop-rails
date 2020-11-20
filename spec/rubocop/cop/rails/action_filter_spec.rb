@@ -52,20 +52,19 @@ RSpec.describe RuboCop::Cop::Rails::ActionFilter, :config do
 
     described_class::FILTER_METHODS.each do |method|
       it "registers an offense for #{method}" do
-        inspect_source_file("#{method} :name")
-        expect(cop.offenses.size).to eq(1)
+        offenses = inspect_source("#{method} :name")
+        expect(offenses.size).to eq(1)
       end
 
       it "registers an offense for #{method} with block" do
-        inspect_source_file("#{method} { |controller| something }")
-        expect(cop.offenses.size).to eq(1)
+        offenses = inspect_source("#{method} { |controller| something }")
+        expect(offenses.size).to eq(1)
       end
     end
 
     described_class::ACTION_METHODS.each do |method|
       it "accepts #{method}" do
-        inspect_source_file("#{method} :something")
-        expect(cop.offenses.empty?).to be(true)
+        expect_no_offenses("#{method} :something")
       end
     end
 
@@ -82,20 +81,19 @@ RSpec.describe RuboCop::Cop::Rails::ActionFilter, :config do
 
     described_class::ACTION_METHODS.each do |method|
       it "registers an offense for #{method}" do
-        inspect_source_file("#{method} :name")
-        expect(cop.offenses.size).to eq(1)
+        offenses = inspect_source("#{method} :name")
+        expect(offenses.size).to eq(1)
       end
 
       it "registers an offense for #{method} with block" do
-        inspect_source_file("#{method} { |controller| something }")
-        expect(cop.offenses.size).to eq(1)
+        offenses = inspect_source("#{method} { |controller| something }")
+        expect(offenses.size).to eq(1)
       end
     end
 
     described_class::FILTER_METHODS.each do |method|
       it "accepts #{method}" do
-        inspect_source_file("#{method} :something")
-        expect(cop.offenses.empty?).to be(true)
+        expect_no_offenses("#{method} :something")
       end
     end
 

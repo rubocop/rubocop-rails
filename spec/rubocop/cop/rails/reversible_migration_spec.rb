@@ -25,9 +25,9 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     let(:code) { code }
 
     it "registers an offense for #{name}" do
-      inspect_source(source)
+      offenses = inspect_source(source)
 
-      expect(cop.messages).to eq(["#{name} is not reversible."])
+      expect(offenses.first.message).to eq("#{name} is not reversible.")
     end
   end
 

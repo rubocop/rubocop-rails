@@ -32,10 +32,10 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
   context 'with default forbidden methods' do
     cop_config['ForbiddenMethods'].each do |method_name|
       it "registers an offense for `#{method_name}`" do
-        inspect_source("User.#{method_name}(:attr)")
-        expect(cop.offenses.size).to eq(1)
-        expect(cop.messages)
-          .to eq([format(msg, method_name)])
+        expect_offense(<<~RUBY, method_name: method_name)
+          User.#{method_name}(:attr)
+               ^{method_name} #{format(msg, method_name)}
+        RUBY
       end
     end
 
@@ -110,10 +110,10 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
   context "with methods that don't require an argument" do
     (cop_config['ForbiddenMethods'] - methods_with_arguments).each do |method_name|
       it "registers an offense for `#{method_name}`" do
-        inspect_source("User.#{method_name}")
-        expect(cop.offenses.size).to eq(1)
-        expect(cop.messages)
-          .to eq([format(msg, method_name)])
+        expect_offense(<<~RUBY, method_name: method_name)
+          User.#{method_name}
+               ^{method_name} #{format(msg, method_name)}
+        RUBY
       end
     end
   end

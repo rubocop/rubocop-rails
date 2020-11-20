@@ -7,14 +7,19 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
 
   shared_examples 'checks_common_offense' do |method|
     it "when using #{method} with arguments" do
-      inspect_source("object.#{method}(name: 'Tom', age: 20)")
-
       if method == :destroy
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          object.#{method}(name: 'Tom', age: 20)
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["Use `#{method}!` instead of `#{method}` " \
-                  'if the return value is not checked.'])
+        expect_offense(<<~RUBY, method: method)
+          object.#{method}(name: 'Tom', age: 20)
+                 ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          object.#{method}!(name: 'Tom', age: 20)
+        RUBY
       end
     end
 
@@ -22,52 +27,75 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       inspect_source("object.#{method}(variable)")
 
       if method == :destroy
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          object.#{method}(variable)
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["Use `#{method}!` instead of `#{method}` " \
-                  'if the return value is not checked.'])
+        expect_offense(<<~RUBY, method: method)
+          object.#{method}(variable)
+                 ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          object.#{method}!(variable)
+        RUBY
       end
     end
 
     it "when using #{method} with variable star arguments" do
-      inspect_source("object.#{method}(*variable)")
-
       if method == :destroy
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          object.#{method}(*variable)
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["Use `#{method}!` instead of `#{method}` " \
-                  'if the return value is not checked.'])
+        expect_offense(<<~RUBY, method: method)
+          object.#{method}(variable)
+                 ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          object.#{method}!(variable)
+        RUBY
       end
     end
 
     it "when using #{method} with variable star star arguments" do
-      inspect_source("object.#{method}(**variable)")
-
       if method == :destroy
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          object.#{method}(**variable)
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["Use `#{method}!` instead of `#{method}` " \
-                  'if the return value is not checked.'])
+        expect_offense(<<~RUBY, method: method)
+          object.#{method}(variable)
+                 ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          object.#{method}!(variable)
+        RUBY
       end
     end
 
     it "when using #{method} without arguments" do
-      inspect_source(+method.to_s)
+      expect_offense(<<~RUBY, method: method)
+        #{method}
+        ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+      RUBY
 
-      expect(cop.messages)
-        .to eq(["Use `#{method}!` instead of `#{method}` " \
-                'if the return value is not checked.'])
+      expect_correction(<<~RUBY)
+        #{method}!
+      RUBY
     end
 
     it "when using #{method} without arguments" do
-      inspect_source("object&.#{method}")
+      expect_offense(<<~RUBY, method: method)
+        object&.#{method}
+                ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+      RUBY
 
-      expect(cop.messages)
-        .to eq(["Use `#{method}!` instead of `#{method}` " \
-      'if the return value is not checked.'])
+      expect_correction(<<~RUBY)
+        object&.#{method}!
+      RUBY
     end
 
     it "when using #{method}!" do
@@ -81,226 +109,238 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
     it "when using #{method} with wrong argument" do
       expect_no_offenses("object.#{method}('Tom')")
     end
-
-    it 'autocorrects' do
-      new_source = autocorrect_source("object.#{method}()")
-
-      expect(new_source).to eq("object.#{method}!()")
-    end
-
-    it 'autocorrects' do
-      new_source = autocorrect_source("object&.#{method}()")
-
-      expect(new_source).to eq("object&.#{method}!()")
-    end
   end
 
   shared_examples 'checks_variable_return_use_offense' do |method, update|
     it "when assigning the return value of #{method}" do
-      inspect_source("x = object.#{method}\n")
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          x = object.#{method}
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["Use `#{method}!` instead of `#{method}` " \
-                  'if the return value is not checked.' \
-                  " Or check `persisted?` on model returned from `#{method}`."])
+        expect_offense(<<~RUBY, method: method)
+          x = object.#{method}
+                     ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked. Or check `persisted?` on model returned from `#{method}`.
+        RUBY
       end
     end
 
     it "when assigning the return value of #{method} with block" do
-      inspect_source("x = object.#{method} do |obj|\n" \
-                          "  obj.name = 'Tom'\n" \
-                          'end')
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          x = object.#{method} do |obj|
+            obj.name = 'Tom'
+          end
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["Use `#{method}!` instead of `#{method}` " \
-                  'if the return value is not checked.' \
-                  " Or check `persisted?` on model returned from `#{method}`."])
+        expect_offense(<<~RUBY, method: method)
+          x = object.#{method} do |obj|
+                     ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked. Or check `persisted?` on model returned from `#{method}`.
+            obj.name = 'Tom'
+          end
+        RUBY
       end
     end
 
     it "when using #{method} with if" do
-      inspect_source("if object.#{method}; something; end")
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          if object.#{method}; something; end
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          if object.#{method}; something; end
+                    ^{method} `#{method}` returns a model which is always truthy.
+        RUBY
       end
     end
 
     it "when using #{method} with if with method chain" do
-      inspect_source(<<~RUBY)
-        if object.tap(&:prepare_for_save).#{method}
-          something
-        end
-      RUBY
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          if object.tap(&:prepare_for_save).#{method}
+            something
+          end
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          if object.tap(&:prepare_for_save).#{method}
+                                            ^{method} `#{method}` returns a model which is always truthy.
+            something
+          end
+        RUBY
       end
     end
 
     it "when using #{method} with if with block" do
-      inspect_source(<<~RUBY)
-        if object.#{method} { |o| o.name = 'Tom' }
-          something
-        end
-      RUBY
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          if object.#{method} { |o| o.name = 'Tom' }
+            something
+          end
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          if object.#{method} { |o| o.name = 'Tom' }
+                    ^{method} `#{method}` returns a model which is always truthy.
+            something
+          end
+        RUBY
       end
     end
 
     it "when using #{method} with referenced block" do
-      inspect_source("if object.#{method}(&:values); something; end")
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          if object.#{method}(&:values); something; end
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          if object.#{method}(&:values); something; end
+                    ^{method} `#{method}` returns a model which is always truthy.
+        RUBY
       end
     end
 
     it "when using #{method} with negated if" do
-      inspect_source("if !object.#{method}; something; end")
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          if !object.#{method}; something; end
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          if !object.#{method}; something; end
+                     ^{method} `#{method}` returns a model which is always truthy.
+        RUBY
       end
     end
 
     it "when using #{method} with multiple conditional" do
-      inspect_source(<<~RUBY)
-        if true && object.active? && object.#{method}
-          something
-        end
-      RUBY
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          if true && object.active? && object.#{method}
+            something
+          end
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          if true && object.active? && object.#{method}
+                                              ^{method} `#{method}` returns a model which is always truthy.
+            something
+          end
+        RUBY
       end
     end
 
     it "when using #{method} with oneline if" do
-      inspect_source("something if object.#{method}")
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          something if object.#{method}
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          something if object.#{method}
+                              ^{method} `#{method}` returns a model which is always truthy.
+        RUBY
       end
     end
 
     it "when using #{method} with oneline if and multiple conditional" do
-      inspect_source("something if false || object.#{method}")
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          something if false || object.#{method}
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          something if false || object.#{method}
+                                       ^{method} `#{method}` returns a model which is always truthy.
+        RUBY
       end
     end
 
     it "when using #{method} in the body of a oneline if" do
-      inspect_source("object.#{method} if false")
-
-      expect(cop.messages)
-        .to eq(["Use `#{method}!` instead of `#{method}` " \
-                'if the return value is not checked.'])
+      expect_offense(<<~RUBY, method: method)
+        object.#{method} if false
+               ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+      RUBY
     end
 
     it "when using #{method} in the body of an else" do
-      inspect_source(<<~RUBY)
+      expect_offense(<<~RUBY, method: method)
         if condition
           puts "true"
         else
           object.#{method}
+                 ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
         end
       RUBY
-
-      expect(cop.messages)
-        .to eq(["Use `#{method}!` instead of `#{method}` " \
-                'if the return value is not checked.'])
     end
 
     it "when using #{method} with a bunch of hashes & arrays" do
-      inspect_source(<<~RUBY)
+      expect_no_offenses(<<~RUBY, method: method)
         return [{ success: object.#{method} }, true]
       RUBY
-
-      expect(cop.messages.empty?).to be(true)
     end
 
     it "when using #{method} with case statement" do
-      inspect_source(<<~RUBY)
-        case object.#{method}
-        when true
-          puts "true"
-        when false
-          puts "false"
-        end
-      RUBY
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          case object.#{method}
+          when true
+            puts "true"
+          when false
+            puts "false"
+          end
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          case object.#{method}
+                      ^{method} `#{method}` returns a model which is always truthy.
+          when true
+            puts "true"
+          when false
+            puts "false"
+          end
+        RUBY
       end
     end
 
     it "when using #{method} with '&&'" do
-      inspect_source("object.#{method} && false")
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          object.#{method} && false
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          object.#{method} && false
+                 ^{method} `#{method}` returns a model which is always truthy.
+        RUBY
       end
     end
 
     it "when using #{method} with 'and'" do
-      inspect_source("object.#{method} and false")
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          object.#{method} and false
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          object.#{method} and false
+                 ^{method} `#{method}` returns a model which is always truthy.
+        RUBY
       end
     end
 
     it "when using #{method} with '||'" do
-      inspect_source("object.#{method} || false")
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          object.#{method} || false
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          object.#{method} || false
+                 ^{method} `#{method}` returns a model which is always truthy.
+        RUBY
       end
     end
 
@@ -313,13 +353,15 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
     end
 
     it "when using #{method} with 'or'" do
-      inspect_source("object.#{method} or false")
-
       if update
-        expect(cop.messages.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          object.#{method} or false
+        RUBY
       else
-        expect(cop.messages)
-          .to eq(["`#{method}` returns a model which is always truthy."])
+        expect_offense(<<~RUBY, method: method)
+          object.#{method} or false
+                 ^{method} `#{method}` returns a model which is always truthy.
+        RUBY
       end
     end
 
@@ -411,28 +453,25 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
 
     it 'when using only part of an allowed namespaced const receiver' do
       cop_config['AllowedReceivers'] = ['NameSpace::NonActiveRecord']
-      inspect_source(<<~RUBY)
-        NonActiveRecord.#{method}
-      RUBY
 
-      expect(cop.messages)
-        .to eq(["Use `#{method}!` instead of `#{method}` " \
-                'if the return value is not checked.'])
+      expect_offense(<<~RUBY, method: method)
+        NonActiveRecord.#{method}
+                        ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+      RUBY
     end
 
     it 'when using a namespaced const with an allowed absolute const' do
       cop_config['AllowedReceivers'] = ['::NonActiveRecord']
-      inspect_source(<<~RUBY)
-        NameSpace::NonActiveRecord.#{method}
-      RUBY
 
-      expect(cop.messages)
-        .to eq(["Use `#{method}!` instead of `#{method}` " \
-                'if the return value is not checked.'])
+      expect_offense(<<~RUBY, method: method)
+        NameSpace::NonActiveRecord.#{method}
+                                   ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+      RUBY
     end
 
     it 'when using an allowed method chain receiver' do
       cop_config['AllowedReceivers'] = ['merchant.gateway']
+
       expect_no_offenses(<<~RUBY)
         merchant.gateway.#{method}
       RUBY
@@ -440,17 +479,16 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
 
     it 'when using only part of an allowed method chain receiver' do
       cop_config['AllowedReceivers'] = ['merchant.gateway']
-      inspect_source(<<~RUBY)
-        gateway.#{method}
-      RUBY
 
-      expect(cop.messages)
-        .to eq(["Use `#{method}!` instead of `#{method}` " \
-                'if the return value is not checked.'])
+      expect_offense(<<~RUBY, method: method)
+        gateway.#{method}
+                ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+      RUBY
     end
 
     it 'when using an allowed class and method receiver' do
       cop_config['AllowedReceivers'] = ['A::B.merchant.gateway']
+
       expect_no_offenses(<<~RUBY)
         A::B.merchant.gateway.#{method}
         A::B::merchant::gateway::#{method}
@@ -459,77 +497,83 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
 
     it 'when using only part of an allowed class and method receiver' do
       cop_config['AllowedReceivers'] = ['A::B.merchant.gateway']
-      inspect_source(<<~RUBY)
-        B.merchant.#{method}
-      RUBY
 
-      expect(cop.messages)
-        .to eq(["Use `#{method}!` instead of `#{method}` " \
-                'if the return value is not checked.'])
+      expect_offense(<<~RUBY, method: method)
+        B.merchant.#{method}
+                   ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+      RUBY
     end
 
     # Bug: https://github.com/rubocop-hq/rubocop/issues/4264
     it 'when using the assigned variable as value in a hash' do
-      inspect_source(<<~RUBY)
-        def foo
-          foo = Foo.#{method}
-          render json: foo
-        end
-      RUBY
       if update
-        expect(cop.offenses.empty?).to be(true)
+        expect_no_offenses(<<~RUBY)
+          def foo
+            foo = Foo.#{method}
+            render json: foo
+          end
+        RUBY
       else
-        expect(cop.offenses.size).to eq(1)
+        expect_offense(<<~RUBY, method: method)
+          def foo
+            foo = Foo.#{method}
+                      ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked. Or check `persisted?` on model returned from `#{method}`.
+            render json: foo
+          end
+        RUBY
       end
     end
   end
 
   shared_examples 'check_implicit_return' do |method, allow_implicit_return|
     it "when using #{method} as last method call" do
-      inspect_source(<<~RUBY)
-        def foo
-          object.#{method}
-        end
-      RUBY
-
       if allow_implicit_return
-        expect(cop.offenses.empty?).to be true
+        expect_no_offenses(<<~RUBY)
+          def foo
+            object.#{method}
+          end
+        RUBY
       else
-        expect(cop.messages)
-          .to match_array(start_with("Use `#{method}!` instead of `#{method}`" \
-                             ' if the return value is not checked.'))
+        expect_offense(<<~RUBY, method: method)
+          def foo
+            object.#{method}
+                   ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+        RUBY
       end
     end
 
     it "when using #{method} as last method call of a block" do
-      inspect_source(<<~RUBY)
-        objects.each do |object|
-          object.#{method}
-        end
-      RUBY
-
       if allow_implicit_return
-        expect(cop.offenses.empty?).to be true
+        expect_no_offenses(<<~RUBY)
+          objects.each do |object|
+            object.#{method}
+          end
+        RUBY
       else
-        expect(cop.messages)
-          .to match_array(start_with("Use `#{method}!` instead of `#{method}`" \
-                             ' if the return value is not checked.'))
+        expect_offense(<<~RUBY, method: method)
+          objects.each do |object|
+            object.#{method}
+                   ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+        RUBY
       end
     end
 
     it "when using #{method} as part of the last line" do
-      inspect_source(<<~RUBY)
-        def whatever
-          [{ success: object.#{method} }, true]
-        end
-      RUBY
-
       if allow_implicit_return
-        expect(cop.offenses.empty?).to be true
+        expect_no_offenses(<<~RUBY)
+          def whatever
+            [{ success: object.#{method} }, true]
+          end
+        RUBY
       else
-        expect(cop.messages)
-          .to match_array(start_with("Use `#{method}!` instead of `#{method}`" \
-                             ' if the return value is not checked.'))
+        expect_offense(<<~RUBY, method: method)
+          def whatever
+            [{ success: object.#{method} }, true]
+                               ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+        RUBY
       end
     end
   end

@@ -11,10 +11,10 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
 
   shared_examples 'offense' do |name, method, params|
     it "registers an offense for #{name}" do
-      inspect_source("[1, 2].#{method}#{params}")
+      offenses = inspect_source("[1, 2].#{method}#{params}")
 
-      expect(cop.messages)
-        .to eq([format('Use safe navigation (`&.`) instead of `%s`.', method)])
+      expect(offenses.first.message)
+        .to eq(format('Use safe navigation (`&.`) instead of `%s`.', method))
     end
   end
 

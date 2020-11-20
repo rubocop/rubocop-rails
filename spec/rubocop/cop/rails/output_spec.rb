@@ -3,18 +3,23 @@
 RSpec.describe RuboCop::Cop::Rails::Output do
   subject(:cop) { described_class.new }
 
-  it 'records an offense for methods without a receiver' do
-    source = <<~RUBY
+  it 'registers an offense for methods without a receiver' do
+    expect_offense(<<~RUBY)
       p "edmond dantes"
+      ^ Do not write to stdout. Use Rails's logger if you want to log.
       puts "sinbad"
+      ^^^^ Do not write to stdout. Use Rails's logger if you want to log.
       print "abbe busoni"
+      ^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
       pp "monte cristo"
+      ^^ Do not write to stdout. Use Rails's logger if you want to log.
       $stdout.write "lord wilmore"
+              ^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
       $stderr.syswrite "faria"
+              ^^^^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
       STDOUT.write "bertuccio"
+             ^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
     RUBY
-    inspect_source(source)
-    expect(cop.offenses.size).to eq(7)
   end
 
   it 'does not record an offense for methods with a receiver' do
