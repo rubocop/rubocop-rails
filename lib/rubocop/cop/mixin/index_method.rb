@@ -34,13 +34,6 @@ module RuboCop
         end
       end
 
-      def autocorrect(node)
-        lambda do |corrector|
-          correction = prepare_correction(node)
-          execute_correction(corrector, node, correction)
-        end
-      end
-
       private
 
       # @abstract Implemented with `def_node_matcher`
@@ -69,9 +62,11 @@ module RuboCop
         return if captures.noop_transformation?
 
         add_offense(
-          node,
-          message: "Prefer `#{new_method_name}` over `#{match_desc}`."
-        )
+          node, message: "Prefer `#{new_method_name}` over `#{match_desc}`."
+        ) do |corrector|
+          correction = prepare_correction(node)
+          execute_correction(corrector, node, correction)
+        end
       end
 
       def extract_captures(match)

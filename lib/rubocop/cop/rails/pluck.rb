@@ -17,7 +17,8 @@ module RuboCop
       #   # good
       #   Post.published.pluck(:title)
       #   [{ a: :b, c: :d }].pluck(:a)
-      class Pluck < Cop
+      class Pluck < Base
+        extend AutoCorrector
         extend TargetRailsVersion
 
         MSG = 'Prefer `pluck(:%<value>s)` over `%<method>s { |%<argument>s| %<element>s[:%<value>s] }`.'
@@ -32,15 +33,11 @@ module RuboCop
           pluck_candidate?(node) do |method, argument, element, value|
             next unless argument == element
 
-            add_offense(node, location: offense_range(node), message: message(method, argument, element, value))
-          end
-        end
+            message = message(method, argument, element, value)
 
-        def autocorrect(node)
-          _method, _argument, _element, value = pluck_candidate?(node)
-
-          lambda do |corrector|
-            corrector.replace(offense_range(node), "pluck(:#{value})")
+            add_offense(offense_range(node), message: message) do |corrector|
+              corrector.replace(offense_range(node), "pluck(:#{value})")
+            end
           end
         end
 

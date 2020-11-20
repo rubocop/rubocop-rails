@@ -23,7 +23,7 @@ module RuboCop
       #   def welcome_message(user)
       #     "Hello #{user.name}"
       #   end
-      class HelperInstanceVariable < Cop
+      class HelperInstanceVariable < Base
         MSG = 'Do not use instance variables in helpers.'
 
         def on_ivar(node)
@@ -33,7 +33,7 @@ module RuboCop
         def on_ivasgn(node)
           return if node.parent.or_asgn_type?
 
-          add_offense(node, location: :name)
+          add_offense(node.loc.name)
         end
       end
     end

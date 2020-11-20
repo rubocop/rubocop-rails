@@ -18,8 +18,9 @@ module RuboCop
       #   User.where(name: 'Gabe')
       #   User.where(name: nil)
       #   User.where(name: ['john', 'jane'])
-      class WhereEquals < Cop
+      class WhereEquals < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of manually constructing SQL.'
         RESTRICT_ON_SEND = %i[where].freeze
@@ -43,21 +44,8 @@ module RuboCop
             good_method = build_good_method(*column_and_value)
             message = format(MSG, good_method: good_method)
 
-            add_offense(node, location: range, message: message)
-          end
-        end
-
-        def autocorrect(node)
-          where_method_call?(node) do |template_node, value_node|
-            value_node = value_node.first
-
-            lambda do |corrector|
-              range = offense_range(node)
-
-              column, value = *extract_column_and_value(template_node, value_node)
-              replacement = build_good_method(column, value)
-
-              corrector.replace(range, replacement)
+            add_offense(range, message: message) do |corrector|
+              corrector.replace(range, good_method)
             end
           end
         end

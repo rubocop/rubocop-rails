@@ -24,7 +24,7 @@ module RuboCop
       #   # good - even if the schema does not have a unique index
       #   validates :account, length: { minimum: MIN_LENGTH }
       #
-      class UniqueValidationWithoutIndex < Cop
+      class UniqueValidationWithoutIndex < Base
         include ActiveRecordHelper
 
         MSG = 'Uniqueness validation should be with a unique index.'

@@ -16,7 +16,7 @@ module RuboCop
       #   add_column :users, :name, :string, null: false, default: ''
       #   add_reference :products, :category
       #   add_reference :products, :category, null: false, default: 1
-      class NotNullColumn < Cop
+      class NotNullColumn < Base
         MSG = 'Do not add a NOT NULL column without a default value.'
         RESTRICT_ON_SEND = %i[add_column add_reference].freeze
 

@@ -12,7 +12,9 @@ module RuboCop
       #
       #   # good
       #   User.all.find_each
-      class FindEach < Cop
+      class FindEach < Base
+        extend AutoCorrector
+
         MSG = 'Use `find_each` instead of `each`.'
         RESTRICT_ON_SEND = %i[each].freeze
 
@@ -27,11 +29,10 @@ module RuboCop
           return unless SCOPE_METHODS.include?(node.receiver.method_name)
           return if method_chain(node).any? { |m| ignored_by_find_each?(m) }
 
-          add_offense(node, location: :selector)
-        end
-
-        def autocorrect(node)
-          ->(corrector) { corrector.replace(node.loc.selector, 'find_each') }
+          range = node.loc.selector
+          add_offense(range) do |corrector|
+            corrector.replace(range, 'find_each')
+          end
         end
 
         private

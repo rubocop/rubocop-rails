@@ -13,7 +13,7 @@ module RuboCop
       #
       #   # good
       #   Rails.logger.debug 'A debug message'
-      class Output < Cop
+      class Output < Base
         MSG = 'Do not write to stdout. ' \
               "Use Rails's logger if you want to log."
         RESTRICT_ON_SEND = %i[
@@ -38,7 +38,7 @@ module RuboCop
           return unless (output?(node) || io_output?(node)) &&
                         node.arguments?
 
-          add_offense(node, location: :selector)
+          add_offense(node.loc.selector)
         end
 
         private

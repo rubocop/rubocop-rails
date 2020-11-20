@@ -54,8 +54,9 @@ module RuboCop
       #       merger.invoke(another_receiver)
       #     end
       #   end
-      class RedundantReceiverInWithOptions < Cop
+      class RedundantReceiverInWithOptions < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Redundant receiver in `with_options`.'
 
@@ -86,21 +87,21 @@ module RuboCop
             if send_nodes.all? { |n| same_value?(arg, n.receiver) }
               send_nodes.each do |send_node|
                 receiver = send_node.receiver
-                add_offense(send_node, location: receiver.source_range)
+                add_offense(receiver.source_range) do |corrector|
+                  autocorrect(corrector, send_node)
+                end
               end
             end
           end
         end
 
-        def autocorrect(node)
-          lambda do |corrector|
-            corrector.remove(node.receiver.source_range)
-            corrector.remove(node.loc.dot)
-            corrector.remove(block_argument_range(node))
-          end
-        end
-
         private
+
+        def autocorrect(corrector, node)
+          corrector.remove(node.receiver.source_range)
+          corrector.remove(node.loc.dot)
+          corrector.remove(block_argument_range(node))
+        end
 
         def block_argument_range(node)
           block_node = node.each_ancestor(:block).first

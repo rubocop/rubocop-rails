@@ -18,7 +18,9 @@ module RuboCop
       #   array.exclude?(2)
       #   hash.exclude?(:key)
       #
-      class NegateInclude < Cop
+      class NegateInclude < Base
+        extend AutoCorrector
+
         MSG = 'Use `.exclude?` and remove the negation part.'
         RESTRICT_ON_SEND = %i[!].freeze
 
@@ -27,14 +29,10 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          add_offense(node) if negate_include_call?(node)
-        end
+          return unless (receiver, obj = negate_include_call?(node))
 
-        def autocorrect(node)
-          negate_include_call?(node) do |receiver, obj|
-            lambda do |corrector|
-              corrector.replace(node, "#{receiver.source}.exclude?(#{obj.source})")
-            end
+          add_offense(node) do |corrector|
+            corrector.replace(node, "#{receiver.source}.exclude?(#{obj.source})")
           end
         end
       end

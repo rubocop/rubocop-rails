@@ -38,8 +38,9 @@ module RuboCop
       #   t :key
       #   l Time.now
       #
-      class ShortI18n < Cop
+      class ShortI18n < Base
         include ConfigurableEnforcedStyle
+        extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
 
@@ -60,15 +61,10 @@ module RuboCop
           long_i18n?(node) do |method_name|
             good_method = PREFERRED_METHODS[method_name]
             message = format(MSG, good_method: good_method, bad_method: method_name)
+            range = node.loc.selector
 
-            add_offense(node, location: :selector, message: message)
-          end
-        end
-
-        def autocorrect(node)
-          long_i18n?(node) do |method_name|
-            lambda do |corrector|
-              corrector.replace(node.loc.selector, PREFERRED_METHODS[method_name])
+            add_offense(range, message: message) do |corrector|
+              corrector.replace(range, PREFERRED_METHODS[method_name])
             end
           end
         end

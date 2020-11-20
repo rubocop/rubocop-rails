@@ -20,7 +20,9 @@ module RuboCop
       #
       #   # good
       #   link_to 'Click here', url, target: '_blank', rel: 'noreferrer'
-      class LinkToBlank < Cop
+      class LinkToBlank < Base
+        extend AutoCorrector
+
         MSG = 'Specify a `:rel` option containing noopener.'
         RESTRICT_ON_SEND = %i[link_to].freeze
 
@@ -41,29 +43,28 @@ module RuboCop
 
           option_nodes.map(&:children).each do |options|
             blank = options.find { |o| blank_target?(o) }
-            add_offense(blank) if blank && options.none? { |o| includes_noopener?(o) }
-          end
-        end
+            next unless blank && options.none? { |o| includes_noopener?(o) }
 
-        def autocorrect(node)
-          lambda do |corrector|
-            send_node = node.parent.parent
-
-            option_nodes = send_node.each_child_node(:hash)
-            rel_node = nil
-            option_nodes.map(&:children).each do |options|
-              rel_node ||= options.find { |o| rel_node?(o) }
-            end
-
-            if rel_node
-              append_to_rel(rel_node, corrector)
-            else
-              add_rel(send_node, node, corrector)
+            add_offense(blank) do |corrector|
+              autocorrect(corrector, node, blank, option_nodes)
             end
           end
         end
 
         private
+
+        def autocorrect(corrector, send_node, node, option_nodes)
+          rel_node = nil
+          option_nodes.map(&:children).each do |options|
+            rel_node ||= options.find { |o| rel_node?(o) }
+          end
+
+          if rel_node
+            append_to_rel(rel_node, corrector)
+          else
+            add_rel(send_node, node, corrector)
+          end
+        end
 
         def append_to_rel(rel_node, corrector)
           existing_rel = rel_node.children.last.value

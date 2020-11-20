@@ -82,7 +82,7 @@ module RuboCop
       #       @content = Article.find(params[:article_id])
       #     end
       #   end
-      class LexicallyScopedActionFilter < Cop
+      class LexicallyScopedActionFilter < Base
         MSG = '%<action>s not explicitly defined on the %<type>s.'
 
         RESTRICT_ON_SEND = %i[

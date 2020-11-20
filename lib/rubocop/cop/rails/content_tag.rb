@@ -18,8 +18,9 @@ module RuboCop
       #  tag.p('Hello world!')
       #  tag.br
       #  content_tag(name, 'Hello world!')
-      class ContentTag < Cop
+      class ContentTag < Base
         include RangeHelp
+        extend AutoCorrector
         extend TargetRailsVersion
 
         minimum_target_rails_version 5.1
@@ -33,25 +34,25 @@ module RuboCop
 
           return if first_argument.variable? || first_argument.send_type? || first_argument.const_type?
 
-          add_offense(node)
-        end
-
-        def autocorrect(node)
-          lambda do |corrector|
-            if method_name?(node.first_argument)
-              range = correction_range(node)
-
-              rest_args = node.arguments.drop(1)
-              replacement = "tag.#{node.first_argument.value.to_s.underscore}(#{rest_args.map(&:source).join(', ')})"
-
-              corrector.replace(range, replacement)
-            else
-              corrector.replace(node.loc.selector, 'tag')
-            end
+          add_offense(node) do |corrector|
+            autocorrect(corrector, node)
           end
         end
 
         private
+
+        def autocorrect(corrector, node)
+          if method_name?(node.first_argument)
+            range = correction_range(node)
+
+            rest_args = node.arguments.drop(1)
+            replacement = "tag.#{node.first_argument.value.to_s.underscore}(#{rest_args.map(&:source).join(', ')})"
+
+            corrector.replace(range, replacement)
+          else
+            corrector.replace(node.loc.selector, 'tag')
+          end
+        end
 
         def method_name?(node)
           return false unless node.str_type? || node.sym_type?

@@ -12,7 +12,9 @@ module RuboCop
       #
       #   #good
       #   Book.update!(author: 'Alice')
-      class ActiveRecordAliases < Cop
+      class ActiveRecordAliases < Base
+        extend AutoCorrector
+
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
 
         ALIASES = {
@@ -24,25 +26,18 @@ module RuboCop
 
         def on_send(node)
           method_name = node.method_name
+          alias_method = ALIASES[method_name]
 
           add_offense(
-            node,
-            message: format(MSG, prefer: ALIASES[method_name], current: method_name),
-            location: :selector,
+            node.loc.selector,
+            message: format(MSG, prefer: alias_method, current: method_name),
             severity: :warning
-          )
+          ) do |corrector|
+            corrector.replace(node.loc.selector, alias_method)
+          end
         end
 
         alias on_csend on_send
-
-        def autocorrect(node)
-          lambda do |corrector|
-            corrector.replace(
-              node.loc.selector,
-              ALIASES[node.method_name].to_s
-            )
-          end
-        end
       end
     end
   end

@@ -17,7 +17,7 @@ module RuboCop
       #   # good
       #   Rails.env.production?
       #   Rails.env == 'production'
-      class UnknownEnv < Cop
+      class UnknownEnv < Base
         MSG = 'Unknown environment `%<name>s`.'
         MSG_SIMILAR = 'Unknown environment `%<name>s`. ' \
                       'Did you mean `%<similar>s`?'
@@ -41,7 +41,7 @@ module RuboCop
 
         def on_send(node)
           unknown_environment_predicate?(node) do |name|
-            add_offense(node, location: :selector, message: message(name))
+            add_offense(node.loc.selector, message: message(name))
           end
 
           unknown_environment_equal?(node) do |str_node|

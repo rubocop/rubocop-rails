@@ -24,8 +24,9 @@ module RuboCop
       #   class Comment
       #     belongs_to :author, foreign_key: 'user_id'
       #   end
-      class RedundantForeignKey < Cop
+      class RedundantForeignKey < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Specifying the default value for `foreign_key` is redundant.'
         RESTRICT_ON_SEND = %i[belongs_to has_one has_many has_and_belongs_to_many].freeze
@@ -39,18 +40,13 @@ module RuboCop
         def on_send(node)
           association_with_foreign_key(node) do |type, name, options, foreign_key_pair, foreign_key|
             if redundant?(node, type, name, options, foreign_key)
-              add_offense(node, location: foreign_key_pair.loc.expression)
+              add_offense(foreign_key_pair.loc.expression) do |corrector|
+                range = range_with_surrounding_space(range: foreign_key_pair.source_range, side: :left)
+                range = range_with_surrounding_comma(range, :left)
+
+                corrector.remove(range)
+              end
             end
-          end
-        end
-
-        def autocorrect(node)
-          _type, _name, _options, foreign_key_pair, _foreign_key = association_with_foreign_key(node)
-          range = range_with_surrounding_space(range: foreign_key_pair.source_range, side: :left)
-          range = range_with_surrounding_comma(range, :left)
-
-          lambda do |corrector|
-            corrector.remove(range)
           end
         end
 

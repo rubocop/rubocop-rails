@@ -17,7 +17,9 @@ module RuboCop
       #   # good
       #   enum status: { active: 0, archived: 1 }
       #
-      class EnumHash < Cop
+      class EnumHash < Base
+        extend AutoCorrector
+
         MSG = 'Enum defined as an array found in `%<enum>s` enum declaration. '\
               'Use hash syntax instead.'
         RESTRICT_ON_SEND = %i[enum].freeze
@@ -36,17 +38,15 @@ module RuboCop
               key, array = array_pair?(pair)
               next unless key
 
-              add_offense(array, message: format(MSG, enum: enum_name(key)))
+              add_offense(array, message: format(MSG, enum: enum_name(key))) do |corrector|
+                hash = array.children.each_with_index.map do |elem, index|
+                  "#{source(elem)} => #{index}"
+                end.join(', ')
+
+                corrector.replace(array.loc.expression, "{#{hash}}")
+              end
             end
           end
-        end
-
-        def autocorrect(node)
-          hash = node.children.each_with_index.map do |elem, index|
-            "#{source(elem)} => #{index}"
-          end.join(', ')
-
-          ->(corrector) { corrector.replace(node.loc.expression, "{#{hash}}") }
         end
 
         private

@@ -31,7 +31,9 @@ module RuboCop
       #
       #   # good
       #   Gem::Specification.find_by_name('backend').gem_dir
-      class DynamicFindBy < Cop
+      class DynamicFindBy < Base
+        extend AutoCorrector
+
         MSG = 'Use `%<static_name>s` instead of dynamic `%<method>s`.'
         METHOD_PATTERN = /^find_by_(.+?)(!)?$/.freeze
 
@@ -43,24 +45,23 @@ module RuboCop
           return unless static_name
           return if node.arguments.any?(&:splat_type?)
 
-          add_offense(node,
-                      message: format(MSG, static_name: static_name,
-                                           method: method_name))
+          message = format(MSG, static_name: static_name, method: method_name)
+          add_offense(node, message: message) do |corrector|
+            autocorrect(corrector, node)
+          end
         end
         alias on_csend on_send
 
-        def autocorrect(node)
+        private
+
+        def autocorrect(corrector, node)
           keywords = column_keywords(node.method_name)
 
           return if keywords.size != node.arguments.size
 
-          lambda do |corrector|
-            autocorrect_method_name(corrector, node)
-            autocorrect_argument_keywords(corrector, node, keywords)
-          end
+          autocorrect_method_name(corrector, node)
+          autocorrect_argument_keywords(corrector, node, keywords)
         end
-
-        private
 
         def allowed_invocation?(node)
           allowed_method?(node) || allowed_receiver?(node) ||

@@ -175,7 +175,7 @@ module RuboCop
       #   end
       #
       # @see https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
-      class ReversibleMigration < Cop
+      class ReversibleMigration < Base
         MSG = '%<action>s is not reversible.'
 
         def_node_matcher :irreversible_schema_statement_call, <<~PATTERN
@@ -271,11 +271,7 @@ module RuboCop
         def check_remove_foreign_key_node(node)
           remove_foreign_key_call(node) do |arg|
             if arg.hash_type? && !all_hash_key?(arg, :to_table)
-              add_offense(
-                node,
-                message: format(MSG,
-                                action: 'remove_foreign_key(without table)')
-              )
+              add_offense(node, message: format(MSG, action: 'remove_foreign_key(without table)'))
             end
           end
         end

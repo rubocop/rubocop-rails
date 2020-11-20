@@ -43,7 +43,7 @@ module RuboCop
       #   Date.yesterday
       #   date.in_time_zone
       #
-      class Date < Cop
+      class Date < Base
         include ConfigurableEnforcedStyle
 
         MSG = 'Do not use `Date.%<method_called>s` without zone. Use ' \
@@ -78,8 +78,7 @@ module RuboCop
 
           check_deprecated_methods(node)
 
-          add_offense(node, location: :selector,
-                            message: format(MSG_SEND, method: node.method_name))
+          add_offense(node.loc.selector, message: format(MSG_SEND, method: node.method_name))
         end
         alias on_csend on_send
 
@@ -89,10 +88,9 @@ module RuboCop
           DEPRECATED_METHODS.each do |method|
             next unless node.method?(method[:deprecated].to_sym)
 
-            add_offense(node, location: :selector,
-                              message: format(DEPRECATED_MSG,
-                                              deprecated: method[:deprecated],
-                                              relevant: method[:relevant]))
+            message = format(DEPRECATED_MSG, deprecated: method[:deprecated], relevant: method[:relevant])
+
+            add_offense(node.loc.selector, message: message)
           end
         end
 
@@ -106,10 +104,9 @@ module RuboCop
           day = method_name
           day = 'today' if method_name == 'current'
 
-          add_offense(node, location: :selector,
-                            message: format(MSG,
-                                            method_called: method_name,
-                                            day: day))
+          message = format(MSG, method_called: method_name, day: day)
+
+          add_offense(node.loc.selector, message: message)
         end
 
         def extract_method_chain(node)

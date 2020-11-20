@@ -20,7 +20,7 @@ module RuboCop
       #     has_one :avatar, dependent: :destroy
       #     has_many :patients, through: :appointments
       #   end
-      class HasManyOrHasOneDependent < Cop
+      class HasManyOrHasOneDependent < Base
         MSG = 'Specify a `:dependent` option.'
         RESTRICT_ON_SEND = %i[has_many has_one].freeze
 
@@ -56,7 +56,7 @@ module RuboCop
           return if !association_without_options?(node) && valid_options?(association_with_options?(node))
           return if valid_options_in_with_options_block?(node)
 
-          add_offense(node, location: :selector)
+          add_offense(node.loc.selector)
         end
 
         private

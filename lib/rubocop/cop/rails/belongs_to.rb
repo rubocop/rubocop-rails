@@ -50,7 +50,8 @@ module RuboCop
       #
       # @see https://guides.rubyonrails.org/5_0_release_notes.html
       # @see https://github.com/rails/rails/pull/18937
-      class BelongsTo < Cop
+      class BelongsTo < Base
+        extend AutoCorrector
         extend TargetRailsVersion
 
         minimum_target_rails_version 5.0
@@ -73,27 +74,16 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          match_belongs_to_with_options(node) do |_option_node, option_value|
-            message =
+          match_belongs_to_with_options(node) do |option_node, option_value|
+            message, replacement =
               if option_value.true_type?
-                SUPERFLOUS_REQUIRE_TRUE_MSG
+                [SUPERFLOUS_REQUIRE_TRUE_MSG, 'optional: false']
               elsif option_value.false_type?
-                SUPERFLOUS_REQUIRE_FALSE_MSG
+                [SUPERFLOUS_REQUIRE_FALSE_MSG, 'optional: true']
               end
 
-            add_offense(node, message: message, location: :selector)
-          end
-        end
-
-        def autocorrect(node)
-          option_node, option_value = match_belongs_to_with_options(node)
-          return unless option_node
-
-          lambda do |corrector|
-            if option_value.true_type?
-              corrector.replace(option_node.loc.expression, 'optional: false')
-            elsif option_value.false_type?
-              corrector.replace(option_node.loc.expression, 'optional: true')
+            add_offense(node.loc.selector, message: message) do |corrector|
+              corrector.replace(option_node.loc.expression, replacement)
             end
           end
         end

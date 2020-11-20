@@ -37,8 +37,9 @@ module RuboCop
       #
       #   # good
       #   a.presence || b
-      class Presence < Cop
+      class Presence < Base
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
 
@@ -76,27 +77,25 @@ module RuboCop
           return if ignore_if_node?(node)
 
           redundant_receiver_and_other(node) do |receiver, other|
-            add_offense(node, message: message(node, receiver, other)) unless ignore_other_node?(other) || receiver.nil?
+            return if ignore_other_node?(other) || receiver.nil?
+
+            register_offense(node, receiver, other)
           end
 
           redundant_negative_receiver_and_other(node) do |receiver, other|
-            add_offense(node, message: message(node, receiver, other)) unless ignore_other_node?(other) || receiver.nil?
-          end
-        end
+            return if ignore_other_node?(other) || receiver.nil?
 
-        def autocorrect(node)
-          lambda do |corrector|
-            redundant_receiver_and_other(node) do |receiver, other|
-              corrector.replace(node.source_range, replacement(receiver, other))
-            end
-
-            redundant_negative_receiver_and_other(node) do |receiver, other|
-              corrector.replace(node.source_range, replacement(receiver, other))
-            end
+            register_offense(node, receiver, other)
           end
         end
 
         private
+
+        def register_offense(node, receiver, other)
+          add_offense(node, message: message(node, receiver, other)) do |corrector|
+            corrector.replace(node.source_range, replacement(receiver, other))
+          end
+        end
 
         def ignore_if_node?(node)
           node.elsif?

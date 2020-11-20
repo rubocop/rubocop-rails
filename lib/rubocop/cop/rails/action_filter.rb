@@ -29,8 +29,9 @@ module RuboCop
       #   after_filter :do_stuff
       #   append_around_filter :do_stuff
       #   skip_after_filter :do_stuff
-      class ActionFilter < Cop
+      class ActionFilter < Base
         include ConfigurableEnforcedStyle
+        extend AutoCorrector
 
         MSG = 'Prefer `%<prefer>s` over `%<current>s`.'
 
@@ -76,24 +77,17 @@ module RuboCop
           check_method_node(node) unless node.receiver
         end
 
-        def autocorrect(node)
-          lambda do |corrector|
-            corrector.replace(node.loc.selector,
-                              preferred_method(node.loc.selector.source).to_s)
-          end
-        end
-
         private
 
         def check_method_node(node)
-          return unless bad_methods.include?(node.method_name)
+          method_name = node.method_name
+          return unless bad_methods.include?(method_name)
 
-          add_offense(node, location: :selector)
-        end
+          message = format(MSG, prefer: preferred_method(method_name), current: method_name)
 
-        def message(node)
-          format(MSG, prefer: preferred_method(node.method_name),
-                      current: node.method_name)
+          add_offense(node.loc.selector, message: message) do |corrector|
+            corrector.replace(node.loc.selector, preferred_method(node.loc.selector.source))
+          end
         end
 
         def bad_methods

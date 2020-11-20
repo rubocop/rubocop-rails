@@ -52,7 +52,9 @@ module RuboCop
       #
       #   # good
       #   delegate :bar, to: :foo, prefix: true
-      class Delegate < Cop
+      class Delegate < Base
+        extend AutoCorrector
+
         MSG = 'Use `delegate` to define delegations.'
 
         def_node_matcher :delegate?, <<~PATTERN
@@ -64,21 +66,19 @@ module RuboCop
           return unless trivial_delegate?(node)
           return if private_or_protected_delegation(node)
 
-          add_offense(node, location: :keyword)
-        end
-
-        def autocorrect(node)
-          delegation = ["delegate :#{node.body.method_name}",
-                        "to: :#{node.body.receiver.method_name}"]
-
-          delegation << ['prefix: true'] if node.method?(prefixed_method_name(node.body))
-
-          lambda do |corrector|
-            corrector.replace(node.source_range, delegation.join(', '))
-          end
+          register_offense(node)
         end
 
         private
+
+        def register_offense(node)
+          add_offense(node.loc.keyword) do |corrector|
+            delegation = ["delegate :#{node.body.method_name}", "to: :#{node.body.receiver.method_name}"]
+            delegation << ['prefix: true'] if node.method?(prefixed_method_name(node.body))
+
+            corrector.replace(node.source_range, delegation.join(', '))
+          end
+        end
 
         def trivial_delegate?(def_node)
           delegate?(def_node) &&

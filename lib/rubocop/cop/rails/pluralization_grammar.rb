@@ -14,7 +14,9 @@ module RuboCop
       #   # good
       #   3.days.ago
       #   1.month.ago
-      class PluralizationGrammar < Cop
+      class PluralizationGrammar < Base
+        extend AutoCorrector
+
         SINGULAR_DURATION_METHODS = { second: :seconds,
                                       minute: :minutes,
                                       hour: :hours,
@@ -31,16 +33,11 @@ module RuboCop
         MSG = 'Prefer `%<number>s.%<correct>s`.'
 
         def on_send(node)
-          return unless duration_method?(node.method_name)
-          return unless literal_number?(node.receiver)
+          return unless duration_method?(node.method_name) && literal_number?(node.receiver) && offense?(node)
 
-          return unless offense?(node)
+          number, = *node.receiver
 
-          add_offense(node)
-        end
-
-        def autocorrect(node)
-          lambda do |corrector|
+          add_offense(node, message: message(number, node.method_name)) do |corrector|
             method_name = node.loc.selector.source
 
             corrector.replace(node.loc.selector, correct_method(method_name))
@@ -49,11 +46,8 @@ module RuboCop
 
         private
 
-        def message(node)
-          number, = *node.receiver
-
-          format(MSG, number: number,
-                      correct: correct_method(node.method_name.to_s))
+        def message(number, method_name)
+          format(MSG, number: number, correct: correct_method(method_name))
         end
 
         def correct_method(method_name)

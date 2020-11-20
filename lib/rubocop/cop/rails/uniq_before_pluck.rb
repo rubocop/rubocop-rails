@@ -45,9 +45,10 @@ module RuboCop
       #   # good
       #   Model.distinct.pluck(:id)
       #
-      class UniqBeforePluck < RuboCop::Cop::Cop
+      class UniqBeforePluck < Base
         include ConfigurableEnforcedStyle
         include RangeHelp
+        extend AutoCorrector
 
         MSG = 'Use `distinct` before `pluck`.'
         RESTRICT_ON_SEND = %i[uniq distinct pluck].freeze
@@ -70,11 +71,7 @@ module RuboCop
 
           return unless method
 
-          add_offense(node, location: :selector)
-        end
-
-        def autocorrect(node)
-          lambda do |corrector|
+          add_offense(node.loc.selector) do |corrector|
             method = node.method_name
 
             corrector.remove(dot_method_with_whitespace(method, node))

@@ -17,8 +17,9 @@ module RuboCop
       #
       #   # good
       #   [1, 2, 3].index_by { |el| foo(el) }
-      class IndexBy < Cop
+      class IndexBy < Base
         include IndexMethod
+        extend AutoCorrector
 
         def_node_matcher :on_bad_each_with_object, <<~PATTERN
           (block

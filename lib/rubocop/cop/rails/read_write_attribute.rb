@@ -23,7 +23,9 @@ module RuboCop
       #   # good
       #   x = self[:attr]
       #   self[:attr] = val
-      class ReadWriteAttribute < Cop
+      class ReadWriteAttribute < Base
+        extend AutoCorrector
+
         MSG = 'Prefer `%<prefer>s` over `%<current>s`.'
         RESTRICT_ON_SEND = %i[read_attribute write_attribute].freeze
 
@@ -37,18 +39,16 @@ module RuboCop
         def on_send(node)
           return unless read_write_attribute?(node)
 
-          add_offense(node, location: :selector)
-        end
+          add_offense(node.loc.selector, message: message(node)) do |corrector|
+            case node.method_name
+            when :read_attribute
+              replacement = read_attribute_replacement(node)
+            when :write_attribute
+              replacement = write_attribute_replacement(node)
+            end
 
-        def autocorrect(node)
-          case node.method_name
-          when :read_attribute
-            replacement = read_attribute_replacement(node)
-          when :write_attribute
-            replacement = write_attribute_replacement(node)
+            corrector.replace(node.source_range, replacement)
           end
-
-          ->(corrector) { corrector.replace(node.source_range, replacement) }
         end
 
         private

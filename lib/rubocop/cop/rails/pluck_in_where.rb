@@ -34,9 +34,10 @@ module RuboCop
       #   # bad
       #   Post.where(user_id: active_users.pluck(:id))
       #
-      class PluckInWhere < Cop
+      class PluckInWhere < Base
         include ActiveRecordHelper
         include ConfigurableEnforcedStyle
+        extend AutoCorrector
 
         MSG = 'Use `select` instead of `pluck` within `where` query method.'
         RESTRICT_ON_SEND = %i[pluck].freeze
@@ -45,12 +46,10 @@ module RuboCop
           return unless in_where?(node)
           return if style == :conservative && !root_receiver(node)&.const_type?
 
-          add_offense(node, location: :selector)
-        end
+          range = node.loc.selector
 
-        def autocorrect(node)
-          lambda do |corrector|
-            corrector.replace(node.loc.selector, 'select')
+          add_offense(range) do |corrector|
+            corrector.replace(range, 'select')
           end
         end
 

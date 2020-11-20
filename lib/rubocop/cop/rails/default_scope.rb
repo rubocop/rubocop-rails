@@ -22,7 +22,7 @@ module RuboCop
       #     where(hidden: false)
       #   end
       #
-      class DefaultScope < Cop
+      class DefaultScope < Base
         MSG = 'Avoid use of `default_scope`. It is better to use explicitly named scopes.'
         RESTRICT_ON_SEND = %i[default_scope].freeze
 
@@ -39,15 +39,21 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          add_offense(node, location: :selector) if method_call?(node)
+          return unless method_call?(node)
+
+          add_offense(node.loc.selector)
         end
 
         def on_defs(node)
-          add_offense(node, location: :name) if class_method_definition?(node)
+          return unless class_method_definition?(node)
+
+          add_offense(node.loc.name)
         end
 
         def on_sclass(node)
-          eigenclass_method_definition?(node) { |default_scope| add_offense(default_scope, location: :name) }
+          eigenclass_method_definition?(node) do |default_scope|
+            add_offense(default_scope.loc.name)
+          end
         end
       end
     end

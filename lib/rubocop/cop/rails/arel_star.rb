@@ -17,7 +17,9 @@ module RuboCop
       #   # good
       #   MyTable.arel_table[Arel.star]
       #
-      class ArelStar < Cop
+      class ArelStar < Base
+        extend AutoCorrector
+
         MSG = 'Use `Arel.star` instead of `"*"` for expanded column lists.'
 
         RESTRICT_ON_SEND = %i[[]].freeze
@@ -29,11 +31,9 @@ module RuboCop
         def on_send(node)
           return unless (star = star_bracket?(node))
 
-          add_offense(star)
-        end
-
-        def autocorrect(node)
-          ->(corrector) { corrector.replace(node.loc.expression, 'Arel.star') }
+          add_offense(star) do |corrector|
+            corrector.replace(star.loc.expression, 'Arel.star')
+          end
         end
       end
     end

@@ -19,7 +19,9 @@ module RuboCop
       #     after_commit :after_commit_callback
       #   end
       #
-      class ActiveRecordCallbacksOrder < Cop
+      class ActiveRecordCallbacksOrder < Base
+        extend AutoCorrector
+
         MSG = '`%<current>s` is supposed to appear before `%<previous>s`.'
 
         CALLBACKS_IN_ORDER = %i[
@@ -55,17 +57,20 @@ module RuboCop
             index = CALLBACKS_ORDER_MAP[callback]
 
             if index < previous_index
-              message = format(MSG, current: callback,
-                                    previous: previous_callback)
-              add_offense(node, message: message)
+              message = format(MSG, current: callback, previous: previous_callback)
+              add_offense(node, message: message) do |corrector|
+                autocorrect(corrector, node)
+              end
             end
             previous_index = index
             previous_callback = callback
           end
         end
 
+        private
+
         # Autocorrect by swapping between two nodes autocorrecting them
-        def autocorrect(node)
+        def autocorrect(corrector, node)
           previous = left_siblings_of(node).reverse_each.find do |sibling|
             callback?(sibling)
           end
@@ -73,13 +78,9 @@ module RuboCop
           current_range = source_range_with_comment(node)
           previous_range = source_range_with_comment(previous)
 
-          lambda do |corrector|
-            corrector.insert_before(previous_range, current_range.source)
-            corrector.remove(current_range)
-          end
+          corrector.insert_before(previous_range, current_range.source)
+          corrector.remove(current_range)
         end
-
-        private
 
         def defined_callbacks(class_node)
           class_def = class_node.body

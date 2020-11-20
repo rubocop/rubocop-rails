@@ -13,24 +13,21 @@ module RuboCop
       #   # good
       #   assert_not x
       #
-      class AssertNot < RuboCop::Cop::Cop
+      class AssertNot < Base
+        extend AutoCorrector
+
         MSG = 'Prefer `assert_not` over `assert !`.'
         RESTRICT_ON_SEND = %i[assert].freeze
 
         def_node_matcher :offensive?, '(send nil? :assert (send ... :!) ...)'
 
         def on_send(node)
-          add_offense(node) if offensive?(node)
-        end
+          return unless offensive?(node)
 
-        def autocorrect(node)
-          expression = node.loc.expression
+          add_offense(node) do |corrector|
+            expression = node.loc.expression
 
-          lambda do |corrector|
-            corrector.replace(
-              expression,
-              corrected_source(expression.source)
-            )
+            corrector.replace(expression, corrected_source(expression.source))
           end
         end
 

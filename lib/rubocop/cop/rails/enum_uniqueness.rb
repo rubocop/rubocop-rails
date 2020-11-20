@@ -17,7 +17,7 @@ module RuboCop
       #
       #   # good
       #   enum status: [:active, :archived]
-      class EnumUniqueness < Cop
+      class EnumUniqueness < Base
         include Duplication
 
         MSG = 'Duplicate value `%<value>s` found in `%<enum>s` ' \

@@ -24,7 +24,7 @@ module RuboCop
       #     end
       #   end
       #
-      class RenderInline < Cop
+      class RenderInline < Base
         MSG = 'Prefer using a template over inline rendering.'
         RESTRICT_ON_SEND = %i[render].freeze
 

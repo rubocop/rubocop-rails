@@ -22,7 +22,7 @@ module RuboCop
       #   pets = %w(cat dog)
       #   pets.include? 'cat'
       #
-      class Inquiry < Cop
+      class Inquiry < Base
         MSG = "Prefer Ruby's comparison operators over Active Support's `inquiry`."
         RESTRICT_ON_SEND = %i[inquiry].freeze
 
@@ -31,7 +31,7 @@ module RuboCop
           return unless (receiver = node.receiver)
           return if !receiver.str_type? && !receiver.array_type?
 
-          add_offense(node, location: :selector)
+          add_offense(node.loc.selector)
         end
       end
     end

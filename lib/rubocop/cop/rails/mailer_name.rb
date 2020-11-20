@@ -23,7 +23,9 @@ module RuboCop
       #   class UserMailer < ApplicationMailer
       #   end
       #
-      class MailerName < Cop
+      class MailerName < Base
+        extend AutoCorrector
+
         MSG = 'Mailer should end with `Mailer` suffix.'
 
         def_node_matcher :mailer_base_class?, <<~PATTERN
@@ -43,7 +45,9 @@ module RuboCop
 
         def on_class(node)
           class_definition?(node) do |name_node|
-            add_offense(name_node)
+            add_offense(name_node) do |corrector|
+              autocorrect(corrector, name_node)
+            end
           end
         end
 
@@ -54,22 +58,24 @@ module RuboCop
           return unless casgn_parent
 
           name = casgn_parent.children[1]
-          add_offense(casgn_parent, location: :name) unless mailer_suffix?(name)
-        end
+          return if mailer_suffix?(name)
 
-        def autocorrect(node)
-          lambda do |corrector|
-            if node.casgn_type?
-              name = node.children[1]
-              corrector.replace(node.loc.name, "#{name}Mailer")
-            else
-              name = node.children.last
-              corrector.replace(node.source_range, "#{name}Mailer")
-            end
+          add_offense(casgn_parent.loc.name) do |corrector|
+            autocorrect(corrector, casgn_parent)
           end
         end
 
         private
+
+        def autocorrect(corrector, node)
+          if node.casgn_type?
+            name = node.children[1]
+            corrector.replace(node.loc.name, "#{name}Mailer")
+          else
+            name = node.children.last
+            corrector.replace(node.source_range, "#{name}Mailer")
+          end
+        end
 
         def mailer_suffix?(mailer_name)
           mailer_name.to_s.end_with?('Mailer')
