@@ -3,17 +3,13 @@
 RSpec.describe RuboCop::Cop::Rails::PluralizationGrammar do
   subject(:cop) { described_class.new }
 
-  before do
-    inspect_source(source)
-  end
-
   shared_examples 'enforces pluralization grammar' do |method_name|
     context "When #{method_name} is called on an unknown variable" do
       context "when using the plural form ##{method_name}s" do
-        let(:source) { "some_variable.#{method_name}s" }
-
         it 'does not register an offense' do
-          expect(cop.offenses.empty?).to be(true)
+          expect_no_offenses(<<~RUBY)
+            some_variable.#{method_name}s
+          RUBY
         end
       end
 
@@ -21,34 +17,32 @@ RSpec.describe RuboCop::Cop::Rails::PluralizationGrammar do
         let(:source) { "some_method.#{method_name}" }
 
         it 'does not register an offense' do
-          expect(cop.offenses.empty?).to be(true)
+          expect_no_offenses(<<~RUBY)
+            some_method.#{method_name}
+          RUBY
         end
       end
     end
 
     [-1, -1.0, 1, 1.0].each do |singular_literal|
       context "when mis-pluralizing #{method_name} with #{singular_literal}" do
-        let(:source) { "#{singular_literal}.#{method_name}s.ago" }
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY, singular_literal: singular_literal, method_name: method_name)
+            #{singular_literal}.#{method_name}s.ago
+            ^{singular_literal}^^{method_name}^ Prefer `#{singular_literal}.#{method_name}`.
+          RUBY
 
-        it 'registers an offense' do
-          expect(cop.offenses.size).to eq(1)
-          expect(cop.highlights).to eq(["#{singular_literal}.#{method_name}s"])
-          expect(cop.messages).to eq(
-            ["Prefer `#{singular_literal}.#{method_name}`."]
-          )
-        end
-
-        it 'autocorrects to be grammatically correct' do
-          new_source = autocorrect_source(source)
-          expect(new_source).to eq("#{singular_literal}.#{method_name}.ago")
+          expect_correction(<<~RUBY)
+            #{singular_literal}.#{method_name}.ago
+          RUBY
         end
       end
 
       context "when using the singular form ##{method_name}" do
-        let(:source) { "#{singular_literal}.#{method_name}" }
-
         it 'does not register an offense' do
-          expect(cop.offenses.empty?).to be(true)
+          expect_no_offenses(<<~RUBY)
+            #{singular_literal}.#{method_name}
+          RUBY
         end
       end
     end
@@ -60,28 +54,23 @@ RSpec.describe RuboCop::Cop::Rails::PluralizationGrammar do
        rand(0...1.0),
        rand(2..1000)].each do |plural_number|
         context "when using the plural form ##{method_name}s" do
-          let(:source) { "#{plural_number}.#{method_name}s" }
-
           it 'does not register an offense' do
-            expect(cop.offenses.empty?).to be(true)
+            expect_no_offenses(<<~RUBY)
+              #{plural_number}.#{method_name}s
+            RUBY
           end
         end
 
         context "when using the singular form ##{method_name}" do
-          let(:source) { "#{plural_number}.#{method_name}.from_now" }
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY, plural_number: plural_number, method_name: method_name)
+              #{plural_number}.#{method_name}.from_now
+              ^{plural_number}^^{method_name} Prefer `#{plural_number}.#{method_name}s`.
+            RUBY
 
-          it 'registers an offense' do
-            expect(cop.offenses.size).to eq(1)
-            expect(cop.highlights).to eq(["#{plural_number}.#{method_name}"])
-            expect(cop.messages).to eq(
-              ["Prefer `#{plural_number}.#{method_name}s`."]
-            )
-          end
-
-          it 'autocorrects to be grammatically correct' do
-            new_source = autocorrect_source(source)
-            expect(new_source)
-              .to eq("#{plural_number}.#{method_name}s.from_now")
+            expect_correction(<<~RUBY)
+              #{plural_number}.#{method_name}s.from_now
+            RUBY
           end
         end
       end

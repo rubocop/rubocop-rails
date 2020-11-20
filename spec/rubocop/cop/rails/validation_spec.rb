@@ -9,14 +9,8 @@ RSpec.describe RuboCop::Cop::Rails::Validation do
 
   described_class::RESTRICT_ON_SEND.each_with_index do |validation, number|
     it "registers an offense for #{validation}" do
-      inspect_source("#{validation} :name")
-      expect(cop.offenses.size).to eq(1)
-    end
-
-    it "outputs the correct message for #{validation}" do
-      inspect_source("#{validation} :name")
-      expect(cop.offenses.first.message)
-        .to include(described_class::ALLOWLIST[number])
+      offenses = inspect_source("#{validation} :name")
+      expect(offenses.first.message).to include(described_class::ALLOWLIST[number])
     end
   end
 

@@ -5,9 +5,10 @@ RSpec.describe RuboCop::Cop::Rails::FindEach do
 
   shared_examples 'register_offense' do |scope|
     it "registers an offense when using #{scope}.each" do
-      inspect_source("User.#{scope}.each { |u| u.something }")
-
-      expect(cop.messages).to eq(['Use `find_each` instead of `each`.'])
+      expect_offense(<<~RUBY, scope: scope)
+        User.#{scope}.each { |u| u.something }
+             _{scope} ^^^^ Use `find_each` instead of `each`.
+      RUBY
     end
 
     it "does not register an offense when using #{scope}.order(...).each" do

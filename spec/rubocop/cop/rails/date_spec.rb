@@ -8,8 +8,8 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
 
     shared_examples 'offense' do |method, message|
       it "registers an offense for #{method}" do
-        inspect_source(method)
-        expect(cop.messages).to eq([message])
+        offenses = inspect_source(method)
+        expect(offenses.first.message).to eq(message)
       end
     end
 
@@ -51,14 +51,14 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
 
     %w[to_time to_time_in_current_zone].each do |method|
       it "registers an offense for ##{method}" do
-        inspect_source("date.#{method}")
-        expect(cop.offenses.size).to eq(1)
+        offenses = inspect_source("date.#{method}")
+        expect(offenses.size).to eq(1)
       end
 
       context 'when using safe navigation operator' do
         it "registers an offense for ##{method}" do
-          inspect_source("date&.#{method}")
-          expect(cop.offenses.size).to eq(1)
+          offenses = inspect_source("date&.#{method}")
+          expect(offenses.size).to eq(1)
         end
       end
 
@@ -104,8 +104,8 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
 
     RuboCop::Cop::Rails::TimeZone::ACCEPTED_METHODS.each do |a_method|
       it "registers an offense for val.to_time.#{a_method}" do
-        inspect_source("val.to_time.#{a_method}")
-        expect(cop.offenses.size).to eq(1)
+        offenses = inspect_source("val.to_time.#{a_method}")
+        expect(offenses.size).to eq(1)
       end
     end
 

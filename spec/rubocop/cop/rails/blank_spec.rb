@@ -4,17 +4,15 @@ RSpec.describe RuboCop::Cop::Rails::Blank, :config do
   subject(:cop) { described_class.new(config) }
 
   shared_examples 'offense' do |source, correction, message|
-    it 'registers an offense' do
-      inspect_source(source)
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY, source: source, message: message)
+        #{source}
+        ^{source} #{message}
+      RUBY
 
-      expect(cop.messages).to eq([message])
-      expect(cop.highlights).to eq([source])
-    end
-
-    it 'auto-corrects' do
-      new_source = autocorrect_source(source)
-
-      expect(new_source).to eq(correction)
+      expect_correction(<<~RUBY)
+        #{correction}
+      RUBY
     end
   end
 

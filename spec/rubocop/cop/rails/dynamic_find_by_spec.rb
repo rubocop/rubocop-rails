@@ -7,126 +7,125 @@ RSpec.describe RuboCop::Cop::Rails::DynamicFindBy, :config do
     { 'AllowedMethods' => %w[find_by_sql] }
   end
 
-  shared_examples 'register an offense and auto correct' do |message, corrected|
-    it 'registers an offense' do
-      inspect_source(source)
-      expect(cop.offenses.size).to eq(1)
-      expect(cop.messages)
-        .to eq([message])
-    end
-
-    it 'auto-corrects' do
-      new_source = autocorrect_source(source)
-      expect(new_source).to eq(corrected)
-    end
-  end
-
   context 'with dynamic find_by_*' do
-    let(:source) { 'User.find_by_name(name)' }
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        User.find_by_name(name)
+        ^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by` instead of dynamic `find_by_name`.
+      RUBY
 
-    include_examples(
-      'register an offense and auto correct',
-      'Use `find_by` instead of dynamic `find_by_name`.',
-      'User.find_by(name: name)'
-    )
+      expect_correction(<<~RUBY)
+        User.find_by(name: name)
+      RUBY
+    end
   end
 
   context 'with dynamic find_by_*_and_*' do
-    let(:source) { 'User.find_by_name_and_email(name, email)' }
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        User.find_by_name_and_email(name, email)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by` instead of dynamic `find_by_name_and_email`.
+      RUBY
 
-    include_examples(
-      'register an offense and auto correct',
-      'Use `find_by` instead of dynamic `find_by_name_and_email`.',
-      'User.find_by(name: name, email: email)'
-    )
+      expect_correction(<<~RUBY)
+        User.find_by(name: name, email: email)
+      RUBY
+    end
   end
 
   context 'with dynamic find_by_*!' do
-    let(:source) { 'User.find_by_name!(name)' }
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        User.find_by_name!(name)
+        ^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by!` instead of dynamic `find_by_name!`.
+      RUBY
 
-    include_examples(
-      'register an offense and auto correct',
-      'Use `find_by!` instead of dynamic `find_by_name!`.',
-      'User.find_by!(name: name)'
-    )
+      expect_correction(<<~RUBY)
+        User.find_by!(name: name)
+      RUBY
+    end
   end
 
   context 'with dynamic find_by_*_and_*_and_*' do
-    let(:source) { 'User.find_by_name_and_email_and_token(name, email, token)' }
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        User.find_by_name_and_email_and_token(name, email, token)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by` instead of dynamic `find_by_name_and_email_and_token`.
+      RUBY
 
-    include_examples(
-      'register an offense and auto correct',
-      'Use `find_by` instead of dynamic `find_by_name_and_email_and_token`.',
-      'User.find_by(name: name, email: email, token: token)'
-    )
+      expect_correction(<<~RUBY)
+        User.find_by(name: name, email: email, token: token)
+      RUBY
+    end
   end
 
   context 'with dynamic find_by_*_and_*_and_*!' do
-    let(:source) do
-      'User.find_by_name_and_email_and_token!(name, email, token)'
-    end
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        User.find_by_name_and_email_and_token!(name, email, token)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by!` instead of dynamic `find_by_name_and_email_and_token!`.
+      RUBY
 
-    include_examples(
-      'register an offense and auto correct',
-      'Use `find_by!` instead of dynamic `find_by_name_and_email_and_token!`.',
-      'User.find_by!(name: name, email: email, token: token)'
-    )
+      expect_correction(<<~RUBY)
+        User.find_by!(name: name, email: email, token: token)
+      RUBY
+    end
   end
 
   context 'with dynamic find_by_*_and_*_and_* with newline' do
-    let(:source) do
-      <<~RUBY
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
         User.find_by_name_and_email_and_token(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by` instead of dynamic `find_by_name_and_email_and_token`.
           name,
           email,
           token
         )
       RUBY
-    end
 
-    include_examples(
-      'register an offense and auto correct',
-      'Use `find_by` instead of dynamic `find_by_name_and_email_and_token`.',
-      <<~RUBY
+      expect_correction(<<~RUBY)
         User.find_by(
           name: name,
           email: email,
           token: token
         )
       RUBY
-    )
+    end
   end
 
   context 'with column includes undersoce' do
-    let(:source) { 'User.find_by_first_name(name)' }
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        User.find_by_first_name(name)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by` instead of dynamic `find_by_first_name`.
+      RUBY
 
-    include_examples(
-      'register an offense and auto correct',
-      'Use `find_by` instead of dynamic `find_by_first_name`.',
-      'User.find_by(first_name: name)'
-    )
+      expect_correction(<<~RUBY)
+        User.find_by(first_name: name)
+      RUBY
+    end
   end
 
   context 'with too much arguments' do
-    let(:source) { 'User.find_by_name_and_email(name, email, token)' }
+    it 'registers an offense and no corrects' do
+      expect_offense(<<~RUBY)
+        User.find_by_name_and_email(name, email, token)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by` instead of dynamic `find_by_name_and_email`.
+      RUBY
 
-    include_examples(
-      'register an offense and auto correct',
-      'Use `find_by` instead of dynamic `find_by_name_and_email`.',
-      # Do not correct
-      'User.find_by_name_and_email(name, email, token)'
-    )
+      expect_no_corrections
+    end
   end
 
   context 'with too few arguments' do
-    let(:source) { 'User.find_by_name_and_email(name)' }
+    it 'registers an offense and no corrects' do
+      expect_offense(<<~RUBY)
+        User.find_by_name_and_email(name)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by` instead of dynamic `find_by_name_and_email`.
+      RUBY
 
-    include_examples(
-      'register an offense and auto correct',
-      'Use `find_by` instead of dynamic `find_by_name_and_email`.',
-      # Do not correct
-      'User.find_by_name_and_email(name)'
-    )
+      expect_no_corrections
+    end
   end
 
   it 'accepts' do
@@ -175,13 +174,16 @@ RSpec.describe RuboCop::Cop::Rails::DynamicFindBy, :config do
 
   context 'when using safe navigation operator' do
     context 'with dynamic find_by_*' do
-      let(:source) { 'user&.find_by_name(name)' }
+      it 'registers an offense and corrects' do
+        expect_offense(<<~RUBY)
+          user&.find_by_name(name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by` instead of dynamic `find_by_name`.
+        RUBY
 
-      include_examples(
-        'register an offense and auto correct',
-        'Use `find_by` instead of dynamic `find_by_name`.',
-        'user&.find_by(name: name)'
-      )
+        expect_correction(<<~RUBY)
+          user&.find_by(name: name)
+        RUBY
+      end
     end
   end
 

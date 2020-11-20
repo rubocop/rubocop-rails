@@ -7,15 +7,17 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
     let(:cop_config) { { 'EnforcedStyle' => 'strict' } }
 
     it 'registers an offense for Time.now' do
-      inspect_source('Time.now')
-      expect(cop.offenses.size).to eq(1)
-      expect(cop.offenses.first.message).to include('`Time.zone.now`')
+      expect_offense(<<~RUBY)
+        Time.now
+             ^^^ Do not use `Time.now` without zone. Use `Time.zone.now` instead.
+      RUBY
     end
 
     it 'registers an offense for Time.current' do
-      inspect_source('Time.current')
-      expect(cop.offenses.size).to eq(1)
-      expect(cop.offenses.first.message).to include('`Time.zone.now`')
+      expect_offense(<<~RUBY)
+        Time.current
+             ^^^^^^^ Do not use `Time.current` without zone. Use `Time.zone.now` instead.
+      RUBY
     end
 
     it 'registers an offense for Time.new without argument' do
@@ -54,8 +56,10 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
     end
 
     it 'registers an offense for ::Time.now' do
-      inspect_source('::Time.now')
-      expect(cop.offenses.size).to eq(1)
+      expect_offense(<<~RUBY)
+        ::Time.now
+               ^^^ Do not use `Time.now` without zone. Use `Time.zone.now` instead.
+      RUBY
     end
 
     it 'accepts Some::Time.now' do
@@ -66,9 +70,10 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
 
     described_class::ACCEPTED_METHODS.each do |a_method|
       it "registers an offense Time.now.#{a_method}" do
-        inspect_source("Time.now.#{a_method}")
-        expect(cop.offenses.size).to eq(1)
-        expect(cop.offenses.first.message).to include('`Time.zone.now`')
+        expect_offense(<<~RUBY, a_method: a_method)
+          Time.now.#{a_method}
+               ^^^ Do not use `Time.now` without zone. Use `Time.zone.now` instead.
+        RUBY
       end
     end
 
@@ -78,19 +83,25 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
       end
 
       it 'autocorrects correctly' do
-        source = 'Time.now.in_time_zone'
-        new_source = autocorrect_source(source)
-        expect(new_source).to eq('Time.zone.now')
+        expect_offense(<<~RUBY)
+          Time.now.in_time_zone
+               ^^^ Do not use `Time.now` without zone. Use `Time.zone.now` instead.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Time.zone.now
+        RUBY
       end
 
       # :current is a special case and is treated separately below
       (described_class::DANGEROUS_METHODS - %i[current new]).each do |a_method|
         it 'corrects the error' do
-          source = <<~RUBY
+          expect_offense(<<~RUBY, a_method: a_method)
             Time.#{a_method}
+                 ^{a_method} Do not use `Time.#{a_method}` without zone. Use `Time.zone.#{a_method}` instead.
           RUBY
-          new_source = autocorrect_source(source)
-          expect(new_source).to eq(<<~RUBY)
+
+          expect_correction(<<~RUBY)
             Time.zone.#{a_method}
           RUBY
         end
@@ -98,8 +109,14 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
 
       describe '.current' do
         it 'corrects the error' do
-          new_source = autocorrect_source('Time.current')
-          expect(new_source).to eq('Time.zone.now')
+          expect_offense(<<~RUBY)
+            Time.current
+                 ^^^^^^^ Do not use `Time.current` without zone. Use `Time.zone.now` instead.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            Time.zone.now
+          RUBY
         end
       end
     end
@@ -223,17 +240,10 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
     let(:cop_config) { { 'EnforcedStyle' => 'flexible' } }
 
     it 'registers an offense for Time.now' do
-      inspect_source('Time.now')
-      expect(cop.offenses.size).to eq(1)
-
-      expect(cop.offenses.first.message).to include('Use one of')
-      expect(cop.offenses.first.message).to include('`Time.zone.now`')
-      expect(cop.offenses.first.message).to include('`Time.current`')
-
-      described_class::ACCEPTED_METHODS.each do |a_method|
-        expect(cop.offenses.first.message)
-          .to include("Time.now.#{a_method}")
-      end
+      expect_offense(<<~RUBY)
+        Time.now
+             ^^^ Do not use `Time.now` without zone. Use one of `Time.zone.now`, `Time.current`, `Time.now.in_time_zone`, `Time.now.utc`, `Time.now.getlocal`, `Time.now.xmlschema`, `Time.now.iso8601`, `Time.now.jisx0301`, `Time.now.rfc3339`, `Time.now.httpdate`, `Time.now.to_i`, `Time.now.to_f` instead.
+      RUBY
     end
 
     it 'accepts Time.current' do
