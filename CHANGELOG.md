@@ -69,6 +69,10 @@
 
 * [#301](https://github.com/rubocop-hq/rubocop-rails/issues/301): Set disabled by default for `Rails/PluckId`. ([@koic][])
 
+### New features
+
+* [#299](https://github.com/rubocop-hq/rubocop-rails/pull/299): Add autocorrection for `Rails/ReflectionClassName`. ([@tejasbubane][])
+
 ## 2.7.0 (2020-07-21)
 
 ### New features

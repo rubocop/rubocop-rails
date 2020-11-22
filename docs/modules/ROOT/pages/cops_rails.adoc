@@ -3139,7 +3139,7 @@ end
 
 | Enabled
 | Yes
-| No
+| Yes
 | 0.64
 | -
 |===
