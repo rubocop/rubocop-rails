@@ -86,7 +86,7 @@ module RuboCop
         def contains_noopener?(value)
           return false unless value
 
-          rel_array = value.to_s.split(' ')
+          rel_array = value.to_s.split
           rel_array.include?('noopener') || rel_array.include?('noreferrer')
         end
       end
