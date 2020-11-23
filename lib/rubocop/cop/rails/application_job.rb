@@ -16,7 +16,8 @@ module RuboCop
       #  class Rails4Job < ActiveJob::Base
       #    # ...
       #  end
-      class ApplicationJob < Cop
+      class ApplicationJob < Base
+        extend AutoCorrector
         extend TargetRailsVersion
 
         minimum_target_rails_version 5.0

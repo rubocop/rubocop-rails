@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'mixin/active_record_helper'
+require_relative 'mixin/enforce_superclass'
 require_relative 'mixin/index_method'
 require_relative 'mixin/target_rails_version'
 

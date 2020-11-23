@@ -18,13 +18,21 @@ module RuboCop
 
       def on_class(node)
         class_definition(node) do
-          add_offense(node.children[1])
+          register_offense(node.children[1])
         end
       end
 
       def on_send(node)
         class_new_definition(node) do
-          add_offense(node.children.last)
+          register_offense(node.children.last)
+        end
+      end
+
+      private
+
+      def register_offense(offense_node)
+        add_offense(offense_node) do |corrector|
+          corrector.replace(offense_node.source_range, self.class::SUPERCLASS)
         end
       end
     end

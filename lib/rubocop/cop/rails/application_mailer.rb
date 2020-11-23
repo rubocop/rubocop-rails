@@ -16,7 +16,8 @@ module RuboCop
       #  class MyMailer < ActionMailer::Base
       #    # ...
       #  end
-      class ApplicationMailer < Cop
+      class ApplicationMailer < Base
+        extend AutoCorrector
         extend TargetRailsVersion
 
         minimum_target_rails_version 5.0
@@ -28,12 +29,6 @@ module RuboCop
         # rubocop:disable Layout/ClassStructure
         include RuboCop::Cop::EnforceSuperclass
         # rubocop:enable Layout/ClassStructure
-
-        def autocorrect(node)
-          lambda do |corrector|
-            corrector.replace(node.source_range, self.class::SUPERCLASS)
-          end
-        end
       end
     end
   end

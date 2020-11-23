@@ -16,7 +16,8 @@ module RuboCop
       #  class Rails4Model < ActiveRecord::Base
       #    # ...
       #  end
-      class ApplicationRecord < Cop
+      class ApplicationRecord < Base
+        extend AutoCorrector
         extend TargetRailsVersion
 
         minimum_target_rails_version 5.0
@@ -28,12 +29,6 @@ module RuboCop
         # rubocop:disable Layout/ClassStructure
         include RuboCop::Cop::EnforceSuperclass
         # rubocop:enable Layout/ClassStructure
-
-        def autocorrect(node)
-          lambda do |corrector|
-            corrector.replace(node.source_range, self.class::SUPERCLASS)
-          end
-        end
       end
     end
   end
