@@ -282,8 +282,15 @@ Rails/FindEach:
   StyleGuide: 'https://rails.rubystyle.guide#find-each'
   Enabled: true
   VersionAdded: '0.30'
+  VersionChanged: '2.9'
   Include:
     - app/models/**/*.rb
+  IgnoredMethods:
+    # Methods that don't work well with `find_each`.
+    - order
+    - limit
+    - select
+    - lock
 
 Rails/HasAndBelongsToMany:
   Description: 'Prefer has_many :through to has_and_belongs_to_many.'

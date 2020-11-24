@@ -1470,7 +1470,7 @@ User.find(id)
 | Yes
 | Yes
 | 0.30
-| -
+| 2.9
 |===
 
 This cop is used to identify usages of `all.each` and
@@ -1487,6 +1487,14 @@ User.all.each
 User.all.find_each
 ----
 
+==== IgnoredMethods: ['order']
+
+[source,ruby]
+----
+# good
+User.order(:foo).each
+----
+
 === Configurable attributes
 
 |===
@@ -1494,6 +1502,10 @@ User.all.find_each
 
 | Include
 | `app/models/**/*.rb`
+| Array
+
+| IgnoredMethods
+| `order`, `limit`, `select`, `lock`
 | Array
 |===
 
