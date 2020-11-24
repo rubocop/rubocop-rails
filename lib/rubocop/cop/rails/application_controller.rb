@@ -16,7 +16,9 @@ module RuboCop
       #  class MyController < ActionController::Base
       #    # ...
       #  end
-      class ApplicationController < Cop
+      class ApplicationController < Base
+        extend AutoCorrector
+
         MSG = 'Controllers should subclass `ApplicationController`.'
         SUPERCLASS = 'ApplicationController'
         BASE_PATTERN = '(const (const nil? :ActionController) :Base)'
@@ -24,12 +26,6 @@ module RuboCop
         # rubocop:disable Layout/ClassStructure
         include RuboCop::Cop::EnforceSuperclass
         # rubocop:enable Layout/ClassStructure
-
-        def autocorrect(node)
-          lambda do |corrector|
-            corrector.replace(node.source_range, self.class::SUPERCLASS)
-          end
-        end
       end
     end
   end
