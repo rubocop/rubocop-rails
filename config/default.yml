@@ -668,6 +668,10 @@ Rails/SquishedSQLHeredocs:
   StyleGuide: 'https://rails.rubystyle.guide/#squished-heredocs'
   Enabled: 'pending'
   VersionAdded: '2.8'
+  VersionChanged: '2.9'
+  # Some SQL syntax (e.g. PostgreSQL comments and functions) requires newlines
+  # to be preserved in order to work, thus auto-correction is not safe.
+  SafeAutoCorrect: false
 
 Rails/TimeZone:
   Description: 'Checks the correct usage of time zone aware methods.'

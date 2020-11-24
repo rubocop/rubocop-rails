@@ -17,6 +17,7 @@
 ### Changes
 
 * [#383](https://github.com/rubocop-hq/rubocop-rails/pull/383): Require RuboCop 0.90 or higher. ([@koic][])
+* [#365](https://github.com/rubocop-hq/rubocop-rails/issues/365): Mark `Rails/SquishedSQLHeredocs` unsafe for autocorrection. ([@tejasbubane][])
 
 ## 2.8.1 (2020-09-16)
 
