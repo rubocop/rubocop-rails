@@ -12,6 +12,10 @@ module RuboCop
       #
       #   # good
       #   User.all.find_each
+      #
+      # @example IgnoredMethods: ['order']
+      #   # good
+      #   User.order(:foo).each
       class FindEach < Base
         extend AutoCorrector
 
@@ -22,12 +26,11 @@ module RuboCop
           all eager_load includes joins left_joins left_outer_joins not preload
           references unscoped where
         ].freeze
-        IGNORED_METHODS = %i[order limit select].freeze
 
         def on_send(node)
           return unless node.receiver&.send_type?
           return unless SCOPE_METHODS.include?(node.receiver.method_name)
-          return if method_chain(node).any? { |m| ignored_by_find_each?(m) }
+          return if method_chain(node).any? { |m| ignored?(m) }
 
           range = node.loc.selector
           add_offense(range) do |corrector|
@@ -41,9 +44,8 @@ module RuboCop
           node.each_node(:send).map(&:method_name)
         end
 
-        def ignored_by_find_each?(relation_method)
-          # Active Record's #find_each ignores various extra parameters
-          IGNORED_METHODS.include?(relation_method)
+        def ignored?(relation_method)
+          cop_config['IgnoredMethods'].include?(relation_method)
         end
       end
     end
