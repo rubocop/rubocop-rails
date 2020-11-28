@@ -81,4 +81,25 @@ RSpec.describe RuboCop::Cop::Rails::RedundantAllowNil do
       RUBY
     end
   end
+
+  context 'when using allow_nil and allow_blank on different helpers' do
+    it 'registers no offense' do
+      expect_no_offenses(<<~RUBY)
+        validates :email, format: { with: /regexp/, allow_blank: true }, presence: { allow_nil: true }
+      RUBY
+    end
+  end
+
+  context 'when using allow_nil and allow_blank true on the same helper' do
+    it 'registers no offense' do
+      expect_offense(<<~RUBY)
+        validates :email, format: { with: /regexp/, allow_nil: true, allow_blank: true }
+                                                    ^^^^^^^^^^^^^^^ `allow_nil` is redundant when `allow_blank` has the same value.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        validates :email, format: { with: /regexp/, allow_blank: true }
+      RUBY
+    end
+  end
 end
