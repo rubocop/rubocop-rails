@@ -14,6 +14,7 @@
 * [#371](https://github.com/rubocop-hq/rubocop-rails/pull/371): Fix an infinite loop error for `Rails/ActiveRecordCallbacksOrder` when callbacks have inline comments. ([@fatkodima][])
 * [#364](https://github.com/rubocop-hq/rubocop-rails/pull/364): Fix a problem that `Rails/UniqueValidationWithoutIndex` doesn't work in classes defined with compact style. ([@sinsoku][])
 * [#384](https://github.com/rubocop-hq/rubocop-rails/issues/384): Mark unsafe for `Rails/NegateInclude`. ([@koic][])
+* [#394](https://github.com/rubocop-hq/rubocop-rails/pull/394): Fix false offense detection of `Rails/RedundantAllowNil` when using both allow_nil and allow_blank on different helpers of the same validator`. ([@ngouy][])
 
 ### Changes
 

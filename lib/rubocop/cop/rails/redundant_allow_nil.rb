@@ -70,21 +70,22 @@ module RuboCop
         end
 
         def find_allow_nil_and_allow_blank(node)
-          allow_nil = nil
-          allow_blank = nil
+          allow_nil, allow_blank = nil
 
-          node.each_descendant do |descendant|
-            next unless descendant.pair_type?
+          node.each_child_node do |child_node|
+            if child_node.pair_type?
+              key = child_node.children.first.source
 
-            key = descendant.children.first.source
+              allow_nil = child_node if key == 'allow_nil'
+              allow_blank = child_node if key == 'allow_blank'
+            end
+            return [allow_nil, allow_blank] if allow_nil && allow_blank
 
-            allow_nil = descendant if key == 'allow_nil'
-            allow_blank = descendant if key == 'allow_blank'
-
-            break if allow_nil && allow_blank
+            found_in_children_nodes = find_allow_nil_and_allow_blank(child_node)
+            return found_in_children_nodes if found_in_children_nodes
           end
 
-          [allow_nil, allow_blank]
+          nil
         end
 
         def previous_sibling(node)
