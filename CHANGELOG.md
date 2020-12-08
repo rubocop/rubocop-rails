@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.9.0 (2020-12-09)
+
 ### New features
 
 * [#362](https://github.com/rubocop-hq/rubocop-rails/pull/362): Add new `Rails/WhereEquals` cop. ([@eugeneius][])
