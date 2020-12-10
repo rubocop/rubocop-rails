@@ -15,11 +15,13 @@ module RuboCop
       #   User.where('name IS NOT NULL')
       #   User.where('name NOT IN (?)', ['john', 'jane'])
       #   User.where('name NOT IN (:names)', names: ['john', 'jane'])
+      #   User.where('users.name != :name', name: 'Gabe')
       #
       #   # good
       #   User.where.not(name: 'Gabe')
       #   User.where.not(name: nil)
       #   User.where.not(name: ['john', 'jane'])
+      #   User.where.not(users: { name: 'Gabe' })
       #
       class WhereNot < Base
         include RangeHelp
@@ -86,7 +88,9 @@ module RuboCop
 
         def build_good_method(column, value)
           if column.include?('.')
-            "where.not('#{column}' => #{value})"
+            table, column = column.split('.')
+
+            "where.not(#{table}: { #{column}: #{value} })"
           else
             "where.not(#{column}: #{value})"
           end

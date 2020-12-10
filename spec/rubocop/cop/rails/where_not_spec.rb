@@ -83,22 +83,22 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot do
   it 'registers an offense and corrects when using `!=` and namespaced columns' do
     expect_offense(<<~RUBY)
       Course.where('enrollments.student_id != ?', student.id)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not('enrollments.student_id' => student.id)` instead of manually constructing negated SQL in `where`.
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not(enrollments: { student_id: student.id })` instead of manually constructing negated SQL in `where`.
     RUBY
 
     expect_correction(<<~RUBY)
-      Course.where.not('enrollments.student_id' => student.id)
+      Course.where.not(enrollments: { student_id: student.id })
     RUBY
   end
 
   it 'registers an offense and corrects when using `<>` and namespaced columns' do
     expect_offense(<<~RUBY)
       Course.where('enrollments.student_id <> ?', student.id)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not('enrollments.student_id' => student.id)` instead of manually constructing negated SQL in `where`.
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not(enrollments: { student_id: student.id })` instead of manually constructing negated SQL in `where`.
     RUBY
 
     expect_correction(<<~RUBY)
-      Course.where.not('enrollments.student_id' => student.id)
+      Course.where.not(enrollments: { student_id: student.id })
     RUBY
   end
 
@@ -183,22 +183,22 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot do
     it 'registers an offense and corrects when using `!=` and namespaced columns' do
       expect_offense(<<~RUBY)
         Course.where(['enrollments.student_id != ?', student.id])
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not('enrollments.student_id' => student.id)` instead of manually constructing negated SQL in `where`.
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not(enrollments: { student_id: student.id })` instead of manually constructing negated SQL in `where`.
       RUBY
 
       expect_correction(<<~RUBY)
-        Course.where.not('enrollments.student_id' => student.id)
+        Course.where.not(enrollments: { student_id: student.id })
       RUBY
     end
 
     it 'registers an offense and corrects when using `<>` and namespaced columns' do
       expect_offense(<<~RUBY)
         Course.where(['enrollments.student_id <> ?', student.id])
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not('enrollments.student_id' => student.id)` instead of manually constructing negated SQL in `where`.
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not(enrollments: { student_id: student.id })` instead of manually constructing negated SQL in `where`.
       RUBY
 
       expect_correction(<<~RUBY)
-        Course.where.not('enrollments.student_id' => student.id)
+        Course.where.not(enrollments: { student_id: student.id })
       RUBY
     end
   end
