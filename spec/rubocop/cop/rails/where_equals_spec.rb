@@ -61,11 +61,11 @@ RSpec.describe RuboCop::Cop::Rails::WhereEquals do
   it 'registers an offense and corrects when using `=` and namespaced columns' do
     expect_offense(<<~RUBY)
       Course.where('enrollments.student_id = ?', student.id)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where('enrollments.student_id' => student.id)` instead of manually constructing SQL.
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(enrollments: { student_id: student.id })` instead of manually constructing SQL.
     RUBY
 
     expect_correction(<<~RUBY)
-      Course.where('enrollments.student_id' => student.id)
+      Course.where(enrollments: { student_id: student.id })
     RUBY
   end
 
@@ -128,11 +128,11 @@ RSpec.describe RuboCop::Cop::Rails::WhereEquals do
     it 'registers an offense and corrects when using `=` and namespaced columns' do
       expect_offense(<<~RUBY)
         Course.where(['enrollments.student_id = ?', student.id])
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where('enrollments.student_id' => student.id)` instead of manually constructing SQL.
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(enrollments: { student_id: student.id })` instead of manually constructing SQL.
       RUBY
 
       expect_correction(<<~RUBY)
-        Course.where('enrollments.student_id' => student.id)
+        Course.where(enrollments: { student_id: student.id })
       RUBY
     end
   end

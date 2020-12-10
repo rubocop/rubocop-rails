@@ -13,11 +13,13 @@ module RuboCop
       #   User.where('name IS NULL')
       #   User.where('name IN (?)', ['john', 'jane'])
       #   User.where('name IN (:names)', names: ['john', 'jane'])
+      #   User.where('users.name = :name', name: 'Gabe')
       #
       #   # good
       #   User.where(name: 'Gabe')
       #   User.where(name: nil)
       #   User.where(name: ['john', 'jane'])
+      #   User.where(users: { name: 'Gabe' })
       class WhereEquals < Base
         include RangeHelp
         extend AutoCorrector
@@ -83,7 +85,9 @@ module RuboCop
 
         def build_good_method(column, value)
           if column.include?('.')
-            "where('#{column}' => #{value})"
+            table, column = column.split('.')
+
+            "where(#{table}: { #{column}: #{value} })"
           else
             "where(#{column}: #{value})"
           end
