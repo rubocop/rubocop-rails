@@ -30,7 +30,7 @@ module RuboCop
         def on_send(node)
           return unless node.receiver&.send_type?
           return unless SCOPE_METHODS.include?(node.receiver.method_name)
-          return if method_chain(node).any? { |m| ignored?(m) }
+          return if ignored?(node)
 
           range = node.loc.selector
           add_offense(range) do |corrector|
@@ -40,12 +40,9 @@ module RuboCop
 
         private
 
-        def method_chain(node)
-          node.each_node(:send).map(&:method_name)
-        end
-
-        def ignored?(relation_method)
-          cop_config['IgnoredMethods'].include?(relation_method)
+        def ignored?(node)
+          method_chain = node.each_node(:send).map(&:method_name)
+          (cop_config['IgnoredMethods'].map(&:to_sym) & method_chain).any?
         end
       end
     end
