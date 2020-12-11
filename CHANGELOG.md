@@ -27,6 +27,7 @@
 * [#451](https://github.com/rubocop/rubocop-rails/issues/451): Make `Rails/RelativeDateConstant` aware of `yesterday` and `tomorrow` methods. ([@koic][])
 * [#454](https://github.com/rubocop/rubocop-rails/pull/454): Mark `Rails/WhereExists` as unsafe auto-correction. ([@koic][])
 * [#456](https://github.com/rubocop/rubocop-rails/pull/456): Drop Ruby 2.4 support. ([@koic][])
+* [#462](https://github.com/rubocop/rubocop-rails/pull/462): Require RuboCop 1.7 or higher. ([@koic][])
 
 ## 2.9.1 (2020-12-16)
 

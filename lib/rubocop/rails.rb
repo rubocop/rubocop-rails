@@ -8,5 +8,7 @@ module RuboCop
     CONFIG         = YAML.safe_load(CONFIG_DEFAULT.read).freeze
 
     private_constant(:CONFIG_DEFAULT, :PROJECT_ROOT)
+
+    ::RuboCop::ConfigObsoletion.files << PROJECT_ROOT.join('config', 'obsoletion.yml')
   end
 end
