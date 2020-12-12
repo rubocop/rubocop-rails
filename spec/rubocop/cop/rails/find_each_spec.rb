@@ -74,6 +74,10 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
       expect_no_offenses('User.order(:name).each { |u| u.something }')
     end
 
+    it 'does not register an offense when using order(...) chained with other things' do
+      expect_no_offenses('User.order(:name).includes(:company).each { |u| u.something }')
+    end
+
     it 'does not register an offense when using lock earlier' do
       expect_no_offenses('User.lock.each { |u| u.something }')
     end
