@@ -68,7 +68,7 @@ module RuboCop
             when EQ_ANONYMOUS_RE, IN_ANONYMOUS_RE
               value_node.source
             when EQ_NAMED_RE, IN_NAMED_RE
-              return unless value_node.hash_type?
+              return unless value_node&.hash_type?
 
               pair = value_node.pairs.find { |p| p.key.value.to_sym == Regexp.last_match(2).to_sym }
               pair.value.source

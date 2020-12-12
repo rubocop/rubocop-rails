@@ -160,4 +160,12 @@ RSpec.describe RuboCop::Cop::Rails::WhereEquals do
       User.where('name = ? AND age = ?', 'john', 19)
     RUBY
   end
+
+  it 'does not register an offense when using only named placeholder template without replacement argument' do
+    expect_no_offenses(<<~'RUBY')
+      sql = User.where('name = :name').select(:id).to_sql
+
+      User.where("id IN (#{sql})", name: 'Lastname').first
+    RUBY
+  end
 end
