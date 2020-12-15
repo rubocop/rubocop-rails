@@ -10,6 +10,7 @@
 ### Changes
 
 * [#404](https://github.com/rubocop-hq/rubocop-rails/issues/404): Make `Rails/HelperInstanceVariable` accepts of instance variables when a class which inherits `ActionView::Helpers::FormBuilder`. ([@koic][])
+* [#406](https://github.com/rubocop-hq/rubocop-rails/pull/406): Deconstruct "table.column" in `Rails/WhereEquals`. ([@mobilutz][])
 
 ## 2.9.0 (2020-12-09)
 
