@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.9.1 (2020-12-16)
+
 ### Bug fixes
 
 * [#408](https://github.com/rubocop-hq/rubocop-rails/pull/408): Fix bug in `Rails/FindEach` where config was ignored. ([@ghiculescu][])
