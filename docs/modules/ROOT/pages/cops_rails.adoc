@@ -4554,11 +4554,13 @@ User.where('name <> :name', name: 'Gabe')
 User.where('name IS NOT NULL')
 User.where('name NOT IN (?)', ['john', 'jane'])
 User.where('name NOT IN (:names)', names: ['john', 'jane'])
+User.where('users.name != :name', name: 'Gabe')
 
 # good
 User.where.not(name: 'Gabe')
 User.where.not(name: nil)
 User.where.not(name: ['john', 'jane'])
+User.where.not(users: { name: 'Gabe' })
 ----
 
 === References

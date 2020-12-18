@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Changes
+
+* [#409](https://github.com/rubocop-hq/rubocop-rails/pull/409): Deconstruct "table.column" in `Rails/WhereNot`. ([@mobilutz][])
+
 ## 2.9.1 (2020-12-16)
 
 ### Bug fixes
