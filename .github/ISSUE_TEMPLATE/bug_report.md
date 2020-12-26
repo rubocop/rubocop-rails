@@ -32,8 +32,12 @@ a problem will expedite its solution.
 ## RuboCop version
 
 Include the output of `rubocop -V` or `bundle exec rubocop -V` if using Bundler. Here's an example:
+You can see extension cop versions (e.g. rubocop-rails, rubocop-performance, and others) output by rubocop -V,
+include them as well. Here's an example:
 
 ```
 $ [bundle exec] rubocop -V
-0.66.0 (using Parser 2.6.2.0, running on ruby 2.6.2 x86_64-linux)
+1.8.0 (using Parser 3.0.0.0, rubocop-ast 1.4.0, running on ruby 3.0.0 x86_64-darwin19)
+  - rubocop-rails 2.9.1
+  - rubocop-performance 1.9.2
 ```
