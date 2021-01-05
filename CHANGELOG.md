@@ -4,6 +4,7 @@
 
 ### Changes
 
+* [#410](https://github.com/rubocop-hq/rubocop-rails/pull/410): Add new`Rails/TransactionRequiresNew` cop. ([@the-wendell][])
 * [#409](https://github.com/rubocop-hq/rubocop-rails/pull/409): Deconstruct "table.column" in `Rails/WhereNot`. ([@mobilutz][])
 
 ## 2.9.1 (2020-12-16)
