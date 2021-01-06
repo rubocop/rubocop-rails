@@ -5,6 +5,7 @@
 ### Changes
 
 * [#409](https://github.com/rubocop-hq/rubocop-rails/pull/409): Deconstruct "table.column" in `Rails/WhereNot`. ([@mobilutz][])
+* [#416](https://github.com/rubocop-hq/rubocop-rails/pull/416): Make `Rails/HasManyOrHasOneDependent` accept combination of association extension and `with_options`. ([@ohbarye][])
 
 ## 2.9.1 (2020-12-16)
 
@@ -329,3 +330,4 @@
 [@Tietew]: https://github.com/Tietew
 [@cilim]: https://github.com/cilim
 [@flanger001]: https://github.com/flanger001
+[@ohbarye]: https://github.com/ohbarye
