@@ -1,5 +1,4 @@
 # Common configuration.
-
 inherit_mode:
   merge:
     - Exclude
@@ -694,6 +693,11 @@ Rails/TimeZone:
   SupportedStyles:
     - strict
     - flexible
+
+Rails/TransactionRequiresNew:
+  Description: 'When using a transaction requires that the argument `requires_new: true` is passed.'
+  Enabled: true
+  VersionAdded: '2.10'
 
 Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'
