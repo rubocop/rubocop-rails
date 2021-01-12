@@ -132,6 +132,19 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent do
         RUBY
       end
 
+      it "doesn't register an offense for `with_options dependent: :destroy` and for using association extension" do
+        expect_no_offenses(<<~RUBY)
+          class Person < ApplicationRecord
+            with_options dependent: :destroy do
+              has_many :foo do
+                def bar
+                end
+              end
+            end
+          end
+        RUBY
+      end
+
       context 'Multiple associations' do
         it "doesn't register an offense for " \
            '`with_options dependent: :destroy`' do

@@ -51,6 +51,12 @@ module RuboCop
             (args) ...)
         PATTERN
 
+        def_node_matcher :association_extension_block?, <<~PATTERN
+          (block
+            (send nil? :has_many _)
+            (args) ...)
+        PATTERN
+
         def on_send(node)
           return if active_resource?(node.parent)
           return if !association_without_options?(node) && valid_options?(association_with_options?(node))
@@ -64,7 +70,7 @@ module RuboCop
         def valid_options_in_with_options_block?(node)
           return true unless node.parent
 
-          n = node.parent.begin_type? ? node.parent.parent : node.parent
+          n = node.parent.begin_type? || association_extension_block?(node.parent) ? node.parent.parent : node.parent
 
           contain_valid_options_in_with_options_block?(n)
         end
