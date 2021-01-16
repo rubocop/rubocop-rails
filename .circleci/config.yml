@@ -59,6 +59,6 @@ workflows:
       - rake_default:
           name: JRuby 9.2
           image: circleci/jruby:9.2
-      - rake_defauls:
+      - rake_default:
           name: Truffleruby head
           image: flavorjones/truffleruby:latest
