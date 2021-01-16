@@ -61,4 +61,4 @@ workflows:
           image: circleci/jruby:9.2
       - rake_default:
           name: Truffleruby head
-          image: truffleruby:nightly
+          image: flavorjones/truffleruby:nightly
