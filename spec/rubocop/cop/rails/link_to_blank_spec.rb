@@ -92,6 +92,17 @@ RSpec.describe RuboCop::Cop::Rails::LinkToBlank do
           link_to 'Click here', 'https://www.example.com', target: :_blank, rel: :noopener
         RUBY
       end
+
+      it 'registers and corrects an offence when using hash brackets for the option' do
+        expect_offense(<<~RUBY)
+          link_to 'Click here', 'https://www.example.com', { target: :_blank }
+                                                             ^^^^^^^^^^^^^^^ Specify a `:rel` option containing noopener.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          link_to 'Click here', 'https://www.example.com', { target: :_blank, rel: :noopener }
+        RUBY
+      end
     end
 
     context 'when using rel' do

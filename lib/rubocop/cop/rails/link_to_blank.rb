@@ -79,7 +79,11 @@ module RuboCop
           opening_quote = offence_node.children.last.source[0]
           closing_quote = opening_quote == ':' ? '' : opening_quote
           new_rel_exp = ", rel: #{opening_quote}noopener#{closing_quote}"
-          range = send_node.arguments.last.source_range
+          range = if (last_argument = send_node.last_argument).hash_type?
+                    last_argument.pairs.last.source_range
+                  else
+                    last_argument.source_range
+                  end
 
           corrector.insert_after(range, new_rel_exp)
         end
