@@ -18,6 +18,7 @@ module RuboCop
       #   get :new, params: { user_id: 1 }
       #   get :new, **options
       class HttpPositionalArguments < Base
+        include RangeHelp
         extend AutoCorrector
         extend TargetRailsVersion
 
@@ -44,7 +45,7 @@ module RuboCop
 
             message = format(MSG, verb: node.method_name)
 
-            add_offense(node.loc.selector, message: message) do |corrector|
+            add_offense(highlight_range(node), message: message) do |corrector|
               # given a pre Rails 5 method: get :new, {user_id: @user.id}, {}
               #
               # @return lambda of auto correct procedure
@@ -78,6 +79,12 @@ module RuboCop
 
         def format_arg?(node)
           node.sym_type? && node.value == :format
+        end
+
+        def highlight_range(node)
+          _http_path, *data = *node.arguments
+
+          range_between(data.first.source_range.begin_pos, data.last.source_range.end_pos)
         end
 
         def convert_hash_data(data, type)
