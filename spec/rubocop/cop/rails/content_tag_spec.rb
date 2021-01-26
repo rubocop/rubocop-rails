@@ -35,6 +35,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
         content_tag(:p, 'Hello world!')
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
       RUBY
+
       expect_correction(<<~RUBY)
         tag.p('Hello world!')
       RUBY
@@ -45,6 +46,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
         content_tag(:br)
         ^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
       RUBY
+
       expect_correction(<<~RUBY)
         tag.br()
       RUBY
@@ -55,6 +57,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
         content_tag(:div, "Hello world!", class: ["strong", "highlight"])
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
       RUBY
+
       expect_correction(<<~RUBY)
         tag.div("Hello world!", class: ["strong", "highlight"])
       RUBY
@@ -66,6 +69,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
                             ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
         ^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
       RUBY
+
       expect_correction(<<~RUBY)
         tag.div() { tag.strong('Hi') }
       RUBY
@@ -76,6 +80,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
         content_tag({foo: 1})
         ^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
       RUBY
+
       expect_correction(<<~RUBY)
         tag({foo: 1})
       RUBY
@@ -86,6 +91,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
         content_tag('foo-bar', 'baz', class: 'strong')
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
       RUBY
+
       expect_correction(<<~RUBY)
         tag.foo_bar('baz', class: 'strong')
       RUBY
@@ -98,6 +104,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
           'body'
         end
       RUBY
+
       expect_correction(<<~RUBY)
         tag.div({ class: 'strong' }) do
           'body'

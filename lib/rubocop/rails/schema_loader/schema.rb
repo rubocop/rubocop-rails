@@ -128,9 +128,7 @@ module RuboCop
           return unless pairs.hash_type?
 
           pairs.each_pair do |k, v|
-            if k.value == :null
-              @not_null = v.true_type? ? false : true
-            end
+            @not_null = !v.true_type? if k.value == :null
           end
         end
       end
