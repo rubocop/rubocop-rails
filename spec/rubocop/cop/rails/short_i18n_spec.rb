@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ShortI18n, :config do
-  subject(:cop) { described_class.new(config) }
-
   shared_examples_for 'ShortI18n cop' do
     it 'registers an offense and corrects when using `I18n.translate`' do
       expect_offense(<<~RUBY)

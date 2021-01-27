@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::PluckId do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::PluckId, :config do
   it 'registers an offense and corrects when using `pluck(:id)`' do
     expect_offense(<<~RUBY)
       User.pluck(:id)

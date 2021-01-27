@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::MailerName do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::MailerName, :config do
   ['ActionMailer::Base', 'ApplicationMailer'].each do |base|
     context 'when regular class definition' do
       it 'registers an offense and corrects when name without suffix' do

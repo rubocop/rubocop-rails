@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::AfterCommitOverride do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::AfterCommitOverride, :config do
   it 'registers an offense when using `after_*_commit` callbacks with the same name' do
     expect_offense(<<~RUBY)
       class User < ApplicationRecord

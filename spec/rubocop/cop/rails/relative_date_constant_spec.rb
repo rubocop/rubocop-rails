@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::RelativeDateConstant do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::RelativeDateConstant, :config do
   context 'direct assignment' do
     it 'accepts a method with arguments' do
       expect_no_offenses(<<~RUBY)

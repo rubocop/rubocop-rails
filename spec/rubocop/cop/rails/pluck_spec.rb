@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
-  subject(:cop) { described_class.new(config) }
-
   %w[map collect].each do |method|
     context 'when using Rails 5.0 or newer', :rails50 do
       context "when `#{method}` can be replaced with `pluck`" do

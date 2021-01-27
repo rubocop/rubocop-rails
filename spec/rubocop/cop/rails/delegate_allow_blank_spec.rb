@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::DelegateAllowBlank do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::DelegateAllowBlank, :config do
   it 'registers an offense and corrects when using allow_blank' do
     expect_offense(<<~RUBY)
       delegate :foo, to: :bar, allow_blank: true

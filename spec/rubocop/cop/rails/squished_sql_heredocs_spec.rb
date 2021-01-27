@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::SquishedSQLHeredocs, :config do
-  subject(:cop) { described_class.new(config) }
-
   context 'with multi line heredoc' do
     it 'registers an offense and corrects it' do
       expect_offense(<<~RUBY)

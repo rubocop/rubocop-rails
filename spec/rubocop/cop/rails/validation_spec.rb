@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::Validation do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::Validation, :config do
   it 'accepts new style validations' do
     expect_no_offenses('validates :name')
   end

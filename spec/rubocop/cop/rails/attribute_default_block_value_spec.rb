@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::AttributeDefaultBlockValue do
-  subject(:cop) { described_class.new(config) }
-
+RSpec.describe RuboCop::Cop::Rails::AttributeDefaultBlockValue, :config do
   let(:config) { RuboCop::Config.new }
   let(:message) { 'Pass method in a block to `:default` option.' }
 

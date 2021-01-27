@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::FindById do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::FindById, :config do
   it 'registers an offense and corrects when using `where(id: ...).take!`' do
     expect_offense(<<~RUBY)
       User.where(id: 1).take!

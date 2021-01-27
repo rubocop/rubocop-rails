@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::WhereEquals do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::WhereEquals, :config do
   it 'registers an offense and corrects when using `=` and anonymous placeholder' do
     expect_offense(<<~RUBY)
       User.where('name = ?', 'Gabe')

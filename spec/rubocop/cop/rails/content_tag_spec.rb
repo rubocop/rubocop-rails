@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
-  subject(:cop) { described_class.new(config) }
-
   context 'Rails 5.0', :rails50 do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)

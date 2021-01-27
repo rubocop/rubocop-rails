@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::EnumHash do
-  subject(:cop) { described_class.new(config) }
-
+RSpec.describe RuboCop::Cop::Rails::EnumHash, :config do
   let(:config) { RuboCop::Config.new }
 
   context 'when array syntax is used' do

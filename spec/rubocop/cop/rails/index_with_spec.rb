@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::IndexWith, :config do
-  subject(:cop) { described_class.new(config) }
-
   context 'when using Rails 6.0 or newer', :rails60 do
     context 'with an inline block' do
       it 'registers an offense for `each_with_object`' do

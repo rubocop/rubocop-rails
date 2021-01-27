@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
-  subject(:cop) { described_class.new(config) }
-
   context 'when EnforcedStyle is `symbolic`' do
     let(:cop_config) { { 'EnforcedStyle' => 'symbolic' } }
 

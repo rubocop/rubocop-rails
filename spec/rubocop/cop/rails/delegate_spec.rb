@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::Delegate do
-  subject(:cop) { described_class.new(config) }
-
+RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
   let(:cop_config) { { 'EnforceForPrefixed' => true } }
   let(:config) do
     merged = RuboCop::ConfigLoader

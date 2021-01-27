@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::NegateInclude do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::NegateInclude, :config do
   it 'registers an offense and corrects when using `!include?`' do
     expect_offense(<<~RUBY)
       !array.include?(2)

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::Exit, :config do
-  subject(:cop) { described_class.new }
-
   it 'registers an offense for an exit call with no receiver' do
     expect_offense(<<~RUBY)
       exit

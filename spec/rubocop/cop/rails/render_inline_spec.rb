@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::RenderInline do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::RenderInline, :config do
   it 'registers an offense when rendering inline with a symbol key' do
     expect_offense(<<~RUBY)
       render status: 200, inline: 'inline template'

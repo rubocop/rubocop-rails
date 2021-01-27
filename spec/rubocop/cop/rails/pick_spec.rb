@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::Pick, :config do
-  subject(:cop) { described_class.new(config) }
-
   context 'when using Rails 6.0 or newer', :rails60 do
     context 'with one argument' do
       it 'registers an offense for `pluck(...).first' do

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::OrderById do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::OrderById, :config do
   it 'registers an offense when ordering by `:id` with implicit direction' do
     expect_offense(<<~RUBY)
       User.order(:id)

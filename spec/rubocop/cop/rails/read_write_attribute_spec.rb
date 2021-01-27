@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
   context 'read_attribute' do
     it 'registers an offense and corrects a symbol' do
       expect_offense(<<~RUBY)

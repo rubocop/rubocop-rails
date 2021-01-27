@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::MatchRoute do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::MatchRoute, :config do
   it 'registers an offense and corrects when using `match` only with path' do
     expect_offense(<<~RUBY)
       routes.draw do

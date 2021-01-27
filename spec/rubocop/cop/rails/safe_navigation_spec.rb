@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
-  subject(:cop) { described_class.new(config) }
-
   shared_examples 'accepts' do |name, code|
     it "accepts usages of #{name}" do
       expect_no_offenses("[1, 2].#{code}")

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::RedundantAllowNil do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::RedundantAllowNil, :config do
   context 'when not using both `allow_nil` and `allow_blank`' do
     it 'registers no offense' do
       expect_no_offenses(<<~RUBY)

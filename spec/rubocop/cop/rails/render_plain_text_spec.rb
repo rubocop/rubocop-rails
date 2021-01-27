@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::RenderPlainText, :config do
-  subject(:cop) { described_class.new(config) }
-
   shared_examples 'checks_common_offense' do
     it 'registers an offense and corrects when using `render text:` with `content_type: "text/plain"`' do
       expect_offense(<<~RUBY)

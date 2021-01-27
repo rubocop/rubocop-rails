@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
-  subject(:cop) { described_class.new(config) }
-
   let(:cop_config) { { 'AllowImplicitReturn' => true } }
 
   shared_examples 'checks_common_offense' do |method|

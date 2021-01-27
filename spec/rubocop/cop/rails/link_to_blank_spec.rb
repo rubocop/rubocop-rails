@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::LinkToBlank do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::LinkToBlank, :config do
   context 'when not using target _blank' do
     it 'does not register an offence' do
       expect_no_offenses(<<~RUBY)

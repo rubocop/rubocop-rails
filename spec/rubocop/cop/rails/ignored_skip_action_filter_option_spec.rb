@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::IgnoredSkipActionFilterOption do
-  subject(:cop) { described_class.new(config) }
-
+RSpec.describe RuboCop::Cop::Rails::IgnoredSkipActionFilterOption, :config do
   let(:config) { RuboCop::Config.new }
 
   it 'registers an offense when `if` and `only` are used together' do

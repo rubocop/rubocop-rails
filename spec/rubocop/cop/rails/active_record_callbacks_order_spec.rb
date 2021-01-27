@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::ActiveRecordCallbacksOrder do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::ActiveRecordCallbacksOrder, :config do
   it 'registers an offense and corrects when declared callbacks are not correctly ordered' do
     expect_offense(<<~RUBY)
       class User < ApplicationRecord

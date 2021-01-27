@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::HasAndBelongsToMany do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::HasAndBelongsToMany, :config do
   it 'registers an offense for has_and_belongs_to_many' do
     expect_offense(<<~RUBY)
       has_and_belongs_to_many :groups

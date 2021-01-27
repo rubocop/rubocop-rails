@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::AssertNot do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::AssertNot, :config do
   it 'registers an offense and corrects using `assert !`' do
     expect_offense(<<~RUBY)
       assert !foo

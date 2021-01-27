@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::Output do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::Output, :config do
   it 'registers an offense for methods without a receiver' do
     expect_offense(<<~RUBY)
       p "edmond dantes"

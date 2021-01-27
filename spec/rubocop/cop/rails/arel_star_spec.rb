@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::ArelStar do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::ArelStar, :config do
   it 'registers an offense and corrects when an asterisk is used on an Arel::Table column reference' do
     expect_offense(<<~RUBY)
       class MyModel < ApplicationRecord

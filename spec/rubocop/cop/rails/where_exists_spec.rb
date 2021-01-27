@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::WhereExists, :config do
-  subject(:cop) { described_class.new(config) }
-
   context 'when EnforcedStyle is "exists"' do
     let(:cop_config) { { 'EnforcedStyle' => 'exists' } }
 

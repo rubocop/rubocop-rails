@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::Inquiry do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::Inquiry, :config do
   it 'registers an offense when using `String#inquiry`' do
     expect_offense(<<~RUBY)
       'two'.inquiry

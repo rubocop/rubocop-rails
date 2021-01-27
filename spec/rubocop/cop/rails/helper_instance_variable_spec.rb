@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::HelperInstanceVariable do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::HelperInstanceVariable, :config do
   it 'reports uses of instance variables' do
     expect_offense(<<~'RUBY')
       def welcome_message

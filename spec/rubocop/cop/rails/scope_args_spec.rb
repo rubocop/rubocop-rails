@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::ScopeArgs do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::ScopeArgs, :config do
   it 'registers an offense a scope with a method arg' do
     expect_offense(<<~RUBY)
       scope :active, where(active: true)

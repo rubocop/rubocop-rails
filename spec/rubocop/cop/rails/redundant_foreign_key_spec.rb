@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::RedundantForeignKey do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::RedundantForeignKey, :config do
   context '`belongs_to` associations' do
     it 'registers an offense when the `:foreign_key` option is redundant' do
       expect_offense(<<~RUBY)

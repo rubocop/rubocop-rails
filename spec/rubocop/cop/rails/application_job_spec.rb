@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::ApplicationJob do
+RSpec.describe RuboCop::Cop::Rails::ApplicationJob, :config, :config do
   context 'Rails 4.2', :rails42, :config do
-    subject(:cop) { described_class.new(config) }
-
     it 'allows ApplicationJob to be defined' do
       expect_no_offenses(<<~RUBY)
         class ApplicationJob < ActiveJob::Base
@@ -56,8 +54,6 @@ RSpec.describe RuboCop::Cop::Rails::ApplicationJob do
   end
 
   context 'Rails 5.0', :rails50 do
-    subject(:cop) { described_class.new }
-
     it 'allows `ApplicationJob` to be defined' do
       expect_no_offenses(<<~RUBY)
         class ApplicationJob < ActiveJob::Base; end

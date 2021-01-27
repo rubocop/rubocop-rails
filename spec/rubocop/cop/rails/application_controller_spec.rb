@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::ApplicationController do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::ApplicationController, :config do
   it 'allows `ApplicationController` to be defined' do
     expect_no_offenses(<<~RUBY)
       class ApplicationController < ActionController::Base; end

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
-  subject(:cop) { described_class.new(config) }
-
   shared_examples 'register_offense' do |scope|
     it "registers an offense when using #{scope}.each" do
       expect_offense(<<~RUBY, scope: scope)

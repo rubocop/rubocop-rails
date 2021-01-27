@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ActionFilter, :config do
-  subject(:cop) { described_class.new(config) }
-
   let(:cop_config) { { 'Include' => nil } }
 
   describe '::FILTER_METHODS' do

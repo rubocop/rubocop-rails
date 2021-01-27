@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::EnumUniqueness, :config do
-  subject(:cop) { described_class.new }
-
   context 'when array syntax is used' do
     context 'with a single duplicated enum value' do
       it 'registers an offense' do

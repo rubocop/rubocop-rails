@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::SafeNavigationWithBlank do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::SafeNavigationWithBlank, :config do
   context 'in a conditional' do
     it 'registers an offense on a single conditional' do
       expect_offense(<<~RUBY)

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::FindBy do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
   it 'registers an offense when using `#first` and does not auto-correct' do
     expect_offense(<<~RUBY)
       User.where(id: x).first

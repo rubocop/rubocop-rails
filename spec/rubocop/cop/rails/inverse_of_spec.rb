@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
-  subject(:cop) { described_class.new(config) }
-
   context 'with scope' do
     it 'registers an offense when not specifying `:inverse_of`' do
       expect_offense(<<~RUBY)

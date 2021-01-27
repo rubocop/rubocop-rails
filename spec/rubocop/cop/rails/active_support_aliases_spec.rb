@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::ActiveSupportAliases do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::ActiveSupportAliases, :config do
   describe 'String' do
     describe '#starts_with?' do
       it 'registers as an offense and corrects' do

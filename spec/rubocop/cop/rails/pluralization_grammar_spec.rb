@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::PluralizationGrammar do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::PluralizationGrammar, :config do
   shared_examples 'enforces pluralization grammar' do |method_name|
     context "When #{method_name} is called on an unknown variable" do
       context "when using the plural form ##{method_name}s" do

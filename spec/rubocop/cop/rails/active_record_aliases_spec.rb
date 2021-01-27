@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::ActiveRecordAliases do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::ActiveRecordAliases, :config do
   describe '#update_attributes' do
     it 'registers an offense and corrects' do
       expect_offense(<<~RUBY)

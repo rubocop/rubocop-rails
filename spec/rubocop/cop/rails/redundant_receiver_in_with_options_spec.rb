@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
-  subject(:cop) { described_class.new(config) }
-
   it 'registers an offense and corrects using explicit receiver ' \
       'in `with_options`' do
     expect_offense(<<~RUBY)

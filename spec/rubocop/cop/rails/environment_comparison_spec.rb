@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::EnvironmentComparison do
-  subject(:cop) { described_class.new(config) }
-
+RSpec.describe RuboCop::Cop::Rails::EnvironmentComparison, :config do
   let(:config) { RuboCop::Config.new }
 
   context 'when comparing `Rails.env` to a string' do

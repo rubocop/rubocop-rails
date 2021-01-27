@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
-  subject(:cop) { described_class.new(config) }
-
   context 'without db/schema.rb' do
     it 'does nothing' do
       expect_no_offenses(<<~RUBY)

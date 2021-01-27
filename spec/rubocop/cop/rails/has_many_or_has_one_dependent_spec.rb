@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent do
-  subject(:cop) { described_class.new }
-
+RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
   context 'has_one' do
     it 'registers an offense when not specifying any options' do
       expect_offense(<<~RUBY)
