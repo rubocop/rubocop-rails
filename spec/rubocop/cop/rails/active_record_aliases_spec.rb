@@ -56,7 +56,7 @@ RSpec.describe RuboCop::Cop::Rails::ActiveRecordAliases, :config do
   end
 
   describe 'other use of the `update_attributes` string' do
-    it 'does not autocorrect the other usage' do
+    it 'registers and corrects the other usage' do
       expect_offense(<<~RUBY)
         update_attributes_book.update_attributes(author: "Alice")
                                ^^^^^^^^^^^^^^^^^ Use `update` instead of `update_attributes`.

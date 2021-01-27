@@ -49,9 +49,7 @@ RSpec.describe RuboCop::Cop::Rails::ActiveSupportAliases, :config do
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `<<` instead of `append`.
         RUBY
 
-        expect_correction(<<~RUBY)
-          [1, 'a', 3].append('element')
-        RUBY
+        expect_no_corrections
       end
     end
 

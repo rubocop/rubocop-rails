@@ -7,9 +7,7 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
            ^^^^^^^^^^^^^^^^^^ Use `find_by` instead of `where.first`.
     RUBY
 
-    expect_correction(<<~RUBY)
-      User.where(id: x).first
-    RUBY
+    expect_no_corrections
   end
 
   it 'registers an offense when using `#take`' do
