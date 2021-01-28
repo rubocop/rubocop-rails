@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::EnvironmentComparison, :config do
-  let(:config) { RuboCop::Config.new }
-
   context 'when comparing `Rails.env` to a string' do
     context 'when using equals' do
       it 'registers an offense and corrects when `Rails.env` is used on LHS' do

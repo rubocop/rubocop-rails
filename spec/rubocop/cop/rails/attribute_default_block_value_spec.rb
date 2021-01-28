@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::AttributeDefaultBlockValue, :config do
-  let(:config) { RuboCop::Config.new }
   let(:message) { 'Pass method in a block to `:default` option.' }
 
   context 'when `:default` option is last' do

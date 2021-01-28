@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter, :config do
-  let(:config) { RuboCop::Config.new }
-
   it 'registers an offense when string node method is not defined' do
     expect_offense <<~RUBY
       class LoginController < ApplicationController

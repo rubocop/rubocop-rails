@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::CreateTableWithTimestamps, :config do
-  let(:config) { RuboCop::Config.new }
-
   it 'registers an offense when calling `#create_table` without block' do
     expect_offense <<~RUBY
       create_table :users

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ActiveRecordOverride, :config do
-  let(:config) { RuboCop::Config.new }
-
   it 'registers an offense when overriding create' do
     expect_offense(<<~RUBY)
       class X < ApplicationRecord

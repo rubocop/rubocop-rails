@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::RakeEnvironment, :config do
-  let(:config) { RuboCop::Config.new }
-
   it 'registers an offense to task without :environment' do
     expect_offense(<<~RUBY)
       task :foo do

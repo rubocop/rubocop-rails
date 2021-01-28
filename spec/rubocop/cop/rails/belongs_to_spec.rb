@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::BelongsTo, :config do
-  let(:config) { RuboCop::Config.new }
-
   it 'registers an offense and corrects when specifying `required: false`' do
     expect_offense(<<~RUBY)
       belongs_to :foo, required: false

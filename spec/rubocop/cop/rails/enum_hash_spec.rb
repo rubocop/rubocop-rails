@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::EnumHash, :config do
-  let(:config) { RuboCop::Config.new }
-
   context 'when array syntax is used' do
     context 'with %i[] syntax' do
       it 'registers an offense' do

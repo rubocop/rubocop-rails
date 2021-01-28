@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ReflectionClassName, :config do
-  let(:config) { RuboCop::Config.new }
-
   context "registers an offense when using `foreign_key: 'account_id'`" do
     it 'has_many' do
       expect_offense(<<~RUBY)
