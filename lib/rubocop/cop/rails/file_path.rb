@@ -29,10 +29,8 @@ module RuboCop
         include ConfigurableEnforcedStyle
         include RangeHelp
 
-        MSG_SLASHES = 'Please use `Rails.root.join(\'path/to\')` ' \
-                      'instead.'
-        MSG_ARGUMENTS = 'Please use `Rails.root.join(\'path\', \'to\')` ' \
-                        'instead.'
+        MSG_SLASHES = 'Prefer `Rails.root.join(\'path/to\')`.'
+        MSG_ARGUMENTS = 'Prefer `Rails.root.join(\'path\', \'to\')`.'
         RESTRICT_ON_SEND = %i[join].freeze
 
         def_node_matcher :file_join_nodes?, <<~PATTERN

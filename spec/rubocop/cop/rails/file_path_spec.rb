@@ -8,7 +8,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
           Rails.root.join('app', 'models', 'user.rb')
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
       end
     end
@@ -17,7 +17,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           system "rm -rf #{Rails.root.join('a', 'b.png')}"
-                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
       end
     end
@@ -50,7 +50,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, 'app', 'models')
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
       end
     end
@@ -65,7 +65,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           "#{Rails.root}/app/models/goober"
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
       end
     end
@@ -75,7 +75,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           system "rm -rf #{Rails.root}/foo/bar"
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
       end
     end
@@ -85,7 +85,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           "#{Rails.root.join('tmp', user.id, 'icon')}.png"
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
       end
     end
@@ -94,7 +94,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           foo(bar(File.join(Rails.root, "app", "models")))
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path/to')` instead.
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
       end
     end
@@ -169,7 +169,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, 'app', 'models')
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path', 'to')` instead.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
         RUBY
       end
     end
@@ -178,7 +178,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
           Rails.root.join('app/models/goober')
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path', 'to')` instead.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
         RUBY
       end
     end
@@ -187,7 +187,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           "#{Rails.root}/app/models/goober"
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path', 'to')` instead.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
         RUBY
       end
     end
@@ -197,7 +197,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           system "rm -rf #{Rails.root}/foo/bar"
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path', 'to')` instead.
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
         RUBY
       end
     end
@@ -207,7 +207,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           "#{Rails.root.join('tmp', user.id, 'icon')}.png"
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path', 'to')` instead.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
         RUBY
       end
     end
@@ -216,7 +216,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           foo(bar(File.join(Rails.root, "app", "models")))
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path', 'to')` instead.
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
         RUBY
       end
     end
@@ -225,7 +225,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           foo(Rails.root.join('app/models'))
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Please use `Rails.root.join('path', 'to')` instead.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
         RUBY
       end
     end
