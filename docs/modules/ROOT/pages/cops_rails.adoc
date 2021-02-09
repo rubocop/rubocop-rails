@@ -4133,7 +4133,7 @@ SQL
 | No
 | Yes (Unsafe)
 | 0.30
-| 0.68
+| 2.10
 |===
 
 This cop checks for the use of Time methods without zone.
@@ -4195,6 +4195,10 @@ Time.at(timestamp).in_time_zone
 | EnforcedStyle
 | `flexible`
 | `strict`, `flexible`
+
+| Exclude
+| `**/*.gemspec`
+| Array
 |===
 
 === References

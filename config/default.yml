@@ -687,13 +687,15 @@ Rails/TimeZone:
   Enabled: true
   Safe: false
   VersionAdded: '0.30'
-  VersionChanged: '0.68'
+  VersionChanged: '2.10'
   # The value `strict` means that `Time` should be used with `zone`.
   # The value `flexible` allows usage of `in_time_zone` instead of `zone`.
   EnforcedStyle: flexible
   SupportedStyles:
     - strict
     - flexible
+  Exclude:
+    - '**/*.gemspec'
 
 Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'
