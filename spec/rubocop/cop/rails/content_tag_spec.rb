@@ -165,6 +165,12 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
           content_tag($name, "Hello world!", class: ["strong", "highlight"])
         RUBY
       end
+
+      it 'does not register an offence when the first argument is a splat argument' do
+        expect_no_offenses(<<~RUBY)
+          content_tag(*args, &block)
+        RUBY
+      end
     end
 
     context 'when the first argument is a method' do

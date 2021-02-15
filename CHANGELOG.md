@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#421](https://github.com/rubocop-hq/rubocop-rails/issues/421): Fix incorrect auto-correct for `Rails/LinkToBlank` when using `target: '_blank'` with hash brackets for the option. ([@koic][])
+* [#436](https://github.com/rubocop-hq/rubocop-rails/issues/436): Fix a false positive for `Rails/ContentTag` when the first argument is a splat argument. ([@koic][])
 
 ### Changes
 
