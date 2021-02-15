@@ -23,6 +23,17 @@ RSpec.describe RuboCop::Cop::Rails::BelongsTo, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when using `belongs_to` lambda block with `required: false`' do
+    expect_offense(<<~RUBY)
+      belongs_to :foo, -> { bar }, required: false
+      ^^^^^^^^^^ You specified `required: false`, in Rails > 5.0 the required option is deprecated and you want to use `optional: true`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      belongs_to :foo, -> { bar }, optional: true
+    RUBY
+  end
+
   it 'registers no offense when setting `optional: true`' do
     expect_no_offenses('belongs_to :foo, optional: true')
   end
