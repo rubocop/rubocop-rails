@@ -68,5 +68,5 @@ end
 def bump_minor_version
   major, minor, _patch = RuboCop::Rails::Version::STRING.split('.')
 
-  "#{major}.#{minor.succ}.0"
+  "#{major}.#{minor.succ}"
 end
