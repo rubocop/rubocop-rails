@@ -19,7 +19,7 @@ module RuboCop
       #
       #   # bad
       #   Time.now
-      #   Time.parse('2015-03-02 19:05:37')
+      #   Time.parse('2015-03-02T19:05:37')
       #
       #   # bad
       #   Time.current
@@ -27,18 +27,19 @@ module RuboCop
       #
       #   # good
       #   Time.zone.now
-      #   Time.zone.parse('2015-03-02 19:05:37')
+      #   Time.zone.parse('2015-03-02T19:05:37')
+      #   Time.zone.parse('2015-03-02T19:05:37Z') # Respect ISO 8601 format with timezone specifier.
       #
       # @example EnforcedStyle: flexible (default)
       #   # `flexible` allows usage of `in_time_zone` instead of `zone`.
       #
       #   # bad
       #   Time.now
-      #   Time.parse('2015-03-02 19:05:37')
+      #   Time.parse('2015-03-02T19:05:37')
       #
       #   # good
       #   Time.zone.now
-      #   Time.zone.parse('2015-03-02 19:05:37')
+      #   Time.zone.parse('2015-03-02T19:05:37')
       #
       #   # good
       #   Time.current
@@ -62,6 +63,8 @@ module RuboCop
 
         ACCEPTED_METHODS = %i[in_time_zone utc getlocal xmlschema iso8601
                               jisx0301 rfc3339 httpdate to_i to_f].freeze
+
+        TIMEZONE_SPECIFIER = /[A-z]/.freeze
 
         def on_const(node)
           mod, klass = *node
@@ -116,9 +119,10 @@ module RuboCop
         end
 
         def check_time_node(klass, node)
+          return if attach_timezone_specifier?(node.first_argument)
+
           chain = extract_method_chain(node)
           return if not_danger_chain?(chain)
-
           return check_localtime(node) if need_check_localtime?(chain)
 
           method_name = (chain & DANGEROUS_METHODS).join('.')
@@ -130,6 +134,10 @@ module RuboCop
           add_offense(node.loc.selector, message: message) do |corrector|
             autocorrect(corrector, node)
           end
+        end
+
+        def attach_timezone_specifier?(date)
+          date.respond_to?(:value) && TIMEZONE_SPECIFIER.match?(date.value.to_s[-1])
         end
 
         def build_message(klass, method_name, node)
