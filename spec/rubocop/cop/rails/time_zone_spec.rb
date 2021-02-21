@@ -126,6 +126,24 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
       RUBY
     end
 
+    it 'does not register an offense when attaching timezone specifier `Z`' do
+      expect_no_offenses(<<~RUBY)
+        Time.parse("2012-03-02T16:05:37Z")
+      RUBY
+    end
+
+    it 'does not register an offense when attaching timezone specifier `z`' do
+      expect_no_offenses(<<~RUBY)
+        Time.parse("2012-03-02T16:05:37z")
+      RUBY
+    end
+
+    it 'does not register an offense when attaching timezone specifier `E`' do
+      expect_no_offenses(<<~RUBY)
+        Time.parse("2012-03-02T16:05:37E")
+      RUBY
+    end
+
     it 'registers an offense for Time.at' do
       expect_offense(<<~RUBY)
         Time.at(ts)
