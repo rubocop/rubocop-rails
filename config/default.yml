@@ -260,6 +260,18 @@ Rails/EnvironmentComparison:
   Enabled: true
   VersionAdded: '0.52'
 
+Rails/EnvironmentVariableAccess:
+  Description: 'Do not access `ENV` directly after initialization.'
+  Enabled: pending
+  VersionAdded: '2.10'
+  Include:
+    - app/**/*.rb
+    - lib/**/*.rb
+  Exclude:
+    - lib/**/*.rake
+  AllowReads: false
+  AllowWrites: false
+
 Rails/Exit:
   Description: >-
                   Favor `fail`, `break`, `return`, etc. over `exit` in
