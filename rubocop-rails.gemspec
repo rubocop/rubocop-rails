@@ -19,16 +19,16 @@ Gem::Specification.new do |s|
   s.files = `git ls-files bin config lib LICENSE.txt README.md`
             .split($RS)
   s.extra_rdoc_files = ['LICENSE.txt', 'README.md']
-  s.homepage = 'https://github.com/rubocop-hq/rubocop-rails'
+  s.homepage = 'https://github.com/rubocop/rubocop-rails'
   s.licenses = ['MIT']
   s.summary = 'Automatic Rails code style checking tool.'
 
   s.metadata = {
     'homepage_uri' => 'https://docs.rubocop.org/rubocop-rails/',
-    'changelog_uri' => 'https://github.com/rubocop-hq/rubocop-rails/blob/master/CHANGELOG.md',
-    'source_code_uri' => 'https://github.com/rubocop-hq/rubocop-rails/',
+    'changelog_uri' => 'https://github.com/rubocop/rubocop-rails/blob/master/CHANGELOG.md',
+    'source_code_uri' => 'https://github.com/rubocop/rubocop-rails/',
     'documentation_uri' => "https://docs.rubocop.org/rubocop-rails/#{RuboCop::Rails::Version.document_version}/",
-    'bug_tracker_uri' => 'https://github.com/rubocop-hq/rubocop-rails/issues'
+    'bug_tracker_uri' => 'https://github.com/rubocop/rubocop-rails/issues'
   }
 
   s.add_runtime_dependency 'activesupport', '>= 4.2.0'

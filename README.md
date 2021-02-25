@@ -1,7 +1,7 @@
 # RuboCop Rails
 
 [![Gem Version](https://badge.fury.io/rb/rubocop-rails.svg)](https://badge.fury.io/rb/rubocop-rails)
-[![CircleCI](https://circleci.com/gh/rubocop-hq/rubocop-rails.svg?style=svg)](https://circleci.com/gh/rubocop-hq/rubocop-rails)
+[![CircleCI](https://circleci.com/gh/rubocop/rubocop-rails.svg?style=svg)](https://circleci.com/gh/rubocop/rubocop-rails)
 
 A [RuboCop](https://github.com/rubocop/rubocop) extension focused on enforcing Rails best practices and coding conventions.
 
@@ -90,14 +90,14 @@ Rails cops support the following versions:
 
 If you use RuboCop Rails in your project, you can include one of these badges in your readme to let people know that your code is written following the community Rails Style Guide.
 
-[![Rails Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop-hq/rubocop-rails)
+[![Rails Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop-rails)
 
 [![Rails Style Guide](https://img.shields.io/badge/code_style-community-brightgreen.svg)](https://rails.rubystyle.guide)
 
 Here are the Markdown snippets for the two badges:
 
 ``` markdown
-[![Rails Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop-hq/rubocop-rails)
+[![Rails Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop-rails)
 
 [![Rails Style Guide](https://img.shields.io/badge/code_style-community-brightgreen.svg)](https://rails.rubystyle.guide)
 ```
