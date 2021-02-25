@@ -332,6 +332,14 @@ Rails/HttpStatus:
     - numeric
     - symbolic
 
+Rails/I18nLazyLookup:
+  Description: 'Checks for places where I18n "lazy" lookup can be used.'
+  StyleGuide: 'https://rails.rubystyle.guide/#lazy-lookup'
+  Enabled: pending
+  VersionAdded: '2.8'
+  Include:
+    - 'controllers/**/*'
+
 Rails/IgnoredSkipActionFilterOption:
   Description: 'Checks that `if` and `only` (or `except`) are not used together as options of `skip_*` action filter.'
   Reference: 'https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options'

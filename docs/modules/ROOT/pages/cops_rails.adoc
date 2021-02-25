@@ -1756,6 +1756,61 @@ redirect_to root_url, status: 301
 | `numeric`, `symbolic`
 |===
 
+== Rails/I18nLazyLookup
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.8
+| -
+|===
+
+This cop checks for places where I18n "lazy" lookup can be used.
+
+=== Examples
+
+[source,ruby]
+----
+# en.yml
+# en:
+#   books:
+#     create:
+#       success: Book created!
+
+# bad
+class BooksController < ApplicationController
+  def create
+    # ...
+    redirect_to books_url, notice: t('books.create.success')
+  end
+end
+
+# good
+class BooksController < ApplicationController
+  def create
+    # ...
+    redirect_to books_url, notice: t('.success')
+  end
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `controllers/**/*`
+| Array
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#lazy-lookup
+
 == Rails/IgnoredSkipActionFilterOption
 
 |===
