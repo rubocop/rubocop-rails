@@ -35,6 +35,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railscontenttag[Rails/ContentTag]
 * xref:cops_rails.adoc#railscreatetablewithtimestamps[Rails/CreateTableWithTimestamps]
 * xref:cops_rails.adoc#railsdate[Rails/Date]
+* xref:cops_rails.adoc#railsdateandtimecolumnname[Rails/DateAndTimeColumnName]
 * xref:cops_rails.adoc#railsdefaultscope[Rails/DefaultScope]
 * xref:cops_rails.adoc#railsdelegate[Rails/Delegate]
 * xref:cops_rails.adoc#railsdelegateallowblank[Rails/DelegateAllowBlank]

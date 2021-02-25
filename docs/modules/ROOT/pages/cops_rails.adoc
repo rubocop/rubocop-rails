@@ -943,6 +943,48 @@ date.in_time_zone
 | `strict`, `flexible`
 |===
 
+== Rails/DateAndTimeColumnName
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| No
+| 2.8
+| -
+|===
+
+This cop enforces date/time columns naming conventions.
+Specifically, `date` column should end with `_on` suffix,
+`datetime` and `timestamp` - with `_at` suffix,
+`time` - with `_time` suffix.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+add_column :orders, :created_on, :datetime
+t.column :visited_at, :date
+t.time :start_at
+
+# good
+add_column :orders, :created_at, :datetime
+t.column :visited_on, :date
+t.time :start_time
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `db/migrate/**/**.rb`
+| Array
+|===
+
 == Rails/DefaultScope
 
 |===
