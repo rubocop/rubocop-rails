@@ -31,7 +31,7 @@ RSpec.describe RuboCop::Cop::Rails::Blank, :config do
       expect_no_offenses('foo.nil? || bar.empty?')
     end
 
-    # Bug: https://github.com/rubocop-hq/rubocop/issues/4171
+    # Bug: https://github.com/rubocop/rubocop/issues/4171
     it 'does not break when RHS of `or` is a naked falsiness check' do
       expect_no_offenses('foo.empty? || bar')
     end
@@ -40,7 +40,7 @@ RSpec.describe RuboCop::Cop::Rails::Blank, :config do
       expect_no_offenses('bar || foo.empty?')
     end
 
-    # Bug: https://github.com/rubocop-hq/rubocop/issues/4814
+    # Bug: https://github.com/rubocop/rubocop/issues/4814
     it 'does not break when LHS of `or` is a send node with an arugment' do
       expect_no_offenses('x(1) || something')
     end

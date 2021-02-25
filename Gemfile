@@ -9,7 +9,7 @@ gemspec
 gem 'bump', require: false
 gem 'rake'
 gem 'rspec'
-gem 'rubocop', github: 'rubocop-hq/rubocop'
+gem 'rubocop', github: 'rubocop/rubocop'
 gem 'rubocop-performance', '~> 1.9.0'
 gem 'rubocop-rspec', '~> 1.29.0'
 gem 'simplecov'

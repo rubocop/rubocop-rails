@@ -409,7 +409,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
     end
 
     context 'when given a kwsplat hash' do
-      # See https://github.com/rubocop-hq/rubocop-rails/issues/352
+      # See https://github.com/rubocop/rubocop-rails/issues/352
       it 'does not register an offense' do
         expect_no_offenses(<<~RUBY)
           [{ format: :json }, { format: :html }].each do |args|

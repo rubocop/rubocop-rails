@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/rubocop-rails.svg)](https://badge.fury.io/rb/rubocop-rails)
 [![CircleCI](https://circleci.com/gh/rubocop-hq/rubocop-rails.svg?style=svg)](https://circleci.com/gh/rubocop-hq/rubocop-rails)
 
-A [RuboCop](https://github.com/rubocop-hq/rubocop) extension focused on enforcing Rails best practices and coding conventions.
+A [RuboCop](https://github.com/rubocop/rubocop) extension focused on enforcing Rails best practices and coding conventions.
 
 Note: This repository manages rubocop-rails gem (>= 2.0.0). rubocop-rails gem (<= 1.5.0) has been renamed to [rubocop-rails_config](https://rubygems.org/gems/rubocop-rails_config) gem.
 

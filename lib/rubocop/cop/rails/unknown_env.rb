@@ -62,7 +62,7 @@ module RuboCop
           # DidYouMean::SpellChecker is not available in all versions of Ruby,
           # and even on versions where it *is* available (>= 2.3), it is not
           # always required correctly. So we do a feature check first. See:
-          # https://github.com/rubocop-hq/rubocop/issues/7979
+          # https://github.com/rubocop/rubocop/issues/7979
           similar_names = if defined?(DidYouMean::SpellChecker)
                             spell_checker = DidYouMean::SpellChecker.new(dictionary: environments)
                             spell_checker.correct(name)

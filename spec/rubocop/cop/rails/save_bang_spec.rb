@@ -502,7 +502,7 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       RUBY
     end
 
-    # Bug: https://github.com/rubocop-hq/rubocop/issues/4264
+    # Bug: https://github.com/rubocop/rubocop/issues/4264
     it 'when using the assigned variable as value in a hash' do
       if update
         expect_no_offenses(<<~RUBY)
