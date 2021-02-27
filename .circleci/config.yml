@@ -57,5 +57,8 @@ workflows:
           name: Ruby HEAD
           image: rubocophq/circleci-ruby-snapshot:latest # Nightly snapshot build
       - rake_default:
+          # FIXME: Workaround for JRuby 9.2.15.0.
+          # Please specify `circleci/jruby:9.2` when the following issue will be resolved.
+          # https://github.com/jruby/jruby/issues/6581
           name: JRuby 9.2
-          image: circleci/jruby:9.2
+          image: circleci/jruby:9.2.14
