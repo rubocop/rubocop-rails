@@ -149,8 +149,9 @@ Rails/BelongsTo:
 Rails/Blank:
   Description: 'Enforces use of `blank?`.'
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '0.48'
-  VersionChanged: '0.67'
+  VersionChanged: '2.10'
   # Convert usages of `nil? || empty?` to `blank?`
   NilOrEmpty: true
   # Convert usages of `!present?` to `blank?`

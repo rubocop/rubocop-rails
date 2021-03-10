@@ -6,6 +6,10 @@ module RuboCop
       # This cop checks for code that can be written with simpler conditionals
       # using `Object#blank?` defined by Active Support.
       #
+      # This cop is marked as unsafe auto-correction, because `' '.empty?` returns false,
+      # but `' '.blank?` returns true. Therefore, auto-correction is not compatible
+      # if the receiver is a non-empty blank string, tab, or newline meta characters.
+      #
       # Interaction with `Style/UnlessElse`:
       # The configuration of `NotPresent` will not produce an offense in the
       # context of `unless else` if `Style/UnlessElse` is inabled. This is
