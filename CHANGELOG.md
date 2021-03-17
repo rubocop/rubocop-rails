@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#446](https://github.com/rubocop/rubocop-rails/issues/446): Add new `Rails/RequireDependency` cop. ([@tubaxenor][])
+
 ### Bug fixes
 
 * [#421](https://github.com/rubocop/rubocop-rails/issues/421): Fix incorrect auto-correct for `Rails/LinkToBlank` when using `target: '_blank'` with hash brackets for the option. ([@koic][])
@@ -341,3 +345,4 @@
 [@cilim]: https://github.com/cilim
 [@flanger001]: https://github.com/flanger001
 [@ohbarye]: https://github.com/ohbarye
+[@tubaxenor]: https://github.com/tubaxenor
