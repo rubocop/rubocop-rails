@@ -33,7 +33,7 @@ module RuboCop
 
         MSG = 'Do not assign %<method_name>s to constants as it ' \
               'will be evaluated only once.'
-        RELATIVE_DATE_METHODS = %i[since from_now after ago until before].freeze
+        RELATIVE_DATE_METHODS = %i[since from_now after ago until before yesterday tomorrow].freeze
 
         def on_casgn(node)
           return if node.children[2]&.block_type?
