@@ -33,11 +33,16 @@ module RuboCop
 
         MSG = 'Do not assign %<method_name>s to constants as it ' \
               'will be evaluated only once.'
+        RELATIVE_DATE_METHODS = %i[since from_now after ago until before].freeze
 
         def on_casgn(node)
-          relative_date_assignment?(node) do |method_name|
-            add_offense(node, message: message(method_name)) do |corrector|
-              autocorrect(corrector, node)
+          return if node.children[2]&.block_type?
+
+          node.each_descendant(:send) do |send_node|
+            relative_date?(send_node) do |method_name|
+              add_offense(node, message: message(method_name)) do |corrector|
+                autocorrect(corrector, node)
+              end
             end
           end
         end
@@ -88,23 +93,19 @@ module RuboCop
           range_between(name.loc.expression.begin_pos, value.loc.expression.end_pos)
         end
 
-        def_node_matcher :relative_date_assignment?, <<~PATTERN
-          {
-            (casgn _ _ (send _ ${:since :from_now :after :ago :until :before}))
-            (casgn _ _ ({erange irange} _ (send _ ${:since :from_now :after :ago :until :before})))
-            (casgn _ _ ({erange irange} (send _ ${:since :from_now :after :ago :until :before}) _))
-          }
-        PATTERN
+        def relative_date_method?(method_name)
+          RELATIVE_DATE_METHODS.include?(method_name)
+        end
 
         def_node_matcher :relative_date_or_assignment?, <<~PATTERN
-          (:or_asgn (casgn _ _) (send _ ${:since :from_now :after :ago :until :before}))
+          (:or_asgn (casgn _ _) (send _ $#relative_date_method?))
         PATTERN
 
         def_node_matcher :relative_date?, <<~PATTERN
           {
-            ({erange irange} _ (send _ ${:since :from_now :after :ago :until :before}))
-            ({erange irange} (send _ ${:since :from_now :after :ago :until :before}) _)
-            (send _ ${:since :from_now :after :ago :until :before})
+            ({erange irange} _ (send _ $#relative_date_method?))
+            ({erange irange} (send _ $#relative_date_method?) _)
+            (send _ $#relative_date_method?)
           }
         PATTERN
       end
