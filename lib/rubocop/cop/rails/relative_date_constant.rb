@@ -31,7 +31,7 @@ module RuboCop
         include RangeHelp
         extend AutoCorrector
 
-        MSG = 'Do not assign %<method_name>s to constants as it ' \
+        MSG = 'Do not assign `%<method_name>s` to constants as it ' \
               'will be evaluated only once.'
         RELATIVE_DATE_METHODS = %i[since from_now after ago until before yesterday tomorrow].freeze
 
