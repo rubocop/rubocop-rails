@@ -11,6 +11,7 @@
 * [#421](https://github.com/rubocop/rubocop-rails/issues/421): Fix incorrect auto-correct for `Rails/LinkToBlank` when using `target: '_blank'` with hash brackets for the option. ([@koic][])
 * [#436](https://github.com/rubocop/rubocop-rails/issues/436): Fix a false positive for `Rails/ContentTag` when the first argument is a splat argument. ([@koic][])
 * [#435](https://github.com/rubocop/rubocop-rails/issues/435): Fix a false negative for `Rails/BelongsTo` when using `belongs_to` lambda block with `required` option. ([@koic][])
+* [#451](https://github.com/rubocop/rubocop-rails/issues/451): Fix a false negative for `Rails/RelativeDateConstant` when a method is chained after a relative date method. ([@koic][])
 
 ### Changes
 
@@ -20,6 +21,7 @@
 * [#440](https://github.com/rubocop/rubocop-rails/issues/440): This PR makes `Rails/TimeZone` aware of timezone specifier. ([@koic][])
 * [#381](https://github.com/rubocop/rubocop-rails/pull/381): Update `IgnoredMethods` list for `Lint/NumberConversion` to allow Rails' duration methods. ([@dvandersluis][])
 * [#444](https://github.com/rubocop/rubocop-rails/issues/444): Mark `Rails/Blank` as unsafe auto-correction. ([@koic][])
+* [#451](https://github.com/rubocop/rubocop-rails/issues/451): Make `Rails/RelativeDateConstant` aware of `yesterday` and `tomorrow` methods. ([@koic][])
 
 ## 2.9.1 (2020-12-16)
 

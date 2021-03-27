@@ -43,6 +43,57 @@ RSpec.describe RuboCop::Cop::Rails::RelativeDateConstant, :config do
       RUBY
     end
 
+    it 'registers and corrects an offense when using `Date.yesterday`' do
+      expect_offense(<<~RUBY)
+        class SomeClass
+          RECENT_DATE = Date.yesterday
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Do not assign yesterday to constants as it will be evaluated only once.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class SomeClass
+          def self.recent_date
+            Date.yesterday
+          end
+        end
+      RUBY
+    end
+
+    it 'registers and corrects an offense when using `Time.zone.tomorrow`' do
+      expect_offense(<<~RUBY)
+        class SomeClass
+          FUTURE_DATE = Time.zone.tomorrow
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Do not assign tomorrow to constants as it will be evaluated only once.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class SomeClass
+          def self.future_date
+            Time.zone.tomorrow
+          end
+        end
+      RUBY
+    end
+
+    it 'registers and corrects an offense when a method is chained after a relative date method' do
+      expect_offense(<<~RUBY)
+        class SomeClass
+          START_DATE = 2.weeks.ago.to_date
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Do not assign ago to constants as it will be evaluated only once.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class SomeClass
+          def self.start_date
+            2.weeks.ago.to_date
+          end
+        end
+      RUBY
+    end
+
     it 'registers an offense for exclusive end range' do
       expect_offense(<<~RUBY)
         class SomeClass
