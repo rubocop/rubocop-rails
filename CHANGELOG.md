@@ -5,6 +5,7 @@
 ### New features
 
 * [#446](https://github.com/rubocop/rubocop-rails/issues/446): Add new `Rails/RequireDependency` cop. ([@tubaxenor][])
+* [#453](https://github.com/rubocop/rubocop-rails/pull/453): Add new `Rails/DeleteBy` and `Rails/DestroyBy` cops. ([@koic][])
 
 ### Bug fixes
 

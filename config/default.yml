@@ -225,6 +225,18 @@ Rails/DelegateAllowBlank:
   Enabled: true
   VersionAdded: '0.44'
 
+Rails/DeleteBy:
+  Description: 'Use `delete_by` as a relation method.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '2.10'
+
+Rails/DestroyBy:
+  Description: 'Use `destroy_by` as a relation method.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '2.10'
+
 Rails/DynamicFindBy:
   Description: 'Use `find_by` instead of dynamic `find_by_*`.'
   StyleGuide: 'https://rails.rubystyle.guide#find_by'

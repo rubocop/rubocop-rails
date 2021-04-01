@@ -1097,6 +1097,64 @@ delegate :foo, to: :bar, allow_blank: true
 delegate :foo, to: :bar, allow_nil: true
 ----
 
+== Rails/DeleteBy
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| No
+| Yes (Unsafe)
+| 2.10
+| -
+|===
+
+Rails 6.0 has added `delete_by` as a relation method.
+
+This cop identifies places where `find_by(...)&.delete` and `where(...).delete_all`
+can be replaced by `delete_by`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+unreads.find_by(readable: readable)&.delete
+unreads.where(readable: readable).delete_all
+
+# good
+unreads.delete_by(readable: readable)
+----
+
+== Rails/DestroyBy
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| No
+| Yes (Unsafe)
+| 2.10
+| -
+|===
+
+Rails 6.0 has added `delete_by` as a relation method.
+
+This cop identifies places where `find_by(...)&.destroy` and `where(...).destroy_all`
+can be replaced by `destroy_by`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+unreads.find_by(readable: readable)&.destroy
+unreads.where(readable: readable).destroy_all
+
+# good
+unreads.destroy_by(readable: readable)
+----
+
 == Rails/DynamicFindBy
 
 |===

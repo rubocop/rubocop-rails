@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'mixin/active_record_helper'
+require_relative 'mixin/delete_by_and_destroy_by_methods'
 require_relative 'mixin/enforce_superclass'
 require_relative 'mixin/index_method'
 require_relative 'mixin/target_rails_version'
@@ -27,6 +28,8 @@ require_relative 'rails/date'
 require_relative 'rails/default_scope'
 require_relative 'rails/delegate'
 require_relative 'rails/delegate_allow_blank'
+require_relative 'rails/delete_by'
+require_relative 'rails/destroy_by'
 require_relative 'rails/dynamic_find_by'
 require_relative 'rails/enum_hash'
 require_relative 'rails/enum_uniqueness'

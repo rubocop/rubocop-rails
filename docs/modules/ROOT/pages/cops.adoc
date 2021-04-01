@@ -38,6 +38,8 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsdefaultscope[Rails/DefaultScope]
 * xref:cops_rails.adoc#railsdelegate[Rails/Delegate]
 * xref:cops_rails.adoc#railsdelegateallowblank[Rails/DelegateAllowBlank]
+* xref:cops_rails.adoc#railsdeleteby[Rails/DeleteBy]
+* xref:cops_rails.adoc#railsdestroyby[Rails/DestroyBy]
 * xref:cops_rails.adoc#railsdynamicfindby[Rails/DynamicFindBy]
 * xref:cops_rails.adoc#railsenumhash[Rails/EnumHash]
 * xref:cops_rails.adoc#railsenumuniqueness[Rails/EnumUniqueness]
