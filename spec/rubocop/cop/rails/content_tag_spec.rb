@@ -23,6 +23,8 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
     it 'does not register an offense with nested content_tag' do
       expect_no_offenses(<<~RUBY)
         content_tag(:div) { content_tag(:strong, 'Hi') }
+
+        content_tag(:div, content_tag(:span, 'foo'))
       RUBY
     end
   end
@@ -62,6 +64,17 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
     end
 
     it 'corrects an offence with nested content_tag' do
+      expect_offense(<<~RUBY)
+        content_tag(:div, content_tag(:span, 'foo'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        tag.div(tag.span('foo'))
+      RUBY
+    end
+
+    it 'corrects an offence with nested content_tag with block' do
       expect_offense(<<~RUBY)
         content_tag(:div) { content_tag(:strong, 'Hi') }
                             ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
