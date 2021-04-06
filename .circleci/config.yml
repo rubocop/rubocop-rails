@@ -39,9 +39,6 @@ workflows:
     jobs:
       - documentation-checks
       - rake_default:
-          name: Ruby 2.4
-          image: circleci/ruby:2.4
-      - rake_default:
           name: Ruby 2.5
           image: circleci/ruby:2.5
       - rake_default:

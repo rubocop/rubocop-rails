@@ -75,7 +75,7 @@ module RuboCop
         def on_send(node)
           default_attribute(node) do |attribute|
             value = attribute.children.last
-            return unless TYPE_OFFENDERS.any? { |type| value.type == type }
+            return unless TYPE_OFFENDERS.any?(value.type)
 
             add_offense(value) do |corrector|
               expression = default_attribute(node).children.last
