@@ -4246,6 +4246,51 @@ Time.at(timestamp).in_time_zone
 * https://rails.rubystyle.guide#time
 * http://danilenko.org/2012/7/6/rails_timezones
 
+== Rails/TimeZoneAssignment
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| No
+| 2.10
+| -
+|===
+
+This cop checks for the use of `Time.zone=` method.
+
+The `zone` attribute persists for the rest of the Ruby runtime, potentially causing
+unexpected behaviour at a later time.
+Using `Time.use_zone` ensures the code passed in block is the only place Time.zone is affected.
+It eliminates the possibility of a `zone` sticking around longer than intended.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+Time.zone = 'EST'
+
+# good
+Time.use_zone('EST') do
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `spec/**/*.rb`, `test/**/*.rb`
+| Array
+|===
+
+=== References
+
+* https://thoughtbot.com/blog/its-about-time-zones
+
 == Rails/UniqBeforePluck
 
 |===
