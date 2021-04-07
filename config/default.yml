@@ -620,6 +620,13 @@ Rails/ReversibleMigration:
   Include:
     - db/migrate/*.rb
 
+Rails/ReversibleMigrationMethodDefinition:
+  Description: 'Checks whether the migration implements either a `change` method or both an `up` and a `down` method.'
+  Enabled: false
+  VersionAdded: '2.10'
+  include:
+    - db/migrate/*.rb
+
 Rails/SafeNavigation:
   Description: "Use Ruby's safe navigation operator (`&.`) instead of `try!`."
   Enabled: true
