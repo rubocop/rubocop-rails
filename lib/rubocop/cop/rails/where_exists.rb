@@ -11,6 +11,17 @@ module RuboCop
       # When EnforcedStyle is 'where' then the cop enforces
       # `where(...).exists?` over `exists?(...)`.
       #
+      # This cop is unsafe for auto-correction because the behavior may change on the following case:
+      #
+      # [source,ruby]
+      # ----
+      # Author.includes(:articles).where(articles: {id: id}).exists?
+      # #=> Perform `eager_load` behavior (`LEFT JOIN` query) and get result.
+      #
+      # Author.includes(:articles).exists?(articles: {id: id})
+      # #=> Perform `preload` behavior and `ActiveRecord::StatementInvalid` error occurs.
+      # ----
+      #
       # @example EnforcedStyle: exists (default)
       #   # bad
       #   User.where(name: 'john').exists?
