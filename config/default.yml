@@ -725,6 +725,15 @@ Rails/TimeZone:
   Exclude:
     - '**/*.gemspec'
 
+Rails/TimeZoneAssignment:
+  Description: 'Prefer the usage of `Time.use_zone` instead of manually updating `Time.zone` value.'
+  Reference: 'https://thoughtbot.com/blog/its-about-time-zones'
+  Enabled: 'pending'
+  VersionAdded: '2.10'
+  Include:
+    - spec/**/*.rb
+    - test/**/*.rb
+
 Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'
   Enabled: true
