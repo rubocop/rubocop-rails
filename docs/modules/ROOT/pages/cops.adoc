@@ -86,6 +86,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsrequestreferer[Rails/RequestReferer]
 * xref:cops_rails.adoc#railsrequiredependency[Rails/RequireDependency]
 * xref:cops_rails.adoc#railsreversiblemigration[Rails/ReversibleMigration]
+* xref:cops_rails.adoc#railsreversiblemigrationmethoddefinition[Rails/ReversibleMigrationMethodDefinition]
 * xref:cops_rails.adoc#railssafenavigation[Rails/SafeNavigation]
 * xref:cops_rails.adoc#railssafenavigationwithblank[Rails/SafeNavigationWithBlank]
 * xref:cops_rails.adoc#railssavebang[Rails/SaveBang]

@@ -3694,6 +3694,72 @@ end
 * https://rails.rubystyle.guide#reversible-migration
 * https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
 
+== Rails/ReversibleMigrationMethodDefinition
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Disabled
+| Yes
+| No
+| 2.10
+| -
+|===
+
+This cop checks whether the migration implements
+either a `change` method or both an `up` and a `down`
+method.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class SomeMigration < ActiveRecord::Migration[6.0]
+  def up
+    # up migration
+  end
+
+  # <----- missing down method
+end
+
+class SomeMigration < ActiveRecord::Migration[6.0]
+  # <----- missing up method
+
+  def down
+    # down migration
+  end
+end
+
+# good
+class SomeMigration < ActiveRecord::Migration[6.0]
+  def change
+    # reversible migration
+  end
+end
+
+# good
+class SomeMigration < ActiveRecord::Migration[6.0]
+  def up
+    # up migration
+  end
+
+  def down
+    # down migration
+  end
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| include
+| `db/migrate/*.rb`
+| Array
+|===
+
 == Rails/SafeNavigation
 
 |===

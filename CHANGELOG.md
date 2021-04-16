@@ -4,6 +4,7 @@
 
 ### New features
 
+* [#457](https://github.com/rubocop/rubocop-rails/pull/457): Add new `Rails/ReversibleMigrationMethodDefinition` cop. ([@leonp1991][])
 * [#446](https://github.com/rubocop/rubocop-rails/issues/446): Add new `Rails/RequireDependency` cop. ([@tubaxenor][])
 * [#458](https://github.com/rubocop/rubocop-rails/issues/458): Add new `Rails/TimeZoneAssignment` cop. ([@olivierbuffon][])
 
@@ -353,3 +354,4 @@
 [@ohbarye]: https://github.com/ohbarye
 [@tubaxenor]: https://github.com/tubaxenor
 [@olivierbuffon]: https://github.com/olivierbuffon
+[@leonp1991]: https://github.com/leonp1991
