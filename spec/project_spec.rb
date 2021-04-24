@@ -4,10 +4,6 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
   describe 'default configuration file' do
     subject(:config) { RuboCop::ConfigLoader.load_file('config/default.yml') }
 
-    before do
-      allow_any_instance_of(RuboCop::Config).to receive(:loaded_features).and_return('rubocop-rails') # rubocop:disable RSpec/AnyInstance
-    end
-
     let(:registry) { RuboCop::Cop::Registry.global }
     let(:cop_names) do
       registry.with_department(:Rails).cops.map(&:cop_name)
