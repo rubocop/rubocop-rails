@@ -10,7 +10,7 @@ gem 'bump', require: false
 gem 'rake'
 gem 'rspec'
 gem 'rubocop', github: 'rubocop/rubocop'
-gem 'rubocop-performance', '~> 1.10.0'
+gem 'rubocop-performance', '~> 1.11.0'
 gem 'rubocop-rspec', '~> 1.29.0'
 gem 'simplecov'
 gem 'yard', '~> 0.9'
