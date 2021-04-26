@@ -15,6 +15,7 @@
 * [#435](https://github.com/rubocop/rubocop-rails/issues/435): Fix a false negative for `Rails/BelongsTo` when using `belongs_to` lambda block with `required` option. ([@koic][])
 * [#451](https://github.com/rubocop/rubocop-rails/issues/451): Fix a false negative for `Rails/RelativeDateConstant` when a method is chained after a relative date method. ([@koic][])
 * [#450](https://github.com/rubocop/rubocop-rails/issues/450): Fix a crash for `Rails/ContentTag` with nested content tags. ([@tejasbubane][])
+* [#103](https://github.com/rubocop/rubocop-rails/issues/103): Fix a false positive for `Rails/FindEach` when not inheriting `ActiveRecord::Base` and using `all.each`. ([@koic][])
 
 ### Changes
 

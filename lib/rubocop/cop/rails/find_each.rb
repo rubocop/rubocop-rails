@@ -17,6 +17,7 @@ module RuboCop
       #   # good
       #   User.order(:foo).each
       class FindEach < Base
+        include ActiveRecordHelper
         extend AutoCorrector
 
         MSG = 'Use `find_each` instead of `each`.'
@@ -30,6 +31,7 @@ module RuboCop
         def on_send(node)
           return unless node.receiver&.send_type?
           return unless SCOPE_METHODS.include?(node.receiver.method_name)
+          return if node.receiver.receiver.nil? && !inherit_active_record_base?(node)
           return if ignored?(node)
 
           range = node.loc.selector

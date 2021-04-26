@@ -8,6 +8,13 @@ module RuboCop
 
       WHERE_METHODS = %i[where rewhere].freeze
 
+      def_node_matcher :active_record?, <<~PATTERN
+        {
+          (const nil? :ApplicationRecord)
+          (const (const nil? :ActiveRecord) :Base)
+        }
+      PATTERN
+
       def_node_search :find_set_table_name, <<~PATTERN
         (send self :table_name= {str sym})
       PATTERN
@@ -15,6 +22,10 @@ module RuboCop
       def_node_search :find_belongs_to, <<~PATTERN
         (send nil? :belongs_to {str sym} ...)
       PATTERN
+
+      def inherit_active_record_base?(node)
+        node.each_ancestor(:class).any? { |class_node| active_record?(class_node.parent_class) }
+      end
 
       def external_dependency_checksum
         return @external_dependency_checksum if defined?(@external_dependency_checksum)
