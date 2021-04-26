@@ -65,6 +65,42 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
     RUBY
   end
 
+  context 'with no receiver' do
+    it 'does not register an offense when not inheriting any class' do
+      expect_no_offenses(<<~RUBY)
+        class C
+          all.each { |u| u.x }
+        end
+      RUBY
+    end
+
+    it 'does not register an offense when not inheriting `ApplicationRecord`' do
+      expect_no_offenses(<<~RUBY)
+        class C < Foo
+          all.each { |u| u.x }
+        end
+      RUBY
+    end
+
+    it 'registers an offense when inheriting `ApplicationRecord`' do
+      expect_offense(<<~RUBY)
+        class C < ApplicationRecord
+          all.each { |u| u.x }
+              ^^^^ Use `find_each` instead of `each`.
+        end
+      RUBY
+    end
+
+    it 'registers an offense when inheriting `ActiveRecord::Base`' do
+      expect_offense(<<~RUBY)
+        class C < ActiveRecord::Base
+          all.each { |u| u.x }
+              ^^^^ Use `find_each` instead of `each`.
+        end
+      RUBY
+    end
+  end
+
   context 'ignored methods' do
     let(:cop_config) { { 'IgnoredMethods' => %w[order lock] } }
 
