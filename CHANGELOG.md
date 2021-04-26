@@ -16,6 +16,7 @@
 * [#451](https://github.com/rubocop/rubocop-rails/issues/451): Fix a false negative for `Rails/RelativeDateConstant` when a method is chained after a relative date method. ([@koic][])
 * [#450](https://github.com/rubocop/rubocop-rails/issues/450): Fix a crash for `Rails/ContentTag` with nested content tags. ([@tejasbubane][])
 * [#103](https://github.com/rubocop/rubocop-rails/issues/103): Fix a false positive for `Rails/FindEach` when not inheriting `ActiveRecord::Base` and using `all.each`. ([@koic][])
+* [#466](https://github.com/rubocop/rubocop-rails/pull/466): Fix a false positive for `Rails/DynamicFindBy` when not inheriting `ApplicationRecord` and without no receiver. ([@koic][])
 
 ### Changes
 
