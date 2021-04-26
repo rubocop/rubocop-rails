@@ -52,10 +52,6 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
       it_behaves_like 'accepts', 'try! with a method stored as a variable',
                       ['bar = :==',
                        'foo.try!(baz, bar)'].join("\n")
-
-      it 'accepts usages of try! without receiver' do
-        expect_no_offenses('try!(:something)')
-      end
     end
 
     context 'try' do
@@ -118,6 +114,8 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
                       '[1, 2].try!(:join, ",")', '[1, 2]&.join(",")'
       it_behaves_like 'autocorrect', 'try! with multiple parameters',
                       '[1, 2].try!(:join, bar, baz)', '[1, 2]&.join(bar, baz)'
+      it_behaves_like 'autocorrect', 'try! without receiver',
+                      'try!(:join)', 'self&.join'
       it_behaves_like 'autocorrect', 'try! with a block',
                       ['[foo, bar].try!(:map) do |e|',
                        '  e.some_method',
