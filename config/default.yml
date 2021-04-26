@@ -229,8 +229,9 @@ Rails/DynamicFindBy:
   Description: 'Use `find_by` instead of dynamic `find_by_*`.'
   StyleGuide: 'https://rails.rubystyle.guide#find_by'
   Enabled: true
+  Safe: false
   VersionAdded: '0.44'
-  VersionChanged: '2.6'
+  VersionChanged: '2.10'
   # The `Whitelist` has been deprecated, Please use `AllowedMethods` instead.
   Whitelist:
     - find_by_sql
