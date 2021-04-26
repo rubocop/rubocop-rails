@@ -1103,10 +1103,10 @@ delegate :foo, to: :bar, allow_nil: true
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
 | Enabled
-| Yes
-| Yes
+| No
+| Yes (Unsafe)
 | 0.44
-| 2.6
+| 2.10
 |===
 
 This cop checks dynamic `find_by_*` methods.
