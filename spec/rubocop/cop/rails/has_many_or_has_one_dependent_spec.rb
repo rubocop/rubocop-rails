@@ -28,6 +28,14 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
       RUBY
     end
 
+    it 'does not register an offense when specifying default `dependent: nil` strategy' do
+      expect_no_offenses(<<~RUBY)
+        class Person < ApplicationRecord
+          has_one :foo, dependent: nil
+        end
+      RUBY
+    end
+
     context 'with :through option' do
       it 'does not register an offense for non-nil value' do
         expect_no_offenses(<<~RUBY)
@@ -91,6 +99,14 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
 
     it 'does not register an offense when specifying `:dependent` strategy' do
       expect_no_offenses('has_many :foo, dependent: :bar')
+    end
+
+    it 'does not register an offense when specifying default `dependent: nil` strategy' do
+      expect_no_offenses(<<~RUBY)
+        class Person < ApplicationRecord
+          has_many :foo, dependent: nil
+        end
+      RUBY
     end
 
     context 'with :through option' do
