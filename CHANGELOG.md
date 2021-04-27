@@ -17,6 +17,7 @@
 * [#450](https://github.com/rubocop/rubocop-rails/issues/450): Fix a crash for `Rails/ContentTag` with nested content tags. ([@tejasbubane][])
 * [#103](https://github.com/rubocop/rubocop-rails/issues/103): Fix a false positive for `Rails/FindEach` when not inheriting `ActiveRecord::Base` and using `all.each`. ([@koic][])
 * [#466](https://github.com/rubocop/rubocop-rails/pull/466): Fix a false positive for `Rails/DynamicFindBy` when not inheriting `ApplicationRecord` and without no receiver. ([@koic][])
+* [#147](https://github.com/rubocop/rubocop-rails/issues/147): Fix a false positive for `Rails/HasManyOrHasOneDependent` when specifying default `dependent: nil` strategy. ([@koic][])
 
 ### Changes
 

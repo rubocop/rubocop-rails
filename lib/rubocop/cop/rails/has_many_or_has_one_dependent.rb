@@ -18,6 +18,7 @@ module RuboCop
       #   class User < ActiveRecord::Base
       #     has_many :comments, dependent: :restrict_with_exception
       #     has_one :avatar, dependent: :destroy
+      #     has_many :articles, dependent: nil
       #     has_many :patients, through: :appointments
       #   end
       class HasManyOrHasOneDependent < Base
@@ -37,7 +38,7 @@ module RuboCop
         PATTERN
 
         def_node_matcher :dependent_option?, <<~PATTERN
-          (pair (sym :dependent) !nil)
+          (pair (sym :dependent) {!nil (nil)})
         PATTERN
 
         def_node_matcher :present_option?, <<~PATTERN
