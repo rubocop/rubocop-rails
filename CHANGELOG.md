@@ -29,6 +29,7 @@
 * [#444](https://github.com/rubocop/rubocop-rails/issues/444): Mark `Rails/Blank` as unsafe auto-correction. ([@koic][])
 * [#451](https://github.com/rubocop/rubocop-rails/issues/451): Make `Rails/RelativeDateConstant` aware of `yesterday` and `tomorrow` methods. ([@koic][])
 * [#454](https://github.com/rubocop/rubocop-rails/pull/454): Mark `Rails/WhereExists` as unsafe auto-correction. ([@koic][])
+* [#403](https://github.com/rubocop/rubocop-rails/pull/403): Mark `Rails/WhereEquals` as unsafe auto-correction. ([@koic][])
 * [#379](https://github.com/rubocop/rubocop-rails/issues/379): Mark `Rails/DynamicFindBy` as unsafe. ([@koic][])
 * [#456](https://github.com/rubocop/rubocop-rails/pull/456): Drop Ruby 2.4 support. ([@koic][])
 * [#462](https://github.com/rubocop/rubocop-rails/pull/462): Require RuboCop 1.7 or higher. ([@koic][])
