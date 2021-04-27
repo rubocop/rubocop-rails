@@ -4586,9 +4586,9 @@ validates :foo, uniqueness: true
 
 | Pending
 | Yes
-| Yes
+| Yes (Unsafe)
 | 2.9
-| -
+| 2.10
 |===
 
 This cop identifies places where manually constructed SQL
