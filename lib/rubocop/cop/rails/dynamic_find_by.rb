@@ -32,13 +32,14 @@ module RuboCop
       #   # good
       #   Gem::Specification.find_by_name('backend').gem_dir
       class DynamicFindBy < Base
+        include ActiveRecordHelper
         extend AutoCorrector
 
         MSG = 'Use `%<static_name>s` instead of dynamic `%<method>s`.'
         METHOD_PATTERN = /^find_by_(.+?)(!)?$/.freeze
 
         def on_send(node)
-          return if allowed_invocation?(node)
+          return if node.receiver.nil? && !inherit_active_record_base?(node) || allowed_invocation?(node)
 
           method_name = node.method_name
           static_name = static_method_name(method_name)
