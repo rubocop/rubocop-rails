@@ -32,6 +32,7 @@
 * [#403](https://github.com/rubocop/rubocop-rails/pull/403): Mark `Rails/WhereEquals` as unsafe auto-correction. ([@koic][])
 * [#379](https://github.com/rubocop/rubocop-rails/issues/379): Mark `Rails/DynamicFindBy` as unsafe. ([@koic][])
 * [#106](https://github.com/rubocop/rubocop-rails/issues/106): Mark `Rails/ReflectionClassName` as unsafe. ([@koic][])
+* [#106](https://github.com/rubocop/rubocop-rails/issues/106): Make `Rails/ReflectionClassName` aware of the use of string with `to_s`. ([@koic][])
 * [#456](https://github.com/rubocop/rubocop-rails/pull/456): Drop Ruby 2.4 support. ([@koic][])
 * [#462](https://github.com/rubocop/rubocop-rails/pull/462): Require RuboCop 1.7 or higher. ([@koic][])
 
