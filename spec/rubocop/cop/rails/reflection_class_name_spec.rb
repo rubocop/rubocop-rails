@@ -16,6 +16,13 @@ RSpec.describe RuboCop::Cop::Rails::ReflectionClassName, :config do
       RUBY
     end
 
+    it '.to_s' do
+      expect_offense(<<~RUBY)
+        has_many :accounts, class_name: Account.to_s
+                            ^^^^^^^^^^^^^^^^^^^^^^^^ Use a string value for `class_name`.
+      RUBY
+    end
+
     it 'has_one' do
       expect_offense(<<~RUBY)
         has_one :account, class_name: Account
@@ -43,6 +50,12 @@ RSpec.describe RuboCop::Cop::Rails::ReflectionClassName, :config do
   it 'does not register an offense when using string with interpolation' do
     expect_no_offenses(<<~'RUBY')
       has_many :accounts, class_name: "#{prefix}Account"
+    RUBY
+  end
+
+  it 'does not register an offense when using `class_name: do_something.to_s`' do
+    expect_no_offenses(<<~'RUBY')
+      has_many :accounts, class_name: do_something.to_s
     RUBY
   end
 
