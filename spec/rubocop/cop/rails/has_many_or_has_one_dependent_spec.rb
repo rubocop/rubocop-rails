@@ -224,6 +224,33 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
     end
   end
 
+  context 'when defining `readonly?` method' do
+    it 'does not register an offense for `readonly?` is `true`' do
+      expect_no_offenses(<<~RUBY)
+        class Person < ActiveRecord::Base
+          has_one :foo
+
+          def readonly?
+            true
+          end
+        end
+      RUBY
+    end
+
+    it 'registers an offense for `readonly?` is not `true`' do
+      expect_offense(<<~RUBY)
+        class Person < ActiveRecord::Base
+          has_one :foo
+          ^^^^^^^ Specify a `:dependent` option.
+
+          def readonly?
+            false
+          end
+        end
+      RUBY
+    end
+  end
+
   context 'when an Active Record model does not have any associations' do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)

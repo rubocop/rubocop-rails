@@ -1570,8 +1570,9 @@ This cop checks for the use of the has_and_belongs_to_many macro.
 
 This cop looks for `has_many` or `has_one` associations that don't
 specify a `:dependent` option.
+
 It doesn't register an offense if `:through` or `dependent: nil`
-was specified.
+is specified, or if the model is read-only.
 
 === Examples
 
@@ -1589,6 +1590,15 @@ class User < ActiveRecord::Base
   has_one :avatar, dependent: :destroy
   has_many :articles, dependent: nil
   has_many :patients, through: :appointments
+end
+
+class User < ActiveRecord::Base
+  has_many :comments
+  has_one :avatar
+
+  def readonly?
+    true
+  end
 end
 ----
 
