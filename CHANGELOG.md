@@ -21,6 +21,7 @@
 * [#147](https://github.com/rubocop/rubocop-rails/issues/147): Fix a false positive for `Rails/HasManyOrHasOneDependent` when specifying default `dependent: nil` strategy. ([@koic][])
 * [#137](https://github.com/rubocop/rubocop-rails/issues/137): Make `Rails/HasManyOrHasOneDependent` aware of `readonly?` is `true`. ([@koic][])
 * [#474](https://github.com/rubocop/rubocop-rails/pull/474): Fix a false negative for `Rails/SafeNavigation` when using `try!` without receiver. ([@koic][])
+* [#126](https://github.com/rubocop/rubocop-rails/issues/126): Fix an incorrect auto-correct for `Rails/SafeNavigation` with `Style/RedndantSelf`. ([@koic][])
 
 ### Changes
 
