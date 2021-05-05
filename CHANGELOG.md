@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+## 2.10.1 (2021-05-06)
+
+### Bug fixes
+
 * [#478](https://github.com/rubocop/rubocop-rails/pull/478): Fix `Rails/ReversibleMigrationMethodDefinition` cop's `Include`. ([@rhymes][])
 
 ## 2.10.0 (2021-05-05)
