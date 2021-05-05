@@ -101,6 +101,10 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
       end
     RUBY
 
+    it_behaves_like 'accepts', 'drop_table(with symbol proc)', <<~RUBY
+      drop_table :users, &:timestamps
+    RUBY
+
     it_behaves_like 'offense', 'drop_table(without block)', <<~RUBY
       drop_table :users
     RUBY

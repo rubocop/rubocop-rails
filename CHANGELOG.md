@@ -22,6 +22,7 @@
 * [#137](https://github.com/rubocop/rubocop-rails/issues/137): Make `Rails/HasManyOrHasOneDependent` aware of `readonly?` is `true`. ([@koic][])
 * [#474](https://github.com/rubocop/rubocop-rails/pull/474): Fix a false negative for `Rails/SafeNavigation` when using `try!` without receiver. ([@koic][])
 * [#126](https://github.com/rubocop/rubocop-rails/issues/126): Fix an incorrect auto-correct for `Rails/SafeNavigation` with `Style/RedndantSelf`. ([@koic][])
+* [#476](https://github.com/rubocop/rubocop-rails/issues/476): Fix a false positive for `Rails/ReversibleMigration` when using `drop_table` with symbol proc. ([@koic][])
 
 ### Changes
 
