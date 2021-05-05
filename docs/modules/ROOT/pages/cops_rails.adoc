@@ -3855,7 +3855,7 @@ end
 |===
 | Name | Default value | Configurable values
 
-| include
+| Include
 | `db/migrate/*.rb`
 | Array
 |===
