@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.10.0 (2021-05-05)
+
 ### New features
 
 * [#457](https://github.com/rubocop/rubocop-rails/pull/457): Add new `Rails/ReversibleMigrationMethodDefinition` cop. ([@leonp1991][])
