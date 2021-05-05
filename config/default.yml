@@ -639,7 +639,7 @@ Rails/ReversibleMigrationMethodDefinition:
   Description: 'Checks whether the migration implements either a `change` method or both an `up` and a `down` method.'
   Enabled: false
   VersionAdded: '2.10'
-  include:
+  Include:
     - db/migrate/*.rb
 
 Rails/SafeNavigation:
