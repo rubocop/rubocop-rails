@@ -7,6 +7,7 @@
 * [#486](https://github.com/rubocop/rubocop-rails/issues/486): Add new `Rails/ExpandedDateRange` cop. ([@koic][])
 * [#494](https://github.com/rubocop/rubocop-rails/pull/494): Add new `Rails/UnusedIgnoredColumns` cop. ([@pocke][])
 * [#490](https://github.com/rubocop/rubocop-rails/issues/490): Make `Rails/HttpStatus` aware of `head` method. ([@koic][])
+* [#483](https://github.com/rubocop/rubocop-rails/pull/483): Add new `Rails/EagerEvaluationLogMessage` cop. ([@aesthetikx][])
 
 ### Bug fixes
 
@@ -398,3 +399,4 @@
 [@drenmi]: https://github.com/drenmi
 [@rhymes]: https://github.com/rhymes
 [@jdelStrother]: https://github.com/jdelStrother
+[@aesthetikx]: https://github.com/aesthetikx
