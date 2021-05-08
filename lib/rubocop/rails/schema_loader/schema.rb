@@ -114,7 +114,7 @@ module RuboCop
         attr_reader :name, :type, :not_null
 
         def initialize(node)
-          @name = node.first_argument.value
+          @name = node.first_argument.str_content
           @type = node.method_name
           @not_null = nil
 
