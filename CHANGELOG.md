@@ -6,6 +6,10 @@
 
 * [#419](https://github.com/rubocop/rubocop-rails/issues/419): Fix an error for `Rails/UniqueValidationWithoutIndex` when using a unique index and `check_constraint` that has `nil` first argument. ([@koic][])
 
+### Changes
+
+* [#288](https://github.com/rubocop/rubocop-rails/issues/288): Add `AllowToTime` option (`true` by default) to `Rails/Date`. ([@koic][])
+
 ## 2.10.1 (2021-05-06)
 
 ### Bug fixes

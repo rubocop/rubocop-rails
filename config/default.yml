@@ -193,7 +193,7 @@ Rails/Date:
                   such as Date.today, Date.current etc.
   Enabled: true
   VersionAdded: '0.30'
-  VersionChanged: '0.33'
+  VersionChanged: '2.11'
   # The value `strict` disallows usage of `Date.today`, `Date.current`,
   # `Date#to_time` etc.
   # The value `flexible` allows usage of `Date.current`, `Date.yesterday`, etc
@@ -203,6 +203,7 @@ Rails/Date:
   SupportedStyles:
     - strict
     - flexible
+  AllowToTime: true
 
 Rails/DefaultScope:
   Description: 'Avoid use of `default_scope`.'

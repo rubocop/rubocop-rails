@@ -12,20 +12,21 @@ module RuboCop
       # The cop also reports warnings when you are using `to_time` method,
       # because it doesn't know about Rails time zone either.
       #
-      # Two styles are supported for this cop. When EnforcedStyle is 'strict'
+      # Two styles are supported for this cop. When `EnforcedStyle` is 'strict'
       # then the Date methods `today`, `current`, `yesterday`, and `tomorrow`
       # are prohibited and the usage of both `to_time`
       # and 'to_time_in_current_zone' are reported as warning.
       #
-      # When EnforcedStyle is 'flexible' then only `Date.today` is prohibited
-      # and only `to_time` is reported as warning.
+      # When `EnforcedStyle` is `flexible` then only `Date.today` is prohibited.
+      #
+      # And you can set a warning for `to_time` with `AllowToTime: false`.
+      # `AllowToTime` is `true` by default to prevent false positive on `DateTime` object.
       #
       # @example EnforcedStyle: strict
       #   # bad
       #   Date.current
       #   Date.yesterday
       #   Date.today
-      #   date.to_time
       #
       #   # good
       #   Time.zone.today
@@ -34,7 +35,6 @@ module RuboCop
       # @example EnforcedStyle: flexible (default)
       #   # bad
       #   Date.today
-      #   date.to_time
       #
       #   # good
       #   Time.zone.today
@@ -43,6 +43,13 @@ module RuboCop
       #   Date.yesterday
       #   date.in_time_zone
       #
+      # @example AllowToTime: true (default)
+      #   # good
+      #   date.to_time
+      #
+      # @example AllowToTime: false
+      #   # bad
+      #   date.to_time
       class Date < Base
         include ConfigurableEnforcedStyle
 
@@ -73,7 +80,7 @@ module RuboCop
 
         def on_send(node)
           return unless node.receiver && bad_methods.include?(node.method_name)
-
+          return if allow_to_time? && node.method?(:to_time)
           return if safe_chain?(node) || safe_to_time?(node)
 
           check_deprecated_methods(node)
@@ -137,6 +144,10 @@ module RuboCop
           else
             node.arguments.one?
           end
+        end
+
+        def allow_to_time?
+          cop_config.fetch('AllowToTime', true)
         end
 
         def good_days
