@@ -26,6 +26,17 @@ RSpec.describe RuboCop::Cop::Rails::RelativeDateConstant, :config do
       RUBY
     end
 
+    it 'accepts a nested proc' do
+      expect_no_offenses(<<~RUBY)
+        class SomeClass
+          EXPIRIES = {
+            yearly: Proc.new { 1.year.ago },
+            monthly: Proc.new { 1.month.ago }
+          }
+        end
+      RUBY
+    end
+
     it 'registers an offense for ActiveSupport::Duration.since' do
       expect_offense(<<~RUBY)
         class SomeClass
