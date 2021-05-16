@@ -246,4 +246,40 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
   end
+
+  context 'when EnforcedStyle is slashes or arguments' do
+    let(:cop_config) { { 'EnforcedStyle' => %w[arguments slashes] } }
+
+    context 'when using File.join with Rails.root and slash arguments' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root, 'app/models/user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join` instead.
+        RUBY
+      end
+    end
+
+    context 'when using File.join with multiple arguments' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root, 'app', 'models')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join` instead.
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with some path strings' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app', 'models', 'user.rb')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with slash separated path string' do
+      it 'does not register an offense' do
+        expect_no_offenses("Rails.root.join('app/models/goober')")
+      end
+    end
+  end
 end

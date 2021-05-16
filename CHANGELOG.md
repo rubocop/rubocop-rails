@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#298](https://github.com/rubocop-hq/rubocop-rails/pull/298): Allow multiple enforced styles for `Rails/FilePath` cop. ([@tejasbubane][])
+
 ### Bug fixes
 
 * [#482](https://github.com/rubocop/rubocop-rails/pull/482): Fix a false positive for `Rails/RelativeDateConstant` when assigning (hashes/arrays/etc)-containing procs to a constant. ([@jdelStrother][])

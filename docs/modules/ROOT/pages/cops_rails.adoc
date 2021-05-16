@@ -1452,7 +1452,7 @@ raise 'a bad error has happened'
 | Yes
 | No
 | 0.47
-| 2.4
+| 2.11
 |===
 
 This cop is used to identify usages of file path joining process
