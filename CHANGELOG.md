@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#486](https://github.com/rubocop/rubocop-rails/issues/486): Add new `Rails/ExpandedDateRange` cop. ([@koic][])
+
 ### Bug fixes
 
 * [#482](https://github.com/rubocop/rubocop-rails/pull/482): Fix a false positive for `Rails/RelativeDateConstant` when assigning (hashes/arrays/etc)-containing procs to a constant. ([@jdelStrother][])

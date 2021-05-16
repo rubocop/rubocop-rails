@@ -44,6 +44,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsenvironmentcomparison[Rails/EnvironmentComparison]
 * xref:cops_rails.adoc#railsenvironmentvariableaccess[Rails/EnvironmentVariableAccess]
 * xref:cops_rails.adoc#railsexit[Rails/Exit]
+* xref:cops_rails.adoc#railsexpandeddaterange[Rails/ExpandedDateRange]
 * xref:cops_rails.adoc#railsfilepath[Rails/FilePath]
 * xref:cops_rails.adoc#railsfindby[Rails/FindBy]
 * xref:cops_rails.adoc#railsfindbyid[Rails/FindById]

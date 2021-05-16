@@ -287,6 +287,11 @@ Rails/Exit:
   Exclude:
     - lib/**/*.rake
 
+Rails/ExpandedDateRange:
+  Description: 'Checks for expanded date range.'
+  Enabled: pending
+  VersionAdded: '2.11'
+
 Rails/FilePath:
   Description: 'Use `Rails.root.join` for file path joining.'
   Enabled: true
