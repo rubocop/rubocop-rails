@@ -50,7 +50,7 @@ module RuboCop
           (class
             (const nil? _)
             (send
-              (const (const nil? :ActiveRecord) :Migration)
+              (const (const {nil? cbase} :ActiveRecord) :Migration)
               :[]
               (float _))
             _)
