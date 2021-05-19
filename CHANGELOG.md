@@ -7,6 +7,7 @@
 * [#482](https://github.com/rubocop/rubocop-rails/pull/482): Fix a false positive for `Rails/RelativeDateConstant` when assigning (hashes/arrays/etc)-containing procs to a constant. ([@jdelStrother][])
 * [#419](https://github.com/rubocop/rubocop-rails/issues/419): Fix an error for `Rails/UniqueValidationWithoutIndex` when using a unique index and `check_constraint` that has `nil` first argument. ([@koic][])
 * [#70](https://github.com/rubocop/rubocop-rails/issues/70): Fix a false positive for `Rails/TimeZone` when setting `EnforcedStyle: strict` and using `Time.current`. ([@koic][])
+* [#488](https://github.com/rubocop/rubocop-rails/issues/488): Fix a false positive for `Rails/ReversibleMigrationMethodDefinition` when using cbase migration class. ([@koic][])
 
 ### Changes
 

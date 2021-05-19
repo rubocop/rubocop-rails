@@ -96,4 +96,14 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config
       end
     RUBY
   end
+
+  it 'does not register offenses correctly with any cbase migration class' do
+    expect_no_offenses(<<~RUBY)
+      class SomeMigration < ::ActiveRecord::Migration[5.2]
+        def change
+          add_column :users, :email, :text, null: false
+        end
+      end
+    RUBY
+  end
 end
