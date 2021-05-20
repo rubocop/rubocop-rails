@@ -63,6 +63,40 @@ skip_after_filter :do_stuff
 | Array
 |===
 
+== Rails/ActiveModelErrorsDirectManipulation
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| No
+| No
+| 2.11
+| -
+|===
+
+This cop checks direct manipulation of ActiveModel#errors as hash.
+These operations are deprecated in Rails 6.1 and will not work in Rails 7.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+user.errors[:name] << 'msg'
+user.errors.messages[:name] << 'msg'
+
+# good
+user.errors.add(:name, 'msg')
+
+# bad
+user.errors[:name].clear
+user.errors.messages[:name].clear
+
+# good
+user.errors.delete(:name)
+----
+
 == Rails/ActiveRecordAliases
 
 |===
