@@ -264,6 +264,12 @@ Rails/DelegateAllowBlank:
   Enabled: true
   VersionAdded: '0.44'
 
+Rails/DeprecatedActiveModelErrorsMethods:
+  Description: 'Avoid manipulating ActiveModel errors hash directly.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Rails/DuplicateAssociation:
   Description: "Don't repeat associations in a model."
   Enabled: pending
