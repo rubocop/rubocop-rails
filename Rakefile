@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+task release: 'changelog:check_clean' # Before task is required
+
 require 'bundler'
 require 'bundler/gem_tasks'
 
