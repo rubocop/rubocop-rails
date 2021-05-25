@@ -83,6 +83,16 @@ Rails/ActiveSupportAliases:
   Enabled: true
   VersionAdded: '0.48'
 
+Rails/AddColumnIndex:
+  Description: >-
+    Rails migrations don't make use of a given `index` key, but also
+    doesn't given an error when it's used, so it makes it seem like an
+    index might be used.
+  Enabled: pending
+  VersionAdded: '2.11'
+  Include:
+    - db/migrate/*.rb
+
 Rails/AfterCommitOverride:
   Description: >-
                   This cop enforces that there is only one call to `after_commit`

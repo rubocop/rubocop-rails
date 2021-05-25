@@ -9,6 +9,7 @@
 * [#490](https://github.com/rubocop/rubocop-rails/issues/490): Make `Rails/HttpStatus` aware of `head` method. ([@koic][])
 * [#483](https://github.com/rubocop/rubocop-rails/pull/483): Add new `Rails/EagerEvaluationLogMessage` cop. ([@aesthetikx][])
 * [#495](https://github.com/rubocop/rubocop-rails/issues/495): Add new `Rails/I18nLocaleAssignment` cop. ([@koic][])
+* [#497](https://github.com/rubocop/rubocop-rails/issues/497): Add new `Rails/AddColumnIndex` cop. ([@dvandersluis][])
 
 ### Bug fixes
 
