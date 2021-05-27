@@ -138,6 +138,14 @@ RSpec.describe RuboCop::Cop::Rails::DynamicFindBy, :config do
     expect_no_offenses('User.find_by_foo_and_bar(arg, *args)')
   end
 
+  it 'accepts dynamic finder with single hash argument' do
+    expect_no_offenses('Post.find_by_id(limit: 1)')
+  end
+
+  it 'accepts dynamic finder with multiple arguments including hash' do
+    expect_no_offenses('Post.find_by_title_and_id("foo", limit: 1)')
+  end
+
   it 'accepts method in whitelist' do
     expect_no_offenses(<<~RUBY)
       User.find_by_sql(["select * from users where name = ?", name])
