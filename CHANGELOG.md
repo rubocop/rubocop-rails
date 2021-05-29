@@ -12,6 +12,7 @@
 * [#419](https://github.com/rubocop/rubocop-rails/issues/419): Fix an error for `Rails/UniqueValidationWithoutIndex` when using a unique index and `check_constraint` that has `nil` first argument. ([@koic][])
 * [#70](https://github.com/rubocop/rubocop-rails/issues/70): Fix a false positive for `Rails/TimeZone` when setting `EnforcedStyle: strict` and using `Time.current`. ([@koic][])
 * [#488](https://github.com/rubocop/rubocop-rails/issues/488): Fix a false positive for `Rails/ReversibleMigrationMethodDefinition` when using cbase migration class. ([@koic][])
+* [#500](https://github.com/rubocop/rubocop-rails/issues/500): Fix a false positive for `Rails/DynamicFindBy` when using dynamic finder with hash argument. ([@koic][])
 
 ### Changes
 
