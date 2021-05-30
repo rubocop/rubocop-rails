@@ -64,6 +64,28 @@ RSpec.describe RuboCop::Cop::Rails::UnusedIgnoredColumns, :config do
       end
     end
 
+    context 'with existent and nonexistent columns as Symbol' do
+      it 'registers an offense to the nonexistent column' do
+        expect_offense(<<~RUBY)
+          class User < ApplicationRecord
+            self.ignored_columns = [:real_name, :account]
+                                    ^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist.
+          end
+        RUBY
+      end
+    end
+
+    context 'with existent and nonexistent columns as String' do
+      it 'registers an offense to the nonexistent column' do
+        expect_offense(<<~RUBY)
+          class User < ApplicationRecord
+            self.ignored_columns = ['real_name', 'account']
+                                    ^^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist.
+          end
+        RUBY
+      end
+    end
+
     context 'when ignored_columns= receives not a literal' do
       it 'does nothing' do
         expect_no_offenses(<<~RUBY)

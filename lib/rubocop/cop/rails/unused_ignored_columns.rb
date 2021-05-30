@@ -22,8 +22,9 @@ module RuboCop
         include ActiveRecordHelper
 
         MSG = 'Remove `%<column_name>s` from `ignored_columns` because the column does not exist.'
+        RESTRICT_ON_SEND = %i[ignored_columns=].freeze
 
-        def_node_matcher :ignored_columns?, <<~PATTERN
+        def_node_matcher :ignored_columns, <<~PATTERN
           (send self :ignored_columns= $array)
         PATTERN
 
@@ -32,7 +33,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless (columns = ignored_columns?(node))
+          return unless (columns = ignored_columns(node))
           return unless schema
 
           table = table(node)
