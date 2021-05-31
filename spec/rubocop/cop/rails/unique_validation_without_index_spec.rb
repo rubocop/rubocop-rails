@@ -12,23 +12,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
   end
 
   context 'with db/schema.rb' do
-    let(:schema_path) do
-      f = Tempfile.create('rubocop-rails-UniqueValidationWithoutIndex-test-')
-      f.close
-      Pathname(f.path)
-    end
-
-    before do
-      RuboCop::Rails::SchemaLoader.reset!
-      schema_path.write(schema)
-      allow(RuboCop::Rails::SchemaLoader).to receive(:db_schema_path)
-        .and_return(schema_path)
-    end
-
-    after do
-      RuboCop::Rails::SchemaLoader.reset!
-      schema_path.unlink
-    end
+    include_context 'with SchemaLoader'
 
     context 'when the table does not have any indices' do
       let(:schema) { <<~RUBY }

@@ -790,6 +790,13 @@ Rails/UnknownEnv:
     - test
     - production
 
+Rails/UnusedIgnoredColumns:
+  Description: 'Remove a column that does not exist from `ignored_columns`.'
+  Enabled: pending
+  VersionAdded: '2.11'
+  Include:
+    - app/models/**/*.rb
+
 Rails/Validation:
   Description: 'Use validates :attribute, hash of validations.'
   Enabled: true

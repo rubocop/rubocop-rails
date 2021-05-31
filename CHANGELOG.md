@@ -5,6 +5,7 @@
 ### New features
 
 * [#486](https://github.com/rubocop/rubocop-rails/issues/486): Add new `Rails/ExpandedDateRange` cop. ([@koic][])
+* [#494](https://github.com/rubocop/rubocop-rails/pull/494): Add new `Rails/UnusedIgnoredColumns` cop. ([@pocke][])
 
 ### Bug fixes
 

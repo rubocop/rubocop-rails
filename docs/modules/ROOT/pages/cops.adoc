@@ -101,6 +101,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsuniqbeforepluck[Rails/UniqBeforePluck]
 * xref:cops_rails.adoc#railsuniquevalidationwithoutindex[Rails/UniqueValidationWithoutIndex]
 * xref:cops_rails.adoc#railsunknownenv[Rails/UnknownEnv]
+* xref:cops_rails.adoc#railsunusedignoredcolumns[Rails/UnusedIgnoredColumns]
 * xref:cops_rails.adoc#railsvalidation[Rails/Validation]
 * xref:cops_rails.adoc#railswhereequals[Rails/WhereEquals]
 * xref:cops_rails.adoc#railswhereexists[Rails/WhereExists]
