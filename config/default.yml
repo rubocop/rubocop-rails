@@ -368,6 +368,7 @@ Rails/HttpStatus:
   Description: 'Enforces use of symbolic or numeric value to define HTTP status.'
   Enabled: true
   VersionAdded: '0.54'
+  VersionChanged: '2.11'
   EnforcedStyle: symbolic
   SupportedStyles:
     - numeric

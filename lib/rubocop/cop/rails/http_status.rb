@@ -11,12 +11,14 @@ module RuboCop
       #   render json: { foo: 'bar' }, status: 200
       #   render plain: 'foo/bar', status: 304
       #   redirect_to root_url, status: 301
+      #   head 200
       #
       #   # good
       #   render :foo, status: :ok
       #   render json: { foo: 'bar' }, status: :ok
       #   render plain: 'foo/bar', status: :not_modified
       #   redirect_to root_url, status: :moved_permanently
+      #   head :ok
       #
       # @example EnforcedStyle: numeric
       #   # bad
@@ -24,23 +26,26 @@ module RuboCop
       #   render json: { foo: 'bar' }, status: :not_found
       #   render plain: 'foo/bar', status: :not_modified
       #   redirect_to root_url, status: :moved_permanently
+      #   head :ok
       #
       #   # good
       #   render :foo, status: 200
       #   render json: { foo: 'bar' }, status: 404
       #   render plain: 'foo/bar', status: 304
       #   redirect_to root_url, status: 301
+      #   head 200
       #
       class HttpStatus < Base
         include ConfigurableEnforcedStyle
         extend AutoCorrector
 
-        RESTRICT_ON_SEND = %i[render redirect_to].freeze
+        RESTRICT_ON_SEND = %i[render redirect_to head].freeze
 
         def_node_matcher :http_status, <<~PATTERN
           {
             (send nil? {:render :redirect_to} _ $hash)
             (send nil? {:render :redirect_to} $hash)
+            (send nil? :head ${int sym} ...)
           }
         PATTERN
 
@@ -49,8 +54,12 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          http_status(node) do |hash_node|
-            status = status_code(hash_node)
+          http_status(node) do |hash_node_or_status_code|
+            status = if hash_node_or_status_code.hash_type?
+                       status_code(hash_node_or_status_code)
+                     else
+                       hash_node_or_status_code
+                     end
             return unless status
 
             checker = checker_class.new(status)
