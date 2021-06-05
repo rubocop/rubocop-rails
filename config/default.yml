@@ -307,6 +307,8 @@ Rails/FindBy:
   StyleGuide: 'https://rails.rubystyle.guide#find_by'
   Enabled: true
   VersionAdded: '0.30'
+  VersionChanged: '2.11'
+  IgnoreWhereFirst: true
   Include:
     - app/models/**/*.rb
 
