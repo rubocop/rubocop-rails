@@ -55,6 +55,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railshelperinstancevariable[Rails/HelperInstanceVariable]
 * xref:cops_rails.adoc#railshttppositionalarguments[Rails/HttpPositionalArguments]
 * xref:cops_rails.adoc#railshttpstatus[Rails/HttpStatus]
+* xref:cops_rails.adoc#railsi18nlocaleassignment[Rails/I18nLocaleAssignment]
 * xref:cops_rails.adoc#railsignoredskipactionfilteroption[Rails/IgnoredSkipActionFilterOption]
 * xref:cops_rails.adoc#railsindexby[Rails/IndexBy]
 * xref:cops_rails.adoc#railsindexwith[Rails/IndexWith]
