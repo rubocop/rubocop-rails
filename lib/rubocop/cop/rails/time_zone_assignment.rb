@@ -6,8 +6,8 @@ module RuboCop
       # This cop checks for the use of `Time.zone=` method.
       #
       # The `zone` attribute persists for the rest of the Ruby runtime, potentially causing
-      # unexpected behaviour at a later time.
-      # Using `Time.use_zone` ensures the code passed in block is the only place Time.zone is affected.
+      # unexpected behavior at a later time.
+      # Using `Time.use_zone` ensures the code passed in the block is the only place Time.zone is affected.
       # It eliminates the possibility of a `zone` sticking around longer than intended.
       #
       # @example
@@ -19,7 +19,7 @@ module RuboCop
       #   end
       #
       class TimeZoneAssignment < Base
-        MSG = 'Use `Time.use_zone` with blocks instead of `Time.zone=`.'
+        MSG = 'Use `Time.use_zone` with block instead of `Time.zone=`.'
         RESTRICT_ON_SEND = %i[zone=].freeze
 
         def_node_matcher :time_zone_assignement?, <<~PATTERN

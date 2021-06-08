@@ -4,7 +4,7 @@ RSpec.describe RuboCop::Cop::Rails::TimeZoneAssignment, :config do
   it 'registers an offense for `Time.zone=`' do
     expect_offense(<<~RUBY)
       Time.zone = 'EST'
-      ^^^^^^^^^^^^^^^^^ Use `Time.use_zone` with blocks instead of `Time.zone=`.
+      ^^^^^^^^^^^^^^^^^ Use `Time.use_zone` with block instead of `Time.zone=`.
     RUBY
   end
 
