@@ -382,6 +382,14 @@ Rails/HttpStatus:
     - numeric
     - symbolic
 
+Rails/I18nLocaleAssignment:
+  Description: 'Prefer the usage of `I18n.with_locale` instead of manually updating `I18n.locale` value.'
+  Enabled: 'pending'
+  VersionAdded: '2.11'
+  Include:
+    - spec/**/*.rb
+    - test/**/*.rb
+
 Rails/IgnoredSkipActionFilterOption:
   Description: 'Checks that `if` and `only` (or `except`) are not used together as options of `skip_*` action filter.'
   Reference: 'https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options'
