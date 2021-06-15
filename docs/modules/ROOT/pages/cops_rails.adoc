@@ -214,6 +214,45 @@ are not used.
 [1, 2, 'a'].prepend('b')
 ----
 
+== Rails/AddColumnIndex
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.11
+| -
+|===
+
+This cop checks for migrations using `add_column` that have an `index`
+key. `add_column` does not accept `index`, but also does not raise an
+error for extra keys, so it is possible to mistakenly add the key without
+realizing it will not actually add an index.
+
+=== Examples
+
+[source,ruby]
+----
+# bad (will not add an index)
+add_column :table, :column, :integer, index: true
+
+# good
+add_column :table, :column, :integer
+add_index :table, :column
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `db/migrate/*.rb`
+| Array
+|===
+
 == Rails/AfterCommitOverride
 
 |===
