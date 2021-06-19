@@ -1348,11 +1348,11 @@ Rails.env.production?
 |===
 | Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
 
-| Pending
+| Disabled
 | Yes
 | No
 | 2.10
-| -
+| 2.11
 |===
 
 This cop looks for direct access to environment variables through the
