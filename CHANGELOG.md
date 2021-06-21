@@ -23,6 +23,7 @@
 
 * [#288](https://github.com/rubocop/rubocop-rails/issues/288): Add `AllowToTime` option (`true` by default) to `Rails/Date`. ([@koic][])
 * [#499](https://github.com/rubocop/rubocop-rails/issues/499): Add `IgnoreWhereFirst` option (`true` by default) to `Rails/FindBy`. ([@koic][])
+* [#505](https://github.com/rubocop/rubocop-rails/pull/505): Set disabled by default for `Rails/EnvironmentVariableAccess`. ([@koic][])
 
 ## 2.10.1 (2021-05-06)
 

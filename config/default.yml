@@ -279,8 +279,10 @@ Rails/EnvironmentComparison:
 
 Rails/EnvironmentVariableAccess:
   Description: 'Do not access `ENV` directly after initialization.'
-  Enabled: pending
+  # TODO: Set to `pending` status in RuboCop Rails 2 series when migration doc will be written.
+  Enabled: false
   VersionAdded: '2.10'
+  VersionChanged: '2.11'
   Include:
     - app/**/*.rb
     - lib/**/*.rb
