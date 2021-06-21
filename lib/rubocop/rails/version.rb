@@ -4,7 +4,7 @@ module RuboCop
   module Rails
     # This module holds the RuboCop Rails version information.
     module Version
-      STRING = '2.10.1'
+      STRING = '2.11.0'
 
       def self.document_version
         STRING.match('\d+\.\d+').to_s

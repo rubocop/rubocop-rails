@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.11.0 (2021-06-21)
+
 ### New features
 
 * [#486](https://github.com/rubocop/rubocop-rails/issues/486): Add new `Rails/ExpandedDateRange` cop. ([@koic][])
