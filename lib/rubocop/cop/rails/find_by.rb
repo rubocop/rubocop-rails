@@ -32,7 +32,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[first take].freeze
 
         def on_send(node)
-          return if ignore_where_first? && node.method?(:first)
+          return if node.receiver.block_type? || ignore_where_first? && node.method?(:first)
 
           range = range_between(node.receiver.loc.selector.begin_pos, node.loc.selector.end_pos)
 
