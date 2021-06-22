@@ -67,4 +67,24 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
       expect_no_corrections
     end
   end
+
+  context 'when receiver is not an Active Record' do
+    context 'when method is Array#take' do
+      it 'does not register an offence' do
+        expect_no_offenses(<<~RUBY)
+          array = Array.new(1) { rand }
+          array.compact.take
+        RUBY
+      end
+    end
+
+    context 'when method is Array#first' do
+      it 'does not register an offence' do
+        expect_no_offenses(<<~RUBY)
+          array = Array.new(1) { rand }
+          array.compact.first
+        RUBY
+      end
+    end
+  end
 end
