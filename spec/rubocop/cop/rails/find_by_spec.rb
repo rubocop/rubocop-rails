@@ -35,6 +35,12 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
     RUBY
   end
 
+  it 'does not register an offense when calling `take` without receiver' do
+    expect_no_offenses(<<~RUBY)
+      take(5)
+    RUBY
+  end
+
   context 'when `IgnoreWhereFirst: true' do
     let(:cop_config) do
       { 'IgnoreWhereFirst' => true }
