@@ -19,6 +19,25 @@ AllCops:
 InternalAffairs/NodeMatcherDirective:
   Enabled: false
 
+Naming/InclusiveLanguage:
+  # These are excluded for compatible API names. RuboCop Rails 3.0 will fix it.
+  Exclude:
+    - lib/rubocop/cop/rails/dynamic_find_by.rb
+    - lib/rubocop/cop/rails/skips_model_validations.rb
+    - spec/rubocop/cop/rails/dynamic_find_by_spec.rb
+    - spec/rubocop/cop/rails/skips_model_validations_spec.rb
+  FlaggedTerms:
+    whitelist:
+      Suggestions:
+        - allowlist
+    blacklist:
+      Suggestions:
+        - denylist
+    master:
+      AllowedRegex:
+        - 'blob/master/'
+        - 'master \(unreleased\)'
+
 Naming/PredicateName:
   # Method define macros for dynamically generated method.
   MethodDefinitionMacros:

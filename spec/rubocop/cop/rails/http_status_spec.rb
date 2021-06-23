@@ -111,7 +111,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
       RUBY
     end
 
-    it 'does not register an offense when using whitelisted symbols' do
+    it 'does not register an offense when using allowed symbols' do
       expect_no_offenses(<<~RUBY)
         render :foo, status: :error
         render :foo, status: :success
