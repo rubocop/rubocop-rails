@@ -12,8 +12,7 @@ RSpec.describe RuboCop::Cop::Rails::AssertNot, :config do
     RUBY
   end
 
-  it 'registers an offense and corrects using `assert !` ' \
-    'with a failure message' do
+  it 'registers an offense and corrects using `assert !` with a failure message' do
     expect_offense(<<~RUBY)
       assert !foo, 'a failure message'
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `assert_not` over `assert !`.
@@ -24,8 +23,7 @@ RSpec.describe RuboCop::Cop::Rails::AssertNot, :config do
     RUBY
   end
 
-  it 'registers an offense and corrects using `assert !` ' \
-    'with a more complex value' do
+  it 'registers an offense and corrects using `assert !` with a more complex value' do
     expect_offense(<<~RUBY)
       assert !foo.bar(baz)
       ^^^^^^^^^^^^^^^^^^^^ Prefer `assert_not` over `assert !`.

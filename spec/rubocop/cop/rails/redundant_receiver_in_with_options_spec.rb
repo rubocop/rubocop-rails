@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
-  it 'registers an offense and corrects using explicit receiver ' \
-      'in `with_options`' do
+  it 'registers an offense and corrects using explicit receiver in `with_options`' do
     expect_offense(<<~RUBY)
       class Account < ApplicationRecord
         with_options dependent: :destroy do |assoc|

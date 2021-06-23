@@ -595,15 +595,19 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
 
   shared_examples 'checks_create_offense' do |method|
     it "when using persisted? after #{method}" do
-      expect_no_offenses("x = object.#{method}\n" \
-                          'if x.persisted? then; something; end')
+      expect_no_offenses(<<~RUBY)
+        x = object.#{method}
+        if x.persisted? then; something; end
+      RUBY
     end
 
     it "when using persisted? after #{method} with block" do
-      expect_no_offenses("x = object.#{method} do |obj|\n" \
-                          "  obj.name = 'Tom'\n" \
-                          "end\n" \
-                          'if x.persisted? then; something; end')
+      expect_no_offenses(<<~RUBY)
+        x = object.#{method} do |obj|
+          obj.name = 'Tom'
+        end
+        if x.persisted? then; something; end
+      RUBY
     end
 
     it "when using persisted? after #{method} called on a chain" do

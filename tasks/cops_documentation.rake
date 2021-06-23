@@ -25,8 +25,7 @@ task verify_cops_documentation: :generate_cops_documentation do
     # Output diff before raising error
     sh('GIT_PAGER=cat git diff docs')
 
-    warn 'The docs directory is out of sync. ' \
-      'Run `rake generate_cops_documentation` and commit the results.'
+    warn 'The docs directory is out of sync. Run `rake generate_cops_documentation` and commit the results.'
     exit!
   end
 end

@@ -130,8 +130,7 @@ module RuboCop
       # @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Setting+Inverses
       class InverseOf < Base
         SPECIFY_MSG = 'Specify an `:inverse_of` option.'
-        NIL_MSG = 'You specified `inverse_of: nil`, you probably meant to ' \
-          'use `inverse_of: false`.'
+        NIL_MSG = 'You specified `inverse_of: nil`, you probably meant to use `inverse_of: false`.'
         RESTRICT_ON_SEND = %i[has_many has_one belongs_to].freeze
 
         def_node_matcher :association_recv_arguments, <<~PATTERN

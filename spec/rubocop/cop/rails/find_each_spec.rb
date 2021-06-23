@@ -18,8 +18,7 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
     end
 
     it "does not register an offense when using #{scope}.select(...).each" do
-      expect_no_offenses("User.#{scope}.select(:name, :age).each " \
-                          '{ |u| u.something }')
+      expect_no_offenses("User.#{scope}.select(:name, :age).each { |u| u.something }")
     end
   end
 

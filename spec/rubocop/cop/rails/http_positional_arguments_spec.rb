@@ -90,8 +90,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
     end
 
     %w[get post patch put head delete].each do |keyword|
-      it 'does not register an offense when keyword is used ' \
-        'in a chained method call' do
+      it 'does not register an offense when keyword is used in a chained method call' do
         expect_no_offenses("@user.#{keyword}.id = ''")
       end
     end
@@ -349,8 +348,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'auto-corrects http action when parameter matches ' \
-      'special keyword name' do
+    it 'auto-corrects http action when parameter matches special keyword name' do
       expect_offense(<<~RUBY)
         post :create, id: 7, comment: { body: "hei" }
                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use keyword arguments instead of positional arguments for http call: `post`.
@@ -385,8 +383,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'auto-corrects http action when params and action name ' \
-      'are method calls' do
+    it 'auto-corrects http action when params and action name are method calls' do
       expect_offense(<<~RUBY)
         post user_attrs, params
                          ^^^^^^ Use keyword arguments instead of positional arguments for http call: `post`.

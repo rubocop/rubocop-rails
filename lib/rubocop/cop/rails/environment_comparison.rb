@@ -20,8 +20,7 @@ module RuboCop
 
         MSG = 'Favor `%<bang>sRails.env.%<env>s?` over `%<source>s`.'
 
-        SYM_MSG = 'Do not compare `Rails.env` with a symbol, it will always ' \
-          'evaluate to `false`.'
+        SYM_MSG = 'Do not compare `Rails.env` with a symbol, it will always evaluate to `false`.'
 
         RESTRICT_ON_SEND = %i[== !=].freeze
 

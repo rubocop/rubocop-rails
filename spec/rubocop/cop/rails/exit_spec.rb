@@ -20,8 +20,7 @@ RSpec.describe RuboCop::Cop::Rails::Exit, :config do
       expect_no_offenses('Object.new.exit')
     end
 
-    it 'does not register an offense for an explicit exit call '\
-      'with an argument on an object' do
+    it 'does not register an offense for an explicit exit call with an argument on an object' do
       expect_no_offenses('Object.new.exit(0)')
     end
 

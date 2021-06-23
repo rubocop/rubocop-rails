@@ -80,8 +80,7 @@ RSpec.describe RuboCop::Cop::Rails::LinkToBlank, :config do
         RUBY
       end
 
-      it 'autocorrects with a new rel when using a symbol for the target \
-          value' do
+      it 'autocorrects with a new rel when using a symbol for the target value' do
         new_source = autocorrect_source(<<~RUBY)
           link_to 'Click here', 'https://www.example.com', target: :_blank
         RUBY

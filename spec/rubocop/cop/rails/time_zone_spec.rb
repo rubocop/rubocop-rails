@@ -33,8 +33,7 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
       RUBY
     end
 
-    it 'does not register an offense when a .new method is called
-        independently of the Time class' do
+    it 'does not register an offense when a .new method is called independently of the Time class' do
       expect_no_offenses(<<~RUBY)
         Range.new(1, Time.class.to_s)
       RUBY
