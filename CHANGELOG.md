@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#507](https://github.com/rubocop/rubocop-rails/pull/507): Fix an error for `Rails/FindBy` when calling `take` after block. ([@koic][])
+* [#504](https://github.com/rubocop/rubocop-rails/issues/504): Fix a false positive for `Rails/FindBy` when receiver is not an Active Record. ([@nvasilevski][])
 
 ## 2.11.0 (2021-06-21)
 
@@ -409,3 +410,4 @@
 [@rhymes]: https://github.com/rhymes
 [@jdelStrother]: https://github.com/jdelStrother
 [@aesthetikx]: https://github.com/aesthetikx
+[@nvasilevski]: https://github.com/nvasilevski
