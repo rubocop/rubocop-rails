@@ -92,5 +92,17 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
         RUBY
       end
     end
+
+    context 'when method is Range#first' do
+      it 'does not register an offense' do
+        expect_no_offenses('(1..2).first')
+      end
+    end
+
+    context 'when method is Range#take' do
+      it 'does not register an offense' do
+        expect_no_offenses('(1..2).take(1)')
+      end
+    end
   end
 end
