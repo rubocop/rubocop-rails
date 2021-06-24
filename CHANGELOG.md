@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#509](https://github.com/rubocop/rubocop-rails/pull/509): Fix an error for `Rails/ReflectionClassName` when using `class_name: to_s`. ([@skryukov][])
+* [#510](https://github.com/rubocop/rubocop-rails/pull/510): Fix an error for `Rails/FindBy` when calling `#first` or `#take` on a `Range` object. ([@johnsyweb][])
 * [#507](https://github.com/rubocop/rubocop-rails/pull/507): Fix an error for `Rails/FindBy` when calling `take` after block. ([@koic][])
 * [#504](https://github.com/rubocop/rubocop-rails/issues/504): Fix a false positive for `Rails/FindBy` when receiver is not an Active Record. ([@nvasilevski][])
 
@@ -413,3 +414,4 @@
 [@aesthetikx]: https://github.com/aesthetikx
 [@nvasilevski]: https://github.com/nvasilevski
 [@skryukov]: https://github.com/skryukov
+[@johnsyweb]: https://github.com/johnsyweb
