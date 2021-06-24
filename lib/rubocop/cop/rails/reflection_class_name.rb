@@ -40,7 +40,7 @@ module RuboCop
 
         def reflection_class_value?(class_value)
           if class_value.send_type?
-            !class_value.method?(:to_s) || class_value.receiver.const_type?
+            !class_value.method?(:to_s) || class_value.receiver&.const_type?
           else
             !ALLOWED_REFLECTION_CLASS_TYPES.include?(class_value.type)
           end
