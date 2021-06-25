@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.11.1 (2021-06-25)
+
 ### Bug fixes
 
 * [#509](https://github.com/rubocop/rubocop-rails/pull/509): Fix an error for `Rails/ReflectionClassName` when using `class_name: to_s`. ([@skryukov][])
