@@ -18,8 +18,13 @@ end
 require 'rubocop/rake_task'
 require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = FileList['spec/**/*_spec.rb']
+desc 'Run RSpec'
+task :spec do
+  if Process.respond_to?(:fork)
+    sh('rspec-queue spec')
+  else
+    sh('rspec spec')
+  end
 end
 
 desc 'Run RSpec with code coverage'
