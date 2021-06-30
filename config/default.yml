@@ -537,6 +537,13 @@ Rails/I18nLocaleTexts:
   Enabled: pending
   VersionAdded: '2.14'
 
+Rails/IgnoredColumnsAssignment:
+  Description: 'Looks for assignments of `ignored_columns` that override previous assignments.'
+  StyleGuide: 'https://rails.rubystyle.guide/#append-ignored-columns'
+  Enabled: pending
+  SafeAutoCorrect: false
+  VersionAdded: '<<next>>'
+
 Rails/IgnoredSkipActionFilterOption:
   Description: 'Checks that `if` and `only` (or `except`) are not used together as options of `skip_*` action filter.'
   Reference: 'https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options'
