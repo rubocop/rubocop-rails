@@ -5,6 +5,7 @@
 ### Bug fixes
 
 * [#515](https://github.com/rubocop/rubocop-rails/issues/515): Fix an error for `Rails/BulkChangeTable` when using Psych 4.0. ([@koic][])
+* [#512](https://github.com/rubocop/rubocop-rails/issues/512): Fix a false positive for `Rails/FindBy` when using `take` with arguments. ([@koic][])
 
 ## 2.11.1 (2021-06-25)
 
