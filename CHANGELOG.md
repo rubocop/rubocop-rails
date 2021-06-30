@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#514](https://github.com/rubocop/rubocop-rails/pull/514): Add new `Rails/DuplicateIgnoredColumns` cop. ([@fsateler][])
+
 ## 2.11.1 (2021-06-25)
 
 ### Bug fixes
@@ -417,3 +421,4 @@
 [@nvasilevski]: https://github.com/nvasilevski
 [@skryukov]: https://github.com/skryukov
 [@johnsyweb]: https://github.com/johnsyweb
+[@fsateler]: https://github.com/fsateler
