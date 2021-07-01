@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.11.2 (2021-07-02)
+
 ### Bug fixes
 
 * [#515](https://github.com/rubocop/rubocop-rails/issues/515): Fix an error for `Rails/BulkChangeTable` when using Psych 4.0. ([@koic][])
