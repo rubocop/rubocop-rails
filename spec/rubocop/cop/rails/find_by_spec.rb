@@ -35,6 +35,12 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
     RUBY
   end
 
+  it 'does not register an offense when using `take` with arguments' do
+    expect_no_offenses(<<~RUBY)
+      User.where(attr: arg).take(5)
+    RUBY
+  end
+
   it 'does not register an offense when calling `take` after block' do
     expect_no_offenses(<<~RUBY)
       do_something {}.take(5)
@@ -71,6 +77,12 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
       RUBY
 
       expect_no_corrections
+    end
+
+    it 'does not register an offense when using `first` with arguments' do
+      expect_no_offenses(<<~RUBY)
+        User.where(attr: arg).first(5)
+      RUBY
     end
   end
 

@@ -32,10 +32,10 @@ module RuboCop
         RESTRICT_ON_SEND = %i[first take].freeze
 
         def on_send(node)
-          return unless where_method?(node.receiver)
+          return unless node.arguments.empty? && where_method?(node.receiver)
           return if ignore_where_first? && node.method?(:first)
 
-          range = range_between(node.receiver.loc.selector.begin_pos, node.loc.selector.end_pos)
+          range = offense_range(node)
 
           add_offense(range, message: format(MSG, method: node.method_name)) do |corrector|
             autocorrect(corrector, node)
@@ -49,6 +49,10 @@ module RuboCop
           return false unless receiver
 
           receiver.respond_to?(:method?) && receiver.method?(:where)
+        end
+
+        def offense_range(node)
+          range_between(node.receiver.loc.selector.begin_pos, node.loc.selector.end_pos)
         end
 
         def autocorrect(corrector, node)
