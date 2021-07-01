@@ -414,12 +414,12 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
     let(:yaml) { nil }
 
     before do
-      allow(File).to receive(:exist?)
-        .with('config/database.yml')
-        .and_return(true)
-      allow(YAML).to receive(:load_file)
-        .with('config/database.yml')
-        .and_return(yaml)
+      allow(File).to receive(:exist?).with('config/database.yml').and_return(true)
+      if YAML.respond_to?(:unsafe_load_file)
+        allow(YAML).to receive(:unsafe_load_file).with('config/database.yml').and_return(yaml)
+      else
+        allow(YAML).to receive(:load_file).with('config/database.yml').and_return(yaml)
+      end
     end
 
     context 'mysql2' do
