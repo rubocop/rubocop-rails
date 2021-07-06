@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#517](https://github.com/rubocop/rubocop-rails/pull/517): Fix an issue for `Rails/UniqueValidationWithoutIndex` when validating uniqueness with a polymorphic scope. ([@theunraveler][])
+
 ## 2.11.2 (2021-07-02)
 
 ### Bug fixes
@@ -424,3 +428,4 @@
 [@nvasilevski]: https://github.com/nvasilevski
 [@skryukov]: https://github.com/skryukov
 [@johnsyweb]: https://github.com/johnsyweb
+[@theunraveler]: https://github.com/theunraveler
