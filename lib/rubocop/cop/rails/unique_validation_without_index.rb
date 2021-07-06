@@ -81,7 +81,7 @@ module RuboCop
           names_from_scope = column_names_from_scope(node)
           ret.concat(names_from_scope) if names_from_scope
 
-          ret.map! do |name|
+          ret = ret.flat_map do |name|
             klass = class_node(node)
             resolve_relation_into_column(
               name: name.to_s,

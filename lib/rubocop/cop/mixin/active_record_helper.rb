@@ -57,12 +57,13 @@ module RuboCop
       # Resolve relation into column name.
       # It just returns column_name if the column exists.
       # Or it tries to resolve column_name as a relation.
+      # Returns an array of column names if the relation is polymorphic.
       # It returns `nil` if it can't resolve.
       #
       # @param name [String]
       # @param class_node [RuboCop::AST::Node]
       # @param table [RuboCop::Rails::SchemaLoader::Table]
-      # @return [String, nil]
+      # @return [Array, String, nil]
       def resolve_relation_into_column(name:, class_node:, table:)
         return unless table
         return name if table.with_column?(name: name)
@@ -71,7 +72,9 @@ module RuboCop
           next unless belongs_to.first_argument.value.to_s == name
 
           fk = foreign_key_of(belongs_to) || "#{name}_id"
-          return fk if table.with_column?(name: fk)
+          next unless table.with_column?(name: fk)
+
+          return polymorphic?(belongs_to) ? [fk, "#{name}_type"] : fk
         end
         nil
       end
@@ -85,6 +88,15 @@ module RuboCop
           next unless pair.value.sym_type? || pair.value.str_type?
 
           break pair.value.value.to_s
+        end
+      end
+
+      def polymorphic?(belongs_to)
+        options = belongs_to.last_argument
+        return false unless options.hash_type?
+
+        options.each_pair.any? do |pair|
+          pair.key.sym_type? && pair.key.value == :polymorphic && pair.value.true_type?
         end
       end
 

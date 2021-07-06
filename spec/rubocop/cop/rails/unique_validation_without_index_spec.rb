@@ -137,6 +137,97 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
       end
     end
 
+    context 'when the validation is for a polymorphic association' do
+      context 'without proper index' do
+        let(:schema) { <<~RUBY }
+          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+            create_table "written_articles", force: :cascade do |t|
+              t.string "title", null: false
+              t.string "author_type", null: false
+              t.bigint "author_id", null: false
+              t.index ["title", "author_id"], name: "idx_aid", unique: true
+            end
+          end
+        RUBY
+
+        it 'registers an offense' do
+          expect_offense(<<~RUBY)
+            class WrittenArticles
+              belongs_to :author, polymorphic: true
+              validates :title, uniqueness: { scope: :author }
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+            end
+          RUBY
+        end
+      end
+
+      context 'with proper index' do
+        let(:schema) { <<~RUBY }
+          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+            create_table "written_articles", force: :cascade do |t|
+              t.string "title", null: false
+              t.string "author_type", null: false
+              t.bigint "author_id", null: false
+              t.index ["title", "author_id", "author_type"], name: "idx_aid", unique: true
+            end
+          end
+        RUBY
+
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            class WrittenArticles
+              belongs_to :author, polymorphic: true
+              validates :title, uniqueness: { scope: :author }
+            end
+          RUBY
+        end
+      end
+
+      context 'when `polymorphic: false`' do
+        let(:schema) { <<~RUBY }
+          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+            create_table "written_articles", force: :cascade do |t|
+              t.string "title", null: false
+              t.string "author_type", null: false
+              t.bigint "author_id", null: false
+              t.index ["title", "author_id"], name: "idx_aid", unique: true
+            end
+          end
+        RUBY
+
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            class WrittenArticles
+              belongs_to :author, polymorphic: false
+              validates :title, uniqueness: { scope: :author }
+            end
+          RUBY
+        end
+      end
+
+      context 'when `polymorphic` option is not specified' do
+        let(:schema) { <<~RUBY }
+          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+            create_table "written_articles", force: :cascade do |t|
+              t.string "title", null: false
+              t.string "author_type", null: false
+              t.bigint "author_id", null: false
+              t.index ["title", "author_id"], name: "idx_aid", unique: true
+            end
+          end
+        RUBY
+
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            class WrittenArticles
+              belongs_to :author
+              validates :title, uniqueness: { scope: :author }
+            end
+          RUBY
+        end
+      end
+    end
+
     context 'when the validation is for three columns' do
       context 'without proper index' do
         let(:schema) { <<~RUBY }
