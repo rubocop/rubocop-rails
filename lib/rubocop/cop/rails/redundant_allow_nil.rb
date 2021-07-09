@@ -56,8 +56,8 @@ module RuboCop
 
         def register_offense(allow_nil, message)
           add_offense(allow_nil, message: message) do |corrector|
-            prv_sib = previous_sibling(allow_nil)
-            nxt_sib = next_sibling(allow_nil)
+            prv_sib = allow_nil.left_sibling
+            nxt_sib = allow_nil.right_sibling
 
             if nxt_sib
               corrector.remove(range_between(node_beg(allow_nil), node_beg(nxt_sib)))
@@ -86,14 +86,6 @@ module RuboCop
           end
 
           nil
-        end
-
-        def previous_sibling(node)
-          node.parent.children[node.sibling_index - 1]
-        end
-
-        def next_sibling(node)
-          node.parent.children[node.sibling_index + 1]
         end
 
         def node_beg(node)

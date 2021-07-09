@@ -71,7 +71,7 @@ module RuboCop
 
         # Autocorrect by swapping between two nodes autocorrecting them
         def autocorrect(corrector, node)
-          previous = left_siblings_of(node).reverse_each.find do |sibling|
+          previous = node.left_siblings.reverse_each.find do |sibling|
             callback?(sibling)
           end
 
@@ -94,14 +94,6 @@ module RuboCop
 
         def callback?(node)
           node.send_type? && CALLBACKS_ORDER_MAP.key?(node.method_name)
-        end
-
-        def left_siblings_of(node)
-          siblings_of(node)[0, node.sibling_index]
-        end
-
-        def siblings_of(node)
-          node.parent.children
         end
 
         def source_range_with_comment(node)
