@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#298](https://github.com/rubocop-hq/rubocop-rails/pull/298): Allow multiple enforced styles for `Rails/FilePath` cop. ([@tejasbubane][])
+
 ### Bug fixes
 
 * [#517](https://github.com/rubocop/rubocop-rails/pull/517): Fix an issue for `Rails/UniqueValidationWithoutIndex` when validating uniqueness with a polymorphic scope. ([@theunraveler][])
