@@ -88,7 +88,7 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
 
   context 'when receiver is not an Active Record' do
     context 'when method is Array#take' do
-      it 'does not register an offence' do
+      it 'does not register an offense' do
         expect_no_offenses(<<~RUBY)
           array = Array.new(1) { rand }
           array.compact.take
@@ -97,7 +97,7 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
     end
 
     context 'when method is Array#first' do
-      it 'does not register an offence' do
+      it 'does not register an offense' do
         expect_no_offenses(<<~RUBY)
           array = Array.new(1) { rand }
           array.compact.first

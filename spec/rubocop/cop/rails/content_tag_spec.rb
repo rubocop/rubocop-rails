@@ -30,7 +30,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
   end
 
   context 'Rails 5.1', :rails51 do
-    it 'corrects an offence' do
+    it 'corrects an offense' do
       expect_offense(<<~RUBY)
         content_tag(:p, 'Hello world!')
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
@@ -41,7 +41,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
-    it 'corrects an offence with empty tag' do
+    it 'corrects an offense with empty tag' do
       expect_offense(<<~RUBY)
         content_tag(:br)
         ^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
@@ -52,7 +52,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
-    it 'corrects an offence with array of classnames' do
+    it 'corrects an offense with array of classnames' do
       expect_offense(<<~RUBY)
         content_tag(:div, "Hello world!", class: ["strong", "highlight"])
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
@@ -63,7 +63,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
-    it 'corrects an offence with nested content_tag' do
+    it 'corrects an offense with nested content_tag' do
       expect_offense(<<~RUBY)
         content_tag(:div, content_tag(:span, 'foo'))
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
@@ -74,7 +74,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
-    it 'corrects an offence with nested content_tag with block' do
+    it 'corrects an offense with nested content_tag with block' do
       expect_offense(<<~RUBY)
         content_tag(:div) { content_tag(:strong, 'Hi') }
                             ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
@@ -86,7 +86,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
-    it 'corrects an offence when first argument is hash' do
+    it 'corrects an offense when first argument is hash' do
       expect_offense(<<~RUBY)
         content_tag({foo: 1})
         ^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
@@ -97,7 +97,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
-    it 'corrects an offence when first argument is non-identifier string' do
+    it 'corrects an offense when first argument is non-identifier string' do
       expect_offense(<<~RUBY)
         content_tag('foo-bar', 'baz', class: 'strong')
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag` instead of `content_tag`.
@@ -123,25 +123,25 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
-    it 'does not register an offence when `tag` is used with an argument' do
+    it 'does not register an offense when `tag` is used with an argument' do
       expect_no_offenses(<<~RUBY)
         tag.p('Hello world!')
       RUBY
     end
 
-    it 'does not register an offence when `tag` is used without arguments' do
+    it 'does not register an offense when `tag` is used without arguments' do
       expect_no_offenses(<<~RUBY)
         tag.br
       RUBY
     end
 
-    it 'does not register an offence when `tag` is used with arguments' do
+    it 'does not register an offense when `tag` is used with arguments' do
       expect_no_offenses(<<~RUBY)
         tag.div("Hello world!", class: ["strong", "highlight"])
       RUBY
     end
 
-    it 'does not register an offence when `tag` is nested' do
+    it 'does not register an offense when `tag` is nested' do
       expect_no_offenses(<<~RUBY)
         tag.div() { tag.strong('Hi') }
       RUBY
@@ -154,32 +154,32 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
     end
 
     context 'when the first argument is a variable' do
-      it 'does not register an offence when the first argument is a lvar' do
+      it 'does not register an offense when the first argument is a lvar' do
         expect_no_offenses(<<~RUBY)
           name = do_something
           content_tag(name, "Hello world!", class: ["strong", "highlight"])
         RUBY
       end
 
-      it 'does not register an offence when the first argument is an ivar' do
+      it 'does not register an offense when the first argument is an ivar' do
         expect_no_offenses(<<~RUBY)
           content_tag(@name, "Hello world!", class: ["strong", "highlight"])
         RUBY
       end
 
-      it 'does not register an offence when the first argument is a cvar' do
+      it 'does not register an offense when the first argument is a cvar' do
         expect_no_offenses(<<~RUBY)
           content_tag(@@name, "Hello world!", class: ["strong", "highlight"])
         RUBY
       end
 
-      it 'does not register an offence when the first argument is a gvar' do
+      it 'does not register an offense when the first argument is a gvar' do
         expect_no_offenses(<<~RUBY)
           content_tag($name, "Hello world!", class: ["strong", "highlight"])
         RUBY
       end
 
-      it 'does not register an offence when the first argument is a splat argument' do
+      it 'does not register an offense when the first argument is a splat argument' do
         expect_no_offenses(<<~RUBY)
           content_tag(*args, &block)
         RUBY
@@ -187,7 +187,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
     end
 
     context 'when the first argument is a method' do
-      it 'does not register an offence' do
+      it 'does not register an offense' do
         expect_no_offenses(<<~RUBY)
           content_tag(name, "Hello world!", class: ["strong", "highlight"])
         RUBY
@@ -195,7 +195,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
     end
 
     context 'when the first argument is a constant' do
-      it 'does not register an offence' do
+      it 'does not register an offense' do
         expect_no_offenses(<<~RUBY)
           content_tag(CONST, "Hello world!", class: ["strong", "highlight"])
         RUBY

@@ -75,8 +75,8 @@ module RuboCop
           corrector.replace(str_range, "#{existing_rel} noopener")
         end
 
-        def add_rel(send_node, offence_node, corrector)
-          opening_quote = offence_node.children.last.source[0]
+        def add_rel(send_node, offense_node, corrector)
+          opening_quote = offense_node.children.last.source[0]
           closing_quote = opening_quote == ':' ? '' : opening_quote
           new_rel_exp = ", rel: #{opening_quote}noopener#{closing_quote}"
           range = if (last_argument = send_node.last_argument).hash_type?
