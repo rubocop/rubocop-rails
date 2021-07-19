@@ -49,6 +49,12 @@ Rails/ActionFilter:
   Include:
     - app/controllers/**/*.rb
 
+Rails/ActiveModelErrorsDirectManipulation:
+  Description: 'Avoid manipulating ActiveModel errors hash directly.'
+  Enabled: true
+  Safe: false
+  VersionAdded: '2.11'
+
 Rails/ActiveRecordAliases:
   Description: >-
                   Avoid Active Record aliases:

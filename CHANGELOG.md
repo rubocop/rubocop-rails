@@ -30,6 +30,7 @@
 
 * [#486](https://github.com/rubocop/rubocop-rails/issues/486): Add new `Rails/ExpandedDateRange` cop. ([@koic][])
 * [#494](https://github.com/rubocop/rubocop-rails/pull/494): Add new `Rails/UnusedIgnoredColumns` cop. ([@pocke][])
+* [#491](https://github.com/rubocop/rubocop-rails/pull/491): Add new `Rails/ActiveModelErrorsDirectManipulation` cop. ([@lulalala][])
 * [#490](https://github.com/rubocop/rubocop-rails/issues/490): Make `Rails/HttpStatus` aware of `head` method. ([@koic][])
 * [#483](https://github.com/rubocop/rubocop-rails/pull/483): Add new `Rails/EagerEvaluationLogMessage` cop. ([@aesthetikx][])
 * [#495](https://github.com/rubocop/rubocop-rails/issues/495): Add new `Rails/I18nLocaleAssignment` cop. ([@koic][])
@@ -431,3 +432,4 @@
 [@skryukov]: https://github.com/skryukov
 [@johnsyweb]: https://github.com/johnsyweb
 [@theunraveler]: https://github.com/theunraveler
+[@lulalala]: https://github.com/lulalala
