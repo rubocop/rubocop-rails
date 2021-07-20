@@ -83,6 +83,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsredundantallownil[Rails/RedundantAllowNil]
 * xref:cops_rails.adoc#railsredundantforeignkey[Rails/RedundantForeignKey]
 * xref:cops_rails.adoc#railsredundantreceiverinwithoptions[Rails/RedundantReceiverInWithOptions]
+* xref:cops_rails.adoc#railsredundanttravelback[Rails/RedundantTravelBack]
 * xref:cops_rails.adoc#railsreflectionclassname[Rails/ReflectionClassName]
 * xref:cops_rails.adoc#railsrefutemethods[Rails/RefuteMethods]
 * xref:cops_rails.adoc#railsrelativedateconstant[Rails/RelativeDateConstant]

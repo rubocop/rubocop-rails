@@ -3452,6 +3452,58 @@ with_options options: false do |merger|
 end
 ----
 
+== Rails/RedundantTravelBack
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| Yes
+| 2.12
+| -
+|===
+
+This cop checks for redundant `travel_back` calls.
+Since Rails 5.2, `travel_back` is automatically called at the end of the test.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+def teardown
+  do_something
+  travel_back
+end
+
+# good
+def teardown
+  do_something
+end
+
+# bad
+after do
+  do_something
+  travel_back
+end
+
+# good
+after do
+  do_something
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `spec/**/*.rb`, `test/**/*.rb`
+| Array
+|===
+
 == Rails/ReflectionClassName
 
 |===
