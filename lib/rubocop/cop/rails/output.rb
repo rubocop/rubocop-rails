@@ -14,6 +14,9 @@ module RuboCop
       #   # good
       #   Rails.logger.debug 'A debug message'
       class Output < Base
+        include RangeHelp
+        extend AutoCorrector
+
         MSG = 'Do not write to stdout. ' \
               "Use Rails's logger if you want to log."
         RESTRICT_ON_SEND = %i[
@@ -35,16 +38,27 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless (output?(node) || io_output?(node)) &&
-                        node.arguments?
+          return unless (output?(node) || io_output?(node)) && node.arguments?
 
-          add_offense(node.loc.selector)
+          range = offense_range(node)
+
+          add_offense(range) do |corrector|
+            corrector.replace(range, 'Rails.logger.debug')
+          end
         end
 
         private
 
         def match_gvar?(sym)
           %i[$stdout $stderr].include?(sym)
+        end
+
+        def offense_range(node)
+          if node.receiver
+            range_between(node.loc.expression.begin_pos, node.loc.selector.end_pos)
+          else
+            node.loc.selector
+          end
         end
       end
     end
