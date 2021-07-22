@@ -5,6 +5,7 @@
 ### New features
 
 * [#521](https://github.com/rubocop/rubocop-rails/pull/521): Support auto-correction for `Rails/Output`. ([@koic][])
+* [#520](https://github.com/rubocop/rubocop-rails/pull/520): Support auto-correction for `Rails/ScopeArgs`. ([@koic][])
 
 ## 2.11.3 (2021-07-11)
 

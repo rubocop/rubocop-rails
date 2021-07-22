@@ -714,6 +714,7 @@ Rails/ScopeArgs:
   Description: 'Checks the arguments of ActiveRecord scopes.'
   Enabled: true
   VersionAdded: '0.19'
+  VersionChanged: '2.12'
   Include:
     - app/models/**/*.rb
 
