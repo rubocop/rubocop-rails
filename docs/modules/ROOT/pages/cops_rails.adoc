@@ -4300,9 +4300,9 @@ Service::Mailer::update
 
 | Enabled
 | Yes
-| No
+| Yes
 | 0.19
-| -
+| 2.12
 |===
 
 This cop checks for scope calls where it was passed
