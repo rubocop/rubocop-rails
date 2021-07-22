@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#520](https://github.com/rubocop/rubocop-rails/pull/520): Support auto-correction for `Rails/ScopeArgs`. ([@koic][])
+
 ## 2.11.3 (2021-07-11)
 
 ### Bug fixes
