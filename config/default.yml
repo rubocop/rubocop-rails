@@ -236,6 +236,14 @@ Rails/DelegateAllowBlank:
   Enabled: true
   VersionAdded: '0.44'
 
+Rails/DynamicFindAllBy:
+  Description: 'Use `where` instead of dynamic `find_all_by_*`.'
+  Enabled: true
+  Safe: false
+  VersionAdded: '2.12'
+  AllowedMethods: []
+  AllowedReceivers: []
+
 Rails/DynamicFindBy:
   Description: 'Use `find_by` instead of dynamic `find_by_*`.'
   StyleGuide: 'https://rails.rubystyle.guide#find_by'

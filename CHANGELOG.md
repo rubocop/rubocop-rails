@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#522](https://github.com/rubocop/rubocop-rails/pull/522): Add new `Rails/DynamicFindAllBy` cop. ([@jasquat][])
+
 ## 2.11.3 (2021-07-11)
 
 ### Bug fixes
@@ -431,3 +435,4 @@
 [@skryukov]: https://github.com/skryukov
 [@johnsyweb]: https://github.com/johnsyweb
 [@theunraveler]: https://github.com/theunraveler
+[@jasquat]: https://github.com/jasquat

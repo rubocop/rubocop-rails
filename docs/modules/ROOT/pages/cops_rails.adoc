@@ -1156,6 +1156,73 @@ delegate :foo, to: :bar, allow_blank: true
 delegate :foo, to: :bar, allow_nil: true
 ----
 
+== Rails/DynamicFindAllBy
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Enabled
+| No
+| Yes (Unsafe)
+| 2.12
+| -
+|===
+
+This cop checks dynamic `find_by_*` methods.
+Use `find_by` instead of dynamic method.
+See. https://rails.rubystyle.guide#find_by
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+User.find_by_name(name)
+User.find_by_name_and_email(name)
+User.find_by_email!(name)
+
+# good
+User.find_by(name: name)
+User.find_by(name: name, email: email)
+User.find_by!(email: email)
+----
+
+==== AllowedMethods: find_by_sql
+
+[source,ruby]
+----
+# bad
+User.find_by_query(users_query)
+
+# good
+User.find_by_sql(users_sql)
+----
+
+==== AllowedReceivers: Gem::Specification
+
+[source,ruby]
+----
+# bad
+Specification.find_by_name('backend').gem_dir
+
+# good
+Gem::Specification.find_by_name('backend').gem_dir
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| AllowedMethods
+| `[]`
+| Array
+
+| AllowedReceivers
+| `[]`
+| Array
+|===
+
 == Rails/DynamicFindBy
 
 |===

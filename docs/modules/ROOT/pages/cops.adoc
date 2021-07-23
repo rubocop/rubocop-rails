@@ -39,6 +39,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsdefaultscope[Rails/DefaultScope]
 * xref:cops_rails.adoc#railsdelegate[Rails/Delegate]
 * xref:cops_rails.adoc#railsdelegateallowblank[Rails/DelegateAllowBlank]
+* xref:cops_rails.adoc#railsdynamicfindallby[Rails/DynamicFindAllBy]
 * xref:cops_rails.adoc#railsdynamicfindby[Rails/DynamicFindBy]
 * xref:cops_rails.adoc#railseagerevaluationlogmessage[Rails/EagerEvaluationLogMessage]
 * xref:cops_rails.adoc#railsenumhash[Rails/EnumHash]
