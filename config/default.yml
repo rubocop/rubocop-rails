@@ -499,6 +499,7 @@ Rails/OrderById:
 Rails/Output:
   Description: 'Checks for calls to puts, print, etc.'
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '0.15'
   VersionChanged: '0.19'
   Include:

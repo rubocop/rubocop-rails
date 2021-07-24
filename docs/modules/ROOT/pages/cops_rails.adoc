@@ -2747,7 +2747,7 @@ scope :chronological, -> { order(created_at: :asc) }
 
 | Enabled
 | Yes
-| No
+| Yes (Unsafe)
 | 0.15
 | 0.19
 |===
