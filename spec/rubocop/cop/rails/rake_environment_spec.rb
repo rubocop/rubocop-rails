@@ -63,7 +63,7 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment, :config do
   end
 
   it 'does not register an offense to task with a dependency ' \
-     'as a method call' do
+     'as an array literal element method call' do
     expect_no_offenses(<<~RUBY)
       task foo: [:bar, dep]
     RUBY

@@ -4,7 +4,7 @@ RSpec.describe RuboCop::Cop::ActiveRecordHelper, :isolated_environment do
   include FileHelper
 
   let(:cop) do
-    Class.new.extend RuboCop::Cop::ActiveRecordHelper
+    Class.new.extend described_class
   end
 
   let(:schema_path) { 'db/schema.rb' }

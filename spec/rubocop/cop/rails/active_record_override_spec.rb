@@ -71,7 +71,7 @@ RSpec.describe RuboCop::Cop::Rails::ActiveRecordOverride, :config do
     end
   end
 
-  context 'when class is not an ActiveRecord model' do
+  context 'when inheriting class is not `ApplicationRecord`, `ActiveModel::Base`, and `ActiveRecord::Base`' do
     it 'registers no offense when overriding save' do
       expect_no_offenses(<<~RUBY)
         class X < Y
