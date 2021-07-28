@@ -608,6 +608,14 @@ Rails/RedundantReceiverInWithOptions:
   Enabled: true
   VersionAdded: '0.52'
 
+Rails/RedundantTravelBack:
+  Description: This cop checks for redundant `travel_back` calls.
+  Enabled: pending
+  VersionAdded: '2.12'
+  Include:
+    - spec/**/*.rb
+    - test/**/*.rb
+
 Rails/ReflectionClassName:
   Description: 'Use a string for `class_name` option value in the definition of a reflection.'
   Enabled: true
