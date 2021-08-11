@@ -19,6 +19,10 @@ AllCops:
 InternalAffairs/NodeMatcherDirective:
   Enabled: false
 
+# FIXME: Workaround for a false positive caused by this cop when using `bundle exec rake`.
+InternalAffairs/UndefinedConfig:
+  Enabled: false
+
 Naming/InclusiveLanguage:
   FlaggedTerms:
     offence:
