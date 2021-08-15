@@ -181,12 +181,14 @@ Rails/BulkChangeTable:
     - db/migrate/*.rb
 
 Rails/ContentTag:
-  Description: 'Use `tag` instead of `content_tag`.'
+  Description: 'Use `tag.something` instead of `tag(:something)`.'
   Reference:
+    - 'https://github.com/rubocop/rubocop-rails/issues/260'
     - 'https://github.com/rails/rails/issues/25195'
     - 'https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-content_tag'
   Enabled: true
   VersionAdded: '2.6'
+  VersionChanged: '2.12'
 
 Rails/CreateTableWithTimestamps:
   Description: >-
