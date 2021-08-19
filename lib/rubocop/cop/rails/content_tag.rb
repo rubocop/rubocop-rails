@@ -3,21 +3,21 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks that `tag` is used instead of `content_tag`
-      # because `content_tag` is legacy syntax.
+      # This cop checks legacy syntax usage of `tag`
       #
-      # NOTE: Allow `content_tag` when the first argument is a variable because
-      #      `content_tag(name)` is simpler rather than `tag.public_send(name)`.
+      # NOTE: Allow `tag` when the first argument is a variable because
+      #       `tag(name)` is simpler rather than `tag.public_send(name)`.
+      #       And this cop will be renamed to something like `LegacyTag` in the future. (e.g. RuboCop Rails 2.0)
       #
       # @example
       #  # bad
-      #  content_tag(:p, 'Hello world!')
-      #  content_tag(:br)
+      #  tag(:p)
+      #  tag(:br, class: 'classname')
       #
       #  # good
-      #  tag.p('Hello world!')
-      #  tag.br
-      #  content_tag(name, 'Hello world!')
+      #  tag.p
+      #  tag.br(class: 'classname')
+      #  tag(name, class: 'classname')
       class ContentTag < Base
         include RangeHelp
         extend AutoCorrector
@@ -25,8 +25,8 @@ module RuboCop
 
         minimum_target_rails_version 5.1
 
-        MSG = 'Use `tag` instead of `content_tag`.'
-        RESTRICT_ON_SEND = %i[content_tag].freeze
+        MSG = 'Use `tag.something` instead of `tag(:something)`.'
+        RESTRICT_ON_SEND = %i[tag].freeze
 
         def on_new_investigation
           @corrected_nodes = nil
@@ -53,26 +53,26 @@ module RuboCop
         end
 
         def allowed_argument?(argument)
-          argument.variable? || argument.send_type? || argument.const_type? || argument.splat_type?
+          argument.variable? ||
+            argument.send_type? ||
+            argument.const_type? ||
+            argument.splat_type? ||
+            allowed_name?(argument)
         end
 
         def autocorrect(corrector, node)
-          if method_name?(node.first_argument)
-            range = correction_range(node)
+          range = correction_range(node)
 
-            rest_args = node.arguments.drop(1)
-            replacement = "tag.#{node.first_argument.value.to_s.underscore}(#{rest_args.map(&:source).join(', ')})"
+          rest_args = node.arguments.drop(1)
+          replacement = "tag.#{node.first_argument.value.to_s.underscore}(#{rest_args.map(&:source).join(', ')})"
 
-            corrector.replace(range, replacement)
-          else
-            corrector.replace(node.loc.selector, 'tag')
-          end
+          corrector.replace(range, replacement)
         end
 
-        def method_name?(node)
-          return false unless node.str_type? || node.sym_type?
+        def allowed_name?(argument)
+          return false unless argument.str_type? || argument.sym_type?
 
-          /^[a-zA-Z_][a-zA-Z_\-0-9]*$/.match?(node.value)
+          !/^[a-zA-Z\-][a-zA-Z\-0-9]*$/.match?(argument.value)
         end
 
         def correction_range(node)
