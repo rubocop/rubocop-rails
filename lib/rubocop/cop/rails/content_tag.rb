@@ -25,7 +25,7 @@ module RuboCop
 
         minimum_target_rails_version 5.1
 
-        MSG = 'Use `tag.something` instead of `tag(:something)`.'
+        MSG = 'Use `tag.%<preferred_method>s` instead of `tag(%<current_argument>s)`.'
         RESTRICT_ON_SEND = %i[tag].freeze
 
         def on_new_investigation
@@ -38,8 +38,11 @@ module RuboCop
                     allowed_argument?(first_argument) ||
                     corrected_ancestor?(node)
 
-          add_offense(node) do |corrector|
-            autocorrect(corrector, node)
+          preferred_method = node.first_argument.value.to_s.underscore
+          message = format(MSG, preferred_method: preferred_method, current_argument: first_argument.source)
+
+          add_offense(node, message: message) do |corrector|
+            autocorrect(corrector, node, preferred_method)
 
             @corrected_nodes ||= Set.new.compare_by_identity
             @corrected_nodes.add(node)
@@ -60,11 +63,11 @@ module RuboCop
             allowed_name?(argument)
         end
 
-        def autocorrect(corrector, node)
+        def autocorrect(corrector, node, preferred_method)
           range = correction_range(node)
 
           rest_args = node.arguments.drop(1)
-          replacement = "tag.#{node.first_argument.value.to_s.underscore}(#{rest_args.map(&:source).join(', ')})"
+          replacement = "tag.#{preferred_method}(#{rest_args.map(&:source).join(', ')})"
 
           corrector.replace(range, replacement)
         end

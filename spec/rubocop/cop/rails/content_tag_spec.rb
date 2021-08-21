@@ -67,7 +67,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
     it 'corrects an offense with only tag name' do
       expect_offense(<<~RUBY)
         tag(:br)
-        ^^^^^^^^ Use `tag.something` instead of `tag(:something)`.
+        ^^^^^^^^ Use `tag.br` instead of `tag(:br)`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -78,7 +78,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
     it 'corrects an offense with all arguments' do
       expect_offense(<<~RUBY)
         tag(:br, {class: ["strong", "highlight"]}, true, false)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag.something` instead of `tag(:something)`.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag.br` instead of `tag(:br)`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -89,7 +89,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
     it 'corrects an offense when first argument is non-identifier string' do
       expect_offense(<<~RUBY)
         tag('foo-bar', class: 'strong')
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag.something` instead of `tag(:something)`.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag.foo_bar` instead of `tag('foo-bar')`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -106,7 +106,7 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
     it 'corrects an offense when first argument is string starts with hyphen' do
       expect_offense(<<~RUBY)
         tag('-foo', class: 'strong')
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag.something` instead of `tag(:something)`.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag._foo` instead of `tag('-foo')`.
       RUBY
 
       expect_correction(<<~RUBY)
