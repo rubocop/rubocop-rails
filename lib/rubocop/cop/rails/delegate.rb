@@ -100,7 +100,7 @@ module RuboCop
 
         def method_name_matches?(method_name, body)
           method_name == body.method_name ||
-            include_prefix_case? && method_name == prefixed_method_name(body)
+            (include_prefix_case? && method_name == prefixed_method_name(body))
         end
 
         def include_prefix_case?

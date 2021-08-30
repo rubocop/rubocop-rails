@@ -40,7 +40,7 @@ module RuboCop
         IGNORED_ARGUMENT_TYPES = %i[hash splat].freeze
 
         def on_send(node)
-          return if node.receiver.nil? && !inherit_active_record_base?(node) || allowed_invocation?(node)
+          return if (node.receiver.nil? && !inherit_active_record_base?(node)) || allowed_invocation?(node)
 
           method_name = node.method_name
           static_name = static_method_name(method_name)

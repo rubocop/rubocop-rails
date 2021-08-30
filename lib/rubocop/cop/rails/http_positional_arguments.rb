@@ -69,7 +69,7 @@ module RuboCop
 
           data.each_pair.none? do |pair|
             special_keyword_arg?(pair.key) ||
-              format_arg?(pair.key) && data.pairs.one?
+              (format_arg?(pair.key) && data.pairs.one?)
           end
         end
 

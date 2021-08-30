@@ -343,8 +343,8 @@ module RuboCop
 
         def within_reversible_or_up_only_block?(node)
           node.each_ancestor(:block).any? do |ancestor|
-            ancestor.block_type? &&
-              ancestor.send_node.method?(:reversible) ||
+            (ancestor.block_type? &&
+              ancestor.send_node.method?(:reversible)) ||
               ancestor.send_node.method?(:up_only)
           end
         end

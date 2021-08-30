@@ -61,8 +61,8 @@ module RuboCop
         def offense?(node)
           number, = *node.receiver
 
-          singular_receiver?(number) && plural_method?(node.method_name) ||
-            plural_receiver?(number) && singular_method?(node.method_name)
+          (singular_receiver?(number) && plural_method?(node.method_name)) ||
+            (plural_receiver?(number) && singular_method?(node.method_name))
         end
 
         def plural_method?(method_name)
