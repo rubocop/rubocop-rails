@@ -28,6 +28,14 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
       RUBY
     end
 
+    it 'does not register an offense when specifying `:dependent` strategy with double splat' do
+      expect_no_offenses(<<~RUBY)
+        class Person < ApplicationRecord
+          has_one :foo, **{dependent: :destroy}
+        end
+      RUBY
+    end
+
     it 'does not register an offense when specifying default `dependent: nil` strategy' do
       expect_no_offenses(<<~RUBY)
         class Person < ApplicationRecord

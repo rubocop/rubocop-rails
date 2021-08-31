@@ -114,6 +114,8 @@ module RuboCop
         end
 
         def valid_options?(options)
+          options = options.first.children.first.pairs if options.first.kwsplat_type?
+
           return true unless options
           return true if options.any? do |o|
             dependent_option?(o) || present_option?(o)
