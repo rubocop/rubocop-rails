@@ -11,6 +11,7 @@
 ### Bug fixes
 
 * [#528](https://github.com/rubocop/rubocop-rails/issues/528): Fix a false positive for `Rails/HasManyOrHasOneDependent` when specifying `:dependent` strategy with double splat. ([@koic][])
+* [#529](https://github.com/rubocop/rubocop-rails/issues/529): Fix a false positive for `Rails/LexicallyScopedActionFilter` when action method is aliased by `alias_method`. ([@koic][])
 
 ## Changes
 
