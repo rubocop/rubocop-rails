@@ -8,6 +8,10 @@
 * [#520](https://github.com/rubocop/rubocop-rails/pull/520): Support auto-correction for `Rails/ScopeArgs`. ([@koic][])
 * [#524](https://github.com/rubocop/rubocop-rails/pull/524): Add new `Rails/RedundantTravelBack` cop. ([@koic][])
 
+### Bug fixes
+
+* [#528](https://github.com/rubocop/rubocop-rails/issues/528): Fix a false positive for `Rails/HasManyOrHasOneDependent` when specifying `:dependent` strategy with double splat. ([@koic][])
+
 ## Changes
 
 * [#260](https://github.com/rubocop/rubocop-rails/issues/260): Change target of `Rails/ContentTag` from `content_tag` method to `tag` method. ([@tabuchi0919][])
