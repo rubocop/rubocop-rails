@@ -124,9 +124,10 @@ module RuboCop
           block = parent.each_child_node(:begin).first
           return unless block
 
-          defined_methods = block.each_child_node(:def).map(&:method_name)
+          defined_action_methods = defined_action_methods(block)
+
           methods = array_values(methods_node).reject do |method|
-            defined_methods.include?(method)
+            defined_action_methods.include?(method)
           end
 
           message = message(methods, parent)
@@ -134,6 +135,26 @@ module RuboCop
         end
 
         private
+
+        def defined_action_methods(block)
+          defined_methods = block.each_child_node(:def).map(&:method_name)
+
+          defined_methods + aliased_action_methods(block, defined_methods)
+        end
+
+        def aliased_action_methods(node, defined_methods)
+          alias_methods = node.each_child_node(:send).select { |send_node| send_node.method?(:alias_method) }
+
+          hash_of_alias_methods = alias_methods.each_with_object({}) do |alias_method, result|
+            result[alias_method.last_argument.value] = alias_method.first_argument.value
+          end
+
+          defined_methods.each_with_object([]) do |defined_method, aliased_method|
+            if (new_method_name = hash_of_alias_methods[defined_method])
+              aliased_method << new_method_name
+            end
+          end
+        end
 
         # @param node [RuboCop::AST::Node]
         # @return [Array<Symbol>]
