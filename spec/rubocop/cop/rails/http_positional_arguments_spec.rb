@@ -415,5 +415,21 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
         RUBY
       end
     end
+
+    it 'does not register an offense when defining `get` in `routes` block' do
+      expect_no_offenses(<<~RUBY)
+        routes do
+          get :list, on: :collection
+        end
+      RUBY
+    end
+
+    it 'does not register an offense when defining `get` in `routes.draw` block' do
+      expect_no_offenses(<<~RUBY)
+        Rails.application.routes.draw do
+          get :list, on: :collection
+        end
+      RUBY
+    end
   end
 end
