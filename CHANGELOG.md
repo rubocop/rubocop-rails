@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.12.0 (2021-09-09)
+
 ### New features
 
 * [#521](https://github.com/rubocop/rubocop-rails/pull/521): Support auto-correction for `Rails/Output`. ([@koic][])
