@@ -100,8 +100,8 @@ module RuboCop
         end
 
         def contain_valid_options_in_with_options_block?(node)
-          if with_options_block(node)
-            return true if valid_options?(with_options_block(node))
+          if (options = with_options_block(node))
+            return true if valid_options?(options)
 
             return false unless node.parent
 
@@ -114,6 +114,8 @@ module RuboCop
         end
 
         def valid_options?(options)
+          return false if options.nil?
+
           options = options.first.children.first.pairs if options.first.kwsplat_type?
 
           return true unless options
