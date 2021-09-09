@@ -20,6 +20,15 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
       RUBY
     end
 
+    it 'registers an offense when using lambda argument and not specifying any options' do
+      expect_offense(<<~RUBY)
+        class User < ApplicationRecord
+          has_one :articles, -> { where(active: true) }
+          ^^^^^^^ Specify a `:dependent` option.
+        end
+      RUBY
+    end
+
     it 'does not register an offense when specifying `:dependent` strategy' do
       expect_no_offenses(<<~RUBY)
         class Person < ApplicationRecord
