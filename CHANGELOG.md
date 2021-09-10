@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#541](https://github.com/rubocop/rubocop-rails/issues/541): Fix an error for `Rails/HasManyOrHasOneDependent` when using lambda argument and specifying `:dependent` strategy. ([@koic][])
+
 ## 2.12.1 (2021-09-10)
 
 ### Bug fixes
