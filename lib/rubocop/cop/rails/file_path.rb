@@ -31,6 +31,8 @@ module RuboCop
 
         MSG_SLASHES = 'Prefer `Rails.root.join(\'path/to\')`.'
         MSG_ARGUMENTS = 'Prefer `Rails.root.join(\'path\', \'to\')`.'
+        MSG_RAILS_ROOT = 'Prefer `Rails.root.join` instead.'
+
         RESTRICT_ON_SEND = %i[join].freeze
 
         def_node_matcher :file_join_nodes?, <<~PATTERN
@@ -100,6 +102,8 @@ module RuboCop
         end
 
         def message(_range)
+          return MSG_RAILS_ROOT if style.is_a?(Array) && style.sort == [:arguments, :slashes]
+
           format(style == :arguments ? MSG_ARGUMENTS : MSG_SLASHES)
         end
       end

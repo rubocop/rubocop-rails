@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#298](https://github.com/rubocop-hq/rubocop-rails/pull/298): Allow multiple enforced styles for `Rails/FilePath` cop. ([@tejasbubane][])
+
 ### Bug fixes
 
 * [#541](https://github.com/rubocop/rubocop-rails/issues/541): Fix an error for `Rails/HasManyOrHasOneDependent` when using lambda argument and specifying `:dependent` strategy. ([@koic][])
