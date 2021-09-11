@@ -20,15 +20,6 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
       RUBY
     end
 
-    it 'registers an offense when using lambda argument and not specifying any options' do
-      expect_offense(<<~RUBY)
-        class User < ApplicationRecord
-          has_one :articles, -> { where(active: true) }
-          ^^^^^^^ Specify a `:dependent` option.
-        end
-      RUBY
-    end
-
     it 'does not register an offense when specifying `:dependent` strategy' do
       expect_no_offenses(<<~RUBY)
         class Person < ApplicationRecord
@@ -114,8 +105,25 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
       RUBY
     end
 
+    it 'registers an offense when using lambda argument and not specifying any options' do
+      expect_offense(<<~RUBY)
+        class User < ApplicationRecord
+          has_many :articles, -> { where(active: true) }
+          ^^^^^^^^ Specify a `:dependent` option.
+        end
+      RUBY
+    end
+
     it 'does not register an offense when specifying `:dependent` strategy' do
       expect_no_offenses('has_many :foo, dependent: :bar')
+    end
+
+    it 'does not register an offense when using lambda argument and specifying `:dependent` strategy' do
+      expect_no_offenses(<<~RUBY)
+        class User < ApplicationRecord
+          has_many :articles, -> { where(active: true) }, dependent: :destroy
+        end
+      RUBY
     end
 
     it 'does not register an offense when specifying default `dependent: nil` strategy' do
@@ -129,6 +137,14 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
     context 'with :through option' do
       it 'does not register an offense for non-nil value' do
         expect_no_offenses('has_many :foo, through: :bars')
+      end
+
+      it 'does not register an offense when using lambda argument and specifying non-nil `:through` option' do
+        expect_no_offenses(<<~RUBY)
+          class User < ApplicationRecord
+            has_many :activities, -> { order(created_at: :desc) }, through: :notes, source: :activities
+          end
+        RUBY
       end
 
       it 'registers an offense for nil value' do
