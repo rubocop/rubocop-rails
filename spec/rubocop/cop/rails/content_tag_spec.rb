@@ -168,5 +168,13 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
         RUBY
       end
     end
+
+    context 'when `tag` is not a top-level method (e.g. using intercom-ruby)' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          intercom.tags.tag(foo: 'foo', bar: 'bar')
+        RUBY
+      end
+    end
   end
 end

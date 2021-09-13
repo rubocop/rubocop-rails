@@ -33,6 +33,8 @@ module RuboCop
         end
 
         def on_send(node)
+          return unless node.receiver.nil?
+
           first_argument = node.first_argument
           return if !first_argument ||
                     allowed_argument?(first_argument) ||
@@ -41,12 +43,7 @@ module RuboCop
           preferred_method = node.first_argument.value.to_s.underscore
           message = format(MSG, preferred_method: preferred_method, current_argument: first_argument.source)
 
-          add_offense(node, message: message) do |corrector|
-            autocorrect(corrector, node, preferred_method)
-
-            @corrected_nodes ||= Set.new.compare_by_identity
-            @corrected_nodes.add(node)
-          end
+          register_offense(node, message, preferred_method)
         end
 
         private
@@ -61,6 +58,15 @@ module RuboCop
             argument.const_type? ||
             argument.splat_type? ||
             allowed_name?(argument)
+        end
+
+        def register_offense(node, message, preferred_method)
+          add_offense(node, message: message) do |corrector|
+            autocorrect(corrector, node, preferred_method)
+
+            @corrected_nodes ||= Set.new.compare_by_identity
+            @corrected_nodes.add(node)
+          end
         end
 
         def autocorrect(corrector, node, preferred_method)
