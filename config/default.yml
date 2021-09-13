@@ -49,6 +49,21 @@ Rails/ActionFilter:
   Include:
     - app/controllers/**/*.rb
 
+Rails/ActionOrder:
+  Description: 'Enforce consistent ordering of controller actions.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  ExpectedOrder:
+    - index
+    - show
+    - new
+    - edit
+    - create
+    - update
+    - destroy
+  Include:
+    - app/controllers/**/*.rb
+
 Rails/ActiveRecordAliases:
   Description: >-
                   Avoid Active Record aliases:

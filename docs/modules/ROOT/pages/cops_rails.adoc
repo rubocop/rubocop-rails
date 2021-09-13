@@ -63,6 +63,66 @@ skip_after_filter :do_stuff
 | Array
 |===
 
+== Rails/ActionOrder
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Disabled
+| Yes
+| Yes
+| 2.13
+| -
+|===
+
+This cop enforces consistent ordering of the standard Rails RESTful
+controller actions.
+
+The cop is configurable and can enforce any ordering of the standard
+actions. All other methods are ignored.
+
+[source,yaml]
+----
+ Rails/ActionOrder:
+   ExpectedOrder:
+     - index
+     - show
+     - new
+     - edit
+     - create
+     - update
+     - destroy
+----
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+def index; end
+def destroy; end
+def show; end
+
+# good
+def index; end
+def show; end
+def destroy; end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| ExpectedOrder
+| `index`, `show`, `new`, `edit`, `create`, `update`, `destroy`
+| Array
+
+| Include
+| `app/controllers/**/*.rb`
+| Array
+|===
+
 == Rails/ActiveRecordAliases
 
 |===
