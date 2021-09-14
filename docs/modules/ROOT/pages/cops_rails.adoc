@@ -845,6 +845,16 @@ tag.br(class: 'classname')
 tag(name, class: 'classname')
 ----
 
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Exclude
+| `app/models/**/*.rb`
+| Array
+|===
+
 === References
 
 * https://github.com/rubocop/rubocop-rails/issues/260
