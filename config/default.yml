@@ -189,6 +189,9 @@ Rails/ContentTag:
   Enabled: true
   VersionAdded: '2.6'
   VersionChanged: '2.12'
+  # This `Exclude` config prevents false positives for `tag` calls to `has_one: tag`. No helpers are used in normal models.
+  Exclude:
+    - app/models/**/*.rb
 
 Rails/CreateTableWithTimestamps:
   Description: >-
