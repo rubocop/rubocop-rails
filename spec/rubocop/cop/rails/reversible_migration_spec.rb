@@ -213,11 +213,35 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
       end
     RUBY
 
-    it_behaves_like 'offense', 'change_table(with remove)', <<~RUBY
-      change_table :users do |t|
-        t.remove :qualification
+    context 'remove' do
+      context 'Rails >= 6.1', :rails61 do
+        it_behaves_like 'accepts', 't.remove (with type)', <<~RUBY
+          change_table :users do |t|
+            t.remove(:posts, type: :text)
+          end
+        RUBY
+
+        it_behaves_like 'offense', 't.remove (without type)', <<~RUBY
+          change_table :users do |t|
+            t.remove(:posts)
+          end
+        RUBY
       end
-    RUBY
+
+      context 'Rails < 6.1', :rails60 do
+        it_behaves_like 'offense', 't.remove', <<~RUBY
+          change_table :users do |t|
+            t.remove(:posts, type: :text)
+          end
+        RUBY
+
+        it_behaves_like 'offense', 't.remove', <<~RUBY
+          change_table :users do |t|
+            t.remove(:posts)
+          end
+        RUBY
+      end
+    end
   end
 
   context 'remove_columns' do

@@ -317,16 +317,24 @@ module RuboCop
           return if receiver != node.receiver &&
                     reversible_change_table_call?(node)
 
+          action = if method_name == :remove
+                     target_rails_version >= 6.1 ? 't.remove (without type)' : 't.remove'
+                   else
+                     "change_table(with #{method_name})"
+                   end
+
           add_offense(
             node,
-            message: format(MSG, action: "change_table(with #{method_name})")
+            message: format(MSG, action: action)
           )
         end
 
         def reversible_change_table_call?(node)
           case node.method_name
-          when :change, :remove
+          when :change
             false
+          when :remove
+            target_rails_version >= 6.1 && all_hash_key?(node.arguments.last, :type)
           when :change_default, :change_column_default, :change_table_comment,
                :change_column_comment
             all_hash_key?(node.arguments.last, :from, :to)
