@@ -56,7 +56,7 @@ RSpec.describe RuboCop::Cop::Rails::AssertNot, :config do
     RUBY
   end
 
-  it 'does not register an offense when using `assert_not` ' do
+  it 'does not register an offense when using `assert_not`' do
     expect_no_offenses(<<~RUBY)
       assert_not foo
     RUBY

@@ -158,7 +158,7 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     RUBY
   end
 
-  it 'does not register an offense when if or unless modifier is used ' do
+  it 'does not register an offense when if or unless modifier is used' do
     [
       'a if a.blank?',
       'a unless a.present?'
