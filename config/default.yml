@@ -478,6 +478,14 @@ Rails/MatchRoute:
     - config/routes.rb
     - config/routes/**/*.rb
 
+Rails/ModelSerializeToHash:
+  Description: 'Prefer saving parameters to JSON or manual, if possible.'
+  Enabled: 'pending'
+  Safe: false
+  VersionAdded: '2.12'
+  Include:
+    - app/models/**/*.rb
+
 Rails/NegateInclude:
   Description: 'Prefer `collection.exclude?(obj)` over `!collection.include?(obj)`.'
   StyleGuide: 'https://rails.rubystyle.guide#exclude'

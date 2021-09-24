@@ -4,6 +4,10 @@
 
 ## 2.12.2 (2021-09-11)
 
+### New features
+
+* [#558](https://github.com/rubocop/rubocop-rails/issues/558): Add new `Rails/ModelSerializeToHash` cop. ([@solar05][])
+
 ### Bug fixes
 
 * [#541](https://github.com/rubocop/rubocop-rails/issues/541): Fix an error for `Rails/HasManyOrHasOneDependent` when using lambda argument and specifying `:dependent` strategy. ([@koic][])
@@ -461,3 +465,4 @@
 [@skryukov]: https://github.com/skryukov
 [@johnsyweb]: https://github.com/johnsyweb
 [@theunraveler]: https://github.com/theunraveler
+[@solar05]: https://github.com/solar05

@@ -2639,6 +2639,41 @@ match 'photos/:id', to: 'photos#show', via: :all
 
 * https://rails.rubystyle.guide/#no-match-routes
 
+== Rails/ModelSerializeToHash
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| No
+| 2.12
+| -
+|===
+
+This cop checks for the use of the serialize Hash macro.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+# serialize :params, Hash
+
+# good
+# serialize :params, JSON
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `app/models/**/*.rb`
+| Array
+|===
+
 == Rails/NegateInclude
 
 |===
