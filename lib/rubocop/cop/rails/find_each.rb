@@ -43,8 +43,19 @@ module RuboCop
         private
 
         def ignored?(node)
+          return true if active_model_error_where?(node.receiver)
+
           method_chain = node.each_node(:send).map(&:method_name)
+
           (cop_config['IgnoredMethods'].map(&:to_sym) & method_chain).any?
+        end
+
+        def active_model_error_where?(node)
+          node.method?(:where) && active_model_error?(node.receiver)
+        end
+
+        def active_model_error?(node)
+          node.send_type? && node.method?(:errors)
         end
       end
     end

@@ -42,6 +42,13 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
     expect_no_offenses('User.all.find_each { |u| u.x }')
   end
 
+  # Active Model Errors slice from the new query interface introduced in Rails 6.1.
+  it 'does not register an offense when using `model.errors.where`' do
+    expect_no_offenses(<<~RUBY)
+      model.errors.where(:title).each { |error| do_something(error)  }
+    RUBY
+  end
+
   it 'auto-corrects each to find_each' do
     expect_offense(<<~RUBY)
       User.all.each { |u| u.x }
