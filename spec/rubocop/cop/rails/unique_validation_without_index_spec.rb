@@ -28,7 +28,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         expect_offense(<<~RUBY)
           class User
             validates :account, uniqueness: true
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
           end
         RUBY
       end
@@ -48,7 +48,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         expect_offense(<<~RUBY)
           class User
             validates :account, uniqueness: true
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
           end
         RUBY
       end
@@ -110,7 +110,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           expect_offense(<<~RUBY)
             class WrittenArticles
               validates :user_id, uniqueness: { scope: :article_id }
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
             end
           RUBY
         end
@@ -155,7 +155,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
             class WrittenArticles
               belongs_to :author, polymorphic: true
               validates :title, uniqueness: { scope: :author }
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
             end
           RUBY
         end
@@ -247,7 +247,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           expect_offense(<<~RUBY)
             class WrittenArticles
               validates :a_id, uniqueness: { scope: [:b_id, :c_id] }
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
             end
           RUBY
         end
@@ -301,7 +301,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
             class Article
               belongs_to :user
               validates :user, uniqueness: true
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
             end
           RUBY
         end
@@ -419,7 +419,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
             class Article
               belongs_to :member, foreign_key: :user_id
               validates :member, uniqueness: true
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
             end
           RUBY
         end
@@ -480,7 +480,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           class User
             self.table_name = 'members'
             validates :account, uniqueness: true
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
           end
         RUBY
       end
@@ -500,7 +500,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           module Admin
             class User
               validates :account, uniqueness: true
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
             end
           end
         RUBY
@@ -510,7 +510,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         expect_offense(<<~RUBY)
           class Admin::User
             validates :account, uniqueness: true
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
           end
         RUBY
       end
@@ -550,7 +550,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           expect_offense(<<~RUBY)
             class Email < ApplicationRecord
               validates :address, presence: true, uniqueness: { case_sensitive: false }, email: true
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
             end
           RUBY
         end
@@ -572,7 +572,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           expect_offense(<<~RUBY)
             class User
               validates :account, uniqueness: true
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should be with a unique index.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
             end
           RUBY
         end

@@ -819,7 +819,7 @@ Rails/UniqBeforePluck:
   AutoCorrect: false
 
 Rails/UniqueValidationWithoutIndex:
-  Description: 'Uniqueness validation should be with a unique index.'
+  Description: 'Uniqueness validation should have a unique index on the database column.'
   Enabled: true
   VersionAdded: '2.5'
   Include:
