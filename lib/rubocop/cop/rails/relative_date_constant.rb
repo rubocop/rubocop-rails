@@ -90,7 +90,7 @@ module RuboCop
         end
 
         def nested_relative_date(node, &callback)
-          return if node.block_type?
+          return if node.nil? || node.block_type?
 
           node.each_child_node do |child|
             nested_relative_date(child, &callback)

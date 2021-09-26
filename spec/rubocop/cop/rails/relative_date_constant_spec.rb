@@ -172,4 +172,14 @@ RSpec.describe RuboCop::Cop::Rails::RelativeDateConstant, :config do
       RUBY
     end
   end
+
+  context 'when using multiple assignment' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class SomeClass
+          FOO, BAR = *do_something
+        end
+      RUBY
+    end
+  end
 end
