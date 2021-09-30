@@ -4503,6 +4503,40 @@ Service::Mailer::update
 
 * https://rails.rubystyle.guide#save-bang
 
+== Rails/SchemaComment
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Disabled
+| Yes
+| No
+| 2.13
+| -
+|===
+
+This cop enforces the use of the `comment` option when adding a new table or column
+to the database during a migration.
+
+=== Examples
+
+[source,ruby]
+----
+# bad (no comment for a new column or table)
+add_column :table, :column, :integer
+
+create_table :table do |t|
+  t.type :column
+end
+
+# good
+add_column :table, :column, :integer, comment: 'Number of offenses'
+
+create_table :table, comment: 'Table of offenses data' do |t|
+  t.type :column, comment: 'Number of offenses'
+end
+----
+
 == Rails/ScopeArgs
 
 |===

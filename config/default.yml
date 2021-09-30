@@ -733,6 +733,13 @@ Rails/SaveBang:
   AllowedReceivers: []
   SafeAutoCorrect: false
 
+Rails/SchemaComment:
+  Description: >-
+    This cop enforces the use of the `comment` option when adding a new table or column
+    to the database during a migration.
+  Enabled: false
+  VersionAdded: '2.13'
+
 Rails/ScopeArgs:
   Description: 'Checks the arguments of ActiveRecord scopes.'
   Enabled: true

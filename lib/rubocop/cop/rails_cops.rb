@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'mixin/active_record_helper'
+require_relative 'mixin/active_record_migrations_helper'
 require_relative 'mixin/enforce_superclass'
 require_relative 'mixin/index_method'
 require_relative 'mixin/target_rails_version'
@@ -10,6 +11,7 @@ require_relative 'rails/active_record_aliases'
 require_relative 'rails/active_record_callbacks_order'
 require_relative 'rails/active_record_override'
 require_relative 'rails/active_support_aliases'
+require_relative 'rails/schema_comment'
 require_relative 'rails/add_column_index'
 require_relative 'rails/after_commit_override'
 require_relative 'rails/application_controller'
