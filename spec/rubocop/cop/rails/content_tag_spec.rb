@@ -75,14 +75,19 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
-    it 'corrects an offense with all arguments' do
-      expect_offense(<<~RUBY)
+    # Prevents `ArgumentError` reported by https://github.com/rubocop/rubocop-rails/issues/556.
+    # See: https://api.rubyonrails.org/v6.1.4/classes/ActionView/Helpers/TagHelper.html#method-i-tag-label-Legacy+syntax
+    it 'does not register an offense with all arguments' do
+      expect_no_offenses(<<~RUBY)
         tag(:br, {class: ["strong", "highlight"]}, true, false)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `tag.br` instead of `tag(:br)`.
       RUBY
+    end
 
-      expect_correction(<<~RUBY)
-        tag.br({class: ["strong", "highlight"]}, true, false)
+    # Prevents `ArgumentError` reported by https://github.com/rubocop/rubocop-rails/issues/556.
+    # See: https://api.rubyonrails.org/v6.1.4/classes/ActionView/Helpers/TagHelper.html#method-i-tag-label-Legacy+syntax
+    it 'does not register an offense with three arguments' do
+      expect_no_offenses(<<~RUBY)
+        tag(:br, {class: ["strong", "highlight"]}, true)
       RUBY
     end
 

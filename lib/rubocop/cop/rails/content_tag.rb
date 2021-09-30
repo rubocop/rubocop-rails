@@ -34,6 +34,7 @@ module RuboCop
 
         def on_send(node)
           return unless node.receiver.nil?
+          return if node.arguments.count >= 3
 
           first_argument = node.first_argument
           return if !first_argument ||
