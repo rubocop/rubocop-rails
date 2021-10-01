@@ -9,7 +9,7 @@ AllCops:
     - bin/*
     - db/schema.rb
   # What version of Rails is the inspected code using?  If a value is specified
-  # for TargetRailsVersion then it is used.  Acceptable values are specificed
+  # for TargetRailsVersion then it is used.  Acceptable values are specified
   # as a float (i.e. 5.1); the patch version of Rails should not be included.
   # If TargetRailsVersion is not set, RuboCop will parse the Gemfile.lock or
   # gems.locked file to find the version of Rails that has been bound to the

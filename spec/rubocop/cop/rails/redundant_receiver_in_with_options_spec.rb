@@ -29,7 +29,7 @@ RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
     RUBY
   end
 
-  it 'does not register an offense when using inplicit receiver ' \
+  it 'does not register an offense when using implicit receiver ' \
      'in `with_options`' do
     expect_no_offenses(<<~RUBY)
       class Account < ApplicationRecord
