@@ -923,6 +923,10 @@ end
 | Include
 | `db/migrate/*.rb`
 | Array
+
+| Exclude
+| `db/migrate/*_create_active_storage_tables.active_storage.rb`
+| Array
 |===
 
 == Rails/Date
