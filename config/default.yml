@@ -245,6 +245,12 @@ Rails/DelegateAllowBlank:
   Enabled: true
   VersionAdded: '0.44'
 
+Rails/DurationArithmetic:
+  Description: 'Do not use duration as arithmetic operand with `Time.current`.'
+  StyleGuide: 'https://rails.rubystyle.guide#duration-arithmetic'
+  Enabled: pending
+  VersionAdded: '2.13'
+
 Rails/DynamicFindBy:
   Description: 'Use `find_by` instead of dynamic `find_by_*`.'
   StyleGuide: 'https://rails.rubystyle.guide#find_by'
