@@ -45,7 +45,18 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
   # Active Model Errors slice from the new query interface introduced in Rails 6.1.
   it 'does not register an offense when using `model.errors.where`' do
     expect_no_offenses(<<~RUBY)
-      model.errors.where(:title).each { |error| do_something(error)  }
+      class Model < ApplicationRecord
+        model.errors.where(:title).each { |error| do_something(error)  }
+      end
+    RUBY
+  end
+
+  it 'registers an offense when using `where` with no receiver' do
+    expect_offense(<<~RUBY)
+      class Model < ApplicationRecord
+        where(record: [record1, record2]).each(&:touch)
+                                          ^^^^ Use `find_each` instead of `each`.
+      end
     RUBY
   end
 
