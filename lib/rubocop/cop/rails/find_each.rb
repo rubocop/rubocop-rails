@@ -55,6 +55,8 @@ module RuboCop
         end
 
         def active_model_error?(node)
+          return false if node.nil?
+
           node.send_type? && node.method?(:errors)
         end
       end
