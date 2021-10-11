@@ -6,6 +6,10 @@ module RuboCop
       # This cop identifies places where manually constructed SQL
       # in `where` can be replaced with `where(attribute: value)`.
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because is may change SQL.
+      #   See: https://github.com/rubocop/rubocop-rails/issues/403
+      #
       # @example
       #   # bad
       #   User.where('name = ?', 'Gabe')

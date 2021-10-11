@@ -25,6 +25,25 @@ module RuboCop
       # You can permit receivers that are giving false positives with
       # `AllowedReceivers: []`
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because a custom `update` method call would be changed to `update!`,
+      #   but the method name in the definition would be unchanged.
+      #
+      #   [source,ruby]
+      #   ----
+      #   # Original code
+      #   def update_attributes
+      #   end
+      #
+      #   update_attributes
+      #
+      #   # After running rubocop --safe-auto-correct
+      #   def update_attributes
+      #   end
+      #
+      #   update
+      #   ----
+      #
       # @example
       #
       #   # bad

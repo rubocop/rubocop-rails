@@ -14,6 +14,11 @@ module RuboCop
       # * The task does not need application code.
       # * The task invokes the `:environment` task.
       #
+      # @safety
+      #   Probably not a problem in most cases, but it is possible that calling `:environment` task
+      #   will break a behavior. It's also slower. E.g. some task that only needs one gem to be
+      #   loaded to run will run significantly faster without loading the whole application.
+      #
       # @example
       #   # bad
       #   task :foo do

@@ -8,6 +8,10 @@ module RuboCop
       # Without the `Mailer` suffix it isn't immediately apparent what's a mailer
       # and which views are related to the mailer.
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because renaming a constant is
+      #   always an unsafe operation.
+      #
       # @example
       #   # bad
       #   class User < ActionMailer::Base
