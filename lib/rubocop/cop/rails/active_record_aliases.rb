@@ -8,10 +8,10 @@ module RuboCop
       #
       # @example
       #   #bad
-      #   Book.update_attributes!(author: 'Alice')
+      #   book.update_attributes!(author: 'Alice')
       #
       #   #good
-      #   Book.update!(author: 'Alice')
+      #   book.update!(author: 'Alice')
       class ActiveRecordAliases < Base
         extend AutoCorrector
 

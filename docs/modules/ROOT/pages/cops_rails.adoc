@@ -83,10 +83,10 @@ are more clear and easier to read.
 [source,ruby]
 ----
 #bad
-Book.update_attributes!(author: 'Alice')
+book.update_attributes!(author: 'Alice')
 
 #good
-Book.update!(author: 'Alice')
+book.update!(author: 'Alice')
 ----
 
 == Rails/ActiveRecordCallbacksOrder
