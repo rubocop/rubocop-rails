@@ -4197,10 +4197,10 @@ foo&.bar { |e| e.baz }
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
 | Enabled
-| Yes
+| No
 | Yes (Unsafe)
 | 2.4
-| -
+| 2.13
 |===
 
 This cop checks to make sure safe navigation isn't used with `blank?` in

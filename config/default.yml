@@ -709,13 +709,14 @@ Rails/SafeNavigationWithBlank:
   Description: 'Avoid `foo&.blank?` in conditionals.'
   Enabled: true
   VersionAdded: '2.4'
+  VersionChanged: '2.13'
   # While the safe navigation operator is generally a good idea, when
   # checking `foo&.blank?` in a conditional, `foo` being `nil` will actually
   # do the opposite of what the author intends.
   #
   # foo&.blank? #=> nil
   # foo.blank? #=> true
-  SafeAutoCorrect: false
+  Safe: false
 
 Rails/SaveBang:
   Description: 'Identifies possible cases where Active Record save! or related should be used.'
