@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#573](https://github.com/rubocop/rubocop-rails/pull/573): Fix an error for `Rails/FindEach` when using `where` with no receiver. ([@koic][])
+
 ## 2.12.3 (2021-10-06)
 
 ### Bug fixes
