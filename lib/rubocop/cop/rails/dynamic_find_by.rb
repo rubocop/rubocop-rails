@@ -7,6 +7,10 @@ module RuboCop
       # Use `find_by` instead of dynamic method.
       # See. https://rails.rubystyle.guide#find_by
       #
+      # @safety
+      #   It is certainly unsafe when not configured properly, i.e. user-defined `find_by_xxx`
+      #   method is not added to cop's `AllowedMethods`.
+      #
       # @example
       #   # bad
       #   User.find_by_name(name)

@@ -14,6 +14,9 @@ module RuboCop
       # When EnforcedStyle is 'flexible' then it's also allowed
       # to use `Time#in_time_zone`.
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because it may change handling time.
+      #
       # @example
       #   # bad
       #   Time.now

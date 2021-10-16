@@ -5,6 +5,9 @@ module RuboCop
     module Rails
       # This cop enforces the use of `ids` over `pluck(:id)` and `pluck(primary_key)`.
       #
+      # @safety
+      #   This cop is unsafe if the receiver object is not an Active Record object.
+      #
       # @example
       #   # bad
       #   User.pluck(:id)

@@ -6,8 +6,9 @@ module RuboCop
       # This cop enforces the use of `collection.exclude?(obj)`
       # over `!collection.include?(obj)`.
       #
-      # It is marked as unsafe by default because false positive will occur for
-      # a receiver object that do not have `exclude?` method. (e.g. `IPAddr`)
+      # @safety
+      #   This cop is unsafe because false positive will occur for
+      #   receiver objects that do not have an `exclude?` method. (e.g. `IPAddr`)
       #
       # @example
       #   # bad

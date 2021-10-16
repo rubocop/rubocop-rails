@@ -3,7 +3,11 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks that mailers subclass ApplicationMailer with Rails 5.0.
+      # This cop checks that mailers subclass `ApplicationMailer` with Rails 5.0.
+      #
+      # @safety
+      #   This cop's autocorrection is unsafe because it may let the logic from `ApplicationMailer`
+      #   sneak into a mailer that is not purposed to inherit logic common among other mailers.
       #
       # @example
       #

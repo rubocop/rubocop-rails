@@ -78,6 +78,11 @@ skip_after_filter :do_stuff
 Checks that ActiveRecord aliases are not used. The direct method names
 are more clear and easier to read.
 
+=== Safety
+
+This cop is unsafe because custom `update_attributes` method call was changed to
+`update` but the method name remained same in the method definition.
+
 === Examples
 
 [source,ruby]
@@ -309,7 +314,12 @@ after_update_commit :log_update_action
 | 2.5
 |===
 
-This cop checks that controllers subclass ApplicationController.
+This cop checks that controllers subclass `ApplicationController`.
+
+=== Safety
+
+This cop's autocorrection is unsafe because it may let the logic from `ApplicationController`
+sneak into a controller that is not purposed to inherit logic common among other controllers.
 
 === Examples
 
@@ -338,7 +348,12 @@ end
 | 2.5
 |===
 
-This cop checks that jobs subclass ApplicationJob with Rails 5.0.
+This cop checks that jobs subclass `ApplicationJob` with Rails 5.0.
+
+=== Safety
+
+This cop's autocorrection is unsafe because it may let the logic from `ApplicationJob`
+sneak into a job that is not purposed to inherit logic common among other jobs.
 
 === Examples
 
@@ -367,7 +382,12 @@ end
 | 2.5
 |===
 
-This cop checks that mailers subclass ApplicationMailer with Rails 5.0.
+This cop checks that mailers subclass `ApplicationMailer` with Rails 5.0.
+
+=== Safety
+
+This cop's autocorrection is unsafe because it may let the logic from `ApplicationMailer`
+sneak into a mailer that is not purposed to inherit logic common among other mailers.
 
 === Examples
 
@@ -396,7 +416,13 @@ end
 | 2.5
 |===
 
-This cop checks that models subclass ApplicationRecord with Rails 5.0.
+This cop checks that models subclass `ApplicationRecord` with Rails 5.0.
+
+=== Safety
+
+This cop's autocorrection is unsafe because it may let the logic from `ApplicationRecord`
+sneak into an Active Record model that is not purposed to inherit logic common among other
+Active Record models.
 
 === Examples
 
@@ -431,6 +457,13 @@ Using `arel_table["*"]` causes the outputted string to be a literal
 quoted asterisk (e.g. <tt>`my_model`.`*`</tt>). This causes the
 database to look for a column named <tt>`*`</tt> (or `"*"`) as opposed
 to expanding the column list as one would likely expect.
+
+=== Safety
+
+This cop's autocorrection is unsafe because it turns a quoted `*` into
+an SQL `*`, unquoted. `*` is a valid column name in certain databases
+supported by Rails, and even though it is usually a mistake,
+it might denote legitimate access to a column named `*`.
 
 === Examples
 
@@ -637,14 +670,16 @@ end
 This cop checks for code that can be written with simpler conditionals
 using `Object#blank?` defined by Active Support.
 
-This cop is marked as unsafe auto-correction, because `' '.empty?` returns false,
-but `' '.blank?` returns true. Therefore, auto-correction is not compatible
-if the receiver is a non-empty blank string, tab, or newline meta characters.
-
 Interaction with `Style/UnlessElse`:
 The configuration of `NotPresent` will not produce an offense in the
 context of `unless else` if `Style/UnlessElse` is inabled. This is
 to prevent interference between the auto-correction of the two cops.
+
+=== Safety
+
+This cop is unsafe auto-correction, because `' '.empty?` returns false,
+but `' '.blank?` returns true. Therefore, auto-correction is not compatible
+if the receiver is a non-empty blank string, tab, or newline meta characters.
 
 === Examples
 
@@ -1186,6 +1221,11 @@ delegate :foo, to: :bar, allow_nil: true
 This cop checks dynamic `find_by_*` methods.
 Use `find_by` instead of dynamic method.
 See. https://rails.rubystyle.guide#find_by
+
+=== Safety
+
+It is certainly unsafe when not configured properly, i.e. user-defined `find_by_xxx`
+method is not added to cop's `AllowedMethods`.
 
 === Examples
 
@@ -2407,6 +2447,8 @@ end
 This cop checks that methods specified in the filter's `only` or
 `except` options are defined within the same class or module.
 
+=== Safety
+
 You can technically specify methods of superclass or methods added by
 mixins on the filter, but these can confuse developers. If you specify
 methods that are defined in other classes or modules, you should
@@ -2563,6 +2605,11 @@ This cop enforces that mailer names end with `Mailer` suffix.
 Without the `Mailer` suffix it isn't immediately apparent what's a mailer
 and which views are related to the mailer.
 
+=== Safety
+
+This cop's autocorrection is unsafe because renaming a constant is
+always an unsafe operation.
+
 === Examples
 
 [source,ruby]
@@ -2658,8 +2705,10 @@ match 'photos/:id', to: 'photos#show', via: :all
 This cop enforces the use of `collection.exclude?(obj)`
 over `!collection.include?(obj)`.
 
-It is marked as unsafe by default because false positive will occur for
-a receiver object that do not have `exclude?` method. (e.g. `IPAddr`)
+=== Safety
+
+This cop is unsafe because false positive will occur for
+receiver objects that do not have an `exclude?` method. (e.g. `IPAddr`)
 
 === Examples
 
@@ -2768,6 +2817,11 @@ scope :chronological, -> { order(created_at: :asc) }
 |===
 
 This cop checks for the use of output calls like puts and print
+
+=== Safety
+
+This cop's autocorrection is unsafe because depending on the Rails log level configuration,
+changing from `puts` to `Rails.logger.debug` could result in no output being shown.
 
 === Examples
 
@@ -2886,6 +2940,14 @@ Using `pluck` followed by `first` creates an intermediate array, which
 `pick` avoids. When called on an Active Record relation, `pick` adds a
 limit to the query so that only one value is fetched from the database.
 
+=== Safety
+
+This cop is unsafe because `pluck` is defined on both `ActiveRecord::Relation` and `Enumerable`,
+whereas `pick` is only defined on `ActiveRecord::Relation` in Rails 6.0. This was addressed
+in Rails 6.1 via rails/rails#38760, at which point the cop is safe.
+
+See: https://github.com/rubocop/rubocop-rails/pull/249
+
 === Examples
 
 [source,ruby]
@@ -2952,6 +3014,10 @@ Post.published.pluck(:title)
 
 This cop enforces the use of `ids` over `pluck(:id)` and `pluck(primary_key)`.
 
+=== Safety
+
+This cop is unsafe if the receiver object is not an Active Record object.
+
 === Examples
 
 [source,ruby]
@@ -2995,11 +3061,13 @@ and can be replaced with `select`.
 Since `pluck` is an eager method and hits the database immediately,
 using `select` helps to avoid additional database queries.
 
-This cop has two different enforcement modes. When the EnforcedStyle
-is conservative (the default) then only calls to `pluck` on a constant
+This cop has two different enforcement modes. When the `EnforcedStyle`
+is `conservative` (the default) then only calls to `pluck` on a constant
 (i.e. a model class) in the `where` is used as offenses.
 
-When the EnforcedStyle is aggressive then all calls to `pluck` in the
+=== Safety
+
+When the `EnforcedStyle` is `aggressive` then all calls to `pluck` in the
 `where` is used as offenses. This may lead to false positives
 as the cop cannot replace to `select` between calls to `pluck` on an
 `ActiveRecord::Relation` instance vs a call to `pluck` on an `Array` instance.
@@ -3230,6 +3298,12 @@ following conditions:
 
 * The task does not need application code.
 * The task invokes the `:environment` task.
+
+=== Safety
+
+Probably not a problem in most cases, but it is possible that calling `:environment` task
+will break a behavior. It's also slower. E.g. some task that only needs one gem to be
+loaded to run will run significantly faster without loading the whole application.
 
 === Examples
 
@@ -3533,7 +3607,10 @@ end
 
 This cop checks if the value of the option `class_name`, in
 the definition of a reflection is a string.
-It is marked as unsafe because it cannot be determined whether
+
+=== Safety
+
+This cop is unsafe because it cannot be determined whether
 constant or method return value specified to `class_name` is a string.
 
 === Examples
@@ -4206,9 +4283,19 @@ foo&.bar { |e| e.baz }
 This cop checks to make sure safe navigation isn't used with `blank?` in
 a conditional.
 
+=== Safety
+
 While the safe navigation operator is generally a good idea, when
 checking `foo&.blank?` in a conditional, `foo` being `nil` will actually
 do the opposite of what the author intends.
+
+For example:
+
+[source,ruby]
+----
+foo&.blank? #=> nil
+foo.blank? #=> true
+----
 
 === Examples
 
@@ -4256,6 +4343,26 @@ that behavior can be turned off with `AllowImplicitReturn: false`.
 
 You can permit receivers that are giving false positives with
 `AllowedReceivers: []`
+
+=== Safety
+
+This cop's autocorrection is unsafe because a custom `update` method call would be changed to `update!`,
+but the method name in the definition would be unchanged.
+
+[source,ruby]
+----
+# Original code
+def update_attributes
+end
+
+update_attributes
+
+# After running rubocop --safe-auto-correct
+def update_attributes
+end
+
+update
+----
 
 === Examples
 
@@ -4552,6 +4659,9 @@ user.touch
 |===
 
 Checks SQL heredocs to use `.squish`.
+
+=== Safety
+
 Some SQL syntax (e.g. PostgreSQL comments and functions) requires newlines
 to be preserved in order to work, thus auto-correction for this cop is not safe.
 
@@ -4616,6 +4726,10 @@ then only use of `Time.zone` is allowed.
 
 When EnforcedStyle is 'flexible' then it's also allowed
 to use `Time#in_time_zone`.
+
+=== Safety
+
+This cop's autocorrection is unsafe because it may change handling time.
 
 === Examples
 
@@ -4742,6 +4856,8 @@ distinct are added as offenses. This may lead to false positives
 as the cop cannot distinguish between calls to pluck on an
 ActiveRecord::Relation vs a call to pluck on an
 ActiveRecord::Associations::CollectionProxy.
+
+=== Safety
 
 This cop is unsafe because the behavior may change depending on the
 database collation.
@@ -4993,6 +5109,11 @@ validates :foo, uniqueness: true
 This cop identifies places where manually constructed SQL
 in `where` can be replaced with `where(attribute: value)`.
 
+=== Safety
+
+This cop's autocorrection is unsafe because is may change SQL.
+See: https://github.com/rubocop/rubocop-rails/issues/403
+
 === Examples
 
 [source,ruby]
@@ -5035,6 +5156,8 @@ then the cop enforces `exists?(...)` over `where(...).exists?`.
 
 When EnforcedStyle is 'where' then the cop enforces
 `where(...).exists?` over `exists?(...)`.
+
+=== Safety
 
 This cop is unsafe for auto-correction because the behavior may change on the following case:
 

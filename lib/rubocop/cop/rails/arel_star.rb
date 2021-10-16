@@ -10,6 +10,12 @@ module RuboCop
       # database to look for a column named <tt>`*`</tt> (or `"*"`) as opposed
       # to expanding the column list as one would likely expect.
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because it turns a quoted `*` into
+      #   an SQL `*`, unquoted. `*` is a valid column name in certain databases
+      #   supported by Rails, and even though it is usually a mistake,
+      #   it might denote legitimate access to a column named `*`.
+      #
       # @example
       #   # bad
       #   MyTable.arel_table["*"]

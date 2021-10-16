@@ -3,7 +3,12 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks that models subclass ApplicationRecord with Rails 5.0.
+      # This cop checks that models subclass `ApplicationRecord` with Rails 5.0.
+      #
+      # @safety
+      #   This cop's autocorrection is unsafe because it may let the logic from `ApplicationRecord`
+      #   sneak into an Active Record model that is not purposed to inherit logic common among other
+      #   Active Record models.
       #
       # @example
       #

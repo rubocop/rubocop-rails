@@ -9,6 +9,13 @@ module RuboCop
       # `pick` avoids. When called on an Active Record relation, `pick` adds a
       # limit to the query so that only one value is fetched from the database.
       #
+      # @safety
+      #   This cop is unsafe because `pluck` is defined on both `ActiveRecord::Relation` and `Enumerable`,
+      #   whereas `pick` is only defined on `ActiveRecord::Relation` in Rails 6.0. This was addressed
+      #   in Rails 6.1 via rails/rails#38760, at which point the cop is safe.
+      #
+      #   See: https://github.com/rubocop/rubocop-rails/pull/249
+      #
       # @example
       #   # bad
       #   Model.pluck(:a).first

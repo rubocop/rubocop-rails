@@ -3,7 +3,11 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks that controllers subclass ApplicationController.
+      # This cop checks that controllers subclass `ApplicationController`.
+      #
+      # @safety
+      #   This cop's autocorrection is unsafe because it may let the logic from `ApplicationController`
+      #   sneak into a controller that is not purposed to inherit logic common among other controllers.
       #
       # @example
       #

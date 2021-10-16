@@ -5,6 +5,10 @@ module RuboCop
     module Rails
       # This cop checks for the use of output calls like puts and print
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because depending on the Rails log level configuration,
+      #   changing from `puts` to `Rails.logger.debug` could result in no output being shown.
+      #
       # @example
       #   # bad
       #   puts 'A debug message'
