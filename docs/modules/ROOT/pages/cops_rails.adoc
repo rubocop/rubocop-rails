@@ -4710,10 +4710,10 @@ SQL
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
 | Enabled
-| No
+| Yes
 | Yes (Unsafe)
 | 0.30
-| 2.10
+| 2.13
 |===
 
 This cop checks for the use of Time methods without zone.
