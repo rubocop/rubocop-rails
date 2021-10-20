@@ -482,3 +482,4 @@
 [@skryukov]: https://github.com/skryukov
 [@johnsyweb]: https://github.com/johnsyweb
 [@theunraveler]: https://github.com/theunraveler
+[@supersam654]: https://github.com/supersam654

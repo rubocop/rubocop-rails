@@ -838,6 +838,20 @@ Rails/UnknownEnv:
     - test
     - production
 
+Rails/UnsafeQueryCondition:
+  Description: 'Prevent unsafe constructs that could lead to SQL injections.'
+  StyleGuide: 'https://rails.rubystyle.guide/#avoid-interpolation'
+  Enabled: pending
+  VersionAdded: '2.12'
+  # To reduce false positives, only warn about non-literal conditions that use
+  # `params` as it likely contains untrusted user-input. Switch to `all` to
+  # detect other potential SQLi issues at the expense of more false positives
+  # (such as most Arel queries).
+  EnforcedStyle: params
+  SupportedStyles:
+    - params
+    - all
+
 Rails/UnusedIgnoredColumns:
   Description: 'Remove a column that does not exist from `ignored_columns`.'
   Enabled: pending

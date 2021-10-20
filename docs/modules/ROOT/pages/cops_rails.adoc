@@ -4998,6 +4998,79 @@ Rails.env == 'production'
 | Array
 |===
 
+== Rails/UnsafeQueryCondition
+
+|===
+| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+
+| Pending
+| Yes
+| No
+| 2.12
+| -
+|===
+
+This cop checks that Active Record queries use literal keys in all of
+their conditions. Using dynamic keys in queries can make code
+susceptible to SQL injection attacks.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+Model.where("order_count > #{params[:orders]}")
+Model.having("order_count > #{params[:orders]}")
+Model.exists?("order_count > #{params[:orders]}")
+
+# good
+Model.where('order_count > ?', params[:orders])
+Model.having('order_count > ?', params[:orders])
+Model.exists?('order_count > ?', params[:orders])
+----
+
+==== EnforcedStyle: params (default)
+
+[source,ruby]
+----
+# bad
+Model.find_by(params['id'])
+
+# good
+Model.find_by(id: params['id'])
+Model.find_by(Group.arel_table[:id].in([1, 2, 3]))
+----
+
+==== EnforcedStyle: all
+
+[source,ruby]
+----
+# bad
+Model.find_by(params['id'])
+# Value from Strong Parameters could still cause a SQLi.
+Model.find_by(model_params['id'])
+# Unfortunately there are false positives too.
+Model.find_by(Group.arel_table[:id].in([1, 2, 3]))
+
+# good
+Model.find_by(id: params['id'])
+Model.find_by(id: model_params['id'])
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| EnforcedStyle
+| `params`
+| `params`, `all`
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#avoid-interpolation
+
 == Rails/UnusedIgnoredColumns
 
 |===
