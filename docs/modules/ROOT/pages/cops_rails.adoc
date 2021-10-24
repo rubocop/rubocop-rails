@@ -1206,6 +1206,42 @@ delegate :foo, to: :bar, allow_blank: true
 delegate :foo, to: :bar, allow_nil: true
 ----
 
+== Rails/DurationArithmetic
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.13
+| -
+|===
+
+This cop checks if a duration is added to or subtracted from `Time.current`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+Time.current - 1.minute
+Time.current + 2.days
+
+# good - using relative would make it harder to express and read
+Date.yesterday + 3.days
+created_at - 1.minute
+3.days - 1.hour
+
+# good
+1.minute.ago
+2.days.from_now
+----
+
+=== References
+
+* https://rails.rubystyle.guide#duration-arithmetic
+
 == Rails/DynamicFindBy
 
 |===
