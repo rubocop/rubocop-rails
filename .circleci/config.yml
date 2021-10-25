@@ -54,5 +54,5 @@ workflows:
           name: Ruby HEAD
           image: rubocophq/circleci-ruby-snapshot:latest # Nightly snapshot build
       - rake_default:
-          name: JRuby 9.2
-          image: circleci/jruby:9.2
+          name: JRuby 9.3
+          image: circleci/jruby:9.3
