@@ -483,3 +483,4 @@
 [@johnsyweb]: https://github.com/johnsyweb
 [@theunraveler]: https://github.com/theunraveler
 [@pirj]: https://github.com/pirj
+[@vitormd]: https://github.com/vitormd

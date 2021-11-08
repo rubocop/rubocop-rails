@@ -41,15 +41,10 @@ module RuboCop
       #     t.datetime :updated_at, default: -> { 'CURRENT_TIMESTAMP' }
       #   end
       class CreateTableWithTimestamps < Base
+        include ActiveRecordMigrationsHelper
+
         MSG = 'Add timestamps when creating a new table.'
         RESTRICT_ON_SEND = %i[create_table].freeze
-
-        def_node_matcher :create_table_with_block?, <<~PATTERN
-          (block
-            (send nil? :create_table ...)
-            (args (arg _var))
-            _)
-        PATTERN
 
         def_node_matcher :create_table_with_timestamps_proc?, <<~PATTERN
           (send nil? :create_table (sym _) ... (block-pass (sym :timestamps)))

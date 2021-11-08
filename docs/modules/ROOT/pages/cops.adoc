@@ -97,6 +97,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railssafenavigation[Rails/SafeNavigation]
 * xref:cops_rails.adoc#railssafenavigationwithblank[Rails/SafeNavigationWithBlank]
 * xref:cops_rails.adoc#railssavebang[Rails/SaveBang]
+* xref:cops_rails.adoc#railsschemacomment[Rails/SchemaComment]
 * xref:cops_rails.adoc#railsscopeargs[Rails/ScopeArgs]
 * xref:cops_rails.adoc#railsshorti18n[Rails/ShortI18n]
 * xref:cops_rails.adoc#railsskipsmodelvalidations[Rails/SkipsModelValidations]
