@@ -1,92 +1,117 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::UniqBeforePluck, :config do
-  shared_examples_for 'UniqBeforePluck cop' \
-    do |method, source, action, corrected = nil|
-      if action == :correct
-        it "finds the use of #{method} after pluck in #{source}" do
-          offenses = inspect_source(source)
-          expect(offenses.first.message).to eq('Use `distinct` before `pluck`.')
-          corrected_source = corrected || 'Model.distinct.pluck(:id)'
-          expect(autocorrect_source(source)).to eq(corrected_source)
-        end
-      else
-        it "ignores pluck without errors in #{source}" do
-          expect_no_offenses(source)
-        end
-      end
+  shared_examples_for 'mode-independent behavior' do
+    it 'corrects' do
+      expect_offense(<<~RUBY)
+        Model.pluck(:name).uniq
+                           ^^^^ Use `distinct` before `pluck`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Model.distinct.pluck(:name)
+      RUBY
     end
 
-  shared_examples_for 'mode independent behavior' do |method|
-    it_behaves_like 'UniqBeforePluck cop', method,
-                    "Model.pluck(:id).#{method}", :correct
+    it 'corrects hanging period' do
+      expect_offense(<<~RUBY)
+        Model.pluck(:name)
+          .uniq
+           ^^^^ Use `distinct` before `pluck`.
+      RUBY
 
-    it_behaves_like 'UniqBeforePluck cop', method,
-                    ['Model.pluck(:id)',
-                     "  .#{method}"].join("\n"), :correct
-
-    it_behaves_like 'UniqBeforePluck cop', method,
-                    ['Model.pluck(:id).',
-                     "  #{method}"].join("\n"), :correct
-
-    context "#{method} before pluck" do
-      it_behaves_like 'UniqBeforePluck cop', method,
-                      "Model.where(foo: 1).#{method}.pluck(:something)", :ignore
+      expect_correction(<<~RUBY)
+        Model.distinct.pluck(:name)
+      RUBY
     end
 
-    context "#{method} without a receiver" do
-      it_behaves_like 'UniqBeforePluck cop', method,
-                      "#{method}.something", :ignore
+    it 'corrects trailing period' do
+      expect_offense(<<~RUBY)
+        Model.pluck(:name).
+          uniq
+          ^^^^ Use `distinct` before `pluck`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Model.distinct.pluck(:name)
+      RUBY
     end
 
-    context "#{method} without pluck" do
-      it_behaves_like 'UniqBeforePluck cop', method,
-                      "Model.#{method}", :ignore
+    it 'ignores uniq before pluck' do
+      expect_no_offenses(<<~RUBY)
+        Model.where(foo: 1).uniq.pluck(:something)
+      RUBY
     end
 
-    context "#{method} with a block" do
-      it_behaves_like 'UniqBeforePluck cop', method,
-                      "Model.where(foo: 1).pluck(:id).#{method} { |k| k[0] }",
-                      :ignore
+    it 'ignores uniq without a receiver' do
+      expect_no_offenses(<<~RUBY)
+        uniq.something
+      RUBY
     end
-  end
 
-  shared_examples_for 'mode dependent offenses' do |method, action|
-    it_behaves_like 'UniqBeforePluck cop', method,
-                    "Model.scope.pluck(:id).#{method}", action,
-                    'Model.scope.distinct.pluck(:id)'
+    it 'ignores uniq without pluck' do
+      expect_no_offenses(<<~RUBY)
+        Model.uniq
+      RUBY
+    end
 
-    it_behaves_like 'UniqBeforePluck cop', method,
-                    "instance.assoc.pluck(:id).#{method}", action,
-                    'instance.assoc.distinct.pluck(:id)'
+    it 'ignores uniq with a block' do
+      expect_no_offenses(<<~RUBY)
+        Model.where(foo: 1).pluck(:name).uniq { |k| k[0] }
+      RUBY
+    end
   end
 
   it 'registers an offense' do
     expect_offense(<<~RUBY)
-      Model.pluck(:id).uniq
-                       ^^^^ Use `distinct` before `pluck`.
+      Model.pluck(:name).uniq
+                         ^^^^ Use `distinct` before `pluck`.
     RUBY
   end
 
-  %w[uniq distinct].each do |method|
-    context 'when the enforced mode is conservative' do
-      let(:cop_config) do
-        { 'EnforcedStyle' => 'conservative', 'AutoCorrect' => true }
-      end
+  context 'when the enforced mode is conservative' do
+    let(:cop_config) { { 'EnforcedStyle' => 'conservative' } }
 
-      it_behaves_like 'mode independent behavior', method
+    it_behaves_like 'mode-independent behavior'
 
-      it_behaves_like 'mode dependent offenses', method, :ignore
+    it 'ignores model with a scope' do
+      expect_no_offenses(<<~RUBY)
+        Model.scope.pluck(:name).uniq
+      RUBY
     end
 
-    context 'when the enforced mode is aggressive' do
-      let(:cop_config) do
-        { 'EnforcedStyle' => 'aggressive', 'AutoCorrect' => true }
-      end
+    it 'ignores uniq on an association' do
+      expect_no_offenses(<<~RUBY)
+        instance.assoc.pluck(:name).uniq
+      RUBY
+    end
+  end
 
-      it_behaves_like 'mode independent behavior', method
+  context 'when the enforced mode is aggressive' do
+    let(:cop_config) { { 'EnforcedStyle' => 'aggressive' } }
 
-      it_behaves_like 'mode dependent offenses', method, :correct
+    it_behaves_like 'mode-independent behavior'
+
+    it 'corrects model with a scope' do
+      expect_offense(<<~RUBY)
+        Model.scope.pluck(:name).uniq
+                                 ^^^^ Use `distinct` before `pluck`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Model.scope.distinct.pluck(:name)
+      RUBY
+    end
+
+    it 'corrects uniq on an association' do
+      expect_offense(<<~RUBY)
+        instance.assoc.pluck(:name).uniq
+                                    ^^^^ Use `distinct` before `pluck`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        instance.assoc.distinct.pluck(:name)
+      RUBY
     end
   end
 end
