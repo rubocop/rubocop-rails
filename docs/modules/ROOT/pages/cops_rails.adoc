@@ -3728,13 +3728,17 @@ refute_equal true, false
 
 | Enabled
 | Yes
-| Yes
+| Yes (Unsafe)
 | 0.48
-| 0.59
+| 2.13
 |===
 
 This cop checks whether constant value isn't relative date.
 Because the relative date will be evaluated only once.
+
+=== Safety
+
+This cop's autocorrection is unsafe because its dependence on the constant is not corrected.
 
 === Examples
 
@@ -3761,16 +3765,6 @@ class SomeClass
   end
 end
 ----
-
-=== Configurable attributes
-
-|===
-| Name | Default value | Configurable values
-
-| AutoCorrect
-| `false`
-| Boolean
-|===
 
 == Rails/RenderInline
 

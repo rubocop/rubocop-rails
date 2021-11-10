@@ -6,6 +6,9 @@ module RuboCop
       # This cop checks whether constant value isn't relative date.
       # Because the relative date will be evaluated only once.
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because its dependence on the constant is not corrected.
+      #
       # @example
       #   # bad
       #   class SomeClass
