@@ -827,13 +827,12 @@ Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'
   Enabled: true
   VersionAdded: '0.40'
-  VersionChanged: '2.8'
+  VersionChanged: '2.13'
   EnforcedStyle: conservative
   SupportedStyles:
     - conservative
     - aggressive
   SafeAutoCorrect: false
-  AutoCorrect: false
 
 Rails/UniqueValidationWithoutIndex:
   Description: 'Uniqueness validation should have a unique index on the database column.'

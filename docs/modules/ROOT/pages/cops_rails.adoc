@@ -4909,7 +4909,7 @@ end
 | Yes
 | Yes (Unsafe)
 | 0.40
-| 2.8
+| 2.13
 |===
 
 Prefer the use of distinct, before pluck instead of after.
@@ -4974,10 +4974,6 @@ Model.distinct.pluck(:id)
 | EnforcedStyle
 | `conservative`
 | `conservative`, `aggressive`
-
-| AutoCorrect
-| `false`
-| Boolean
 |===
 
 == Rails/UniqueValidationWithoutIndex
