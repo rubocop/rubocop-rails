@@ -28,7 +28,8 @@ Gem::Specification.new do |s|
     'changelog_uri' => 'https://github.com/rubocop/rubocop-rails/blob/master/CHANGELOG.md',
     'source_code_uri' => 'https://github.com/rubocop/rubocop-rails/',
     'documentation_uri' => "https://docs.rubocop.org/rubocop-rails/#{RuboCop::Rails::Version.document_version}/",
-    'bug_tracker_uri' => 'https://github.com/rubocop/rubocop-rails/issues'
+    'bug_tracker_uri' => 'https://github.com/rubocop/rubocop-rails/issues',
+    'rubygems_mfa_required' => 'true'
   }
 
   s.add_runtime_dependency 'activesupport', '>= 4.2.0'
