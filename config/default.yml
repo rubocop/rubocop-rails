@@ -652,9 +652,9 @@ Rails/RefuteMethods:
 Rails/RelativeDateConstant:
   Description: 'Do not assign relative date to constants.'
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '0.48'
-  VersionChanged: '0.59'
-  AutoCorrect: false
+  VersionChanged: '2.13'
 
 Rails/RenderInline:
   Description: 'Prefer using a template over inline rendering.'
