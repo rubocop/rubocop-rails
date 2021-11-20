@@ -38,7 +38,6 @@ RuboCop::RakeTask.new(:internal_investigation)
 
 task default: %i[
   documentation_syntax_check
-  generate_cops_documentation
   spec
   internal_investigation
 ]
