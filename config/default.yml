@@ -701,6 +701,11 @@ Rails/ReversibleMigrationMethodDefinition:
   Include:
     - db/migrate/*.rb
 
+Rails/RootPublicPath:
+  Description: "Favor `Rails.public_path` over `Rails.root` with `'public'`."
+  Enabled: pending
+  VersionAdded: '2.13'
+
 Rails/SafeNavigation:
   Description: "Use Ruby's safe navigation operator (`&.`) instead of `try!`."
   Enabled: true
