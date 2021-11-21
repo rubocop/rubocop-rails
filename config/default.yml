@@ -788,6 +788,11 @@ Rails/RootJoinChain:
   Enabled: pending
   VersionAdded: '2.13'
 
+Rails/RootPathnameMethods:
+  Description: 'Use `Rails.root` IO methods instead of passing it to `File`.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/RootPublicPath:
   Description: "Favor `Rails.public_path` over `Rails.root` with `'public'`."
   Enabled: pending
