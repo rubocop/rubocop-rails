@@ -701,6 +701,11 @@ Rails/ReversibleMigrationMethodDefinition:
   Include:
     - db/migrate/*.rb
 
+Rails/RootJoinChain:
+  Description: 'Use a single `#join` instead of chaining on `Rails.root` or `Rails.public_path`.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/SafeNavigation:
   Description: "Use Ruby's safe navigation operator (`&.`) instead of `try!`."
   Enabled: true
