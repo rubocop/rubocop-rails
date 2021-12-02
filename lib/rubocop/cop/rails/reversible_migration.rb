@@ -179,7 +179,7 @@ module RuboCop
         MSG = '%<action>s is not reversible.'
 
         def_node_matcher :irreversible_schema_statement_call, <<~PATTERN
-          (send nil? ${:execute :remove_belongs_to} ...)
+          (send nil? ${:execute :remove_belongs_to :change_column} ...)
         PATTERN
 
         def_node_matcher :drop_table_call, <<~PATTERN

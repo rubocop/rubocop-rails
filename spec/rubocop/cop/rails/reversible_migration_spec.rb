@@ -110,6 +110,16 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     RUBY
   end
 
+  context 'change_column' do
+    it_behaves_like 'offense', 'change_column', <<~RUBY
+      change_column(:posts, :state, :string)
+    RUBY
+
+    it_behaves_like 'offense', 'change_column', <<~RUBY
+      change_column(:posts, :state, :string, null: false)
+    RUBY
+  end
+
   context 'change_column_default' do
     it_behaves_like 'accepts',
                     'change_column_default(with :from and :to)', <<-RUBY
