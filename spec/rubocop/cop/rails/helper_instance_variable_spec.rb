@@ -35,6 +35,17 @@ RSpec.describe RuboCop::Cop::Rails::HelperInstanceVariable, :config do
     RUBY
   end
 
+  it 'does not register an offense when open class for `ActionView::Helpers::FormBuilder`' do
+    expect_no_offenses(<<~'RUBY')
+      class ActionView::Helpers::FormBuilder
+        def do_something
+          @template
+          @template = do_something
+        end
+      end
+    RUBY
+  end
+
   it 'does not register an offense when a class which inherits `ActionView::Helpers::FormBuilder`' do
     expect_no_offenses(<<~'RUBY')
       class MyFormBuilder < ActionView::Helpers::FormBuilder

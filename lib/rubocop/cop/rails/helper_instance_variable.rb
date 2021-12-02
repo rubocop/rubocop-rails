@@ -56,7 +56,7 @@ module RuboCop
 
         def inherit_form_builder?(node)
           node.each_ancestor(:class) do |class_node|
-            return true if form_builder_class?(class_node.parent_class)
+            return true if form_builder_class?(class_node.parent_class) || form_builder_class?(class_node.identifier)
           end
 
           false
