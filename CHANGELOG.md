@@ -2,10 +2,6 @@
 
 ## master (unreleased)
 
-### Changes
-
-* [#591](https://github.com/rubocop/rubocop-rails/issues/591): Add `change_column` to `Rails/ReversibleMigration`. ([@mattmccormick][])
-
 ## 2.12.4 (2021-10-16)
 
 ### Bug fixes
@@ -488,4 +484,3 @@
 [@theunraveler]: https://github.com/theunraveler
 [@pirj]: https://github.com/pirj
 [@vitormd]: https://github.com/vitormd
-[@mattmccormick]: https://github.com/mattmccormick
