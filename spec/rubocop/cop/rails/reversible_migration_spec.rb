@@ -110,6 +110,20 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     RUBY
   end
 
+  context 'change_column' do
+    it_behaves_like 'accepts', 'up_only', <<~RUBY
+      up_only { change_column(:posts, :state, :string) }
+    RUBY
+
+    it_behaves_like 'offense', 'change_column', <<~RUBY
+      change_column(:posts, :state, :string)
+    RUBY
+
+    it_behaves_like 'offense', 'change_column', <<~RUBY
+      change_column(:posts, :state, :string, null: false)
+    RUBY
+  end
+
   context 'change_column_default' do
     it_behaves_like 'accepts',
                     'change_column_default(with :from and :to)', <<-RUBY
@@ -157,6 +171,20 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     RUBY
   end
 
+  context 'remove_belongs_to' do
+    it_behaves_like 'accepts', 'up_only', <<~RUBY
+      up_only { remove_belongs_to(:products, :user, index: false) }
+    RUBY
+
+    it_behaves_like 'offense', 'remove_belongs_to', <<~RUBY
+      remove_belongs_to(:products, :user, index: false)
+    RUBY
+
+    it_behaves_like 'offense', 'remove_belongs_to', <<~RUBY
+      remove_belongs_to(:products, :supplier, polymorphic: true)
+    RUBY
+  end
+
   context 'remove_column' do
     it_behaves_like 'accepts', 'remove_column(with type)', <<~RUBY
       remove_column(:suppliers, :qualification, :string)
@@ -182,6 +210,20 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
 
     it_behaves_like 'offense', 'remove_foreign_key(without table)', <<~RUBY
       remove_foreign_key :accounts, column: :owner_id
+    RUBY
+  end
+
+  context 'remove_reference' do
+    it_behaves_like 'accepts', 'up_only', <<~RUBY
+      up_only { remove_reference(:products, :user, index: false) }
+    RUBY
+
+    it_behaves_like 'offense', 'remove_reference', <<~RUBY
+      remove_reference(:products, :user, index: false)
+    RUBY
+
+    it_behaves_like 'offense', 'remove_reference', <<~RUBY
+      remove_reference(:products, :supplier, polymorphic: true)
     RUBY
   end
 
