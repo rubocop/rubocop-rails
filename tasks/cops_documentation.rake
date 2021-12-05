@@ -15,11 +15,6 @@ task update_cops_documentation: :yard_for_generate_documentation do
   CopsDocumentationGenerator.new(departments: deps).call
 end
 
-desc 'Generate docs of all cops departments (obsolete)'
-task :generate_cops_documentation do
-  puts 'Updating the documentation is now done automatically!'
-end
-
 desc 'Syntax check for the documentation comments'
 task documentation_syntax_check: :yard_for_generate_documentation do
   require 'parser/ruby30'
