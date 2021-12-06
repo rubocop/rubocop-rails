@@ -58,7 +58,7 @@ task :new_cop, [:cop] do |_task, args|
   generator.inject_require(
     root_file_path: 'lib/rubocop/cop/rails_cops.rb'
   )
-  generator.inject_config(config_file_path: 'config/default.yml', version_added: bump_minor_version)
+  generator.inject_config(config_file_path: 'config/default.yml')
 
   puts generator.todo
 end
