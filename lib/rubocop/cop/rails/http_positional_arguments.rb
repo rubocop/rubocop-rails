@@ -67,7 +67,7 @@ module RuboCop
         private
 
         def in_routing_block?(node)
-          !!node.each_ancestor(:block).detect { |block| ROUTING_METHODS.include?(block.send_node.method_name) }
+          !!node.each_ancestor(:block).detect { |block| ROUTING_METHODS.include?(block.method_name) }
         end
 
         def needs_conversion?(data)
