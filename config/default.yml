@@ -180,6 +180,11 @@ Rails/BulkChangeTable:
   Include:
     - db/migrate/*.rb
 
+Rails/CompactBlank:
+  Description: 'Checks if collection can be blank-compacted with `compact_blank`.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/ContentTag:
   Description: 'Use `tag.something` instead of `tag(:something)`.'
   Reference:
