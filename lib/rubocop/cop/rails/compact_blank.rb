@@ -5,6 +5,14 @@ module RuboCop
     module Rails
       # Checks if collection can be blank-compacted with `compact_blank`.
       #
+      # @safety
+      #   It is unsafe by default because false positives may occur in the
+      #   blank check of block arguments to the receiver object.
+      #
+      #   For example, `[[1, 2], [3, nil]].reject { |first, second| second.blank? }` and
+      #   `[[1, 2], [3, nil]].compact_blank` are not compatible. The same is true for `empty?`.
+      #   This will work fine when the receiver is a hash object.
+      #
       # @example
       #
       #   # bad

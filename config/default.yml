@@ -183,6 +183,7 @@ Rails/BulkChangeTable:
 Rails/CompactBlank:
   Description: 'Checks if collection can be blank-compacted with `compact_blank`.'
   Enabled: pending
+  Safe: false
   VersionAdded: '<<next>>'
 
 Rails/ContentTag:
