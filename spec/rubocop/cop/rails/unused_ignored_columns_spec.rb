@@ -33,6 +33,16 @@ RSpec.describe RuboCop::Cop::Rails::UnusedIgnoredColumns, :config do
       end
     end
 
+    context 'with an used/unused ignored column in a mixin' do
+      it 'does nothing' do
+        expect_no_offenses(<<~RUBY)
+          module Abc
+            self.ignored_columns = [:real_name]
+          end
+        RUBY
+      end
+    end
+
     context 'with an unused ignored column as a String' do
       it 'registers an offense' do
         expect_offense(<<~RUBY)

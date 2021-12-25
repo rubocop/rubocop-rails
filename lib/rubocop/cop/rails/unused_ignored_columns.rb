@@ -61,6 +61,8 @@ module RuboCop
 
         def table(node)
           klass = class_node(node)
+          return unless klass
+
           schema.table_by(name: table_name(klass))
         end
       end
