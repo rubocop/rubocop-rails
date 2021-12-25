@@ -5,6 +5,7 @@ require_relative 'mixin/active_record_migrations_helper'
 require_relative 'mixin/enforce_superclass'
 require_relative 'mixin/index_method'
 require_relative 'mixin/target_rails_version'
+require_relative 'mixin/start_after_migration_version'
 
 require_relative 'rails/action_filter'
 require_relative 'rails/active_record_aliases'

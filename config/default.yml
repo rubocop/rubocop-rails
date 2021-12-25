@@ -237,9 +237,10 @@ Rails/DateAndTimeColumnName:
                 `datetime` and `timestamp` - with `_at` suffix,
                 `time` - with `_time` suffix.
   Enabled: pending
-  VersionAdded: '2.8'
+  VersionAdded: '<<next>>'
+  StartAfterMigrationVersion: null
   Include:
-    - db/migrate/**/**.rb
+    - db/**/*.rb
 
 Rails/DefaultScope:
   Description: 'Avoid use of `default_scope`.'

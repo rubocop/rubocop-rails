@@ -19,7 +19,18 @@ module RuboCop
       #   t.column :visited_on, :date
       #   t.time :start_time
       #
+      # @example StartAfterMigrationVersion: 20211007000001
+      #   # bad
+      #   # db/migrate/20211007000002_add_created_on_to_orders.rb
+      #   add_column :orders, :created_on, :datetime
+      #
+      #   # good
+      #   # db/migrate/20211007000001_add_created_on_to_orders.rb
+      #   add_column :orders, :created_on, :datetime
+      #
       class DateAndTimeColumnName < Base
+        include StartAfterMigrationVersion
+
         MSG = 'Name `%<type>s` columns with `%<suffix>s` suffixes.'
         TYPE_TO_SUFFIX = {
           datetime: '_at',
@@ -29,7 +40,7 @@ module RuboCop
         }.freeze
 
         def on_send(node)
-          return unless in_migration?(node)
+          return unless in_migration?(node) && starts_after_migration_version?
 
           column_name, type = column_name_and_type(node)
           return unless column_name
@@ -56,9 +67,6 @@ module RuboCop
         end
 
         def column_name_and_type(node)
-          column_name = nil
-          type = nil
-
           case node.method_name
           when :add_column
             _table_name, column_name, type, = *node.arguments

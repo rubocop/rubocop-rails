@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::DateAndTimeColumnName do
-  subject(:cop) { described_class.new }
-
-  context 'when `add_column` method' do
-    described_class::TYPE_TO_SUFFIX.each do |type, suffix|
+RSpec.describe RuboCop::Cop::Rails::DateAndTimeColumnName, :config do
+  described_class::TYPE_TO_SUFFIX.each do |type, suffix|
+    context 'when `add_column` method' do
       it "registers an offense for `#{type}` column without `#{suffix}` suffix" do
         source = <<~RUBY
           class AddColumnNameToTableName < ActiveRecord::Migration[6.0]
@@ -29,19 +27,7 @@ RSpec.describe RuboCop::Cop::Rails::DateAndTimeColumnName do
       end
     end
 
-    it 'does not register an offense when non date column is used' do
-      expect_no_offenses(<<~RUBY)
-        class AddColumnNameToTableName < ActiveRecord::Migration[6.0]
-          def change
-            add_column :table_name, :column_name, :integer
-          end
-        end
-      RUBY
-    end
-  end
-
-  context 'when `column` method' do
-    described_class::TYPE_TO_SUFFIX.each do |type, suffix|
+    context 'when `column` method' do
       it "registers an offense for `#{type}` column without `#{suffix}` suffix" do
         source = <<~RUBY
           class AddColumnNameToTableName < ActiveRecord::Migration[6.0]
@@ -81,10 +67,8 @@ RSpec.describe RuboCop::Cop::Rails::DateAndTimeColumnName do
         RUBY
       end
     end
-  end
 
-  context 'when `<type>` method' do
-    described_class::TYPE_TO_SUFFIX.each do |type, suffix|
+    context 'when `t.<type>` method' do
       it "registers an offense for `#{type}` column without `#{suffix}` suffix" do
         source = <<~RUBY
           class AddColumnNameToTableName < ActiveRecord::Migration[6.0]
@@ -126,11 +110,48 @@ RSpec.describe RuboCop::Cop::Rails::DateAndTimeColumnName do
     end
   end
 
+  it 'does not register an offense when `add_column` with non date column is used' do
+    expect_no_offenses(<<~RUBY)
+      class AddColumnNameToTableName < ActiveRecord::Migration[6.0]
+        def change
+          add_column :table_name, :column_name, :integer
+        end
+      end
+    RUBY
+  end
+
   it 'does not register an offense when not inside migration' do
     expect_no_offenses(<<~RUBY)
       class Foo
         add_column :table_name, :column_name, :datetime
       end
     RUBY
+  end
+
+  context 'StartAfterMigrationVersion is used' do
+    let(:cop_config) do
+      { 'StartAfterMigrationVersion' => '2021_10_07_00_00_01' }
+    end
+
+    it 'registers an offense for newer migrations' do
+      expect_offense(<<~RUBY, 'db/migrate/20211007000002_add_created_on_to_orders.rb')
+        class AddCreatedOnToOrders < ActiveRecord::Migration[6.0]
+          def change
+            add_column :orders, :created_on, :datetime
+                                ^^^^^^^^^^^ Name `datetime` columns with `_at` suffixes.
+          end
+        end
+      RUBY
+    end
+
+    it 'does not register an offense for older migrations' do
+      expect_no_offenses(<<~RUBY, 'db/migrate/20211007000001_add_column_to_table_name.rb')
+        class AddCreatedOnToOrders < ActiveRecord::Migration[6.0]
+          def change
+            add_column :orders, :created_on, :datetime
+          end
+        end
+      RUBY
+    end
   end
 end
