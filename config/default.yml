@@ -184,7 +184,7 @@ Rails/CompactBlank:
   Description: 'Checks if collection can be blank-compacted with `compact_blank`.'
   Enabled: pending
   Safe: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.13'
 
 Rails/ContentTag:
   Description: 'Use `tag.something` instead of `tag(:something)`.'
@@ -627,7 +627,7 @@ Rails/RedundantForeignKey:
 Rails/RedundantPresenceValidationOnBelongsTo:
   Description: 'Checks for redundant presence validation on belongs_to association.'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.13'
 
 Rails/RedundantReceiverInWithOptions:
   Description: 'Checks for redundant receiver in `with_options`.'
@@ -715,7 +715,7 @@ Rails/ReversibleMigrationMethodDefinition:
 Rails/RootJoinChain:
   Description: 'Use a single `#join` instead of chaining on `Rails.root` or `Rails.public_path`.'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.13'
 
 Rails/SafeNavigation:
   Description: "Use Ruby's safe navigation operator (`&.`) instead of `try!`."

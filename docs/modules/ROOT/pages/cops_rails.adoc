@@ -848,6 +848,52 @@ end
 | Array
 |===
 
+== Rails/CompactBlank
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| Yes (Unsafe)
+| 2.13
+| -
+|===
+
+Checks if collection can be blank-compacted with `compact_blank`.
+
+=== Safety
+
+It is unsafe by default because false positives may occur in the
+blank check of block arguments to the receiver object.
+
+For example, `[[1, 2], [3, nil]].reject { |first, second| second.blank? }` and
+`[[1, 2], [3, nil]].compact_blank` are not compatible. The same is true for `empty?`.
+This will work fine when the receiver is a hash object.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+collection.reject(&:blank?)
+collection.reject(&:empty?)
+collection.reject { |_k, v| v.blank? }
+collection.reject { |_k, v| v.empty? }
+
+# good
+collection.compact_blank
+
+# bad
+collection.reject!(&:blank?)
+collection.reject!(&:empty?)
+collection.reject! { |_k, v| v.blank? }
+collection.reject! { |_k, v| v.empty? }
+
+# good
+collection.compact_blank!
+----
+
 == Rails/ContentTag
 
 |===
@@ -3507,6 +3553,46 @@ class Comment
 end
 ----
 
+== Rails/RedundantPresenceValidationOnBelongsTo
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.13
+| -
+|===
+
+Since Rails 5.0 the default for `belongs_to` is `optional: false`
+unless `config.active_record.belongs_to_required_by_default` is
+explicitly set to `false`. The presence validator is added
+automatically, and explicit presence validation is redundant.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+belongs_to :user
+validates :user, presence: true
+
+# bad
+belongs_to :user
+validates :user_id, presence: true
+
+# bad
+belongs_to :author, foreign_key: :user_id
+validates :user_id, presence: true
+
+# good
+belongs_to :user
+
+# good
+belongs_to :author, foreign_key: :user_id
+----
+
 == Rails/RedundantReceiverInWithOptions
 
 |===
@@ -4231,6 +4317,37 @@ end
 | `db/migrate/*.rb`
 | Array
 |===
+
+== Rails/RootJoinChain
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.13
+| -
+|===
+
+Use a single `#join` instead of chaining on `Rails.root` or `Rails.public_path`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+Rails.root.join('db').join('schema.rb')
+Rails.root.join('db').join(migrate).join('migration.rb')
+Rails.public_path.join('path').join('file.pdf')
+Rails.public_path.join('path').join(to).join('file.pdf')
+
+# good
+Rails.root.join('db', 'schema.rb')
+Rails.root.join('db', migrate, 'migration.rb')
+Rails.public_path.join('path', 'file.pdf')
+Rails.public_path.join('path', to, 'file.pdf')
+----
 
 == Rails/SafeNavigation
 

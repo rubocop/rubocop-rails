@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.13.0 (2021-12-25)
+
 ### New features
 
 * [#586](https://github.com/rubocop/rubocop-rails/pull/586): Add new `Rails/RootJoinChain` cop. ([@leoarnold][])
