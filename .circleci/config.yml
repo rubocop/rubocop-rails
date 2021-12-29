@@ -48,6 +48,9 @@ workflows:
           name: Ruby 3.0
           image: cimg/ruby:3.0
       - rake_default:
+          name: Ruby 3.1
+          image: cimg/ruby:3.1
+      - rake_default:
           name: Ruby HEAD
           image: rubocophq/circleci-ruby-snapshot:latest # Nightly snapshot build
       - rake_default:
