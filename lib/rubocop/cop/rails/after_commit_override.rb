@@ -32,6 +32,8 @@ module RuboCop
       #   after_update_commit :log_update_action
       #
       class AfterCommitOverride < Base
+        include ClassSendNodeHelper
+
         MSG = 'There can only be one `after_*_commit :%<name>s` hook defined for a model.'
 
         AFTER_COMMIT_CALLBACKS = %i[
@@ -60,18 +62,6 @@ module RuboCop
         def each_after_commit_callback(class_node)
           class_send_nodes(class_node).each do |node|
             yield node if after_commit_callback?(node) && named_callback?(node)
-          end
-        end
-
-        def class_send_nodes(class_node)
-          class_def = class_node.body
-
-          return [] unless class_def
-
-          if class_def.send_type?
-            [class_def]
-          else
-            class_def.each_child_node(:send).to_a
           end
         end
 

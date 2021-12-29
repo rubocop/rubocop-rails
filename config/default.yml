@@ -266,6 +266,11 @@ Rails/DuplicateAssociation:
   Enabled: pending
   VersionAdded: '<<next>>'
 
+Rails/DuplicateScope:
+  Description: 'Multiple scopes share this same where clause.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/DurationArithmetic:
   Description: 'Do not use duration as arithmetic operand with `Time.current`.'
   StyleGuide: 'https://rails.rubystyle.guide#duration-arithmetic'
