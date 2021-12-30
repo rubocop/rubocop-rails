@@ -101,6 +101,20 @@ RSpec.describe RuboCop::Cop::Rails::RedundantPresenceValidationOnBelongsTo, :con
         RUBY
       end
 
+      it 'registers an offense for multiple associations' do
+        expect_offense(<<~RUBY)
+          belongs_to :user
+          belongs_to :book
+          validates :user, :book, presence: true
+                                  ^^^^^^^^^^^^^^ Remove explicit presence validation for `user`/`book`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          belongs_to :user
+          belongs_to :book
+        RUBY
+      end
+
       it 'registers an offense for presence with a message' do
         expect_offense(<<~RUBY)
           belongs_to :user

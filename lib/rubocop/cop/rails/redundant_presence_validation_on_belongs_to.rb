@@ -32,7 +32,7 @@ module RuboCop
         extend AutoCorrector
         extend TargetRailsVersion
 
-        MSG = 'Remove explicit presence validation for `%<association>s`.'
+        MSG = 'Remove explicit presence validation for %<association>s.'
         RESTRICT_ON_SEND = %i[validates].freeze
 
         minimum_target_rails_version 5.0
@@ -43,6 +43,9 @@ module RuboCop
         #   @example source that matches - by association
         #     validates :user, presence: true
         #
+        #   @example source that matches - by association
+        #     validates :name, :user, presence: true
+        #
         #   @example source that matches - with presence options
         #     validates :user, presence: { message: 'duplicate' }
         #
@@ -51,8 +54,7 @@ module RuboCop
         def_node_matcher :presence_validation?, <<~PATTERN
           $(
             send nil? :validates
-            (sym $_)
-            ...
+            (sym $_)+
             $(hash <$(pair (sym :presence) {true hash}) ...>)
           )
         PATTERN
@@ -150,21 +152,26 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          validation, key, options, presence = presence_validation?(node)
+          validation, all_keys, options, presence = presence_validation?(node)
           return unless validation
 
-          belongs_to = belongs_to_for(node.parent, key)
-          return unless belongs_to
-          return if optional?(belongs_to)
+          keys = all_keys.select do |key|
+            belongs_to = belongs_to_for(node.parent, key)
+            belongs_to && !optional?(belongs_to)
+          end
+          return if keys.none?
 
-          message = format(MSG, association: key.to_s)
-
-          add_offense(presence, message: message) do |corrector|
+          add_offense(presence, message: message_for(keys)) do |corrector|
             remove_presence_validation(corrector, node, options, presence)
           end
         end
 
         private
+
+        def message_for(keys)
+          display_keys = keys.map { |key| "`#{key}`" }.join('/')
+          format(MSG, association: display_keys)
+        end
 
         def belongs_to_for(model_class_node, key)
           if key.to_s.end_with?('_id')
