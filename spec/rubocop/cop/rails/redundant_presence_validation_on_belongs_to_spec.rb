@@ -101,6 +101,78 @@ RSpec.describe RuboCop::Cop::Rails::RedundantPresenceValidationOnBelongsTo, :con
         RUBY
       end
 
+      it 'registers an offense for multiple associations' do
+        expect_offense(<<~RUBY)
+          belongs_to :user
+          belongs_to :book
+          validates :user, :book, presence: true
+                                  ^^^^^^^^^^^^^^ Remove explicit presence validation for `user`/`book`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          belongs_to :user
+          belongs_to :book
+        RUBY
+      end
+
+      it 'registers an offense for multiple attributes when not all are associations' do
+        expect_offense(<<~RUBY)
+          belongs_to :user
+          validates :user, :name, presence: true
+                                  ^^^^^^^^^^^^^^ Remove explicit presence validation for `user`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          belongs_to :user
+          validates :name, presence: true
+        RUBY
+      end
+
+      it 'registers an offense for a secondary attribute' do
+        expect_offense(<<~RUBY)
+          belongs_to :user
+          validates :name, :user, presence: true
+                                  ^^^^^^^^^^^^^^ Remove explicit presence validation for `user`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          belongs_to :user
+          validates :name, presence: true
+        RUBY
+      end
+
+      it 'registers an offense for multiple attributes and options' do
+        expect_offense(<<~RUBY)
+          belongs_to :user
+          validates :user, :name, presence: true, uniqueness: true
+                                  ^^^^^^^^^^^^^^ Remove explicit presence validation for `user`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          belongs_to :user
+          validates :name, presence: true, uniqueness: true
+          validates :user, uniqueness: true
+        RUBY
+      end
+
+      it 'preserves indentation for the extracted validation line' do
+        expect_offense(<<~RUBY)
+          class Profile
+            belongs_to :user
+            validates :user, :name, presence: true, uniqueness: true
+                                    ^^^^^^^^^^^^^^ Remove explicit presence validation for `user`.
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class Profile
+            belongs_to :user
+            validates :name, presence: true, uniqueness: true
+            validates :user, uniqueness: true
+          end
+        RUBY
+      end
+
       it 'registers an offense for presence with a message' do
         expect_offense(<<~RUBY)
           belongs_to :user

@@ -32,7 +32,7 @@ module RuboCop
         extend AutoCorrector
         extend TargetRailsVersion
 
-        MSG = 'Remove explicit presence validation for `%<association>s`.'
+        MSG = 'Remove explicit presence validation for %<association>s.'
         RESTRICT_ON_SEND = %i[validates].freeze
 
         minimum_target_rails_version 5.0
@@ -43,28 +43,30 @@ module RuboCop
         #   @example source that matches - by association
         #     validates :user, presence: true
         #
+        #   @example source that matches - by association
+        #     validates :name, :user, presence: true
+        #
         #   @example source that matches - with presence options
         #     validates :user, presence: { message: 'duplicate' }
         #
         #   @example source that matches - by a foreign key
         #     validates :user_id, presence: true
         def_node_matcher :presence_validation?, <<~PATTERN
-          $(
+          (
             send nil? :validates
-            (sym $_)
-            ...
+            (sym $_)+
             $(hash <$(pair (sym :presence) {true hash}) ...>)
           )
         PATTERN
 
-        # @!method optional_option?(node)
-        #  Match a `belongs_to` association with an optional option in a hash
+        # @!method optional?(node)
+        #   Match a `belongs_to` association with an optional option in a hash
         def_node_matcher :optional?, <<~PATTERN
           (send nil? :belongs_to _ ... #optional_option?)
         PATTERN
 
         # @!method optional_option?(node)
-        #  Match an optional option in a hash
+        #   Match an optional option in a hash
         def_node_matcher :optional_option?, <<~PATTERN
           {
             (hash <(pair (sym :optional) true) ...>)   # optional: true
@@ -122,7 +124,7 @@ module RuboCop
           )
         PATTERN
 
-        # @!method belongs_to_without_fk?(node, fk)
+        # @!method belongs_to_without_fk?(node, key)
         #   Match a matching `belongs_to` association, without an explicit `foreign_key` option
         #
         #   @param node [RuboCop::AST::Node]
@@ -150,21 +152,43 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          validation, key, options, presence = presence_validation?(node)
-          return unless validation
+          presence_validation?(node) do |all_keys, options, presence|
+            keys = non_optional_belongs_to(node.parent, all_keys)
+            return if keys.none?
 
-          belongs_to = belongs_to_for(node.parent, key)
-          return unless belongs_to
-          return if optional?(belongs_to)
-
-          message = format(MSG, association: key.to_s)
-
-          add_offense(presence, message: message) do |corrector|
-            remove_presence_validation(corrector, node, options, presence)
+            add_offense_and_correct(node, all_keys, keys, options, presence)
           end
         end
 
         private
+
+        def add_offense_and_correct(node, all_keys, keys, options, presence)
+          add_offense(presence, message: message_for(keys)) do |corrector|
+            if options.children.one? # `presence: true` is the only option
+              if keys == all_keys
+                remove_validation(corrector, node)
+              else
+                remove_keys_from_validation(corrector, node, keys)
+              end
+            elsif keys == all_keys
+              remove_presence_option(corrector, presence)
+            else
+              extract_validation_for_keys(corrector, node, keys, options)
+            end
+          end
+        end
+
+        def message_for(keys)
+          display_keys = keys.map { |key| "`#{key}`" }.join('/')
+          format(MSG, association: display_keys)
+        end
+
+        def non_optional_belongs_to(node, keys)
+          keys.select do |key|
+            belongs_to = belongs_to_for(node, key)
+            belongs_to && !optional?(belongs_to)
+          end
+        end
 
         def belongs_to_for(model_class_node, key)
           if key.to_s.end_with?('_id')
@@ -175,16 +199,47 @@ module RuboCop
           end
         end
 
-        def remove_presence_validation(corrector, node, options, presence)
-          if options.children.one?
-            corrector.remove(range_by_whole_lines(node.source_range, include_final_newline: true))
-          else
-            range = range_with_surrounding_comma(
-              range_with_surrounding_space(range: presence.source_range, side: :left),
-              :left
+        def remove_validation(corrector, node)
+          corrector.remove(validation_range(node))
+        end
+
+        def remove_keys_from_validation(corrector, node, keys)
+          keys.each do |key|
+            key_node = node.arguments.find { |arg| arg.value == key }
+            key_range = range_with_surrounding_space(
+              range: range_with_surrounding_comma(key_node.source_range, :right),
+              side: :right
             )
-            corrector.remove(range)
+            corrector.remove(key_range)
           end
+        end
+
+        def remove_presence_option(corrector, presence)
+          range = range_with_surrounding_comma(
+            range_with_surrounding_space(range: presence.source_range, side: :left),
+            :left
+          )
+          corrector.remove(range)
+        end
+
+        def extract_validation_for_keys(corrector, node, keys, options)
+          indentation = ' ' * node.source_range.column
+          options_without_presence = options.children.reject { |pair| pair.key.value == :presence }
+          source = [
+            indentation,
+            'validates ',
+            keys.map(&:inspect).join(', '),
+            ', ',
+            options_without_presence.map(&:source).join(', '),
+            "\n"
+          ].join
+
+          remove_keys_from_validation(corrector, node, keys)
+          corrector.insert_after(validation_range(node), source)
+        end
+
+        def validation_range(node)
+          range_by_whole_lines(node.source_range, include_final_newline: true)
         end
       end
     end
