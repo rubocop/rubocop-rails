@@ -59,14 +59,14 @@ module RuboCop
           )
         PATTERN
 
-        # @!method optional_option?(node)
-        #  Match a `belongs_to` association with an optional option in a hash
+        # @!method optional?(node)
+        #   Match a `belongs_to` association with an optional option in a hash
         def_node_matcher :optional?, <<~PATTERN
           (send nil? :belongs_to _ ... #optional_option?)
         PATTERN
 
         # @!method optional_option?(node)
-        #  Match an optional option in a hash
+        #   Match an optional option in a hash
         def_node_matcher :optional_option?, <<~PATTERN
           {
             (hash <(pair (sym :optional) true) ...>)   # optional: true
@@ -124,7 +124,7 @@ module RuboCop
           )
         PATTERN
 
-        # @!method belongs_to_without_fk?(node, fk)
+        # @!method belongs_to_without_fk?(node, key)
         #   Match a matching `belongs_to` association, without an explicit `foreign_key` option
         #
         #   @param node [RuboCop::AST::Node]
