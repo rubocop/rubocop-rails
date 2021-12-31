@@ -51,11 +51,20 @@ module RuboCop
         #
         #   @example source that matches - by a foreign key
         #     validates :user_id, presence: true
+        #
+        #   @example source that DOES NOT match - strict validation
+        #     validates :user_id, presence: true, strict: true
+        #
+        #   @example source that DOES NOT match - custom strict validation
+        #     validates :user_id, presence: true, strict: MissingUserError
         def_node_matcher :presence_validation?, <<~PATTERN
           (
             send nil? :validates
             (sym $_)+
-            $(hash <$(pair (sym :presence) {true hash}) ...>)
+            $[
+              (hash <$(pair (sym :presence) {true hash}) ...>)  # presence: true
+              !(hash <$(pair (sym :strict) {true const}) ...>)  # strict: true
+            ]
           )
         PATTERN
 
