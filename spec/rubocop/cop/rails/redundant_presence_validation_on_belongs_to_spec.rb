@@ -261,6 +261,20 @@ RSpec.describe RuboCop::Cop::Rails::RedundantPresenceValidationOnBelongsTo, :con
         validates :author, presence: true
       RUBY
     end
+
+    it 'does not register an offense with strict validation' do
+      expect_no_offenses(<<~RUBY)
+        belongs_to :user
+        validates :user, presence: true, strict: true
+      RUBY
+    end
+
+    it 'does not register an offense with strict validation with an explicit exception class' do
+      expect_no_offenses(<<~RUBY)
+        belongs_to :user
+        validates :user, presence: true, strict: MissingUserError
+      RUBY
+    end
   end
 
   context 'Rails < 5.0', :rails42 do
