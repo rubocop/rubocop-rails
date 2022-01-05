@@ -6,6 +6,7 @@
 
 ### New features
 
+* [#598](https://github.com/rubocop/rubocop-rails/pull/598): Add new `Rails/CompactBlank` cop. ([@koic][])
 * [#586](https://github.com/rubocop/rubocop-rails/pull/586): Add new `Rails/RootJoinChain` cop. ([@leoarnold][])
 * [#571](https://github.com/rubocop/rubocop-rails/issues/571): Add `Rails/DurationArithmetic` cop. ([@pirj][])
 * [#594](https://github.com/rubocop/rubocop-rails/pull/594): Add `Rails/RedundantPresenceValidationOnBelongsTo` cop. ([@pirj][])
