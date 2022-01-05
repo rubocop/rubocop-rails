@@ -176,6 +176,8 @@ module RuboCop
       #
       # @see https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
       class ReversibleMigration < Base
+        include MigrationsHelper
+
         MSG = '%<action>s is not reversible.'
 
         def_node_matcher :irreversible_schema_statement_call, <<~PATTERN
@@ -207,7 +209,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless within_change_method?(node)
+          return unless in_migration?(node) && within_change_method?(node)
           return if within_reversible_or_up_only_block?(node)
 
           check_irreversible_schema_statement_node(node)
@@ -220,7 +222,7 @@ module RuboCop
         end
 
         def on_block(node)
-          return unless within_change_method?(node)
+          return unless in_migration?(node) && within_change_method?(node)
           return if within_reversible_or_up_only_block?(node)
           return if node.body.nil?
 

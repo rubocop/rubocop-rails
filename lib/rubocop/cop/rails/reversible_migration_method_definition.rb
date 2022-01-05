@@ -43,18 +43,10 @@ module RuboCop
       #     end
       #   end
       class ReversibleMigrationMethodDefinition < Base
+        include MigrationsHelper
+
         MSG = 'Migrations must contain either a `change` method, or ' \
               'both an `up` and a `down` method.'
-
-        def_node_matcher :migration_class?, <<~PATTERN
-          (class
-            (const nil? _)
-            (send
-              (const (const {nil? cbase} :ActiveRecord) :Migration)
-              :[]
-              (float _))
-            _)
-        PATTERN
 
         def_node_matcher :change_method?, <<~PATTERN
           [ #migration_class? `(def :change (args) _) ]

@@ -3,7 +3,7 @@
 RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
   let(:source) do
     <<~RUBY
-      class ExampleMigration < ActiveRecord::Migration
+      class ExampleMigration < ActiveRecord::Migration[7.0]
         def change
           #{code}
         end
@@ -292,5 +292,28 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     it_behaves_like 'offense', 'remove_index(without column)', <<~RUBY
       remove_index(:posts, name: :index_columns_on_body)
     RUBY
+  end
+
+  context 'when multiple databases' do
+    it 'does not register an offense for reversible operation' do
+      expect_no_offenses(<<~RUBY, 'db/animals_migrate/20211007000002_create_animals.rb')
+        class CreateAnimals < ActiveRecord::Migration[7.0]
+          def change
+            create_table :animals
+          end
+        end
+      RUBY
+    end
+
+    it 'registers an offense for irreversible operation' do
+      expect_offense(<<~RUBY, 'db/animals_migrate/20211007000002_remove_animals.rb')
+        class RemoveAnimals < ActiveRecord::Migration[7.0]
+          def change
+            drop_table :animals
+            ^^^^^^^^^^^^^^^^^^^ drop_table(without block) is not reversible.
+          end
+        end
+      RUBY
+    end
   end
 end
