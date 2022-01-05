@@ -24,6 +24,29 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
       RUBY
     end
 
+    it 'does not register an offense when called from a method with the same name' do
+      expect_no_offenses(<<~RUBY)
+        def foo
+          bar || read_attribute(:foo)
+        end
+      RUBY
+    end
+
+    it 'registers an offense when called from a method with a different name' do
+      expect_offense(<<~RUBY)
+        def foo
+          bar || read_attribute(:baz)
+                 ^^^^^^^^^^^^^^ Prefer `self[:attr]` over `read_attribute(:attr)`.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        def foo
+          bar || self[:baz]
+        end
+      RUBY
+    end
+
     it 'autocorrects without parentheses' do
       expect_offense(<<~RUBY)
         res = read_attribute 'test'
@@ -103,6 +126,29 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
 
       expect_correction(<<~RUBY)
         self['attr'] = 'test'
+      RUBY
+    end
+
+    it 'does not register an offense when called from a method with the same name' do
+      expect_no_offenses(<<~RUBY)
+        def foo=(value)
+          bar(value) || write_attribute(:foo, "baz")
+        end
+      RUBY
+    end
+
+    it 'registers an offense when called from a method with a different name' do
+      expect_offense(<<~RUBY)
+        def foo=(value)
+          bar(value) || write_attribute(:baz, "baz")
+                        ^^^^^^^^^^^^^^^ Prefer `self[:attr] = val` over `write_attribute(:attr, val)`.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        def foo=(value)
+          bar(value) || self[:baz] = "baz"
+        end
       RUBY
     end
 

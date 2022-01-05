@@ -23,6 +23,17 @@ module RuboCop
       #   # good
       #   x = self[:attr]
       #   self[:attr] = val
+      #
+      # When called from within a method with the same name as the attribute,
+      # `read_attribute` and `write_attribute` must be used to prevent an
+      # infinite loop:
+      #
+      # @example
+      #
+      #   # good
+      #   def foo
+      #     bar || read_attribute(:foo)
+      #   end
       class ReadWriteAttribute < Base
         extend AutoCorrector
 
@@ -38,6 +49,7 @@ module RuboCop
 
         def on_send(node)
           return unless read_write_attribute?(node)
+          return if within_shadowing_method?(node)
 
           add_offense(node.loc.selector, message: message(node)) do |corrector|
             case node.method_name
@@ -52,6 +64,15 @@ module RuboCop
         end
 
         private
+
+        def within_shadowing_method?(node)
+          node.each_ancestor(:def).any? do |enclosing_method|
+            shadowing_method_name = node.first_argument.value.to_s
+            shadowing_method_name << '=' if node.method?(:write_attribute)
+
+            enclosing_method.method_name.to_s == shadowing_method_name
+          end
+        end
 
         def message(node)
           if node.method?(:read_attribute)
