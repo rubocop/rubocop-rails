@@ -111,6 +111,12 @@ Metrics/ModuleLength:
   Exclude:
     - 'spec/**/*.rb'
 
+Performance/DeletePrefix:
+  SafeMultiline: false
+
+Performance/DeleteSuffix:
+  SafeMultiline: false
+
 # This disabling is a workaround for https://github.com/rubocop-hq/rubocop-rails/issues/374.
 RSpec/FactoryBot/CreateList:
   Enabled: false
