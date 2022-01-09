@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.13.1 (2022-01-10)
+
 ### Bug fixes
 
 * [#601](https://github.com/rubocop/rubocop-rails/pull/601): Handle ignored_columns from mixins for `Rails/UnusedIgnoredColumns` cop. ([@tachyons][])
