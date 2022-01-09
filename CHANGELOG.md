@@ -2,6 +2,17 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#601](https://github.com/rubocop/rubocop-rails/pull/601): Handle ignored_columns from mixins for `Rails/UnusedIgnoredColumns` cop. ([@tachyons][])
+* [#603](https://github.com/rubocop/rubocop-rails/issues/603): Fix autocorrection of multiple attributes for `Rails/RedundantPresenceValidationOnBelongsTo` cop. ([@pirj][])
+* [#608](https://github.com/rubocop/rubocop-rails/issues/608): Fix autocorrection of strict validation for `Rails/RedundantPresenceValidationOnBelongsTo` cop. ([@pirj][])
+
+### Changes
+
+* [#585](https://github.com/rubocop/rubocop-rails/pull/585): Make `Rails/ReadWriteAttribute` cop aware of shadowing methods. ([@drenmi][])
+* [#604](https://github.com/rubocop/rubocop-rails/issues/604): Remove `remove_reference` and `remove_belongs_to` methods from `Rails/ReversibleMigration` cop offenses. ([@TonyArra][])
+
 ## 2.13.0 (2021-12-25)
 
 ### New features
@@ -505,3 +516,4 @@
 [@mattmccormick]: https://github.com/mattmccormick
 [@leoarnold]: https://github.com/leoarnold
 [@TonyArra]: https://github.com/TonyArra
+[@tachyons]: https://github.com/tachyons
