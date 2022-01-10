@@ -8,6 +8,10 @@ module RuboCop
       # explicitly set to `false`. The presence validator is added
       # automatically, and explicit presence validation is redundant.
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because it changes the default error message
+      #   from "can't be blank" to "must exist".
+      #
       # @example
       #   # bad
       #   belongs_to :user

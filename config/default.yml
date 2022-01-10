@@ -627,7 +627,9 @@ Rails/RedundantForeignKey:
 Rails/RedundantPresenceValidationOnBelongsTo:
   Description: 'Checks for redundant presence validation on belongs_to association.'
   Enabled: pending
+  SafeAutoCorrect: false
   VersionAdded: '2.13'
+  VersionChanged: '<<next>>'
 
 Rails/RedundantReceiverInWithOptions:
   Description: 'Checks for redundant receiver in `with_options`.'
