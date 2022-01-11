@@ -5,7 +5,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
     it 'registers an offense and corrects a symbol' do
       expect_offense(<<~RUBY)
         res = read_attribute(:test)
-              ^^^^^^^^^^^^^^ Prefer `self[:attr]` over `read_attribute(:attr)`.
+              ^^^^^^^^^^^^^^^^^^^^^ Prefer `self[:test]`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -16,7 +16,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
     it 'register an offense and corrects a string' do
       expect_offense(<<~RUBY)
         res = read_attribute('test')
-              ^^^^^^^^^^^^^^ Prefer `self[:attr]` over `read_attribute(:attr)`.
+              ^^^^^^^^^^^^^^^^^^^^^^ Prefer `self['test']`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -36,7 +36,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
       expect_offense(<<~RUBY)
         def foo
           bar || read_attribute(:baz)
-                 ^^^^^^^^^^^^^^ Prefer `self[:attr]` over `read_attribute(:attr)`.
+                 ^^^^^^^^^^^^^^^^^^^^ Prefer `self[:baz]`.
         end
       RUBY
 
@@ -50,7 +50,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
     it 'autocorrects without parentheses' do
       expect_offense(<<~RUBY)
         res = read_attribute 'test'
-              ^^^^^^^^^^^^^^ Prefer `self[:attr]` over `read_attribute(:attr)`.
+              ^^^^^^^^^^^^^^^^^^^^^ Prefer `self['test']`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -61,7 +61,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
     it 'corrects an expression' do
       expect_offense(<<~RUBY)
         res = read_attribute('test_' + postfix)
-              ^^^^^^^^^^^^^^ Prefer `self[:attr]` over `read_attribute(:attr)`.
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self['test_' + postfix]`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -72,7 +72,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
     it 'corrects multiline' do
       expect_offense(<<~RUBY)
         res = read_attribute(
-              ^^^^^^^^^^^^^^ Prefer `self[:attr]` over `read_attribute(:attr)`.
+              ^^^^^^^^^^^^^^^ Prefer `self[:attr]`.
         (
         'test_' + postfix
         ).to_sym
@@ -96,7 +96,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
       it 'registers an offense and corrects' do
         expect_offense(<<~RUBY)
           write_attribute(:test, val)
-          ^^^^^^^^^^^^^^^ Prefer `self[:attr] = val` over `write_attribute(:attr, val)`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self[:test] = val`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -109,7 +109,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
       it 'registers an offense and corrects' do
         expect_offense(<<~RUBY)
           write_attribute('attr', 'test')
-          ^^^^^^^^^^^^^^^ Prefer `self[:attr] = val` over `write_attribute(:attr, val)`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self['attr'] = 'test'`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -121,7 +121,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
     it 'registers an offense and corrects without parentheses' do
       expect_offense(<<~RUBY)
         write_attribute 'attr', 'test'
-        ^^^^^^^^^^^^^^^ Prefer `self[:attr] = val` over `write_attribute(:attr, val)`.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self['attr'] = 'test'`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -141,7 +141,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
       expect_offense(<<~RUBY)
         def foo=(value)
           bar(value) || write_attribute(:baz, "baz")
-                        ^^^^^^^^^^^^^^^ Prefer `self[:attr] = val` over `write_attribute(:attr, val)`.
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self[:baz] = "baz"`.
         end
       RUBY
 
@@ -155,7 +155,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
     it 'corrects assignment with chained methods' do
       expect_offense(<<~RUBY)
         write_attribute(:attr, 'test_' + postfix)
-        ^^^^^^^^^^^^^^^ Prefer `self[:attr] = val` over `write_attribute(:attr, val)`.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self[:attr] = 'test_' + postfix`.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -166,7 +166,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
     it 'autocorrects multiline' do
       expect_offense(<<~RUBY)
         write_attribute(
-        ^^^^^^^^^^^^^^^ Prefer `self[:attr] = val` over `write_attribute(:attr, val)`.
+        ^^^^^^^^^^^^^^^^ Prefer `self[:attr] = val`.
         :attr,
         (
         'test_' + postfix
