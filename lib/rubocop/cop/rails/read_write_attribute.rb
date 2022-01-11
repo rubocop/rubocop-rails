@@ -59,12 +59,15 @@ module RuboCop
         private
 
         def within_shadowing_method?(node)
-          node.each_ancestor(:def).any? do |enclosing_method|
-            shadowing_method_name = node.first_argument.value.to_s
-            shadowing_method_name << '=' if node.method?(:write_attribute)
+          first_arg = node.first_argument
+          return false unless first_arg.respond_to?(:value)
 
-            enclosing_method.method_name.to_s == shadowing_method_name
-          end
+          enclosing_method = node.each_ancestor(:def).first
+          return false unless enclosing_method
+
+          shadowing_method_name = first_arg.value.to_s
+          shadowing_method_name << '=' if node.method?(:write_attribute)
+          enclosing_method.method?(shadowing_method_name)
         end
 
         def build_message(node)

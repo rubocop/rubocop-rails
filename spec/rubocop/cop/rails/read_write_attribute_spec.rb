@@ -89,6 +89,42 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
     it 'registers no offense with explicit receiver' do
       expect_no_offenses('res = object.read_attribute(:test)')
     end
+
+    context 'when used within a method' do
+      context 'when using variable for the attribute name' do
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY)
+            def do_the_read_from(column)
+              read_attribute(column)
+              ^^^^^^^^^^^^^^^^^^^^^^ Prefer `self[column]`.
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            def do_the_read_from(column)
+              self[column]
+            end
+          RUBY
+        end
+      end
+
+      context 'when using constant for the attribute name' do
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY)
+            def do_the_read
+              read_attribute(ATTR_NAME)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self[ATTR_NAME]`.
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            def do_the_read
+              self[ATTR_NAME]
+            end
+          RUBY
+        end
+      end
+    end
   end
 
   context 'write_attribute' do
@@ -102,6 +138,42 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
         expect_correction(<<~RUBY)
           self[:test] = val
         RUBY
+      end
+    end
+
+    context 'when used within a method' do
+      context 'when using variable for the attribute name' do
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY)
+            def do_the_write_to(column)
+              write_attribute(column, 'value')
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self[column] = 'value'`.
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            def do_the_write_to(column)
+              self[column] = 'value'
+            end
+          RUBY
+        end
+      end
+
+      context 'when using constant for the attribute name' do
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY)
+            def do_the_write(value)
+              write_attribute(ATTR_NAME, value)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self[ATTR_NAME] = value`.
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            def do_the_write(value)
+              self[ATTR_NAME] = value
+            end
+          RUBY
+        end
       end
     end
 
