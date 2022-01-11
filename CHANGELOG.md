@@ -519,3 +519,4 @@
 [@leoarnold]: https://github.com/leoarnold
 [@TonyArra]: https://github.com/TonyArra
 [@tachyons]: https://github.com/tachyons
+[@composerinteralia]: https://github.com/composerinteralia
