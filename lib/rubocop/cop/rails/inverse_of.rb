@@ -126,6 +126,18 @@ module RuboCop
       #     has_many :physicians, through: :appointments
       #   end
       #
+      # @example IgnoreScopes: false (default)
+      #   # bad
+      #   class Blog < ApplicationRecord
+      #     has_many :posts, -> { order(published_at: :desc) }
+      #   end
+      #
+      # @example IgnoreScopes: true
+      #   # good
+      #   class Blog < ApplicationRecord
+      #     has_many :posts, -> { order(published_at: :desc) }
+      #   end
+      #
       # @see https://guides.rubyonrails.org/association_basics.html#bi-directional-associations
       # @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Setting+Inverses
       class InverseOf < Base
@@ -189,7 +201,7 @@ module RuboCop
         end
 
         def scope?(arguments)
-          arguments.any?(&:block_type?)
+          !ignore_scopes? && arguments.any?(&:block_type?)
         end
 
         def options_requiring_inverse_of?(options)
@@ -235,6 +247,10 @@ module RuboCop
           else
             SPECIFY_MSG
           end
+        end
+
+        def ignore_scopes?
+          cop_config['IgnoreScopes'] == true
         end
       end
     end

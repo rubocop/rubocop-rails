@@ -25,6 +25,18 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
         end
       RUBY
     end
+
+    context 'when `IgnoreScopes: true`' do
+      let(:cop_config) do
+        { 'IgnoreScopes' => true }
+      end
+
+      it 'does not register an offense when not specifying `:inverse_of`' do
+        expect_no_offenses(
+          'has_many :foo, -> () { where(bar: true) }'
+        )
+      end
+    end
   end
 
   context 'with option preventing automatic inverse' do

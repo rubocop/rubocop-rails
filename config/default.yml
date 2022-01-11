@@ -453,6 +453,7 @@ Rails/InverseOf:
   Description: 'Checks for associations where the inverse cannot be determined automatically.'
   Enabled: true
   VersionAdded: '0.52'
+  IgnoreScopes: false
   Include:
     - app/models/**/*.rb
 
