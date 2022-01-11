@@ -106,4 +106,28 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config
       end
     RUBY
   end
+
+  context 'when multiple databases' do
+    it 'does not register an offense with a change method' do
+      expect_no_offenses(<<~RUBY, 'db/animals_migrate/20211007000002_add_nice_to_animals.rb')
+        class AddNiceToAnimals < ActiveRecord::Migration[7.0]
+          def change
+            add_column :animals, :nice, :boolean, default: true
+          end
+        end
+      RUBY
+    end
+
+    it 'registers an offense with only an up method' do
+      expect_offense(<<~RUBY, 'db/animals_migrate/20211007000002_add_nice_to_animals.rb')
+        class AddNiceToAnimals < ActiveRecord::Migration[7.0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Migrations must contain either a `change` method, or both an `up` and a `down` method.
+
+          def up
+            add_column :animals, :nice, :boolean, default: true
+          end
+        end
+      RUBY
+    end
+  end
 end

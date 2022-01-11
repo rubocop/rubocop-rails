@@ -702,15 +702,17 @@ Rails/ReversibleMigration:
   Reference: 'https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html'
   Enabled: true
   VersionAdded: '0.47'
+  VersionChanged: '<<next>>'
   Include:
-    - db/migrate/*.rb
+    - db/**/*.rb
 
 Rails/ReversibleMigrationMethodDefinition:
   Description: 'Checks whether the migration implements either a `change` method or both an `up` and a `down` method.'
   Enabled: false
   VersionAdded: '2.10'
+  VersionChanged: '<<next>>'
   Include:
-    - db/migrate/*.rb
+    - db/**/*.rb
 
 Rails/RootJoinChain:
   Description: 'Use a single `#join` instead of chaining on `Rails.root` or `Rails.public_path`.'
