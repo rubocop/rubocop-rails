@@ -73,10 +73,15 @@ module RuboCop
           return true if reject_with_block_pass?(node)
 
           if (arguments, receiver_in_block = reject_with_block?(node.parent))
-            return arguments.length == 1 || use_hash_value_block_argument?(arguments, receiver_in_block)
+            return use_single_value_block_argument?(arguments, receiver_in_block) ||
+                   use_hash_value_block_argument?(arguments, receiver_in_block)
           end
 
           false
+        end
+
+        def use_single_value_block_argument?(arguments, receiver_in_block)
+          arguments.length == 1 && arguments[0].source == receiver_in_block.source
         end
 
         def use_hash_value_block_argument?(arguments, receiver_in_block)
