@@ -118,6 +118,14 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
         collection.reject { |k, v| k.empty? }
       RUBY
     end
+
+    it 'does not register an offense when using the receiver of `blank?` is not a block variable' do
+      expect_no_offenses(<<~RUBY)
+        def foo(arg)
+          collection.reject { |_| arg.blank? }
+        end
+      RUBY
+    end
   end
 
   context 'Rails <= 6.0', :rails60 do
