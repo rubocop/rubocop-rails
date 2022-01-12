@@ -173,15 +173,10 @@ RSpec.describe RuboCop::Cop::Rails::RedundantPresenceValidationOnBelongsTo, :con
         RUBY
       end
 
-      it 'registers an offense for presence with a message' do
-        expect_offense(<<~RUBY)
+      it 'does not register an offense for presence with a message' do
+        expect_no_offenses(<<~RUBY)
           belongs_to :user
           validates :user, presence: { message: 'Must be present' }
-                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Remove explicit presence validation for `user`.
-        RUBY
-
-        expect_correction(<<~RUBY)
-          belongs_to :user
         RUBY
       end
 

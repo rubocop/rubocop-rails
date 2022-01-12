@@ -50,9 +50,6 @@ module RuboCop
         #   @example source that matches - by association
         #     validates :name, :user, presence: true
         #
-        #   @example source that matches - with presence options
-        #     validates :user, presence: { message: 'duplicate' }
-        #
         #   @example source that matches - by a foreign key
         #     validates :user_id, presence: true
         #
@@ -66,7 +63,7 @@ module RuboCop
             send nil? :validates
             (sym $_)+
             $[
-              (hash <$(pair (sym :presence) {true hash}) ...>)  # presence: true
+              (hash <$(pair (sym :presence) true) ...>)         # presence: true
               !(hash <$(pair (sym :strict) {true const}) ...>)  # strict: true
             ]
           )
