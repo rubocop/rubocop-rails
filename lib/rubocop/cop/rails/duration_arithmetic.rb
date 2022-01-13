@@ -26,7 +26,8 @@ module RuboCop
         RESTRICT_ON_SEND = %i[+ -].freeze
 
         DURATIONS = Set[:second, :seconds, :minute, :minutes, :hour, :hours,
-                        :day, :days, :week, :weeks, :fortnight, :fortnights]
+                        :day, :days, :week, :weeks, :fortnight, :fortnights,
+                        :month, :months, :year, :years]
 
         # @!method duration_arithmetic_argument?(node)
         #   Match duration subtraction or addition with current time.
