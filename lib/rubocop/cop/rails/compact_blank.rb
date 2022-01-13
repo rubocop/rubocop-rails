@@ -10,25 +10,21 @@ module RuboCop
       #   blank check of block arguments to the receiver object.
       #
       #   For example, `[[1, 2], [3, nil]].reject { |first, second| second.blank? }` and
-      #   `[[1, 2], [3, nil]].compact_blank` are not compatible. The same is true for `empty?`.
+      #   `[[1, 2], [3, nil]].compact_blank` are not compatible. The same is true for `blank?`.
       #   This will work fine when the receiver is a hash object.
       #
       # @example
       #
       #   # bad
       #   collection.reject(&:blank?)
-      #   collection.reject(&:empty?)
       #   collection.reject { |_k, v| v.blank? }
-      #   collection.reject { |_k, v| v.empty? }
       #
       #   # good
       #   collection.compact_blank
       #
       #   # bad
       #   collection.reject!(&:blank?)
-      #   collection.reject!(&:empty?)
       #   collection.reject! { |_k, v| v.blank? }
-      #   collection.reject! { |_k, v| v.empty? }
       #
       #   # good
       #   collection.compact_blank!
@@ -48,13 +44,13 @@ module RuboCop
             (send _ {:reject :reject!})
             $(args ...)
             (send
-              $(lvar _) {:blank? :empty?}))
+              $(lvar _) :blank?))
         PATTERN
 
         def_node_matcher :reject_with_block_pass?, <<~PATTERN
           (send _ {:reject :reject!}
             (block_pass
-              (sym {:blank? :empty?})))
+              (sym :blank?)))
         PATTERN
 
         def on_send(node)
