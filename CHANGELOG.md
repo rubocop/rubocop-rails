@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.13.2 (2022-01-15)
+
 ### New features
 
 * [#614](https://github.com/rubocop/rubocop-rails/pull/614): Add `IgnoreScopes` config option for `Rails/InverseOf` cop. ([@composerinteralia][])

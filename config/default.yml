@@ -630,7 +630,6 @@ Rails/RedundantPresenceValidationOnBelongsTo:
   Enabled: pending
   SafeAutoCorrect: false
   VersionAdded: '2.13'
-  VersionChanged: '<<next>>'
 
 Rails/RedundantReceiverInWithOptions:
   Description: 'Checks for redundant receiver in `with_options`.'
@@ -705,7 +704,7 @@ Rails/ReversibleMigration:
   Reference: 'https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html'
   Enabled: true
   VersionAdded: '0.47'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.13'
   Include:
     - db/**/*.rb
 
@@ -713,7 +712,7 @@ Rails/ReversibleMigrationMethodDefinition:
   Description: 'Checks whether the migration implements either a `change` method or both an `up` and a `down` method.'
   Enabled: false
   VersionAdded: '2.10'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.13'
   Include:
     - db/**/*.rb
 

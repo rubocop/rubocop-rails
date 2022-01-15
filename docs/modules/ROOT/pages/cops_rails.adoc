@@ -868,7 +868,7 @@ It is unsafe by default because false positives may occur in the
 blank check of block arguments to the receiver object.
 
 For example, `[[1, 2], [3, nil]].reject { |first, second| second.blank? }` and
-`[[1, 2], [3, nil]].compact_blank` are not compatible. The same is true for `empty?`.
+`[[1, 2], [3, nil]].compact_blank` are not compatible. The same is true for `blank?`.
 This will work fine when the receiver is a hash object.
 
 === Examples
@@ -877,18 +877,14 @@ This will work fine when the receiver is a hash object.
 ----
 # bad
 collection.reject(&:blank?)
-collection.reject(&:empty?)
 collection.reject { |_k, v| v.blank? }
-collection.reject { |_k, v| v.empty? }
 
 # good
 collection.compact_blank
 
 # bad
 collection.reject!(&:blank?)
-collection.reject!(&:empty?)
 collection.reject! { |_k, v| v.blank? }
-collection.reject! { |_k, v| v.empty? }
 
 # good
 collection.compact_blank!
@@ -2504,10 +2500,34 @@ class Patient < ApplicationRecord
 end
 ----
 
+==== IgnoreScopes: false (default)
+
+[source,ruby]
+----
+# bad
+class Blog < ApplicationRecord
+  has_many :posts, -> { order(published_at: :desc) }
+end
+----
+
+==== IgnoreScopes: true
+
+[source,ruby]
+----
+# good
+class Blog < ApplicationRecord
+  has_many :posts, -> { order(published_at: :desc) }
+end
+----
+
 === Configurable attributes
 
 |===
 | Name | Default value | Configurable values
+
+| IgnoreScopes
+| `false`
+| Boolean
 
 | Include
 | `app/models/**/*.rb`
@@ -3574,13 +3594,18 @@ end
 | Yes
 | Yes (Unsafe)
 | 2.13
-| -
+| 2.13
 |===
 
 Since Rails 5.0 the default for `belongs_to` is `optional: false`
 unless `config.active_record.belongs_to_required_by_default` is
 explicitly set to `false`. The presence validator is added
 automatically, and explicit presence validation is redundant.
+
+=== Safety
+
+This cop's autocorrection is unsafe because it changes the default error message
+from "can't be blank" to "must exist".
 
 === Examples
 
@@ -4057,7 +4082,7 @@ require_dependency 'some_lib'
 | Yes
 | No
 | 0.47
-| -
+| 2.13
 |===
 
 This cop checks whether the change method of the migration file is
@@ -4255,7 +4280,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `db/migrate/*.rb`
+| `db/**/*.rb`
 | Array
 |===
 
@@ -4273,7 +4298,7 @@ end
 | Yes
 | No
 | 2.10
-| -
+| 2.13
 |===
 
 This cop checks whether the migration implements
@@ -4326,7 +4351,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `db/migrate/*.rb`
+| `db/**/*.rb`
 | Array
 |===
 
