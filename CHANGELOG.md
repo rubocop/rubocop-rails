@@ -2,6 +2,22 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#614](https://github.com/rubocop/rubocop-rails/pull/614): Add `IgnoreScopes` config option for `Rails/InverseOf` cop. ([@composerinteralia][])
+
+### Bug fixes
+
+* [#620](https://github.com/rubocop/rubocop-rails/issues/620): Fix a false positive for `Rails/RedundantPresenceValidationOnBelongsTo` using presence with a message. ([@koic][])
+* [#626](https://github.com/rubocop/rubocop-rails/issues/626): Fix a false positive for `Rails/CompactBlank` when using the receiver of `blank?` is not a block variable. ([@koic][])
+* [#622](https://github.com/rubocop/rubocop-rails/pull/622): Add `month(s)` and `year(s)` to `Rails/DurationArithmetic` cop. ([@agrobbin][])
+* [#623](https://github.com/rubocop/rubocop-rails/issues/623): Fix method shadowing check for `Rails/ReadWriteAttribute` cop. ([@nvasilevski][])
+
+### Changes
+
+* [#615](https://github.com/rubocop/rubocop-rails/issues/615): Change `Rails/RedundantPresenceValidationOnBelongsTo` to `SafeAutoCorrect: false`. ([@TonyArra][])
+* [#463](https://github.com/rubocop/rubocop-rails/issues/463): Support multiple databases for `ReversibleMigration` and `ReversibleMigrationMethodDefinition` cops. ([@fatkodima][])
+
 ## 2.13.1 (2022-01-10)
 
 ### Bug fixes
@@ -520,3 +536,4 @@
 [@TonyArra]: https://github.com/TonyArra
 [@tachyons]: https://github.com/tachyons
 [@composerinteralia]: https://github.com/composerinteralia
+[@agrobbin]: https://github.com/agrobbin
