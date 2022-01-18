@@ -21,25 +21,31 @@ module RuboCop
         extend AutoCorrector
         extend TargetRailsVersion
 
-        MSG = 'Prefer `pluck(:%<value>s)` over `%<method>s { |%<argument>s| %<element>s[:%<value>s] }`.'
+        MSG = 'Prefer `pluck(:%<value>s)` over `%<current>s`.'
 
         minimum_target_rails_version 5.0
 
         def_node_matcher :pluck_candidate?, <<~PATTERN
-          (block (send _ ${:map :collect}) (args (arg $_argument)) (send (lvar $_element) :[] (sym $_value)))
+          ({block numblock} (send _ {:map :collect}) $_argument (send (lvar $_element) :[] (sym $_value)))
         PATTERN
 
         def on_block(node)
-          pluck_candidate?(node) do |method, argument, element, value|
-            next unless argument == element
+          pluck_candidate?(node) do |argument, element, value|
+            match = if node.block_type?
+                      argument.children.first.source.to_sym == element
+                    else # numblock
+                      argument == 1 && element == :_1
+                    end
+            next unless match
 
-            message = message(method, argument, element, value)
+            message = message(value, node)
 
             add_offense(offense_range(node), message: message) do |corrector|
               corrector.replace(offense_range(node), "pluck(:#{value})")
             end
           end
         end
+        alias on_numblock on_block
 
         private
 
@@ -47,8 +53,10 @@ module RuboCop
           node.send_node.loc.selector.join(node.loc.end)
         end
 
-        def message(method, argument, element, value)
-          format(MSG, method: method, argument: argument, element: element, value: value)
+        def message(value, node)
+          current = offense_range(node).source
+
+          format(MSG, value: value, current: current)
         end
       end
     end

@@ -31,6 +31,23 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
           RUBY
         end
       end
+
+      context 'when using Ruby 2.7 or newer', :ruby27 do
+        context 'when using numbered parameter' do
+          context "when `#{method}` can be replaced with `pluck`" do
+            it 'registers an offense' do
+              expect_offense(<<~RUBY, method: method)
+                x.%{method} { _1[:foo] }
+                  ^{method}^^^^^^^^^^^^^ Prefer `pluck(:foo)` over `%{method} { _1[:foo] }`.
+              RUBY
+
+              expect_correction(<<~RUBY)
+                x.pluck(:foo)
+              RUBY
+            end
+          end
+        end
+      end
     end
 
     context 'when using Rails 4.2 or older', :rails42 do
