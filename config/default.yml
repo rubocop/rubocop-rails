@@ -251,6 +251,11 @@ Rails/DelegateAllowBlank:
   Enabled: true
   VersionAdded: '0.44'
 
+Rails/DuplicateAssociation:
+  Description: "Don't repeat associations in a model."
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/DurationArithmetic:
   Description: 'Do not use duration as arithmetic operand with `Time.current`.'
   StyleGuide: 'https://rails.rubystyle.guide#duration-arithmetic'
