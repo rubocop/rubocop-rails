@@ -420,6 +420,15 @@ Rails/HttpStatus:
     - numeric
     - symbolic
 
+Rails/I18nLazyLookup:
+  Description: 'Checks for places where I18n "lazy" lookup can be used.'
+  StyleGuide: 'https://rails.rubystyle.guide/#lazy-lookup'
+  Reference: 'https://guides.rubyonrails.org/i18n.html#lazy-lookup'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  Include:
+    - 'controllers/**/*'
+
 Rails/I18nLocaleAssignment:
   Description: 'Prefer the usage of `I18n.with_locale` instead of manually updating `I18n.locale` value.'
   Enabled: 'pending'
