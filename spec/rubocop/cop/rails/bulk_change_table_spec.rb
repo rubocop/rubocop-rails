@@ -387,6 +387,48 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
         end
       RUBY
     end
+
+    it 'registers an offense for a single `t.remove` with multiple columns' do
+      expect_offense(<<~RUBY)
+        def change
+          change_table :users do |t|
+          ^^^^^^^^^^^^^^^^^^^ You can combine alter queries using `bulk: true` options.
+            t.remove :name, :metadata
+          end
+        end
+      RUBY
+    end
+
+    it 'does not register an offense for a single `t.remove` with one column' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          change_table :users do |t|
+            t.remove :name
+          end
+        end
+      RUBY
+    end
+
+    it 'registers an offense for a single `t.remove` with multiple columns and options' do
+      expect_offense(<<~RUBY)
+        def change
+          change_table :users do |t|
+          ^^^^^^^^^^^^^^^^^^^ You can combine alter queries using `bulk: true` options.
+            t.remove :name, :metadata, type: :string
+          end
+        end
+      RUBY
+    end
+
+    it 'does not register an offense for a single `t.remove` with one column and options' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          change_table :users do |t|
+            t.remove :name, type: :string
+          end
+        end
+      RUBY
+    end
   end
 
   context 'when database is PostgreSQL' do

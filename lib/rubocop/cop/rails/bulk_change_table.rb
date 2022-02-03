@@ -155,16 +155,30 @@ module RuboCop
           return if include_bulk_options?(node)
           return unless node.block_node
 
-          send_nodes = node.block_node.body.each_child_node(:send).to_a
+          send_nodes = send_nodes_from_change_table_block(node.block_node.body)
 
-          transformations = send_nodes.select do |send_node|
-            combinable_transformations.include?(send_node.method_name)
-          end
-
-          add_offense_for_change_table(node) if transformations.size > 1
+          add_offense_for_change_table(node) if count_transformations(send_nodes) > 1
         end
 
         private
+
+        def send_nodes_from_change_table_block(body)
+          if body.send_type?
+            [body]
+          else
+            body.each_child_node(:send).to_a
+          end
+        end
+
+        def count_transformations(send_nodes)
+          send_nodes.sum do |node|
+            if node.method?(:remove)
+              node.arguments.count { |arg| !arg.hash_type? }
+            else
+              combinable_transformations.include?(node.method_name) ? 1 : 0
+            end
+          end
+        end
 
         # @param node [RuboCop::AST::SendNode] (send nil? :change_table ...)
         def include_bulk_options?(node)
