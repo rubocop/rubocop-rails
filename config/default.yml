@@ -38,6 +38,16 @@ Lint/NumberConversion:
     - fortnights
     - in_milliseconds
 
+Rails/ActionControllerTestCase:
+  Description: 'Use `ActionDispatch::IntegrationTest` instead of `ActionController::TestCase`.'
+  StyleGuide: 'https://rails.rubystyle.guide/#integration-testing'
+  Reference: 'https://api.rubyonrails.org/classes/ActionController/TestCase.html'
+  Enabled: 'pending'
+  SafeAutocorrect: false
+  VersionAdded: '<<next>>'
+  Include:
+    - '**/test/**/*.rb'
+
 Rails/ActionFilter:
   Description: 'Enforces consistent use of action filter methods.'
   Enabled: true
