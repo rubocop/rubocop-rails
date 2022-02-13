@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ApplicationMailer, :config, :config do
-  context 'Rails 4.2', :rails42, :config do
+  context 'Rails 4.2', :rails42 do
     it 'allows `ApplicationMailer` to be defined' do
       expect_no_offenses(<<~RUBY)
         class ApplicationMailer < ActionMailer::Base; end

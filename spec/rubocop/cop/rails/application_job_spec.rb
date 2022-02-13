@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ApplicationJob, :config, :config do
-  context 'Rails 4.2', :rails42, :config do
+  context 'Rails 4.2', :rails42 do
     it 'allows ApplicationJob to be defined' do
       expect_no_offenses(<<~RUBY)
         class ApplicationJob < ActiveJob::Base

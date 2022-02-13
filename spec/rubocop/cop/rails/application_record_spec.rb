@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ApplicationRecord, :config, :config do
-  context 'Rails 4.2', :rails42, :config do
+  context 'Rails 4.2', :rails42 do
     it 'allows ApplicationRecord to be defined' do
       expect_no_offenses(<<~RUBY)
         class ApplicationRecord < ActiveRecord::Base; end

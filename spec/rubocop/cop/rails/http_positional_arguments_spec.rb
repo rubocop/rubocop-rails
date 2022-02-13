@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
-  context 'Rails 4.2', :rails42, :config do
+  context 'Rails 4.2', :rails42 do
     it 'does not register an offense for get method' do
       expect_no_offenses('get :create, user_id: @user.id')
     end
