@@ -23,6 +23,7 @@ module RuboCop
       class DuplicateAssociation < Base
         include RangeHelp
         extend AutoCorrector
+        include ClassSendNodeHelper
 
         MSG = "Association `%<name>s` is defined multiple times. Don't repeat associations."
 
@@ -48,18 +49,6 @@ module RuboCop
           class_send_nodes(class_node).select { |node| association(node) }
                                       .group_by { |node| association(node).to_sym }
                                       .select { |_, nodes| nodes.length > 1 }
-        end
-
-        def class_send_nodes(class_node)
-          class_def = class_node.body
-
-          return [] unless class_def
-
-          if class_def.send_type?
-            [class_def]
-          else
-            class_def.each_child_node(:send)
-          end
         end
       end
     end
