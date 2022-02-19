@@ -205,9 +205,12 @@ Rails/ContentTag:
   Enabled: true
   VersionAdded: '2.6'
   VersionChanged: '2.12'
-  # This `Exclude` config prevents false positives for `tag` calls to `has_one: tag`. No helpers are used in normal models.
+  # This `Exclude` config prevents false positives for `tag` calls to `has_one: tag` and Puma configuration:
+  # https://puma.io/puma/Puma/DSL.html#tag-instance_method
+  # No helpers are used in normal models and configs.
   Exclude:
     - app/models/**/*.rb
+    - config/**/*.rb
 
 Rails/CreateTableWithTimestamps:
   Description: >-
