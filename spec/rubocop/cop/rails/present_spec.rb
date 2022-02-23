@@ -238,7 +238,7 @@ RSpec.describe RuboCop::Cop::Rails::Present, :config do
             )
           end
 
-          it 'does not registers an offense' do
+          it 'does not register an offense' do
             expect_no_offenses(<<~RUBY)
               unless foo.blank?
                 something

@@ -51,7 +51,7 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
     end
 
     context 'when using Rails 4.2 or older', :rails42 do
-      it 'does not registers an offense' do
+      it 'does not register an offense' do
         expect_no_offenses(<<~RUBY)
           x.#{method} { |a| a[:foo] }
         RUBY

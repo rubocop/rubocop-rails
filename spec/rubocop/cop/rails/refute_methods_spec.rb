@@ -50,14 +50,14 @@ RSpec.describe RuboCop::Cop::Rails::RefuteMethods, :config do
       RUBY
     end
 
-    it 'does not registers an offense when using `assert_not` ' \
+    it 'does not register an offense when using `assert_not` ' \
        'with a single argument' do
       expect_no_offenses(<<~RUBY)
         assert_not foo
       RUBY
     end
 
-    it 'does not registers an offense when using `assert_not` ' \
+    it 'does not register an offense when using `assert_not` ' \
        'with a multiple arguments' do
       expect_no_offenses(<<~RUBY)
         assert_not foo, bar, baz
@@ -103,14 +103,14 @@ RSpec.describe RuboCop::Cop::Rails::RefuteMethods, :config do
       RUBY
     end
 
-    it 'does not registers an offense when using `refute` ' \
+    it 'does not register an offense when using `refute` ' \
        'with a single argument' do
       expect_no_offenses(<<~RUBY)
         refute foo
       RUBY
     end
 
-    it 'does not registers an offense when using `refute` ' \
+    it 'does not register an offense when using `refute` ' \
        'with a multiple arguments' do
       expect_no_offenses(<<~RUBY)
         refute foo, bar, baz
