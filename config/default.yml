@@ -527,6 +527,13 @@ Rails/MatchRoute:
     - config/routes.rb
     - config/routes/**/*.rb
 
+Rails/MigrationClassName:
+  Description: 'The class name of the migration should match its file name.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  Include:
+    - db/migrate/*.rb
+
 Rails/NegateInclude:
   Description: 'Prefer `collection.exclude?(obj)` over `!collection.include?(obj)`.'
   StyleGuide: 'https://rails.rubystyle.guide#exclude'
