@@ -9,7 +9,7 @@ RSpec.describe RuboCop::Rails::Inject do
       expect(configuration['AllCops']['Exclude'])
         .to include(
           '/home/foo/project/bin/*',
-          '/home/foo/project/db/schema.rb'
+          '/home/foo/project/db/*schema.rb'
         )
     end
   end

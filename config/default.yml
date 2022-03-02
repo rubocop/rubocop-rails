@@ -7,7 +7,9 @@ inherit_mode:
 AllCops:
   Exclude:
     - bin/*
-    - db/schema.rb
+    # Exclude db/schema.rb and db/[CONFIGURATION_NAMESPACE]_schema.rb by default.
+    # See: https://guides.rubyonrails.org/active_record_multiple_databases.html#setting-up-your-application
+    - db/*schema.rb
   # What version of Rails is the inspected code using?  If a value is specified
   # for TargetRailsVersion then it is used.  Acceptable values are specified
   # as a float (i.e. 5.1); the patch version of Rails should not be included.
