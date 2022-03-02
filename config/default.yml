@@ -875,6 +875,11 @@ Rails/TimeZoneAssignment:
     - spec/**/*.rb
     - test/**/*.rb
 
+Rails/TransactionExitStatement:
+  Description: 'Avoid the usage of `return`, `break` and `throw` in transaction blocks.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'
   Enabled: true
