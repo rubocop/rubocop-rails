@@ -455,6 +455,12 @@ Rails/I18nLocaleAssignment:
     - spec/**/*.rb
     - test/**/*.rb
 
+Rails/I18nLocaleTexts:
+  Description: 'Enforces use of I18n and locale files instead of locale specific strings.'
+  StyleGuide: 'https://rails.rubystyle.guide/#locale-texts'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/IgnoredSkipActionFilterOption:
   Description: 'Checks that `if` and `only` (or `except`) are not used together as options of `skip_*` action filter.'
   Reference: 'https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options'
