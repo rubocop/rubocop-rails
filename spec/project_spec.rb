@@ -92,7 +92,7 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
     it 'does not include `Safe: true`' do
       cop_names.each do |name|
         safe = config[name]['Safe']
-        expect(safe).not_to eq(true), "`#{name}` has unnecessary `Safe: true` config."
+        expect(safe).not_to be(true), "`#{name}` has unnecessary `Safe: true` config."
       end
     end
   end

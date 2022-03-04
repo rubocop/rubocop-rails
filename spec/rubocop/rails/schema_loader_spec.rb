@@ -13,7 +13,7 @@ RSpec.describe RuboCop::Rails::SchemaLoader do
 
     context 'without schema.rb' do
       it do
-        expect(described_class.load(target_ruby_version)).to be nil
+        expect(described_class.load(target_ruby_version).nil?).to be(true)
       end
     end
 
