@@ -868,6 +868,15 @@ Rails/SquishedSQLHeredocs:
   # to be preserved in order to work, thus auto-correction is not safe.
   SafeAutoCorrect: false
 
+Rails/TableNameAssignment:
+  Description: >-
+    Do not use `self.table_name =`. Use Inflections or `table_name_prefix` instead.
+  StyleGuide: 'https://rails.rubystyle.guide/#keep-ar-defaults'
+  Enabled: false
+  VersionAdded: '<<next>>'
+  Include:
+    - app/models/**/*.rb
+
 Rails/TimeZone:
   Description: 'Checks the correct usage of time zone aware methods.'
   StyleGuide: 'https://rails.rubystyle.guide#time'

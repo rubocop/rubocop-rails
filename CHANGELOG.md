@@ -531,6 +531,7 @@
 [@skryukov]: https://github.com/skryukov
 [@johnsyweb]: https://github.com/johnsyweb
 [@theunraveler]: https://github.com/theunraveler
+[@MaximeDucheneS]: https://github.com/MaximeDucheneS
 [@pirj]: https://github.com/pirj
 [@vitormd]: https://github.com/vitormd
 [@mattmccormick]: https://github.com/mattmccormick

@@ -105,6 +105,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsshorti18n[Rails/ShortI18n]
 * xref:cops_rails.adoc#railsskipsmodelvalidations[Rails/SkipsModelValidations]
 * xref:cops_rails.adoc#railssquishedsqlheredocs[Rails/SquishedSQLHeredocs]
+* xref:cops_rails.adoc#railstablenameassignment[Rails/TableNameAssignment]
 * xref:cops_rails.adoc#railstimezone[Rails/TimeZone]
 * xref:cops_rails.adoc#railstimezoneassignment[Rails/TimeZoneAssignment]
 * xref:cops_rails.adoc#railsuniqbeforepluck[Rails/UniqBeforePluck]
