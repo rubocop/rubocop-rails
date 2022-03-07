@@ -59,7 +59,7 @@ skip_after_filter :do_stuff
 | `action`, `filter`
 
 | Include
-| `app/controllers/**/*.rb`
+| `+app/controllers/**/*.rb+`
 | Array
 |===
 
@@ -132,7 +132,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -183,7 +183,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -590,7 +590,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `models/**/*`
+| `+models/**/*+`
 | Array
 |===
 
@@ -928,7 +928,7 @@ tag(name, class: 'classname')
 | Name | Default value | Configurable values
 
 | Exclude
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -1437,7 +1437,7 @@ enum status: { active: 0, archived: 1 }
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -1482,7 +1482,7 @@ enum status: [:active, :archived]
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -1585,11 +1585,11 @@ ENV["FOO"] = "bar"
 | Name | Default value | Configurable values
 
 | Include
-| `app/**/*.rb`, `lib/**/*.rb`
+| `+app/**/*.rb+`, `+lib/**/*.rb+`
 | Array
 
 | Exclude
-| `lib/**/*.rake`
+| `+lib/**/*.rake+`
 | Array
 
 | AllowReads
@@ -1644,11 +1644,11 @@ raise 'a bad error has happened'
 | Name | Default value | Configurable values
 
 | Include
-| `app/**/*.rb`, `config/**/*.rb`, `lib/**/*.rb`
+| `+app/**/*.rb+`, `+config/**/*.rb+`, `+lib/**/*.rb+`
 | Array
 
 | Exclude
-| `lib/**/*.rake`
+| `+lib/**/*.rake+`
 | Array
 |===
 
@@ -1796,7 +1796,7 @@ User.where(name: 'Bruce').first
 | Boolean
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -1877,7 +1877,7 @@ User.order(:foo).each
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 
 | IgnoredMethods
@@ -1920,7 +1920,7 @@ This cop checks for the use of the has_and_belongs_to_many macro.
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -1980,7 +1980,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -2039,7 +2039,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/helpers/**/*.rb`
+| `+app/helpers/**/*.rb+`
 | Array
 |===
 
@@ -2080,7 +2080,7 @@ get :new, **options
 | Name | Default value | Configurable values
 
 | Include
-| `spec/**/*`, `test/**/*`
+| `+spec/**/*+`, `+test/**/*+`
 | Array
 |===
 
@@ -2185,7 +2185,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `spec/**/*.rb`, `test/**/*.rb`
+| `+spec/**/*.rb+`, `+test/**/*.rb+`
 | Array
 |===
 
@@ -2246,7 +2246,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/controllers/**/*.rb`
+| `+app/controllers/**/*.rb+`
 | Array
 |===
 
@@ -2530,7 +2530,7 @@ end
 | Boolean
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -2642,7 +2642,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/controllers/**/*.rb`
+| `+app/controllers/**/*.rb+`
 | Array
 |===
 
@@ -2737,7 +2737,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/mailers/**/*.rb`
+| `+app/mailers/**/*.rb+`
 | Array
 |===
 
@@ -2784,7 +2784,7 @@ match 'photos/:id', to: 'photos#show', via: :all
 | Name | Default value | Configurable values
 
 | Include
-| `config/routes.rb`, `config/routes/**/*.rb`
+| `config/routes.rb`, `+config/routes/**/*.rb+`
 | Array
 |===
 
@@ -2944,7 +2944,7 @@ Rails.logger.debug 'A debug message'
 | Name | Default value | Configurable values
 
 | Include
-| `app/**/*.rb`, `config/**/*.rb`, `db/**/*.rb`, `lib/**/*.rb`
+| `+app/**/*.rb+`, `+config/**/*.rb+`, `+db/**/*.rb+`, `+lib/**/*.rb+`
 | Array
 |===
 
@@ -3432,7 +3432,7 @@ end
 | Array
 
 | Exclude
-| `lib/capistrano/tasks/**/*.rake`
+| `+lib/capistrano/tasks/**/*.rake+`
 | Array
 |===
 
@@ -3490,7 +3490,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -3543,7 +3543,7 @@ validates :x, length: { is: 5 }, allow_nil: true, allow_blank: false
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -3748,7 +3748,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `spec/**/*.rb`, `test/**/*.rb`
+| `+spec/**/*.rb+`, `+test/**/*.rb+`
 | Array
 |===
 
@@ -4280,7 +4280,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `db/**/*.rb`
+| `+db/**/*.rb+`
 | Array
 |===
 
@@ -4351,7 +4351,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `db/**/*.rb`
+| `+db/**/*.rb+`
 | Array
 |===
 
@@ -4717,7 +4717,7 @@ scope :something, -> { where(something: true) }
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -4967,7 +4967,7 @@ For more information: https://api.rubyonrails.org/classes/ActiveRecord/Inheritan
 | Name | Default value | Configurable values
 
 | Exclude
-| `spec/**/*`, `db/migrate/*.rb`
+| `+spec/**/*+`, `db/migrate/*.rb`
 | Array
 |===
 
@@ -5047,7 +5047,7 @@ Time.at(timestamp).in_time_zone
 | `strict`, `flexible`
 
 | Exclude
-| `**/*.gemspec`
+| `+**/*.gemspec+`
 | Array
 |===
 
@@ -5093,7 +5093,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `spec/**/*.rb`, `test/**/*.rb`
+| `+spec/**/*.rb+`, `+test/**/*.rb+`
 | Array
 |===
 
@@ -5218,7 +5218,7 @@ validates :account, length: { minimum: MIN_LENGTH }
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -5300,7 +5300,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -5355,7 +5355,7 @@ validates :foo, uniqueness: true
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
