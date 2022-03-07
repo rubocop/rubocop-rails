@@ -24,6 +24,28 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
       RUBY
     end
 
+    it 'registers and corrects an offense when using `delete_if { |e| e.blank? }`' do
+      expect_offense(<<~RUBY)
+        collection.delete_if { |e| e.blank? }
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `compact_blank!` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.compact_blank!
+      RUBY
+    end
+
+    it 'registers and corrects an offense when using `delete_if(&:blank?)`' do
+      expect_offense(<<~RUBY)
+        collection.delete_if(&:blank?)
+                   ^^^^^^^^^^^^^^^^^^^ Use `compact_blank!` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.compact_blank!
+      RUBY
+    end
+
     it 'registers and corrects an offense when using `reject! { |e| e.blank? }`' do
       expect_offense(<<~RUBY)
         collection.reject! { |e| e.blank? }
