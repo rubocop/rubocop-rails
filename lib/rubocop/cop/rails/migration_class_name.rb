@@ -20,10 +20,13 @@ module RuboCop
       #
       class MigrationClassName < Base
         extend AutoCorrector
+        include MigrationsHelper
 
         MSG = 'Replace with `%<corrected_class_name>s` that matches the file name.'
 
         def on_class(node)
+          return if in_migration?(node)
+
           snake_class_name = to_snakecase(node.identifier.source)
 
           basename = basename_without_timestamp_and_suffix
