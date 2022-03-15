@@ -10,6 +10,17 @@ RSpec.describe RuboCop::Cop::Rails::MigrationClassName, :config do
         end
       RUBY
     end
+
+    context 'when defining another class' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY, filename)
+          class CreateUsers < ActiveRecord::Migration[7.0]
+            class Article < ActiveRecord::Base
+            end
+          end
+        RUBY
+      end
+    end
   end
 
   context 'when the class name does not match its file name' do
