@@ -59,16 +59,24 @@ module RuboCop
           return unless parent&.block_type?
 
           exit_statements(parent.body).each do |statement_node|
-            statement = if statement_node.return_type?
-                          'return'
-                        elsif statement_node.break_type?
-                          'break'
-                        else
-                          statement_node.method_name
-                        end
+            next unless statement_node.ancestors.find(&:block_type?).method?(:transaction)
+
+            statement = statement(statement_node)
             message = format(MSG, statement: statement)
 
             add_offense(statement_node, message: message)
+          end
+        end
+
+        private
+
+        def statement(statement_node)
+          if statement_node.return_type?
+            'return'
+          elsif statement_node.break_type?
+            'break'
+          else
+            statement_node.method_name
           end
         end
       end
