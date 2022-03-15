@@ -26,4 +26,15 @@ RSpec.describe RuboCop::Cop::Rails::MigrationClassName, :config do
       RUBY
     end
   end
+
+  context 'when the class name contains a dot in its file name' do
+    let(:filename) { 'db/migrate/20220101050505_add_blobs.active_storage.rb' }
+
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY, filename)
+        class AddBlobs < ActiveRecord::Migration[7.0]
+        end
+      RUBY
+    end
+  end
 end
