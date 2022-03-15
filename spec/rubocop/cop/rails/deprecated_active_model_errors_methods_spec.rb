@@ -35,6 +35,19 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedActiveModelErrorsMethods, :config 
           RUBY
         end
       end
+
+      context 'when using `keys` method' do
+        it 'registers and corrects an offense' do
+          expect_offense(<<~RUBY, file_path)
+            user.errors.keys.include?(:name)
+            ^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            user.errors.attribute_names.include?(:name)
+          RUBY
+        end
+      end
     end
 
     context 'when modifying errors.messages' do
