@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.14.0 (2022-03-15)
+
 ### New features
 
 * [#624](https://github.com/rubocop/rubocop-rails/issues/624): Add new `Rails/I18nLocaleTexts` cop. ([@fatkodima][])

@@ -1,5 +1,58 @@
 = Rails
 
+== Rails/ActionControllerTestCase
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.14
+| -
+|===
+
+Using `ActionController::TestCase`` is discouraged and should be replaced by
+`ActionDispatch::IntegrationTest``. Controller tests are too close to the
+internals of a controller whereas integration tests mimic the browser/user.
+
+=== Safety
+
+This cop's autocorrection is unsafe because the API of each test case class is different.
+Make sure to update each test of your controller test cases after changing the superclass.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class MyControllerTest < ActionController::TestCase
+end
+
+# good
+class MyControllerTest < ActionDispatch::IntegrationTest
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| SafeAutocorrect
+| `false`
+| Boolean
+
+| Include
+| `+**/test/**/*.rb+`
+| Array
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#integration-testing
+* https://api.rubyonrails.org/classes/ActionController/TestCase.html
+
 == Rails/ActionFilter
 
 |===
@@ -59,7 +112,7 @@ skip_after_filter :do_stuff
 | `action`, `filter`
 
 | Include
-| `app/controllers/**/*.rb`
+| `+app/controllers/**/*.rb+`
 | Array
 |===
 
@@ -132,7 +185,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -183,7 +236,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -254,7 +307,7 @@ add_index :table, :column
 | Name | Default value | Configurable values
 
 | Include
-| `db/migrate/*.rb`
+| `+db/migrate/*.rb+`
 | Array
 |===
 
@@ -590,7 +643,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `models/**/*`
+| `+models/**/*+`
 | Array
 |===
 
@@ -844,7 +897,7 @@ end
 | `mysql`, `postgresql`
 
 | Include
-| `db/migrate/*.rb`
+| `+db/migrate/*.rb+`
 | Array
 |===
 
@@ -871,6 +924,12 @@ For example, `[[1, 2], [3, nil]].reject { |first, second| second.blank? }` and
 `[[1, 2], [3, nil]].compact_blank` are not compatible. The same is true for `blank?`.
 This will work fine when the receiver is a hash object.
 
+And `compact_blank!` has different implementations for `Array`, `Hash`, and
+`ActionController::Parameters`.
+`Array#compact_blank!`, `Hash#compact_blank!` are equivalent to `delete_if(&:blank?)`.
+`ActionController::Parameters#compact_blank!` is equivalent to `reject!(&:blank?)`.
+If the cop makes a mistake, auto-corrected code may get unexpected behavior.
+
 === Examples
 
 [source,ruby]
@@ -883,8 +942,10 @@ collection.reject { |_k, v| v.blank? }
 collection.compact_blank
 
 # bad
-collection.reject!(&:blank?)
-collection.reject! { |_k, v| v.blank? }
+collection.delete_if(&:blank?)            # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
+collection.delete_if { |_k, v| v.blank? } # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
+collection.reject!(&:blank?)              # Same behavior as `ActionController::Parameters#compact_blank!`
+collection.reject! { |_k, v| v.blank? }   # Same behavior as `ActionController::Parameters#compact_blank!`
 
 # good
 collection.compact_blank!
@@ -928,7 +989,7 @@ tag(name, class: 'classname')
 | Name | Default value | Configurable values
 
 | Exclude
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`, `+config/**/*.rb+`
 | Array
 |===
 
@@ -998,11 +1059,11 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `db/migrate/*.rb`
+| `+db/migrate/*.rb+`
 | Array
 
 | Exclude
-| `db/migrate/*_create_active_storage_tables.active_storage.rb`
+| `+db/migrate/*_create_active_storage_tables.active_storage.rb+`
 | Array
 |===
 
@@ -1248,6 +1309,106 @@ delegate :foo, to: :bar, allow_blank: true
 delegate :foo, to: :bar, allow_nil: true
 ----
 
+== Rails/DeprecatedActiveModelErrorsMethods
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| No
+| 2.14
+| -
+|===
+
+This cop checks direct manipulation of ActiveModel#errors as hash.
+These operations are deprecated in Rails 6.1 and will not work in Rails 7.
+
+=== Safety
+
+This cop is unsafe because it can report `errors` manipulation on non-ActiveModel,
+which is obviously valid.
+The cop has no way of knowing whether a variable is an ActiveModel or not.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+user.errors[:name] << 'msg'
+user.errors.messages[:name] << 'msg'
+
+# good
+user.errors.add(:name, 'msg')
+
+# bad
+user.errors[:name].clear
+user.errors.messages[:name].clear
+
+# good
+user.errors.delete(:name)
+----
+
+== Rails/DuplicateAssociation
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.14
+| -
+|===
+
+This cop looks for associations that have been defined multiple times in the same file.
+
+When an association is defined multiple times on a model, Active Record overrides the
+previously defined association with the new one. Because of this, this cop's autocorrection
+simply keeps the last of any duplicates and discards the rest.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+belongs_to :foo
+belongs_to :bar
+has_one :foo
+
+# good
+belongs_to :bar
+has_one :foo
+----
+
+== Rails/DuplicateScope
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| No
+| 2.14
+| -
+|===
+
+This cop checks for multiple scopes in a model that have the same `where` clause. This
+often means you copy/pasted a scope, updated the name, and forgot to change the condition.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+scope :visible, -> { where(visible: true) }
+scope :hidden, -> { where(visible: true) }
+
+# good
+scope :visible, -> { where(visible: true) }
+scope :hidden, -> { where(visible: false) }
+----
+
 == Rails/DurationArithmetic
 
 |===
@@ -1437,7 +1598,7 @@ enum status: { active: 0, archived: 1 }
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -1482,7 +1643,7 @@ enum status: [:active, :archived]
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -1585,11 +1746,11 @@ ENV["FOO"] = "bar"
 | Name | Default value | Configurable values
 
 | Include
-| `app/**/*.rb`, `lib/**/*.rb`
+| `+app/**/*.rb+`, `+lib/**/*.rb+`
 | Array
 
 | Exclude
-| `lib/**/*.rake`
+| `+lib/**/*.rake+`
 | Array
 
 | AllowReads
@@ -1644,11 +1805,11 @@ raise 'a bad error has happened'
 | Name | Default value | Configurable values
 
 | Include
-| `app/**/*.rb`, `config/**/*.rb`, `lib/**/*.rb`
+| `+app/**/*.rb+`, `+config/**/*.rb+`, `+lib/**/*.rb+`
 | Array
 
 | Exclude
-| `lib/**/*.rake`
+| `+lib/**/*.rake+`
 | Array
 |===
 
@@ -1796,7 +1957,7 @@ User.where(name: 'Bruce').first
 | Boolean
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -1877,7 +2038,7 @@ User.order(:foo).each
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 
 | IgnoredMethods
@@ -1920,7 +2081,7 @@ This cop checks for the use of the has_and_belongs_to_many macro.
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -1980,7 +2141,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -2039,7 +2200,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/helpers/**/*.rb`
+| `+app/helpers/**/*.rb+`
 | Array
 |===
 
@@ -2080,7 +2241,7 @@ get :new, **options
 | Name | Default value | Configurable values
 
 | Include
-| `spec/**/*`, `test/**/*`
+| `+spec/**/*+`, `+test/**/*+`
 | Array
 |===
 
@@ -2148,6 +2309,62 @@ head 200
 | `numeric`, `symbolic`
 |===
 
+== Rails/I18nLazyLookup
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.14
+| -
+|===
+
+This cop checks for places where I18n "lazy" lookup can be used.
+
+=== Examples
+
+[source,ruby]
+----
+# en.yml
+# en:
+#   books:
+#     create:
+#       success: Book created!
+
+# bad
+class BooksController < ApplicationController
+  def create
+    # ...
+    redirect_to books_url, notice: t('books.create.success')
+  end
+end
+
+# good
+class BooksController < ApplicationController
+  def create
+    # ...
+    redirect_to books_url, notice: t('.success')
+  end
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `+controllers/**/*+`
+| Array
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#lazy-lookup
+* https://guides.rubyonrails.org/i18n.html#lazy-lookup
+
 == Rails/I18nLocaleAssignment
 
 |===
@@ -2185,9 +2402,92 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `spec/**/*.rb`, `test/**/*.rb`
+| `+spec/**/*.rb+`, `+test/**/*.rb+`
 | Array
 |===
+
+== Rails/I18nLocaleTexts
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| No
+| 2.14
+| -
+|===
+
+Enforces use of I18n and locale files instead of locale specific strings.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class User < ApplicationRecord
+  validates :email, presence: { message: "must be present" }
+end
+
+# good
+# config/locales/en.yml
+# en:
+#   activerecord:
+#     errors:
+#       models:
+#         user:
+#           blank: "must be present"
+
+class User < ApplicationRecord
+  validates :email, presence: true
+end
+
+# bad
+class PostsController < ApplicationController
+  def create
+    # ...
+    redirect_to root_path, notice: "Post created!"
+  end
+end
+
+# good
+# config/locales/en.yml
+# en:
+#   posts:
+#     create:
+#       success: "Post created!"
+
+class PostsController < ApplicationController
+  def create
+    # ...
+    redirect_to root_path, notice: t(".success")
+  end
+end
+
+# bad
+class UserMailer < ApplicationMailer
+  def welcome(user)
+    mail(to: user.email, subject: "Welcome to My Awesome Site")
+  end
+end
+
+# good
+# config/locales/en.yml
+# en:
+#   user_mailer:
+#     welcome:
+#       subject: "Welcome to My Awesome Site"
+
+class UserMailer < ApplicationMailer
+  def welcome(user)
+    mail(to: user.email)
+  end
+end
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#locale-texts
 
 == Rails/IgnoredSkipActionFilterOption
 
@@ -2246,7 +2546,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/controllers/**/*.rb`
+| `+app/controllers/**/*.rb+`
 | Array
 |===
 
@@ -2530,7 +2830,7 @@ end
 | Boolean
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -2642,7 +2942,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/controllers/**/*.rb`
+| `+app/controllers/**/*.rb+`
 | Array
 |===
 
@@ -2737,7 +3037,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/mailers/**/*.rb`
+| `+app/mailers/**/*.rb+`
 | Array
 |===
 
@@ -2784,13 +3084,54 @@ match 'photos/:id', to: 'photos#show', via: :all
 | Name | Default value | Configurable values
 
 | Include
-| `config/routes.rb`, `config/routes/**/*.rb`
+| `config/routes.rb`, `+config/routes/**/*.rb+`
 | Array
 |===
 
 === References
 
 * https://rails.rubystyle.guide/#no-match-routes
+
+== Rails/MigrationClassName
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.14
+| -
+|===
+
+This cop makes sure that each migration file defines a migration class
+whose name matches the file name.
+(e.g. `20220224111111_create_users.rb` should define `CreateUsers` class.)
+
+=== Examples
+
+[source,ruby]
+----
+# db/migrate/20220224111111_create_users.rb
+
+# bad
+class SellBooks < ActiveRecord::Migration[7.0]
+end
+
+# good
+class CreateUsers < ActiveRecord::Migration[7.0]
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `+db/migrate/*.rb+`
+| Array
+|===
 
 == Rails/NegateInclude
 
@@ -2865,7 +3206,7 @@ add_reference :products, :category, null: false, default: 1
 | Name | Default value | Configurable values
 
 | Include
-| `db/migrate/*.rb`
+| `+db/migrate/*.rb+`
 | Array
 |===
 
@@ -2944,7 +3285,7 @@ Rails.logger.debug 'A debug message'
 | Name | Default value | Configurable values
 
 | Include
-| `app/**/*.rb`, `config/**/*.rb`, `db/**/*.rb`, `lib/**/*.rb`
+| `+app/**/*.rb+`, `+config/**/*.rb+`, `+db/**/*.rb+`, `+lib/**/*.rb+`
 | Array
 |===
 
@@ -3432,7 +3773,7 @@ end
 | Array
 
 | Exclude
-| `lib/capistrano/tasks/**/*.rake`
+| `+lib/capistrano/tasks/**/*.rake+`
 | Array
 |===
 
@@ -3490,7 +3831,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -3543,7 +3884,7 @@ validates :x, length: { is: 5 }, allow_nil: true, allow_blank: false
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -3594,7 +3935,7 @@ end
 | Yes
 | Yes (Unsafe)
 | 2.13
-| 2.13
+| -
 |===
 
 Since Rails 5.0 the default for `belongs_to` is `optional: false`
@@ -3748,7 +4089,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `spec/**/*.rb`, `test/**/*.rb`
+| `+spec/**/*.rb+`, `+test/**/*.rb+`
 | Array
 |===
 
@@ -4280,7 +4621,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `db/**/*.rb`
+| `+db/**/*.rb+`
 | Array
 |===
 
@@ -4351,7 +4692,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `db/**/*.rb`
+| `+db/**/*.rb+`
 | Array
 |===
 
@@ -4717,7 +5058,7 @@ scope :something, -> { where(something: true) }
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -4930,7 +5271,7 @@ SQL
 | Disabled
 | Yes
 | No
-| 2.13
+| 2.14
 | -
 |===
 
@@ -4948,7 +5289,6 @@ If you wish to add a prefix in front of your model, or wish to change
 the default prefix, `self.table_name_prefix` might better suit your needs:
 https://api.rubyonrails.org/classes/ActiveRecord/ModelSchema.html#method-c-table_name_prefix-3D
 
-
 STI base classes named `Base` are ignored by this cop.
 For more information: https://api.rubyonrails.org/classes/ActiveRecord/Inheritance.html
 
@@ -4956,9 +5296,9 @@ For more information: https://api.rubyonrails.org/classes/ActiveRecord/Inheritan
 
 [source,ruby]
 ----
-  # bad
-  self.table_name = 'some_table_name'
-  self.table_name = :some_other_name
+# bad
+self.table_name = 'some_table_name'
+self.table_name = :some_other_name
 ----
 
 === Configurable attributes
@@ -4966,8 +5306,8 @@ For more information: https://api.rubyonrails.org/classes/ActiveRecord/Inheritan
 |===
 | Name | Default value | Configurable values
 
-| Exclude
-| `spec/**/*`, `db/migrate/*.rb`
+| Include
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -5047,7 +5387,7 @@ Time.at(timestamp).in_time_zone
 | `strict`, `flexible`
 
 | Exclude
-| `**/*.gemspec`
+| `+**/*.gemspec+`
 | Array
 |===
 
@@ -5093,13 +5433,67 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `spec/**/*.rb`, `test/**/*.rb`
+| `+spec/**/*.rb+`, `+test/**/*.rb+`
 | Array
 |===
 
 === References
 
 * https://thoughtbot.com/blog/its-about-time-zones
+
+== Rails/TransactionExitStatement
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| No
+| 2.14
+| -
+|===
+
+This cop checks for the use of exit statements (namely `return`,
+`break` and `throw`) in transactions. This is due to the eventual
+unexpected behavior when using ActiveRecord >= 7, where transactions
+exitted using these statements are being rollbacked rather than
+committed (pre ActiveRecord 7 behavior).
+
+As alternatives, it would be more intuitive to explicitly raise an
+error when rollback is desired, and to use `next` when commit is
+desired.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+ApplicationRecord.transaction do
+  return if user.active?
+end
+
+# bad
+ApplicationRecord.transaction do
+  break if user.active?
+end
+
+# bad
+ApplicationRecord.transaction do
+  throw if user.active?
+end
+
+# good
+ApplicationRecord.transaction do
+  # Rollback
+  raise "User is active" if user.active?
+end
+
+# good
+ApplicationRecord.transaction do
+  # Commit
+  next if user.active?
+end
+----
 
 == Rails/UniqBeforePluck
 
@@ -5218,7 +5612,7 @@ validates :account, length: { minimum: MIN_LENGTH }
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -5300,7 +5694,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 
@@ -5355,7 +5749,7 @@ validates :foo, uniqueness: true
 | Name | Default value | Configurable values
 
 | Include
-| `app/models/**/*.rb`
+| `+app/models/**/*.rb+`
 | Array
 |===
 

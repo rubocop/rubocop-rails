@@ -46,7 +46,7 @@ Rails/ActionControllerTestCase:
   Reference: 'https://api.rubyonrails.org/classes/ActionController/TestCase.html'
   Enabled: 'pending'
   SafeAutocorrect: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.14'
   Include:
     - '**/test/**/*.rb'
 
@@ -270,17 +270,17 @@ Rails/DeprecatedActiveModelErrorsMethods:
   Description: 'Avoid manipulating ActiveModel errors hash directly.'
   Enabled: pending
   Safe: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.14'
 
 Rails/DuplicateAssociation:
   Description: "Don't repeat associations in a model."
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.14'
 
 Rails/DuplicateScope:
   Description: 'Multiple scopes share this same where clause.'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.14'
 
 Rails/DurationArithmetic:
   Description: 'Do not use duration as arithmetic operand with `Time.current`.'
@@ -451,7 +451,7 @@ Rails/I18nLazyLookup:
   StyleGuide: 'https://rails.rubystyle.guide/#lazy-lookup'
   Reference: 'https://guides.rubyonrails.org/i18n.html#lazy-lookup'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.14'
   Include:
     - 'controllers/**/*'
 
@@ -467,7 +467,7 @@ Rails/I18nLocaleTexts:
   Description: 'Enforces use of I18n and locale files instead of locale specific strings.'
   StyleGuide: 'https://rails.rubystyle.guide/#locale-texts'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.14'
 
 Rails/IgnoredSkipActionFilterOption:
   Description: 'Checks that `if` and `only` (or `except`) are not used together as options of `skip_*` action filter.'
@@ -544,7 +544,7 @@ Rails/MatchRoute:
 Rails/MigrationClassName:
   Description: 'The class name of the migration should match its file name.'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.14'
   Include:
     - db/migrate/*.rb
 
@@ -875,7 +875,7 @@ Rails/TableNameAssignment:
     Do not use `self.table_name =`. Use Inflections or `table_name_prefix` instead.
   StyleGuide: 'https://rails.rubystyle.guide/#keep-ar-defaults'
   Enabled: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.14'
   Include:
     - app/models/**/*.rb
 
@@ -908,7 +908,7 @@ Rails/TimeZoneAssignment:
 Rails/TransactionExitStatement:
   Description: 'Avoid the usage of `return`, `break` and `throw` in transaction blocks.'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.14'
 
 Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'
