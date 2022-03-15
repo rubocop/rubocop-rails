@@ -2,6 +2,29 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#624](https://github.com/rubocop/rubocop-rails/issues/624): Add new `Rails/I18nLocaleTexts` cop. ([@fatkodima][])
+* [#326](https://github.com/rubocop/rubocop-rails/pull/326): Add new `Rails/I18nLazyLookup` cop. ([@fatkodima][])
+* [#644](https://github.com/rubocop/rubocop-rails/pull/644): Add new `Rails/MigrationClassName` cop. ([@johnny-miyake][])
+* [#599](https://github.com/rubocop/rubocop-rails/issues/599): Add new `Rails/DuplicateAssociation` cop. ([@natematykiewicz][])
+* [#427](https://github.com/rubocop/rubocop-rails/issues/427): Add `Rails/DuplicateScope` cop. ([@natematykiewicz][])
+* [#642](https://github.com/rubocop/rubocop-rails/issues/642): New cop `Rails/TransactionExitStatement` to disallow `return`, `break` and `throw` in transactions. ([@teckwan][])
+* [#491](https://github.com/rubocop/rubocop-rails/pull/491): New `Rails/DeprecatedActiveModelErrorsMethods` cop. ([@lulalala][])
+* [#638](https://github.com/rubocop/rubocop-rails/pull/638): Add new `Rails/ActionControllerTestCase` cop. ([@gmcgibbon][])
+* [#574](https://github.com/rubocop/rubocop-rails/pull/574): Add new `Rails/TableNameAssignment` cop. ([@MaximeDucheneS][])
+
+### Bug fixes
+
+* [#636](https://github.com/rubocop/rubocop-rails/issues/636): Fix a false positive for `Rails/ContentTag` when using `tag` method in config/puma.rb. ([@koic][])
+* [#635](https://github.com/rubocop/rubocop-rails/pull/635): Handle `t.remove` with multiple columns in `Rails/BulkChangeTable`. ([@eugeneius][])
+
+### Changes
+
+* [#646](https://github.com/rubocop/rubocop-rails/issues/646): Exclude db/schema.rb and db/[CONFIGURATION_NAMESPACE]_schema.rb by default. ([@koic][])
+* [#650](https://github.com/rubocop/rubocop-rails/issues/650): Make `Rails/CompactBlank` aware of `delete_if(&:blank)`. ([@koic][])
+* [#631](https://github.com/rubocop/rubocop-rails/pull/631): Update `Rails/Pluck` to be aware of numblocks. ([@sammiya][])
+
 ## 2.13.2 (2022-01-15)
 
 ### New features
@@ -541,3 +564,8 @@
 [@composerinteralia]: https://github.com/composerinteralia
 [@agrobbin]: https://github.com/agrobbin
 [@teckwan]: https://github.com/teckwan
+[@sammiya]: https://github.com/sammiya
+[@johnny-miyake]: https://github.com/johnny-miyake
+[@natematykiewicz]: https://github.com/natematykiewicz
+[@lulalala]: https://github.com/lulalala
+[@gmcgibbon]: https://github.com/gmcgibbon
