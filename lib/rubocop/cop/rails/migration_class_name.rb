@@ -25,7 +25,7 @@ module RuboCop
         MSG = 'Replace with `%<corrected_class_name>s` that matches the file name.'
 
         def on_class(node)
-          return if in_migration?(node)
+          return unless migration_class?(node)
 
           snake_class_name = to_snakecase(node.identifier.source)
 

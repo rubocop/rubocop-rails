@@ -14,6 +14,18 @@ RSpec.describe RuboCop::Cop::Rails::MigrationClassName, :config do
     context 'when defining another class' do
       it 'does not register an offense' do
         expect_no_offenses(<<~RUBY, filename)
+          class Article < ActiveRecord::Base
+          end
+
+          class CreateUsers < ActiveRecord::Migration[7.0]
+          end
+        RUBY
+      end
+    end
+
+    context 'when defining an inner class' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY, filename)
           class CreateUsers < ActiveRecord::Migration[7.0]
             class Article < ActiveRecord::Base
             end
