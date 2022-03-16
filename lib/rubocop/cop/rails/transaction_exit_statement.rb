@@ -54,9 +54,8 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          parent = node.parent
-
-          return unless parent&.block_type?
+          return unless (parent = node.parent)
+          return unless parent.block_type? && parent.body
 
           exit_statements(parent.body).each do |statement_node|
             next unless statement_node.ancestors.find(&:block_type?).method?(:transaction)

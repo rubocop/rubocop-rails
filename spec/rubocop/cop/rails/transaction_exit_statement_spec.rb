@@ -53,4 +53,11 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
       end
     RUBY
   end
+
+  it 'does not register an offense when transaction block is empty' do
+    expect_no_offenses(<<~RUBY)
+      ApplicationRecord.transaction do
+      end
+    RUBY
+  end
 end
