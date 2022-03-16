@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.14.1 (2022-03-16)
+
 ### Bug fixes
 
 * [#656](https://github.com/rubocop/rubocop-rails/issues/656): Ignore gem name in paths for `Rails/MigrationClassName`. ([@sunny][])
