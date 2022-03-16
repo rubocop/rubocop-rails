@@ -43,4 +43,14 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
       end
     RUBY
   end
+
+  it 'does not register an offense when `break` is used in `loop` in transactions' do
+    expect_no_offenses(<<~RUBY)
+      ApplicationRecord.transaction do
+        loop do
+          break if condition
+        end
+      end
+    RUBY
+  end
 end
