@@ -22,30 +22,30 @@ module RuboCop
         extend AutoCorrector
         include MigrationsHelper
 
-        MSG = 'Replace with `%<corrected_class_name>s` that matches the file name.'
+        MSG = 'Replace with `%<camelized_basename>s` that matches the file name.'
 
         def on_class(node)
           return if in_migration?(node)
 
-          snake_class_name = to_snakecase(node.identifier.source)
+          basename = basename_without_timestamp_and_suffix(processed_source.file_path)
 
-          basename = basename_without_timestamp_and_suffix
-          return if snake_class_name == basename
+          class_identifier = node.identifier
+          camelized_basename = camelize(basename)
+          return if class_identifier.source.casecmp(camelized_basename).zero?
 
-          corrected_class_name = to_camelcase(basename)
-          message = format(MSG, corrected_class_name: corrected_class_name)
+          message = format(MSG, camelized_basename: camelized_basename)
 
-          add_offense(node.identifier, message: message) do |corrector|
-            corrector.replace(node.identifier, corrected_class_name)
+          add_offense(class_identifier, message: message) do |corrector|
+            corrector.replace(class_identifier, camelized_basename)
           end
         end
 
         private
 
-        def basename_without_timestamp_and_suffix
-          filepath = processed_source.file_path
+        def basename_without_timestamp_and_suffix(filepath)
           basename = File.basename(filepath, '.rb')
           basename = remove_gem_suffix(basename)
+
           basename.sub(/\A\d+_/, '')
         end
 
@@ -54,16 +54,8 @@ module RuboCop
           file_name.sub(/\..+\z/, '')
         end
 
-        def to_camelcase(word)
+        def camelize(word)
           word.split('_').map(&:capitalize).join
-        end
-
-        def to_snakecase(word)
-          word
-            .gsub(/([A-Z\d]+)([A-Z][a-z])/, '\1_\2')
-            .gsub(/([a-z\d])([A-Z])/, '\1_\2')
-            .tr('-', '_')
-            .downcase
         end
       end
     end
