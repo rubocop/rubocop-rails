@@ -60,4 +60,23 @@ RSpec.describe RuboCop::Cop::Rails::MigrationClassName, :config do
       RUBY
     end
   end
+
+  #
+  # When `OAuth` is applied instead of `Oauth` for `oauth`.
+  #
+  # # config/initializers/inflections.rb
+  # ActiveSupport::Inflector.inflections(:en) do |inflect|
+  #   inflect.acronym 'OAuth'
+  # end
+  #
+  context 'when `ActiveSupport::Inflector` is applied to the class name and the case is different' do
+    let(:filename) { 'db/migrate/20210623095243_remove_unused_oauth_scope_grants.rb' }
+
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY, filename)
+        class RemoveUnusedOAuthScopeGrants < ActiveRecord::Migration[7.0]
+        end
+      RUBY
+    end
+  end
 end
