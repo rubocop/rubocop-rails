@@ -76,6 +76,15 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
     RUBY
   end
 
+  it 'does not register an offense when `return` is used in `rescue`' do
+    expect_no_offenses(<<~RUBY)
+      ApplicationRecord.transaction do
+      rescue
+        return do_something
+      end
+    RUBY
+  end
+
   it 'does not register an offense when transaction block is empty' do
     expect_no_offenses(<<~RUBY)
       ApplicationRecord.transaction do
