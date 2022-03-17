@@ -58,7 +58,7 @@ module RuboCop
           return unless parent.block_type? && parent.body
 
           exit_statements(parent.body).each do |statement_node|
-            next unless statement_node.ancestors.find(&:block_type?).method?(:transaction)
+            next if statement_node.break_type? && nested_block?(statement_node)
 
             statement = statement(statement_node)
             message = format(MSG, statement: statement)
@@ -77,6 +77,10 @@ module RuboCop
           else
             statement_node.method_name
           end
+        end
+
+        def nested_block?(statement_node)
+          !statement_node.ancestors.find(&:block_type?).method?(:transaction)
         end
       end
     end

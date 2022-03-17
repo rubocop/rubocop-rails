@@ -44,6 +44,28 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
     RUBY
   end
 
+  it 'registers an offense when `return` is used in `loop` in transactions' do
+    expect_offense(<<~RUBY)
+      ApplicationRecord.transaction do
+        loop do
+          return if condition
+          ^^^^^^ Exit statement `return` is not allowed. Use `raise` (rollback) or `next` (commit).
+        end
+      end
+    RUBY
+  end
+
+  it 'registers an offense when `throw` is used in `loop` in transactions' do
+    expect_offense(<<~RUBY)
+      ApplicationRecord.transaction do
+        loop do
+          throw if condition
+          ^^^^^ Exit statement `throw` is not allowed. Use `raise` (rollback) or `next` (commit).
+        end
+      end
+    RUBY
+  end
+
   it 'does not register an offense when `break` is used in `loop` in transactions' do
     expect_no_offenses(<<~RUBY)
       ApplicationRecord.transaction do
