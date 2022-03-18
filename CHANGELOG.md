@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.14.2 (2022-03-18)
+
 ### Bug fixes
 
 * [#660](https://github.com/rubocop/rubocop-rails/issues/660): Fix a false positive for `Rails/MigrationClassName` when defining another class. ([@koic][])
