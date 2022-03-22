@@ -1192,6 +1192,16 @@ Rails/Validation:
   Include:
     - app/models/**/*.rb
 
+Rails/ValidationsGrouping:
+  Description: 'Group together all attribute validations.'
+  StyleGuide: 'https://rails.rubystyle.guide/#single-attribute-validations'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  # Enforces single attribute per validation.
+  SingleAttributeValidations: false
+  Include:
+    - app/models/**/*.rb
+
 Rails/WhereEquals:
   Description: 'Pass conditions to `where` and `where.not` as a hash instead of manually constructing SQL.'
   StyleGuide: 'https://rails.rubystyle.guide/#hash-conditions'
