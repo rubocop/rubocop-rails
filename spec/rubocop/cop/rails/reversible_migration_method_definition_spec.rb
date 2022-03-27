@@ -76,6 +76,19 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config
     RUBY
   end
 
+  it 'does not register an offense with an inner class' do
+    expect_no_offenses(<<~RUBY)
+      class SomeMigration < ActiveRecord::Migration[6.0]
+        class Foo
+        end
+
+        def change
+          add_column :users, :email, :text, null: false
+        end
+      end
+    RUBY
+  end
+
   it 'registers offenses correctly with any migration class' do
     expect_offense(<<~RUBY)
       class SomeMigration < ActiveRecord::Migration[5.2]

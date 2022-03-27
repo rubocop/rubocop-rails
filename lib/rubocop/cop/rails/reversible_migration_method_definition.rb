@@ -49,15 +49,15 @@ module RuboCop
               'both an `up` and a `down` method.'
 
         def_node_matcher :change_method?, <<~PATTERN
-          [ #migration_class? `(def :change (args) _) ]
+          `(def :change (args) _)
         PATTERN
 
         def_node_matcher :up_and_down_methods?, <<~PATTERN
-          [ #migration_class? `(def :up (args) _) `(def :down (args) _) ]
+          [`(def :up (args) _) `(def :down (args) _)]
         PATTERN
 
         def on_class(node)
-          return if change_method?(node) || up_and_down_methods?(node)
+          return if !migration_class?(node) || change_method?(node) || up_and_down_methods?(node)
 
           add_offense(node)
         end
