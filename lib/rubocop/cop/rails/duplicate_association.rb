@@ -32,7 +32,7 @@ module RuboCop
       class DuplicateAssociation < Base
         include RangeHelp
         extend AutoCorrector
-        include ClassSendNodeHelper
+        include ClassElementsHelper
         include ActiveRecordHelper
 
         MSG = "Association `%<name>s` is defined multiple times. Don't repeat associations."

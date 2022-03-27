@@ -5,6 +5,7 @@ module RuboCop
     # It loads db/schema.rb and return Schema object.
     # Cops refers database schema information with this module.
     module SchemaLoader
+      include Cop::ParsingHelper
       extend self
 
       # It parses `db/schema.rb` and return it.
@@ -44,17 +45,6 @@ module RuboCop
 
         ast = parse(path, target_ruby_version)
         Schema.new(ast) if ast
-      end
-
-      def parse(path, target_ruby_version)
-        klass_name = :"Ruby#{target_ruby_version.to_s.sub('.', '')}"
-        klass = ::Parser.const_get(klass_name)
-        parser = klass.new(RuboCop::AST::Builder.new)
-
-        buffer = Parser::Source::Buffer.new(path, 1)
-        buffer.source = path.read
-
-        parser.parse(buffer)
       end
     end
   end

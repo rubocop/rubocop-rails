@@ -9,6 +9,8 @@ rdoc
 doc
 .yardoc
 
+tmp
+
 # bundler
 .bundle
 Gemfile.lock
