@@ -13,3 +13,11 @@ require_relative 'rubocop/rails/schema_loader/schema'
 RuboCop::Rails::Inject.defaults!
 
 require_relative 'rubocop/cop/rails_cops'
+
+RuboCop::Cop::Style::RedundantSelf.singleton_class.prepend(
+  Module.new do
+    def autocorrect_incompatible_with
+      super.push(RuboCop::Cop::Rails::SafeNavigation)
+    end
+  end
+)

@@ -47,15 +47,6 @@ module RuboCop
           (send _ ${:try :try!} $_ ...)
         PATTERN
 
-        # Monkey patching for `Style/RedundantSelf` of RuboCop core.
-        # rubocop:disable Style/ClassAndModuleChildren
-        class Style::RedundantSelf
-          def self.autocorrect_incompatible_with
-            [Rails::SafeNavigation]
-          end
-        end
-        # rubocop:enable Style/ClassAndModuleChildren
-
         def self.autocorrect_incompatible_with
           [Style::RedundantSelf]
         end
