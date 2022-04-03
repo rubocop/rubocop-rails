@@ -3,10 +3,14 @@
 RSpec.describe RuboCop::Cop::Rails::DeprecatedActiveModelErrorsMethods, :config do
   shared_examples 'errors call with explicit receiver' do
     context 'when modifying errors' do
-      it 'registers an offense' do
+      it 'registers and corrects an offense' do
         expect_offense(<<~RUBY, file_path)
           user.errors[:name] << 'msg'
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          user.errors.add(:name, 'msg')
         RUBY
       end
 
@@ -18,13 +22,30 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedActiveModelErrorsMethods, :config 
           RUBY
         end
       end
+
+      context 'when using `clear` method' do
+        it 'registers and corrects an offense' do
+          expect_offense(<<~RUBY, file_path)
+            user.errors[:name].clear
+            ^^^^^^^^^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            user.errors.delete(:name)
+          RUBY
+        end
+      end
     end
 
     context 'when modifying errors.messages' do
-      it 'registers an offense' do
+      it 'registers and corrects an offense' do
         expect_offense(<<~RUBY, file_path)
           user.errors.messages[:name] << 'msg'
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          user.errors.add(:name, 'msg')
         RUBY
       end
 
