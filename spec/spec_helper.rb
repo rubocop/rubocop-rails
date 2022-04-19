@@ -9,7 +9,7 @@ require_relative 'support/shared_contexts'
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }
 
-if ENV['COVERAGE'] == 'true'
+if ENV.fetch('COVERAGE', nil) == 'true'
   require 'simplecov'
   SimpleCov.start
 end
