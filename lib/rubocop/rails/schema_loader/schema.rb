@@ -32,6 +32,8 @@ module RuboCop
           raise "Unexpected type: #{ast.type}" unless ast.block_type?
 
           each_table(ast) do |table_def|
+            next unless table_def.method?(:create_table)
+
             @tables << Table.new(table_def)
           end
 
@@ -56,6 +58,7 @@ module RuboCop
 
         def each_add_index(ast)
           ast.body.children.each do |node|
+            next unless node.respond_to?(:send_type?)
             next if !node&.send_type? || !node.method?(:add_index)
 
             yield(node)
