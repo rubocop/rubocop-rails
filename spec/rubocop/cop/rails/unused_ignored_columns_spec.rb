@@ -106,4 +106,25 @@ RSpec.describe RuboCop::Cop::Rails::UnusedIgnoredColumns, :config do
       end
     end
   end
+
+  context 'with no tables db/schema.rb' do
+    include_context 'with SchemaLoader'
+
+    let(:schema) { <<~RUBY }
+      ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+        enable_extension 'plpgsql'
+      end
+    RUBY
+
+    context 'with an unused ignored column as a Symbol' do
+      # NOTE: For example, it is not possible to track externally managed databases.
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          class User < ApplicationRecord
+            self.ignored_columns = [:real_name]
+          end
+        RUBY
+      end
+    end
+  end
 end
