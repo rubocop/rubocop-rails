@@ -76,11 +76,12 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
     RUBY
   end
 
-  it 'does not register an offense when `return` is used in `rescue`' do
-    expect_no_offenses(<<~RUBY)
+  it 'registers an offense when `return` is used in `rescue`' do
+    expect_offense(<<~RUBY)
       ApplicationRecord.transaction do
       rescue
         return do_something
+        ^^^^^^^^^^^^^^^^^^^ Exit statement `return` is not allowed. Use `raise` (rollback) or `next` (commit).
       end
     RUBY
   end
