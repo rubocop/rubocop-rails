@@ -80,7 +80,7 @@ module RuboCop
         def options_hash(options)
           options.pairs
                  .select { |pair| pair.key.sym_type? }
-                 .map { |pair| [pair.key.value, pair] }.to_h
+                 .to_h { |pair| [pair.key.value, pair] }
         end
 
         def if_and_only?(options)
