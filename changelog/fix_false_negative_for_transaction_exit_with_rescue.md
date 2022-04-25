@@ -1,0 +1,1 @@
+* [#695](https://github.com/rubocop/rubocop-rails/pull/695): Fixes a false negative where the `in_rescue?` check would bypass situations where the return was inside a transaction but outside of a rescue. ([@dorkrawk][])

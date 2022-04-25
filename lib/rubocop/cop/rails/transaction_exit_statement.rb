@@ -53,6 +53,14 @@ module RuboCop
           ({return | break | send nil? :throw} ...)
         PATTERN
 
+        def_node_matcher :rescue_body_return_node?, <<~PATTERN
+          (:resbody ...
+            ...
+            ({return | break | send nil? :throw} ...)
+            ...
+          )
+        PATTERN
+
         def on_send(node)
           return unless (parent = node.parent)
           return unless parent.block_type? && parent.body
@@ -80,7 +88,7 @@ module RuboCop
         end
 
         def in_rescue?(statement_node)
-          statement_node.ancestors.find(&:rescue_type?)
+          statement_node.ancestors.any? { |n| rescue_body_return_node?(n) }
         end
 
         def nested_block?(statement_node)
