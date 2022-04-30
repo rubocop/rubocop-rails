@@ -66,7 +66,7 @@ module RuboCop
           return unless parent.block_type? && parent.body
 
           exit_statements(parent.body).each do |statement_node|
-            next if in_rescue?(statement_node) || nested_block?(statement_node)
+            next if statement_node.break_type? && nested_block?(statement_node)
 
             statement = statement(statement_node)
             message = format(MSG, statement: statement)
@@ -87,13 +87,7 @@ module RuboCop
           end
         end
 
-        def in_rescue?(statement_node)
-          statement_node.ancestors.any? { |n| rescue_body_return_node?(n) }
-        end
-
         def nested_block?(statement_node)
-          return false unless statement_node.break_type?
-
           !statement_node.ancestors.find(&:block_type?).method?(:transaction)
         end
       end
