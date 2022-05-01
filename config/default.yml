@@ -271,6 +271,7 @@ Rails/DeprecatedActiveModelErrorsMethods:
   Enabled: pending
   Safe: false
   VersionAdded: '2.14'
+  VersionChanged: '<<next>>'
 
 Rails/DuplicateAssociation:
   Description: "Don't repeat associations in a model."

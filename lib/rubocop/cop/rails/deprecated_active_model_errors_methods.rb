@@ -27,7 +27,11 @@ module RuboCop
       #   user.errors.delete(:name)
       #
       class DeprecatedActiveModelErrorsMethods < Base
+        include RangeHelp
+        extend AutoCorrector
+
         MSG = 'Avoid manipulating ActiveModel errors as hash directly.'
+        AUTOCORECTABLE_METHODS = %i[<< clear].freeze
 
         MANIPULATIVE_METHODS = Set[
           *%i[
@@ -89,11 +93,46 @@ module RuboCop
 
         def on_send(node)
           any_manipulation?(node) do
-            add_offense(node)
+            add_offense(node) do |corrector|
+              next unless AUTOCORECTABLE_METHODS.include?(node.method_name)
+
+              autocorrect(corrector, node)
+            end
           end
         end
 
         private
+
+        def autocorrect(corrector, node)
+          receiver = node.receiver
+
+          if receiver.receiver.method?(:messages)
+            corrector.remove(receiver.receiver.loc.dot)
+            corrector.remove(receiver.receiver.loc.selector)
+          end
+
+          range = offense_range(node, receiver)
+          replacement = replacement(node, receiver)
+
+          corrector.replace(range, replacement)
+        end
+
+        def offense_range(node, receiver)
+          range_between(receiver.receiver.source_range.end_pos, node.source_range.end_pos)
+        end
+
+        def replacement(node, receiver)
+          key = receiver.first_argument.source
+
+          case node.method_name
+          when :<<
+            value = node.first_argument.source
+
+            ".add(#{key}, #{value})"
+          when :clear
+            ".delete(#{key})"
+          end
+        end
 
         def receiver_matcher(node)
           model_file? ? receiver_matcher_inside_model(node) : receiver_matcher_outside_model(node)
