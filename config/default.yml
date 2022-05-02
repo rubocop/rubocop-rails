@@ -910,6 +910,11 @@ Rails/TransactionExitStatement:
   Enabled: pending
   VersionAdded: '2.14'
 
+Rails/TransactionInTimeout:
+  Description: 'Avoid transaction blocks within Timeout blocks.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'
   Enabled: true
