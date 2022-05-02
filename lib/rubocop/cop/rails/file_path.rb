@@ -48,8 +48,11 @@ module RuboCop
         def on_dstr(node)
           return unless rails_root_nodes?(node)
           return unless node.children.last.str_type?
-          return unless node.children.last.source.start_with?('.') ||
-                        node.children.last.source.include?(File::SEPARATOR)
+
+          last_child_source = node.children.last.source
+          return unless last_child_source.start_with?('.') ||
+                        last_child_source.include?(File::SEPARATOR)
+          return if last_child_source.start_with?(':')
 
           register_offense(node)
         end
