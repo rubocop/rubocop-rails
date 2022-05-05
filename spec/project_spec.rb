@@ -95,6 +95,18 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
         expect(safe).not_to be(true), "`#{name}` has unnecessary `Safe: true` config."
       end
     end
+
+    it 'sorts cop names alphabetically' do
+      previous_key = ''
+      config_default = YAML.load_file('config/default.yml')
+
+      config_default.each_key do |key|
+        next if %w[inherit_mode AllCops].include?(key)
+
+        expect(previous_key <= key).to be(true), "Cops should be sorted alphabetically. Please sort #{key}."
+        previous_key = key
+      end
+    end
   end
 
   shared_examples 'has Changelog format' do
