@@ -236,7 +236,7 @@
 * [#379](https://github.com/rubocop/rubocop-rails/issues/379): Mark `Rails/DynamicFindBy` as unsafe. ([@koic][])
 * [#106](https://github.com/rubocop/rubocop-rails/issues/106): Mark `Rails/ReflectionClassName` as unsafe. ([@koic][])
 * [#106](https://github.com/rubocop/rubocop-rails/issues/106): Make `Rails/ReflectionClassName` aware of the use of string with `to_s`. ([@koic][])
-* [#456](https://github.com/rubocop/rubocop-rails/pull/456): Drop Ruby 2.4 support. ([@koic][])
+* [#456](https://github.com/rubocop/rubocop-rails/pull/456): **(Compatibility)** Drop Ruby 2.4 support. ([@koic][])
 * [#462](https://github.com/rubocop/rubocop-rails/pull/462): Require RuboCop 1.7 or higher. ([@koic][])
 
 ## 2.9.1 (2020-12-16)
@@ -372,8 +372,8 @@
 
 ### Changes
 
-* [#233](https://github.com/rubocop/rubocop-rails/pull/233): **(BREAKING)** Drop support for Ruby 2.3. ([@koic][])
-* [#236](https://github.com/rubocop/rubocop-rails/pull/236): **(BREAKING)** Drop support for Rails 4.1 or lower. ([@koic][])
+* [#233](https://github.com/rubocop/rubocop-rails/pull/233): **(Compatibility)** Drop support for Ruby 2.3. ([@koic][])
+* [#236](https://github.com/rubocop/rubocop-rails/pull/236): **(Compatibility)** Drop support for Rails 4.1 or lower. ([@koic][])
 * [#210](https://github.com/rubocop/rubocop-rails/issues/210): Accept `redirecto_to(...) and return` and similar cases. ([@koic][])
 * [#258](https://github.com/rubocop/rubocop-rails/pull/258): Drop support for RuboCop 0.81 or lower. ([@koic][])
 
@@ -505,7 +505,7 @@
 
 ### Changes
 
-* [#74](https://github.com/rubocop/rubocop-rails/pull/74): Drop Rails 3 support. ([@koic][])
+* [#74](https://github.com/rubocop/rubocop-rails/pull/74): **(Compatibility)** Drop Rails 3 support. ([@koic][])
 
 ## 2.0.1 (2019-06-08)
 
