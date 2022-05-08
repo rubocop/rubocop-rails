@@ -12,7 +12,7 @@ module RuboCop
       #   methods that are defined in other classes or modules, you should
       #   define the filter in that class or module.
       #
-      #   If you rely on behaviour defined in the superclass actions, you must
+      #   If you rely on behavior defined in the superclass actions, you must
       #   remember to invoke `super` in the subclass actions.
       #
       # @example
@@ -71,7 +71,7 @@ module RuboCop
       #   class ArticlesController < ContentController
       #     before_action :load_article, only: [:update]
       #
-      #     # the cop requires this method, but it relies on behaviour defined
+      #     # the cop requires this method, but it relies on behavior defined
       #     # in the superclass, so needs to invoke `super`
       #     def update
       #       super

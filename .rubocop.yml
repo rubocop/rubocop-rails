@@ -25,6 +25,9 @@ InternalAffairs/UndefinedConfig:
 
 Naming/InclusiveLanguage:
   FlaggedTerms:
+    behaviour:
+      Suggestions:
+        - behavior
     offence:
       Suggestions:
         - offense
