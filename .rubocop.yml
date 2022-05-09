@@ -24,6 +24,8 @@ InternalAffairs/UndefinedConfig:
   Enabled: false
 
 Naming/InclusiveLanguage:
+  Enabled: true
+  CheckStrings: true
   FlaggedTerms:
     behaviour:
       Suggestions:
