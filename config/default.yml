@@ -107,7 +107,7 @@ Rails/AddColumnIndex:
 
 Rails/AfterCommitOverride:
   Description: >-
-                  This cop enforces that there is only one call to `after_commit`
+                  Enforces that there is only one call to `after_commit`
                   (and its aliases - `after_create_commit`, `after_update_commit`,
                   and `after_destroy_commit`) with the same callback name per model.
   Enabled: 'pending'
@@ -691,7 +691,7 @@ Rails/RedundantReceiverInWithOptions:
   VersionAdded: '0.52'
 
 Rails/RedundantTravelBack:
-  Description: This cop checks for redundant `travel_back` calls.
+  Description: Checks for redundant `travel_back` calls.
   Enabled: pending
   VersionAdded: '2.12'
   Include:
@@ -809,7 +809,7 @@ Rails/SaveBang:
 
 Rails/SchemaComment:
   Description: >-
-    This cop enforces the use of the `comment` option when adding a new table or column
+    Enforces the use of the `comment` option when adding a new table or column
     to the database during a migration.
   Enabled: false
   VersionAdded: '2.13'
