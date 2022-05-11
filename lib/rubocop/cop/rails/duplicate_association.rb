@@ -35,7 +35,7 @@ module RuboCop
           offenses(class_node).each do |name, nodes|
             nodes.each do |node|
               add_offense(node, message: format(MSG, name: name)) do |corrector|
-                next if nodes.last == node
+                next if same_line?(nodes.last, node)
 
                 corrector.remove(range_by_whole_lines(node.source_range, include_final_newline: true))
               end

@@ -8,6 +8,27 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
           belongs_to :foo
           ^^^^^^^^^^^^^^^ Association `foo` is defined multiple times. Don't repeat associations.
           belongs_to :bar
+          belongs_to :foo
+          ^^^^^^^^^^^^^^^ Association `foo` is defined multiple times. Don't repeat associations.
+          belongs_to :blah
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class Post < ApplicationRecord
+          belongs_to :bar
+          belongs_to :foo
+          belongs_to :blah
+        end
+      RUBY
+    end
+
+    it 'registers an offense with scope block' do
+      expect_offense(<<~RUBY)
+        class Post < ApplicationRecord
+          belongs_to :foo
+          ^^^^^^^^^^^^^^^ Association `foo` is defined multiple times. Don't repeat associations.
+          belongs_to :bar
           belongs_to :foo, -> { active }
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Association `foo` is defined multiple times. Don't repeat associations.
           belongs_to :blah
@@ -26,6 +47,27 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
   describe 'has_many' do
     it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        class Post < ApplicationRecord
+          has_many :foos
+          ^^^^^^^^^^^^^^ Association `foos` is defined multiple times. Don't repeat associations.
+          has_many :bars
+          has_many :foos
+          ^^^^^^^^^^^^^^ Association `foos` is defined multiple times. Don't repeat associations.
+          has_many :blahs
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class Post < ApplicationRecord
+          has_many :bars
+          has_many :foos
+          has_many :blahs
+        end
+      RUBY
+    end
+
+    it 'registers an offense with scope block' do
       expect_offense(<<~RUBY)
         class Post < ApplicationRecord
           has_many :foos
@@ -54,6 +96,27 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
           has_one :foo
           ^^^^^^^^^^^^ Association `foo` is defined multiple times. Don't repeat associations.
           has_one :bar
+          has_one :foo
+          ^^^^^^^^^^^^ Association `foo` is defined multiple times. Don't repeat associations.
+          has_one :blah
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class Post < ApplicationRecord
+          has_one :bar
+          has_one :foo
+          has_one :blah
+        end
+      RUBY
+    end
+
+    it 'registers an offense with scope block' do
+      expect_offense(<<~RUBY)
+        class Post < ApplicationRecord
+          has_one :foo
+          ^^^^^^^^^^^^ Association `foo` is defined multiple times. Don't repeat associations.
+          has_one :bar
           has_one :foo, -> { active }
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Association `foo` is defined multiple times. Don't repeat associations.
           has_one :blah
@@ -72,6 +135,27 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
   describe 'has_and_belongs_to_many' do
     it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        class Post < ApplicationRecord
+          has_and_belongs_to_many :foos
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Association `foos` is defined multiple times. Don't repeat associations.
+          has_and_belongs_to_many :bars
+          has_and_belongs_to_many :foos
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Association `foos` is defined multiple times. Don't repeat associations.
+          has_and_belongs_to_many :blahs
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class Post < ApplicationRecord
+          has_and_belongs_to_many :bars
+          has_and_belongs_to_many :foos
+          has_and_belongs_to_many :blahs
+        end
+      RUBY
+    end
+
+    it 'registers an offense with scope block' do
       expect_offense(<<~RUBY)
         class Post < ApplicationRecord
           has_and_belongs_to_many :foos
