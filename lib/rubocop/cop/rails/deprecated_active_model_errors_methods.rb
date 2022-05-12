@@ -26,12 +26,18 @@ module RuboCop
       #   # good
       #   user.errors.delete(:name)
       #
+      #   # bad
+      #   user.errors.keys.include?(:attr)
+      #
+      #   # good
+      #   user.errors.attribute_names.include?(:attr)
+      #
       class DeprecatedActiveModelErrorsMethods < Base
         include RangeHelp
         extend AutoCorrector
 
         MSG = 'Avoid manipulating ActiveModel errors as hash directly.'
-        AUTOCORECTABLE_METHODS = %i[<< clear].freeze
+        AUTOCORECTABLE_METHODS = %i[<< clear keys].freeze
 
         MANIPULATIVE_METHODS = Set[
           *%i[
@@ -49,6 +55,7 @@ module RuboCop
           {
             #root_manipulation?
             #root_assignment?
+            #errors_keys?
             #messages_details_manipulation?
             #messages_details_assignment?
           }
@@ -68,6 +75,12 @@ module RuboCop
             (send #receiver_matcher :errors)
             :[]=
             ...)
+        PATTERN
+
+        def_node_matcher :errors_keys?, <<~PATTERN
+          (send
+            (send #receiver_matcher :errors)
+            :keys)
         PATTERN
 
         def_node_matcher :messages_details_manipulation?, <<~PATTERN
@@ -122,6 +135,8 @@ module RuboCop
         end
 
         def replacement(node, receiver)
+          return '.errors.attribute_names' if node.method?(:keys)
+
           key = receiver.first_argument.source
 
           case node.method_name
