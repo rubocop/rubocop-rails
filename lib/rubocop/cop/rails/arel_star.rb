@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop prevents usage of `"*"` on an Arel::Table column reference.
+      # Prevents usage of `"*"` on an Arel::Table column reference.
       #
       # Using `arel_table["*"]` causes the outputted string to be a literal
       # quoted asterisk (e.g. <tt>`my_model`.`*`</tt>). This causes the

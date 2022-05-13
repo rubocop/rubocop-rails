@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for use of the helper methods which reference
+      # Checks for use of the helper methods which reference
       # instance variables.
       #
       # Relying on instance variables makes it difficult to re-use helper

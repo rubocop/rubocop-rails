@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop enforces that `exit` calls are not used within a rails app.
+      # Enforces that `exit` calls are not used within a rails app.
       # Valid options are instead to raise an error, break, return, or some
       # other form of stopping execution of current request.
       #

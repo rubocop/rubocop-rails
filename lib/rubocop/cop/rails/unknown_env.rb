@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks that environments called with `Rails.env` predicates
+      # Checks that environments called with `Rails.env` predicates
       # exist.
       # By default the cop allows three environments which Rails ships with:
       # `development`, `test`, and `production`.

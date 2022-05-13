@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop identifies possible cases where Active Record save! or related
+      # Identifies possible cases where Active Record save! or related
       # should be used instead of save because the model might have failed to
       # save and an exception is better than unhandled failure.
       #

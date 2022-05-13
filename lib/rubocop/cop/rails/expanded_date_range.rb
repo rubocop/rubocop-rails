@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for expanded date range. It only compatible `..` range is targeted.
+      # Checks for expanded date range. It only compatible `..` range is targeted.
       # Incompatible `...` range is ignored.
       #
       # @example

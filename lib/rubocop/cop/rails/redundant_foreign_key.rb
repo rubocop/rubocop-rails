@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop detects cases where the `:foreign_key` option on associations
+      # Detects cases where the `:foreign_key` option on associations
       # is redundant.
       #
       # @example

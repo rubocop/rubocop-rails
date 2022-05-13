@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks direct manipulation of ActiveModel#errors as hash.
+      # Checks direct manipulation of ActiveModel#errors as hash.
       # These operations are deprecated in Rails 6.1 and will not work in Rails 7.
       #
       # @safety

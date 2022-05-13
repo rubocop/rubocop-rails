@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for the use of methods which skip
+      # Checks for the use of methods which skip
       # validations which are listed in
       # https://guides.rubyonrails.org/active_record_validations.html#skipping-validations
       #

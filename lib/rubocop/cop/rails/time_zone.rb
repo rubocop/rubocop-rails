@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for the use of Time methods without zone.
+      # Checks for the use of Time methods without zone.
       #
       # Built on top of Ruby on Rails style guide (https://rails.rubystyle.guide#time)
       # and the article http://danilenko.org/2012/7/6/rails_timezones/

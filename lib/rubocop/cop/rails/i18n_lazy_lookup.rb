@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for places where I18n "lazy" lookup can be used.
+      # Checks for places where I18n "lazy" lookup can be used.
       #
       # @example
       #   # en.yml

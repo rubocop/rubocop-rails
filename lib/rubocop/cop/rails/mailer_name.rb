@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop enforces that mailer names end with `Mailer` suffix.
+      # Enforces that mailer names end with `Mailer` suffix.
       #
       # Without the `Mailer` suffix it isn't immediately apparent what's a mailer
       # and which views are related to the mailer.

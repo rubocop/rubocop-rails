@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop looks for enums written with array syntax.
+      # Looks for enums written with array syntax.
       #
       # When using array syntax, adding an element in a
       # position other than the last causes all previous

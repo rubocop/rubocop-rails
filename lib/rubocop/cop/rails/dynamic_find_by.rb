@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks dynamic `find_by_*` methods.
+      # Checks dynamic `find_by_*` methods.
       # Use `find_by` instead of dynamic method.
       # See. https://rails.rubystyle.guide#find_by
       #

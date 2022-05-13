@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for the use of exit statements (namely `return`,
+      # Checks for the use of exit statements (namely `return`,
       # `break` and `throw`) in transactions. This is due to the eventual
       # unexpected behavior when using ActiveRecord >= 7, where transactions
       # exitted using these statements are being rollbacked rather than

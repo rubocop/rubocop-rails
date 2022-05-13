@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks legacy syntax usage of `tag`
+      # Checks legacy syntax usage of `tag`
       #
       # NOTE: Allow `tag` when the first argument is a variable because
       # `tag(name)` is simpler rather than `tag.public_send(name)`.

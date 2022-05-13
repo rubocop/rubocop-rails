@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks that Active Support's `inquiry` method is not used.
+      # Checks that Active Support's `inquiry` method is not used.
       #
       # @example
       #   # bad - String#inquiry

@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for code that can be written with simpler conditionals
+      # Checks for code that can be written with simpler conditionals
       # using `Object#present?` defined by Active Support.
       #
       # Interaction with `Style/UnlessElse`:

@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop looks for uses of `default_scope`.
+      # Looks for uses of `default_scope`.
       #
       # @example
       #   # bad

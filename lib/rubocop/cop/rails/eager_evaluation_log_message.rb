@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks that blocks are used for interpolated strings passed to
+      # Checks that blocks are used for interpolated strings passed to
       # `Rails.logger.debug`.
       #
       # By default, Rails production environments use the `:info` log level.

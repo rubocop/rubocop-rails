@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks that methods specified in the filter's `only` or
+      # Checks that methods specified in the filter's `only` or
       # `except` options are defined within the same class or module.
       #
       # @safety

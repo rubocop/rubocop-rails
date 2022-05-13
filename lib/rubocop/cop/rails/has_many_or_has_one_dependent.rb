@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop looks for `has_many` or `has_one` associations that don't
+      # Looks for `has_many` or `has_one` associations that don't
       # specify a `:dependent` option.
       #
       # It doesn't register an offense if `:through` or `dependent: nil`

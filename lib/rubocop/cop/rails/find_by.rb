@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop is used to identify usages of `where.take` and change them to use `find_by` instead.
+      # Identifies usages of `where.take` and change them to use `find_by` instead.
       #
       # And `where(...).first` can return different results from `find_by`.
       # (They order records differently, so the "first" record can be different.)

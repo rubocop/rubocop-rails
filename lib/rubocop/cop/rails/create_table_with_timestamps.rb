@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks the migration for which timestamps are not included
+      # Checks the migration for which timestamps are not included
       # when creating a new table.
       # In many cases, timestamps are useful information and should be added.
       #

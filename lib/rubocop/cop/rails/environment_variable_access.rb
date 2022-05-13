@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop looks for direct access to environment variables through the
+      # Looks for direct access to environment variables through the
       # `ENV` variable within the application code. This can lead to runtime
       # errors due to misconfiguration that could have been discovered at boot
       # time if the environment variables were loaded as part of initialization

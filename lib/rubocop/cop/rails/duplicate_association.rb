@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop looks for associations that have been defined multiple times in the same file.
+      # Looks for associations that have been defined multiple times in the same file.
       #
       # When an association is defined multiple times on a model, Active Record overrides the
       # previously defined association with the new one. Because of this, this cop's autocorrection

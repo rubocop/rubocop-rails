@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for Rake tasks without the `:environment` task
+      # Checks for Rake tasks without the `:environment` task
       # dependency. The `:environment` task loads application code for other
       # Rake tasks. Without it, tasks cannot make use of application code like
       # models.

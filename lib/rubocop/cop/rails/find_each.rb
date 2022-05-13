@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop is used to identify usages of `all.each` and
+      # Identifies usages of `all.each` and
       # change them to use `all.find_each` instead.
       #
       # @example

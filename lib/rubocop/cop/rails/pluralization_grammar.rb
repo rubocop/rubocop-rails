@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for correct grammar when using ActiveSupport's
+      # Checks for correct grammar when using ActiveSupport's
       # core extensions to the numeric classes.
       #
       # @example

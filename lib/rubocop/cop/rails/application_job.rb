@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks that jobs subclass `ApplicationJob` with Rails 5.0.
+      # Checks that jobs subclass `ApplicationJob` with Rails 5.0.
       #
       # @safety
       #   This cop's autocorrection is unsafe because it may let the logic from `ApplicationJob`

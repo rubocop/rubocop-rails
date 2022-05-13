@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks if a duration is added to or subtracted from `Time.current`.
+      # Checks if a duration is added to or subtracted from `Time.current`.
       #
       # @example
       #   # bad

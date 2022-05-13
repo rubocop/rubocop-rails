@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop looks for uses of `each_with_object({}) { ... }`,
+      # Looks for uses of `each_with_object({}) { ... }`,
       # `map { ... }.to_h`, and `Hash[map { ... }]` that are transforming
       # an enumerable into a hash where the keys are the original elements.
       # Rails provides the `index_with` method for this purpose.

@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for the use of output calls like puts and print
+      # Checks for the use of output calls like puts and print
       #
       # @safety
       #   This cop's autocorrection is unsafe because depending on the Rails log level configuration,

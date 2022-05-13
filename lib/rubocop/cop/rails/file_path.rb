@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop is used to identify usages of file path joining process
+      # Identifies usages of file path joining process
       # to use `Rails.root.join` clause. It is used to add uniformity when
       # joining paths.
       #

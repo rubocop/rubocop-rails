@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop suggests you remove a column that does not exist in the schema from `ignored_columns`.
+      # Suggests you remove a column that does not exist in the schema from `ignored_columns`.
       # `ignored_columns` is necessary to drop a column from RDBMS, but you don't need it after the migration
       # to drop the column. You avoid forgetting to remove `ignored_columns` by this cop.
       #

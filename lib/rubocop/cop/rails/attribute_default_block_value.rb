@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop looks for `attribute` class methods that specify a `:default` option
+      # Looks for `attribute` class methods that specify a `:default` option
       # which value is an array, string literal or method call without a block.
       # It will accept all other values, such as string, symbol, integer and float literals
       # as well as constants.

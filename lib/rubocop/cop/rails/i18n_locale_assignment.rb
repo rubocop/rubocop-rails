@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for the use of `I18n.locale=` method.
+      # Checks for the use of `I18n.locale=` method.
       #
       # The `locale` attribute persists for the rest of the Ruby runtime, potentially causing
       # unexpected behavior at a later time.

@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks whether the migration implements
+      # Checks whether the migration implements
       # either a `change` method or both an `up` and a `down`
       # method.
       #

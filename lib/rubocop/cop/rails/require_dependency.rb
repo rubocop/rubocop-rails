@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for the usage of `require_dependency`.
+      # Checks for the usage of `require_dependency`.
       #
       # `require_dependency` is an obsolete method for Rails applications running in Zeitwerk mode.
       # In Zeitwerk mode, the semantics should match Ruby's and no need to be defensive with load order,

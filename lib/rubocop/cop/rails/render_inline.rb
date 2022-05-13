@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop looks for inline rendering within controller actions.
+      # Looks for inline rendering within controller actions.
       #
       # @example
       #   # bad

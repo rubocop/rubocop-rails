@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop converts usages of `try!` to `&.`. It can also be configured
+      # Converts usages of `try!` to `&.`. It can also be configured
       # to convert `try`. It will convert code to use safe navigation.
       #
       # @example ConvertTry: false (default)

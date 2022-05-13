@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop looks for delegations that could have been created
+      # Looks for delegations that could have been created
       # automatically with the `delegate` method.
       #
       # Safe navigation `&.` is ignored because Rails' `allow_nil`

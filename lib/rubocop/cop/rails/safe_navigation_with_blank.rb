@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks to make sure safe navigation isn't used with `blank?` in
+      # Checks to make sure safe navigation isn't used with `blank?` in
       # a conditional.
       #
       # @safety

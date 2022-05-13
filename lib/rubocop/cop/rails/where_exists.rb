@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop enforces consistent style when using `exists?`.
+      # Enforces consistent style when using `exists?`.
       #
       # Two styles are supported for this cop. When EnforcedStyle is 'exists'
       # then the cop enforces `exists?(...)` over `where(...).exists?`.

@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for the correct use of Date methods,
+      # Checks for the correct use of Date methods,
       # such as Date.today, Date.current etc.
       #
       # Using `Date.today` is dangerous, because it doesn't know anything about

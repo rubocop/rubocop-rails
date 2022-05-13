@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop identifies places where manually constructed SQL
+      # Identifies places where manually constructed SQL
       # in `where` can be replaced with `where(attribute: value)`.
       #
       # @safety

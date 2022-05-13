@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop looks for duplicate values in enum declarations.
+      # Looks for duplicate values in enum declarations.
       #
       # @example
       #   # bad

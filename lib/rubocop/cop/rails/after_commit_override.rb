@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop enforces that there is only one call to `after_commit`
+      # Enforces that there is only one call to `after_commit`
       # (and its aliases - `after_create_commit`, `after_update_commit`,
       # and `after_destroy_commit`) with the same callback name per model.
       #

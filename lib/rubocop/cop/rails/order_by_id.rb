@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for places where ordering by `id` column is used.
+      # Checks for places where ordering by `id` column is used.
       #
       # Don't use the `id` column for ordering. The sequence of ids is not guaranteed
       # to be in any particular order, despite often (incidentally) being chronological.

@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks that Rails.env is compared using `.production?`-like
+      # Checks that Rails.env is compared using `.production?`-like
       # methods instead of equality against a string or symbol.
       #
       # @example
