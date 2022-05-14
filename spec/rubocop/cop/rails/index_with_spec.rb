@@ -118,15 +118,25 @@ RSpec.describe RuboCop::Cop::Rails::IndexWith, :config do
       RUBY
     end
 
-    it 'registers an offense for `to_h { ... }`' do
-      expect_offense(<<~RUBY)
-        x.to_h { |el| [el, el.to_sym] }
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_with` over `to_h { ... }`.
-      RUBY
+    context 'when using Ruby 2.6 or newer', :ruby26 do
+      it 'registers an offense for `to_h { ... }`' do
+        expect_offense(<<~RUBY)
+          x.to_h { |el| [el, el.to_sym] }
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_with` over `to_h { ... }`.
+        RUBY
 
-      expect_correction(<<~RUBY)
-        x.index_with { |el| el.to_sym }
-      RUBY
+        expect_correction(<<~RUBY)
+          x.index_with { |el| el.to_sym }
+        RUBY
+      end
+    end
+
+    context 'when using Ruby 2.5 or older', :ruby25 do
+      it 'does not register an offense for `to_h { ... }`' do
+        expect_no_offenses(<<~RUBY)
+          x.to_h { |el| [el, el.to_sym] }
+        RUBY
+      end
     end
   end
 
@@ -135,8 +145,10 @@ RSpec.describe RuboCop::Cop::Rails::IndexWith, :config do
       expect_no_offenses('x.each_with_object({}) { |el, h| h[el] = foo(el) }')
     end
 
-    it 'does not register an offense for `to_h { ... }`' do
-      expect_no_offenses('x.to_h { |el| [el, el.to_sym] }')
+    context 'when using Ruby 2.6 or newer', :ruby26 do
+      it 'does not register an offense for `to_h { ... }`' do
+        expect_no_offenses('x.to_h { |el| [el, el.to_sym] }')
+      end
     end
 
     it 'does not register an offense for `map { ... }.to_h`' do
