@@ -62,9 +62,45 @@ Here are a few examples:
 * At the end of the entry, add an implicit link to your GitHub user page as `([@username][])`.
 * Alternatively, you may modify the CHANGELOG file directly, but this may result in conflicts later on. Also, if this is your first contribution to RuboCop project, add a link definition for the implicit link to the bottom of the changelog as `[@username]: https://github.com/username`.
 
+### Real World Rails
+
+[Real World Rails][7] is a collection of open source Rails application codebases.
+When introducing or changing a cop, running against this can help to uncover wide range of potential problems.
+
+Run the following to check out Real World Rails:
+
+```
+git clone git@github.com:eliotsykes/real-world-rails.git
+cd real-world-rails
+
+# This will take some time...
+git submodule update --init --remote --checkout --single-branch --depth 1
+```
+
+To avoid problems relating to outdated RuboCop configurations, delete them with:
+
+```
+rm -v **/.rubocop.yml
+```
+
+Now, you can run:
+
+```
+rubocop --only <your-cop-name> <path-to-real-world-rails>
+```
+
+Take a close look at the output and make sure that:
+
+* There are no errors
+* It doesn't stall or hang
+
+Ideally, the cop should only raise legitimate offenses again Real World Rails.
+If there are any false positives, mark the cop as unsafe.
+
 [1]: https://github.com/rubocop/rubocop-rails/issues
 [2]: https://www.gun.io/blog/how-to-github-fork-branch-and-pull-request
 [3]: https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 [4]: https://help.github.com/articles/about-pull-requests
 [5]: http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html
 [6]: https://daringfireball.net/projects/markdown/syntax
+[7]: https://github.com/eliotsykes/real-world-rails
