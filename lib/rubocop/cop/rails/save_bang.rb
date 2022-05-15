@@ -37,7 +37,7 @@ module RuboCop
       #
       #   update_attributes
       #
-      #   # After running rubocop --safe-auto-correct
+      #   # After running rubocop --safe-autocorrect
       #   def update_attributes
       #   end
       #

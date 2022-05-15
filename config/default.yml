@@ -868,7 +868,7 @@ Rails/SquishedSQLHeredocs:
   VersionAdded: '2.8'
   VersionChanged: '2.9'
   # Some SQL syntax (e.g. PostgreSQL comments and functions) requires newlines
-  # to be preserved in order to work, thus auto-correction is not safe.
+  # to be preserved in order to work, thus autocorrection is not safe.
   SafeAutoCorrect: false
 
 Rails/TableNameAssignment:

@@ -13,21 +13,21 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
   end
 
   describe '#autocorrect' do
-    shared_examples 'auto-corrects' do
-      it 'auto-corrects' do
-        expect(autocorrect_source(source)).to eq(auto_corrected_source)
+    shared_examples 'autocorrects' do
+      it 'autocorrects' do
+        expect(autocorrect_source(source)).to eq(autocorrected_source)
       end
     end
 
-    shared_examples 'does not auto-correct' do
-      it 'does not auto-correct' do
+    shared_examples 'does not autocorrect' do
+      it 'does not autocorrect' do
         expect(autocorrect_source(source)).to eq(source)
       end
     end
 
     described_class::TYPES.each do |type|
       context "with validates_#{type}_of" do
-        let(:auto_corrected_source) do
+        let(:autocorrected_source) do
           "validates :full_name, :birth_date, #{type}: true"
         end
 
@@ -35,12 +35,12 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
           "validates_#{type}_of :full_name, :birth_date"
         end
 
-        include_examples 'auto-corrects'
+        include_examples 'autocorrects'
       end
 
       context "with validates_#{type}_of " \
               'when method arguments are enclosed in parentheses' do
-        let(:auto_corrected_source) do
+        let(:autocorrected_source) do
           "validates(:full_name, :birth_date, #{type}: true)"
         end
 
@@ -48,12 +48,12 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
           "validates_#{type}_of(:full_name, :birth_date)"
         end
 
-        include_examples 'auto-corrects'
+        include_examples 'autocorrects'
       end
 
       context "with validates_#{type}_of when " \
               'attributes are specified with array literal' do
-        let(:auto_corrected_source) do
+        let(:autocorrected_source) do
           "validates :full_name, :birth_date, #{type}: true"
         end
 
@@ -61,12 +61,12 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
           "validates_#{type}_of [:full_name, :birth_date]"
         end
 
-        include_examples 'auto-corrects'
+        include_examples 'autocorrects'
       end
 
       context "with validates_#{type}_of when " \
               'attributes are specified with frozen array literal' do
-        let(:auto_corrected_source) do
+        let(:autocorrected_source) do
           "validates :full_name, :birth_date, #{type}: true"
         end
 
@@ -74,12 +74,12 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
           "validates_#{type}_of [:full_name, :birth_date].freeze"
         end
 
-        include_examples 'auto-corrects'
+        include_examples 'autocorrects'
       end
 
       context "with validates_#{type}_of when " \
               'attributes are specified with symbol array literal' do
-        let(:auto_corrected_source) do
+        let(:autocorrected_source) do
           "validates :full_name, :birth_date, #{type}: true"
         end
 
@@ -87,12 +87,12 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
           "validates_#{type}_of %i[full_name birth_date]"
         end
 
-        include_examples 'auto-corrects'
+        include_examples 'autocorrects'
       end
 
       context "with validates_#{type}_of when " \
               'attributes are specified with frozen symbol array literal' do
-        let(:auto_corrected_source) do
+        let(:autocorrected_source) do
           "validates :full_name, :birth_date, #{type}: true"
         end
 
@@ -100,12 +100,12 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
           "validates_#{type}_of %i[full_name birth_date].freeze"
         end
 
-        include_examples 'auto-corrects'
+        include_examples 'autocorrects'
       end
     end
 
     context 'with single attribute name' do
-      let(:auto_corrected_source) do
+      let(:autocorrected_source) do
         'validates :a, numericality: true'
       end
 
@@ -113,11 +113,11 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         'validates_numericality_of :a'
       end
 
-      include_examples 'auto-corrects'
+      include_examples 'autocorrects'
     end
 
     context 'with multi attribute names' do
-      let(:auto_corrected_source) do
+      let(:autocorrected_source) do
         'validates :a, :b, numericality: true'
       end
 
@@ -125,11 +125,11 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         'validates_numericality_of :a, :b'
       end
 
-      include_examples 'auto-corrects'
+      include_examples 'autocorrects'
     end
 
     context 'with non-braced hash literal' do
-      let(:auto_corrected_source) do
+      let(:autocorrected_source) do
         'validates :a, :b, numericality: { minimum: 1 }'
       end
 
@@ -137,11 +137,11 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         'validates_numericality_of :a, :b, minimum: 1'
       end
 
-      include_examples 'auto-corrects'
+      include_examples 'autocorrects'
     end
 
     context 'with braced hash literal' do
-      let(:auto_corrected_source) do
+      let(:autocorrected_source) do
         'validates :a, :b, numericality: { minimum: 1 }'
       end
 
@@ -149,11 +149,11 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         'validates_numericality_of :a, :b, { minimum: 1 }'
       end
 
-      include_examples 'auto-corrects'
+      include_examples 'autocorrects'
     end
 
     context 'with splat' do
-      let(:auto_corrected_source) do
+      let(:autocorrected_source) do
         'validates :a, *b, numericality: true'
       end
 
@@ -161,11 +161,11 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         'validates_numericality_of :a, *b'
       end
 
-      include_examples 'auto-corrects'
+      include_examples 'autocorrects'
     end
 
     context 'with splat and options' do
-      let(:auto_corrected_source) do
+      let(:autocorrected_source) do
         'validates :a, *b, :c, numericality: { minimum: 1 }'
       end
 
@@ -173,7 +173,7 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         'validates_numericality_of :a, *b, :c, minimum: 1'
       end
 
-      include_examples 'auto-corrects'
+      include_examples 'autocorrects'
     end
 
     context 'with trailing send node' do
@@ -181,7 +181,7 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         'validates_numericality_of :a, b'
       end
 
-      include_examples 'does not auto-correct'
+      include_examples 'does not autocorrect'
     end
 
     context 'with trailing constant' do
@@ -189,7 +189,7 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         'validates_numericality_of :a, B'
       end
 
-      include_examples 'does not auto-correct'
+      include_examples 'does not autocorrect'
     end
 
     context 'with trailing local variable' do
@@ -200,7 +200,7 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         RUBY
       end
 
-      include_examples 'does not auto-correct'
+      include_examples 'does not autocorrect'
     end
   end
 end

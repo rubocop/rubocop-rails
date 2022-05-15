@@ -60,7 +60,7 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
     RUBY
   end
 
-  it 'auto-corrects each to find_each' do
+  it 'autocorrects each to find_each' do
     expect_offense(<<~RUBY)
       User.all.each { |u| u.x }
                ^^^^ Use `find_each` instead of `each`.

@@ -66,7 +66,7 @@ RSpec.describe RuboCop::Cop::Rails::ActionFilter, :config do
       end
     end
 
-    it 'auto-corrects to preferred method' do
+    it 'autocorrects to preferred method' do
       new_source = autocorrect_source_file('before_filter :test')
       expect(new_source).to eq('before_action :test')
     end
@@ -95,7 +95,7 @@ RSpec.describe RuboCop::Cop::Rails::ActionFilter, :config do
       end
     end
 
-    it 'auto-corrects to preferred method' do
+    it 'autocorrects to preferred method' do
       new_source = autocorrect_source_file('before_action :test')
       expect(new_source).to eq('before_filter :test')
     end

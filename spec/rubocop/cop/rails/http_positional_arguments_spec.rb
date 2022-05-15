@@ -271,7 +271,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       end
     end
 
-    it 'auto-corrects http action when method' do
+    it 'autocorrects http action when method' do
       expect_offense(<<~RUBY)
         post user_attrs, id: 1
                          ^^^^^ Use keyword arguments instead of positional arguments for http call: `post`.
@@ -282,7 +282,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'auto-corrects http action when symbol' do
+    it 'autocorrects http action when symbol' do
       expect_offense(<<~RUBY)
         post :user_attrs, id: 1
                           ^^^^^ Use keyword arguments instead of positional arguments for http call: `post`.
@@ -293,7 +293,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'maintains parentheses when auto-correcting' do
+    it 'maintains parentheses when autocorrecting' do
       expect_offense(<<~RUBY)
         post(:user_attrs, id: 1)
                           ^^^^^ Use keyword arguments instead of positional arguments for http call: `post`.
@@ -304,7 +304,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'maintains quotes when auto-correcting' do
+    it 'maintains quotes when autocorrecting' do
       expect_offense(<<~RUBY)
         get '/auth/linkedin/callback', id: 1
                                        ^^^^^ Use keyword arguments instead of positional arguments for http call: `get`.
@@ -337,7 +337,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'auto-corrects http action when params is a method call' do
+    it 'autocorrects http action when params is a method call' do
       expect_offense(<<~RUBY)
         post :create, confirmation_data
                       ^^^^^^^^^^^^^^^^^ Use keyword arguments instead of positional arguments for http call: `post`.
@@ -348,7 +348,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'auto-corrects http action when parameter matches special keyword name' do
+    it 'autocorrects http action when parameter matches special keyword name' do
       expect_offense(<<~RUBY)
         post :create, id: 7, comment: { body: "hei" }
                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use keyword arguments instead of positional arguments for http call: `post`.
@@ -359,7 +359,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'auto-corrects http action when format keyword included but not alone' do
+    it 'autocorrects http action when format keyword included but not alone' do
       expect_offense(<<~RUBY)
         post :create, id: 7, format: :rss
                       ^^^^^^^^^^^^^^^^^^^ Use keyword arguments instead of positional arguments for http call: `post`.
@@ -370,7 +370,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'auto-corrects http action when params is a lvar' do
+    it 'autocorrects http action when params is a lvar' do
       expect_offense(<<~RUBY)
         params = { id: 1 }
         post user_attrs, params
@@ -383,7 +383,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'auto-corrects http action when params and action name are method calls' do
+    it 'autocorrects http action when params and action name are method calls' do
       expect_offense(<<~RUBY)
         post user_attrs, params
                          ^^^^^^ Use keyword arguments instead of positional arguments for http call: `post`.
@@ -394,7 +394,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config, :config do
       RUBY
     end
 
-    it 'auto-corrects http action when params is a method call with chain' do
+    it 'autocorrects http action when params is a method call with chain' do
       expect_offense(<<~RUBY)
         post user_attrs, params.merge(foo: bar)
                          ^^^^^^^^^^^^^^^^^^^^^^ Use keyword arguments instead of positional arguments for http call: `post`.

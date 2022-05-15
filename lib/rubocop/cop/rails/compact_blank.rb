@@ -17,7 +17,7 @@ module RuboCop
       #   `ActionController::Parameters`.
       #   `Array#compact_blank!`, `Hash#compact_blank!` are equivalent to `delete_if(&:blank?)`.
       #   `ActionController::Parameters#compact_blank!` is equivalent to `reject!(&:blank?)`.
-      #   If the cop makes a mistake, auto-corrected code may get unexpected behavior.
+      #   If the cop makes a mistake, autocorrected code may get unexpected behavior.
       #
       # @example
       #

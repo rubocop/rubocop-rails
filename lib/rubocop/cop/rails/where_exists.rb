@@ -12,7 +12,7 @@ module RuboCop
       # `where(...).exists?` over `exists?(...)`.
       #
       # @safety
-      #   This cop is unsafe for auto-correction because the behavior may change on the following case:
+      #   This cop is unsafe for autocorrection because the behavior may change on the following case:
       #
       #   [source,ruby]
       #   ----

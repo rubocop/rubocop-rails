@@ -9,11 +9,11 @@ module RuboCop
       # Interaction with `Style/UnlessElse`:
       # The configuration of `NotPresent` will not produce an offense in the
       # context of `unless else` if `Style/UnlessElse` is inabled. This is
-      # to prevent interference between the auto-correction of the two cops.
+      # to prevent interference between the autocorrection of the two cops.
       #
       # @safety
-      #   This cop is unsafe auto-correction, because `' '.empty?` returns false,
-      #   but `' '.blank?` returns true. Therefore, auto-correction is not compatible
+      #   This cop is unsafe autocorrection, because `' '.empty?` returns false,
+      #   but `' '.blank?` returns true. Therefore, autocorrection is not compatible
       #   if the receiver is a non-empty blank string, tab, or newline meta characters.
       #
       # @example NilOrEmpty: true (default)

@@ -9,7 +9,7 @@ module RuboCop
       # Interaction with `Style/UnlessElse`:
       # The configuration of `NotBlank` will not produce an offense in the
       # context of `unless else` if `Style/UnlessElse` is inabled. This is
-      # to prevent interference between the auto-correction of the two cops.
+      # to prevent interference between the autocorrection of the two cops.
       #
       # @example NotNilAndNotEmpty: true (default)
       #   # Converts usages of `!nil? && !empty?` to `present?`

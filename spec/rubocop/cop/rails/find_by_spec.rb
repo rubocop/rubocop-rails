@@ -70,7 +70,7 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
       { 'IgnoreWhereFirst' => false }
     end
 
-    it 'registers an offense when using `#first` and does not auto-correct' do
+    it 'registers an offense when using `#first` and does not autocorrect' do
       expect_offense(<<~RUBY)
         User.where(id: x).first
              ^^^^^^^^^^^^^^^^^^ Use `find_by` instead of `where.first`.

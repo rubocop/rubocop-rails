@@ -50,7 +50,7 @@ $ rubocop -V
 Here are a few examples:
 
 ```
-* [#67](https://github.com/rubocop/rubocop-rails/issues/67): Fix an incorrect auto-correct for `Rails/TimeZone` when using `DateTime`. ([@koic][])
+* [#67](https://github.com/rubocop/rubocop-rails/issues/67): Fix an incorrect autocorrect for `Rails/TimeZone` when using `DateTime`. ([@koic][])
 * New cop `ElseLayout` checks for odd arrangement of code in the `else` branch of a conditional expression. ([@bbatsov][])
 ```
 

@@ -50,7 +50,7 @@ RSpec.describe RuboCop::Cop::Rails::LinkToBlank, :config do
         RUBY
       end
 
-      it 'registers an offense and auto-corrects when using the block syntax' do
+      it 'registers an offense and autocorrects when using the block syntax' do
         expect_offense(<<~RUBY)
           link_to 'https://www.example.com', target: '_blank' do
                                              ^^^^^^^^^^^^^^^^ Specify a `:rel` option containing noopener.
