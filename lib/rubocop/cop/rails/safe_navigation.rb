@@ -4,7 +4,8 @@ module RuboCop
   module Cop
     module Rails
       # Converts usages of `try!` to `&.`. It can also be configured
-      # to convert `try`. It will convert code to use safe navigation.
+      # to convert `try`. It will convert code to use safe navigation
+      # if the target Ruby version is set to 2.3+
       #
       # @example ConvertTry: false (default)
       #   # bad
@@ -39,6 +40,9 @@ module RuboCop
       class SafeNavigation < Base
         include RangeHelp
         extend AutoCorrector
+        extend TargetRubyVersion
+
+        minimum_target_ruby_version 2.3
 
         MSG = 'Use safe navigation (`&.`) instead of `%<try>s`.'
         RESTRICT_ON_SEND = %i[try try!].freeze
