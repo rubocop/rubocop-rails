@@ -871,6 +871,12 @@ Rails/SquishedSQLHeredocs:
   # to be preserved in order to work, thus autocorrection is not safe.
   SafeAutoCorrect: false
 
+Rails/StripHeredoc:
+  Description: 'Enforces the use of squiggly heredoc over `strip_heredoc`.'
+  StyleGuide: 'https://rails.rubystyle.guide/#prefer-squiggly-heredoc'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/TableNameAssignment:
   Description: >-
     Do not use `self.table_name =`. Use Inflections or `table_name_prefix` instead.
