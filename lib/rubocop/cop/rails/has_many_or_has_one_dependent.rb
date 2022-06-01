@@ -116,7 +116,7 @@ module RuboCop
         def valid_options?(options)
           return false if options.nil?
 
-          options = options.first.children.first.pairs if options.first.kwsplat_type?
+          options = extract_option_if_kwsplat(options)
 
           return true unless options
           return true if options.any? do |o|
@@ -124,6 +124,14 @@ module RuboCop
           end
 
           false
+        end
+
+        def extract_option_if_kwsplat(options)
+          if options.first.kwsplat_type? && options.first.children.first.hash_type?
+            return options.first.children.first.pairs
+          end
+
+          options
         end
 
         def active_resource?(node)
