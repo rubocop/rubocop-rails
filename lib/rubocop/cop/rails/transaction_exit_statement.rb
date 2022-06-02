@@ -29,6 +29,11 @@ module RuboCop
       #     throw if user.active?
       #   end
       #
+      #   # bad, as `with_lock` implicitly opens a transaction too
+      #   user.with_lock do
+      #     throw if user.active?
+      #   end
+      #
       #   # good
       #   ApplicationRecord.transaction do
       #     # Rollback
@@ -47,7 +52,7 @@ module RuboCop
           Exit statement `%<statement>s` is not allowed. Use `raise` (rollback) or `next` (commit).
         MSG
 
-        RESTRICT_ON_SEND = %i[transaction].freeze
+        RESTRICT_ON_SEND = %i[transaction with_lock].freeze
 
         def_node_search :exit_statements, <<~PATTERN
           ({return | break | send nil? :throw} ...)
