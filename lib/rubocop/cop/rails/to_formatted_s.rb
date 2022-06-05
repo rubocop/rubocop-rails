@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop checks for consistent uses of `to_fs` or `to_formatted_s`,
+      # Checks for consistent uses of `to_fs` or `to_formatted_s`,
       # depending on the cop's configuration.
       #
       # @example EnforcedStyle: to_fs (default)
