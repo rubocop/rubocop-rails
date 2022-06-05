@@ -909,6 +909,16 @@ Rails/TimeZoneAssignment:
     - spec/**/*.rb
     - test/**/*.rb
 
+Rails/ToFormattedS:
+  Description: 'Checks for consistent uses of `to_fs` or `to_formatted_s`.'
+  StyleGuide: 'https://rails.rubystyle.guide/#prefer-to-fs'
+  Enabled: pending
+  EnforcedStyle: to_fs
+  SupportedStyles:
+    - to_fs
+    - to_formatted_s
+  VersionAdded: '<<next>>'
+
 Rails/TransactionExitStatement:
   Description: 'Avoid the usage of `return`, `break` and `throw` in transaction blocks.'
   Enabled: pending
