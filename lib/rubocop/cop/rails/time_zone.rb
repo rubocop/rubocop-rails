@@ -28,16 +28,16 @@ module RuboCop
       #   Time.zone.parse('2015-03-02T19:05:37')
       #   Time.zone.parse('2015-03-02T19:05:37Z') # Respect ISO 8601 format with timezone specifier.
       #
-      # @example EnforcedStyle: strict
-      #   # `strict` means that `Time` should be used with `zone`.
-      #
-      #   # bad
-      #   Time.at(timestamp).in_time_zone
-      #
       # @example EnforcedStyle: flexible (default)
       #   # `flexible` allows usage of `in_time_zone` instead of `zone`.
       #
       #   # good
+      #   Time.at(timestamp).in_time_zone
+      #
+      # @example EnforcedStyle: strict
+      #   # `strict` means that `Time` should be used with `zone`.
+      #
+      #   # bad
       #   Time.at(timestamp).in_time_zone
       class TimeZone < Base
         include ConfigurableEnforcedStyle

@@ -7,15 +7,6 @@ module RuboCop
       # to use `Rails.root.join` clause. It is used to add uniformity when
       # joining paths.
       #
-      # @example EnforcedStyle: arguments
-      #   # bad
-      #   Rails.root.join('app/models/goober')
-      #   File.join(Rails.root, 'app/models/goober')
-      #   "#{Rails.root}/app/models/goober"
-      #
-      #   # good
-      #   Rails.root.join('app', 'models', 'goober')
-      #
       # @example EnforcedStyle: slashes (default)
       #   # bad
       #   Rails.root.join('app', 'models', 'goober')
@@ -24,6 +15,15 @@ module RuboCop
       #
       #   # good
       #   Rails.root.join('app/models/goober')
+      #
+      # @example EnforcedStyle: arguments
+      #   # bad
+      #   Rails.root.join('app/models/goober')
+      #   File.join(Rails.root, 'app/models/goober')
+      #   "#{Rails.root}/app/models/goober"
+      #
+      #   # good
+      #   Rails.root.join('app', 'models', 'goober')
       #
       class FilePath < Base
         include ConfigurableEnforcedStyle

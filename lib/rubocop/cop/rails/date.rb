@@ -22,16 +22,6 @@ module RuboCop
       # And you can set a warning for `to_time` with `AllowToTime: false`.
       # `AllowToTime` is `true` by default to prevent false positive on `DateTime` object.
       #
-      # @example EnforcedStyle: strict
-      #   # bad
-      #   Date.current
-      #   Date.yesterday
-      #   Date.today
-      #
-      #   # good
-      #   Time.zone.today
-      #   Time.zone.today - 1.day
-      #
       # @example EnforcedStyle: flexible (default)
       #   # bad
       #   Date.today
@@ -42,6 +32,16 @@ module RuboCop
       #   Date.current
       #   Date.yesterday
       #   date.in_time_zone
+      #
+      # @example EnforcedStyle: strict
+      #   # bad
+      #   Date.current
+      #   Date.yesterday
+      #   Date.today
+      #
+      #   # good
+      #   Time.zone.today
+      #   Time.zone.today - 1.day
       #
       # @example AllowToTime: true (default)
       #   # good
