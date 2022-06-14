@@ -110,7 +110,7 @@ RSpec.describe RuboCop::Cop::Rails::OutputSafety, :config do
       expect_no_offenses('raw(one, two)')
     end
 
-    it 'does not ergister an offense for comments' do
+    it 'does not register an offense for comments' do
       expect_no_offenses(<<~RUBY)
         # foo.html_safe
         # raw foo

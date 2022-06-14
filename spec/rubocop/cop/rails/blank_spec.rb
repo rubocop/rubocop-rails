@@ -41,7 +41,7 @@ RSpec.describe RuboCop::Cop::Rails::Blank, :config do
     end
 
     # Bug: https://github.com/rubocop/rubocop/issues/4814
-    it 'does not break when LHS of `or` is a send node with an arugment' do
+    it 'does not break when LHS of `or` is a send node with an argument' do
       expect_no_offenses('x(1) || something')
     end
 

@@ -91,7 +91,7 @@ RSpec.describe RuboCop::Cop::Rails::DynamicFindBy, :config do
     end
   end
 
-  context 'with column includes undersoce' do
+  context 'with column includes underscore' do
     it 'registers an offense and corrects' do
       expect_offense(<<~RUBY)
         User.find_by_first_name(name)

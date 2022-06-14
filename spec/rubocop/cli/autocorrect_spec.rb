@@ -9,7 +9,7 @@ RSpec.describe 'RuboCop::CLI --autocorrect', :isolated_environment do # rubocop:
     RuboCop::ConfigLoader.default_configuration.for_all_cops['SuggestExtensions'] = false
   end
 
-  it 'corrects `Rails/SafeNavigation` with `Style/RedndantSelf`' do
+  it 'corrects `Rails/SafeNavigation` with `Style/RedundantSelf`' do
     create_file('.rubocop.yml', <<~YAML)
       Rails/SafeNavigation:
         ConvertTry: true
