@@ -1,1 +1,0 @@
-* [#710](https://github.com/rubocop/rubocop-rails/pull/710): Rails/TransactionExitStatement - Inspect `ActiveRecord::Locking::Pessimistic#with_lock` too, as `#with_lock` opens a transaction. ([@FunnyHector][])
