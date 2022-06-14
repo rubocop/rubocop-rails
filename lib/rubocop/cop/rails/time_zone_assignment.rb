@@ -22,12 +22,12 @@ module RuboCop
         MSG = 'Use `Time.use_zone` with block instead of `Time.zone=`.'
         RESTRICT_ON_SEND = %i[zone=].freeze
 
-        def_node_matcher :time_zone_assignement?, <<~PATTERN
+        def_node_matcher :time_zone_assignment?, <<~PATTERN
           (send (const nil? :Time) :zone= ...)
         PATTERN
 
         def on_send(node)
-          return unless time_zone_assignement?(node)
+          return unless time_zone_assignment?(node)
 
           add_offense(node)
         end

@@ -5,11 +5,11 @@ module RuboCop
     module SchemaLoader
       # Represent db/schema.rb
       class Schema
-        attr_reader :tables, :add_indicies
+        attr_reader :tables, :add_indices
 
         def initialize(ast)
           @tables = []
-          @add_indicies = []
+          @add_indices = []
 
           build!(ast)
         end
@@ -20,8 +20,8 @@ module RuboCop
           end
         end
 
-        def add_indicies_by(table_name:)
-          add_indicies.select do |add_index|
+        def add_indices_by(table_name:)
+          add_indices.select do |add_index|
             add_index.table_name == table_name
           end
         end
@@ -39,7 +39,7 @@ module RuboCop
 
           # Compatibility for Rails 4.2.
           each_add_index(ast) do |add_index_def|
-            @add_indicies << AddIndex.new(add_index_def)
+            @add_indices << AddIndex.new(add_index_def)
           end
         end
 

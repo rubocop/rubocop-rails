@@ -56,9 +56,9 @@ module RuboCop
 
         def with_index?(klass, table, names)
           # Compatibility for Rails 4.2.
-          add_indicies = schema.add_indicies_by(table_name: table_name(klass))
+          add_indices = schema.add_indices_by(table_name: table_name(klass))
 
-          (table.indices + add_indicies).any? do |index|
+          (table.indices + add_indices).any? do |index|
             index.unique &&
               (index.columns.to_set == names ||
                include_column_names_in_expression_index?(index, names))

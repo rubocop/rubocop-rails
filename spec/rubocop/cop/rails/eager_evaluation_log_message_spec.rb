@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::EagerEvaluationLogMessage, :config do
-  it 'regesters an offense when passing an interpolated string to Rails.logger.debug' do
+  it 'registers an offense when passing an interpolated string to Rails.logger.debug' do
     expect_offense(<<~'RUBY')
       Rails.logger.debug "The time is #{Time.now}"
                          ^^^^^^^^^^^^^^^^^^^^^^^^^ Pass a block to `Rails.logger.debug`.

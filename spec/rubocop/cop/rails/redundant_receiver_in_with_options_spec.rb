@@ -44,7 +44,7 @@ RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
   end
 
   it 'registers an offense and corrects when including multiple ' \
-     'redendant receivers in single line' do
+     'redundant receivers in single line' do
     expect_offense(<<~RUBY)
       with_options options: false do |merger|
         merger.invoke(merger.something)

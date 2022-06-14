@@ -95,7 +95,7 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
     RUBY
   end
 
-  it 'registers an officense when `return` is used outside of a `rescue`' do
+  it 'registers an offense when `return` is used outside of a `rescue`' do
     expect_offense(<<~RUBY)
       ApplicationRecord.transaction do
         return if user.active?

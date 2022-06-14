@@ -29,7 +29,7 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
     expect_no_offenses('User.find_by(id: x)')
   end
 
-  it 'does not register an offense whtn `take` is not used immediately after `where`' do
+  it 'does not register an offense when `take` is not used immediately after `where`' do
     expect_no_offenses(<<~RUBY)
       Model.where(foo: :bar).order(:baz).take
     RUBY
