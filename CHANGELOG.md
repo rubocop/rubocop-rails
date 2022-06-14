@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.15.0 (2022-06-14)
+
 ### New features
 
 * [#325](https://github.com/rubocop/rubocop-rails/pull/325): Add new `Rails/DotSeparatedKeys` cop. ([@fatkodima][])

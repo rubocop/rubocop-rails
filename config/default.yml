@@ -272,13 +272,13 @@ Rails/DeprecatedActiveModelErrorsMethods:
   Enabled: pending
   Safe: false
   VersionAdded: '2.14'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.15'
 
 Rails/DotSeparatedKeys:
   Description: 'Enforces the use of dot-separated keys instead of `:scope` options in `I18n` translation methods.'
   StyleGuide: 'https://rails.rubystyle.guide/#dot-separated-keys'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.15'
 
 Rails/DuplicateAssociation:
   Description: "Don't repeat associations in a model."
@@ -787,7 +787,7 @@ Rails/RootJoinChain:
 Rails/RootPublicPath:
   Description: "Favor `Rails.public_path` over `Rails.root` with `'public'`."
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.15'
 
 Rails/SafeNavigation:
   Description: "Use Ruby's safe navigation operator (`&.`) instead of `try!`."
@@ -889,7 +889,7 @@ Rails/StripHeredoc:
   Description: 'Enforces the use of squiggly heredoc over `strip_heredoc`.'
   StyleGuide: 'https://rails.rubystyle.guide/#prefer-squiggly-heredoc'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.15'
 
 Rails/TableNameAssignment:
   Description: >-
@@ -934,7 +934,7 @@ Rails/ToFormattedS:
   SupportedStyles:
     - to_fs
     - to_formatted_s
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.15'
 
 Rails/TransactionExitStatement:
   Description: 'Avoid the usage of `return`, `break` and `throw` in transaction blocks.'

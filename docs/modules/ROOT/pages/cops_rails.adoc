@@ -65,7 +65,7 @@ end
 | -
 |===
 
-This cop enforces the consistent use of action filter methods.
+Enforces the consistent use of action filter methods.
 
 The cop is configurable and can enforce the use of the older
 something_filter methods or the newer something_action methods.
@@ -112,7 +112,7 @@ skip_after_filter :do_stuff
 | `action`, `filter`
 
 | Include
-| `+app/controllers/**/*.rb+`
+| `+app/controllers/**/*.rb+`, `+app/mailers/**/*.rb+`
 | Array
 |===
 
@@ -159,7 +159,7 @@ book.update!(author: 'Alice')
 | -
 |===
 
-This cop checks that Active Record callbacks are declared
+Checks that Active Record callbacks are declared
 in the order in which they will be executed.
 
 === Examples
@@ -252,7 +252,7 @@ end
 | -
 |===
 
-This cop checks that ActiveSupport aliases to core ruby methods
+Checks that ActiveSupport aliases to core ruby methods
 are not used.
 
 === Examples
@@ -284,7 +284,7 @@ are not used.
 | -
 |===
 
-This cop checks for migrations using `add_column` that have an `index`
+Checks for migrations using `add_column` that have an `index`
 key. `add_column` does not accept `index`, but also does not raise an
 error for extra keys, so it is possible to mistakenly add the key without
 realizing it will not actually add an index.
@@ -323,7 +323,7 @@ add_index :table, :column
 | -
 |===
 
-This cop enforces that there is only one call to `after_commit`
+Enforces that there is only one call to `after_commit`
 (and its aliases - `after_create_commit`, `after_update_commit`,
 and `after_destroy_commit`) with the same callback name per model.
 
@@ -367,7 +367,7 @@ after_update_commit :log_update_action
 | 2.5
 |===
 
-This cop checks that controllers subclass `ApplicationController`.
+Checks that controllers subclass `ApplicationController`.
 
 === Safety
 
@@ -401,7 +401,7 @@ end
 | 2.5
 |===
 
-This cop checks that jobs subclass `ApplicationJob` with Rails 5.0.
+Checks that jobs subclass `ApplicationJob` with Rails 5.0.
 
 === Safety
 
@@ -435,7 +435,7 @@ end
 | 2.5
 |===
 
-This cop checks that mailers subclass `ApplicationMailer` with Rails 5.0.
+Checks that mailers subclass `ApplicationMailer` with Rails 5.0.
 
 === Safety
 
@@ -469,7 +469,7 @@ end
 | 2.5
 |===
 
-This cop checks that models subclass `ApplicationRecord` with Rails 5.0.
+Checks that models subclass `ApplicationRecord` with Rails 5.0.
 
 === Safety
 
@@ -504,7 +504,7 @@ end
 | -
 |===
 
-This cop prevents usage of `"*"` on an Arel::Table column reference.
+Prevents usage of `"*"` on an Arel::Table column reference.
 
 Using `arel_table["*"]` causes the outputted string to be a literal
 quoted asterisk (e.g. <tt>`my_model`.`*`</tt>). This causes the
@@ -576,7 +576,7 @@ assert_not x
 | -
 |===
 
-This cop looks for `attribute` class methods that specify a `:default` option
+Looks for `attribute` class methods that specify a `:default` option
 which value is an array, string literal or method call without a block.
 It will accept all other values, such as string, symbol, integer and float literals
 as well as constants.
@@ -659,7 +659,7 @@ end
 | -
 |===
 
-This cop looks for belongs_to associations where we control whether the
+Looks for belongs_to associations where we control whether the
 association is required via the deprecated `required` option instead.
 
 Since Rails 5, belongs_to associations are required by default and this
@@ -720,18 +720,18 @@ end
 | 2.10
 |===
 
-This cop checks for code that can be written with simpler conditionals
+Checks for code that can be written with simpler conditionals
 using `Object#blank?` defined by Active Support.
 
 Interaction with `Style/UnlessElse`:
 The configuration of `NotPresent` will not produce an offense in the
 context of `unless else` if `Style/UnlessElse` is inabled. This is
-to prevent interference between the auto-correction of the two cops.
+to prevent interference between the autocorrection of the two cops.
 
 === Safety
 
-This cop is unsafe auto-correction, because `' '.empty?` returns false,
-but `' '.blank?` returns true. Therefore, auto-correction is not compatible
+This cop is unsafe autocorrection, because `' '.empty?` returns false,
+but `' '.blank?` returns true. Therefore, autocorrection is not compatible
 if the receiver is a non-empty blank string, tab, or newline meta characters.
 
 === Examples
@@ -821,7 +821,7 @@ end
 | -
 |===
 
-This Cop checks whether alter queries are combinable.
+Checks whether alter queries are combinable.
 If combinable queries are detected, it suggests to you
 to use `change_table` with `bulk: true` instead.
 This option causes the migration to generate a single
@@ -928,7 +928,7 @@ And `compact_blank!` has different implementations for `Array`, `Hash`, and
 `ActionController::Parameters`.
 `Array#compact_blank!`, `Hash#compact_blank!` are equivalent to `delete_if(&:blank?)`.
 `ActionController::Parameters#compact_blank!` is equivalent to `reject!(&:blank?)`.
-If the cop makes a mistake, auto-corrected code may get unexpected behavior.
+If the cop makes a mistake, autocorrected code may get unexpected behavior.
 
 === Examples
 
@@ -963,7 +963,7 @@ collection.compact_blank!
 | 2.12
 |===
 
-This cop checks legacy syntax usage of `tag`
+Checks legacy syntax usage of `tag`
 
 NOTE: Allow `tag` when the first argument is a variable because
 `tag(name)` is simpler rather than `tag.public_send(name)`.
@@ -1011,7 +1011,7 @@ tag(name, class: 'classname')
 | -
 |===
 
-This cop checks the migration for which timestamps are not included
+Checks the migration for which timestamps are not included
 when creating a new table.
 In many cases, timestamps are useful information and should be added.
 
@@ -1079,7 +1079,7 @@ end
 | 2.11
 |===
 
-This cop checks for the correct use of Date methods,
+Checks for the correct use of Date methods,
 such as Date.today, Date.current etc.
 
 Using `Date.today` is dangerous, because it doesn't know anything about
@@ -1100,20 +1100,6 @@ And you can set a warning for `to_time` with `AllowToTime: false`.
 
 === Examples
 
-==== EnforcedStyle: strict
-
-[source,ruby]
-----
-# bad
-Date.current
-Date.yesterday
-Date.today
-
-# good
-Time.zone.today
-Time.zone.today - 1.day
-----
-
 ==== EnforcedStyle: flexible (default)
 
 [source,ruby]
@@ -1127,6 +1113,20 @@ Time.zone.today - 1.day
 Date.current
 Date.yesterday
 date.in_time_zone
+----
+
+==== EnforcedStyle: strict
+
+[source,ruby]
+----
+# bad
+Date.current
+Date.yesterday
+Date.today
+
+# good
+Time.zone.today
+Time.zone.today - 1.day
 ----
 
 ==== AllowToTime: true (default)
@@ -1171,7 +1171,7 @@ date.to_time
 | -
 |===
 
-This cop looks for uses of `default_scope`.
+Looks for uses of `default_scope`.
 
 === Examples
 
@@ -1210,7 +1210,7 @@ end
 | 0.50
 |===
 
-This cop looks for delegations that could have been created
+Looks for delegations that could have been created
 automatically with the `delegate` method.
 
 Safe navigation `&.` is ignored because Rails' `allow_nil`
@@ -1294,7 +1294,7 @@ delegate :bar, to: :foo, prefix: true
 | -
 |===
 
-This cop looks for delegations that pass :allow_blank as an option
+Looks for delegations that pass :allow_blank as an option
 instead of :allow_nil. :allow_blank is not a valid option to pass
 to ActiveSupport#delegate.
 
@@ -1316,12 +1316,12 @@ delegate :foo, to: :bar, allow_nil: true
 
 | Pending
 | No
-| No
+| Yes (Unsafe)
 | 2.14
-| -
+| 2.15
 |===
 
-This cop checks direct manipulation of ActiveModel#errors as hash.
+Checks direct manipulation of ActiveModel#errors as hash.
 These operations are deprecated in Rails 6.1 and will not work in Rails 7.
 
 === Safety
@@ -1347,7 +1347,46 @@ user.errors.messages[:name].clear
 
 # good
 user.errors.delete(:name)
+
+# bad
+user.errors.keys.include?(:attr)
+
+# good
+user.errors.attribute_names.include?(:attr)
 ----
+
+== Rails/DotSeparatedKeys
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.15
+| -
+|===
+
+Enforces the use of dot-separated locale keys instead of specifying the `:scope` option
+with an array or a single symbol in `I18n` translation methods.
+Dot-separated notation is easier to read and trace the hierarchy.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+I18n.t :record_invalid, scope: [:activerecord, :errors, :messages]
+I18n.t :title, scope: :invitation
+
+# good
+I18n.t 'activerecord.errors.messages.record_invalid'
+I18n.t :record_invalid, scope: 'activerecord.errors.messages'
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#dot-separated-keys
 
 == Rails/DuplicateAssociation
 
@@ -1361,7 +1400,7 @@ user.errors.delete(:name)
 | -
 |===
 
-This cop looks for associations that have been defined multiple times in the same file.
+Looks for associations that have been defined multiple times in the same file.
 
 When an association is defined multiple times on a model, Active Record overrides the
 previously defined association with the new one. Because of this, this cop's autocorrection
@@ -1393,7 +1432,7 @@ has_one :foo
 | -
 |===
 
-This cop checks for multiple scopes in a model that have the same `where` clause. This
+Checks for multiple scopes in a model that have the same `where` clause. This
 often means you copy/pasted a scope, updated the name, and forgot to change the condition.
 
 === Examples
@@ -1421,7 +1460,7 @@ scope :hidden, -> { where(visible: false) }
 | -
 |===
 
-This cop checks if a duration is added to or subtracted from `Time.current`.
+Checks if a duration is added to or subtracted from `Time.current`.
 
 === Examples
 
@@ -1457,7 +1496,7 @@ created_at - 1.minute
 | 2.10
 |===
 
-This cop checks dynamic `find_by_*` methods.
+Checks dynamic `find_by_*` methods.
 Use `find_by` instead of dynamic method.
 See. https://rails.rubystyle.guide#find_by
 
@@ -1537,7 +1576,7 @@ Gem::Specification.find_by_name('backend').gem_dir
 | -
 |===
 
-This cop checks that blocks are used for interpolated strings passed to
+Checks that blocks are used for interpolated strings passed to
 `Rails.logger.debug`.
 
 By default, Rails production environments use the `:info` log level.
@@ -1574,7 +1613,7 @@ Rails.logger.debug { "The time is #{Time.zone.now}." }
 | -
 |===
 
-This cop looks for enums written with array syntax.
+Looks for enums written with array syntax.
 
 When using array syntax, adding an element in a
 position other than the last causes all previous
@@ -1618,7 +1657,7 @@ enum status: { active: 0, archived: 1 }
 | -
 |===
 
-This cop looks for duplicate values in enum declarations.
+Looks for duplicate values in enum declarations.
 
 === Examples
 
@@ -1659,7 +1698,7 @@ enum status: [:active, :archived]
 | -
 |===
 
-This cop checks that Rails.env is compared using `.production?`-like
+Checks that Rails.env is compared using `.production?`-like
 methods instead of equality against a string or symbol.
 
 === Examples
@@ -1688,7 +1727,7 @@ Rails.env.production?
 | 2.11
 |===
 
-This cop looks for direct access to environment variables through the
+Looks for direct access to environment variables through the
 `ENV` variable within the application code. This can lead to runtime
 errors due to misconfiguration that could have been discovered at boot
 time if the environment variables were loaded as part of initialization
@@ -1774,7 +1813,7 @@ ENV["FOO"] = "bar"
 | -
 |===
 
-This cop enforces that `exit` calls are not used within a rails app.
+Enforces that `exit` calls are not used within a rails app.
 Valid options are instead to raise an error, break, return, or some
 other form of stopping execution of current request.
 
@@ -1825,7 +1864,7 @@ raise 'a bad error has happened'
 | -
 |===
 
-This cop checks for expanded date range. It only compatible `..` range is targeted.
+Checks for expanded date range. It only compatible `..` range is targeted.
 Incompatible `...` range is ignored.
 
 === Examples
@@ -1859,24 +1898,11 @@ date.all_year
 | 2.4
 |===
 
-This cop is used to identify usages of file path joining process
+Identifies usages of file path joining process
 to use `Rails.root.join` clause. It is used to add uniformity when
 joining paths.
 
 === Examples
-
-==== EnforcedStyle: arguments
-
-[source,ruby]
-----
-# bad
-Rails.root.join('app/models/goober')
-File.join(Rails.root, 'app/models/goober')
-"#{Rails.root}/app/models/goober"
-
-# good
-Rails.root.join('app', 'models', 'goober')
-----
 
 ==== EnforcedStyle: slashes (default)
 
@@ -1889,6 +1915,19 @@ File.join(Rails.root, 'app/models/goober')
 
 # good
 Rails.root.join('app/models/goober')
+----
+
+==== EnforcedStyle: arguments
+
+[source,ruby]
+----
+# bad
+Rails.root.join('app/models/goober')
+File.join(Rails.root, 'app/models/goober')
+"#{Rails.root}/app/models/goober"
+
+# good
+Rails.root.join('app', 'models', 'goober')
 ----
 
 === Configurable attributes
@@ -1913,7 +1952,7 @@ Rails.root.join('app/models/goober')
 | 2.11
 |===
 
-This cop is used to identify usages of `where.take` and change them to use `find_by` instead.
+Identifies usages of `where.take` and change them to use `find_by` instead.
 
 And `where(...).first` can return different results from `find_by`.
 (They order records differently, so the "first" record can be different.)
@@ -1977,7 +2016,7 @@ User.where(name: 'Bruce').first
 | -
 |===
 
-This cop enforces that `ActiveRecord#find` is used instead of
+Enforces that `ActiveRecord#find` is used instead of
 `where.take!`, `find_by!`, and `find_by_id!` to retrieve a single record
 by primary key when you expect it to be found.
 
@@ -2010,7 +2049,7 @@ User.find(id)
 | 2.9
 |===
 
-This cop is used to identify usages of `all.each` and
+Identifies usages of `all.each` and
 change them to use `all.find_each` instead.
 
 === Examples
@@ -2062,7 +2101,7 @@ User.order(:foo).each
 | -
 |===
 
-This cop checks for the use of the has_and_belongs_to_many macro.
+Checks for the use of the has_and_belongs_to_many macro.
 
 === Examples
 
@@ -2101,7 +2140,7 @@ This cop checks for the use of the has_and_belongs_to_many macro.
 | -
 |===
 
-This cop looks for `has_many` or `has_one` associations that don't
+Looks for `has_many` or `has_one` associations that don't
 specify a `:dependent` option.
 
 It doesn't register an offense if `:through` or `dependent: nil`
@@ -2161,7 +2200,7 @@ end
 | -
 |===
 
-This cop checks for use of the helper methods which reference
+Checks for use of the helper methods which reference
 instance variables.
 
 Relying on instance variables makes it difficult to re-use helper
@@ -2216,7 +2255,7 @@ end
 | -
 |===
 
-This cop is used to identify usages of http methods like `get`, `post`,
+Identifies usages of http methods like `get`, `post`,
 `put`, `patch` without the usage of keyword arguments in your tests and
 change them to use keyword args. This cop only applies to Rails >= 5.
 If you are running Rails < 5 you should disable the
@@ -2321,7 +2360,7 @@ head 200
 | -
 |===
 
-This cop checks for places where I18n "lazy" lookup can be used.
+Checks for places where I18n "lazy" lookup can be used.
 
 === Examples
 
@@ -2377,7 +2416,7 @@ end
 | -
 |===
 
-This cop checks for the use of `I18n.locale=` method.
+Checks for the use of `I18n.locale=` method.
 
 The `locale` attribute persists for the rest of the Ruby runtime, potentially causing
 unexpected behavior at a later time.
@@ -2501,7 +2540,7 @@ end
 | -
 |===
 
-This cop checks that `if` and `only` (or `except`) are not used together
+Checks that `if` and `only` (or `except`) are not used together
 as options of `skip_*` action filter.
 
 The `if` option will be ignored when `if` and `only` are used together.
@@ -2546,7 +2585,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+app/controllers/**/*.rb+`
+| `+app/controllers/**/*.rb+`, `+app/mailers/**/*.rb+`
 | Array
 |===
 
@@ -2566,7 +2605,7 @@ end
 | 2.8
 |===
 
-This cop looks for uses of `each_with_object({}) { ... }`,
+Looks for uses of `each_with_object({}) { ... }`,
 `map { ... }.to_h`, and `Hash[map { ... }]` that are transforming
 an enumerable into a hash where the values are the original elements.
 Rails provides the `index_by` method for this purpose.
@@ -2597,7 +2636,7 @@ Hash[[1, 2, 3].collect { |el| [foo(el), el] }]
 | 2.8
 |===
 
-This cop looks for uses of `each_with_object({}) { ... }`,
+Looks for uses of `each_with_object({}) { ... }`,
 `map { ... }.to_h`, and `Hash[map { ... }]` that are transforming
 an enumerable into a hash where the keys are the original elements.
 Rails provides the `index_with` method for this purpose.
@@ -2628,7 +2667,7 @@ Hash[[1, 2, 3].collect { |el| [el, foo(el)] }]
 | -
 |===
 
-This cop checks that Active Support's `inquiry` method is not used.
+Checks that Active Support's `inquiry` method is not used.
 
 === Examples
 
@@ -2667,7 +2706,7 @@ pets.include? 'cat'
 | -
 |===
 
-This cop looks for has_(one|many) and belongs_to associations where
+Looks for has_(one|many) and belongs_to associations where
 Active Record can't automatically determine the inverse association
 because of a scope or the options used. Using the blog with order scope
 example below, traversing the a Blog's association in both directions
@@ -2846,7 +2885,7 @@ end
 | -
 |===
 
-This cop checks that methods specified in the filter's `only` or
+Checks that methods specified in the filter's `only` or
 `except` options are defined within the same class or module.
 
 === Safety
@@ -2942,7 +2981,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+app/controllers/**/*.rb+`
+| `+app/controllers/**/*.rb+`, `+app/mailers/**/*.rb+`
 | Array
 |===
 
@@ -2962,7 +3001,7 @@ end
 | -
 |===
 
-This cop checks for calls to `link_to` that contain a
+Checks for calls to `link_to` that contain a
 `target: '_blank'` but no `rel: 'noopener'`. This can be a security
 risk as the loaded page will have control over the previous page
 and could change its location for phishing purposes.
@@ -3002,7 +3041,7 @@ link_to 'Click here', url, target: '_blank', rel: 'noreferrer'
 | -
 |===
 
-This cop enforces that mailer names end with `Mailer` suffix.
+Enforces that mailer names end with `Mailer` suffix.
 
 Without the `Mailer` suffix it isn't immediately apparent what's a mailer
 and which views are related to the mailer.
@@ -3057,7 +3096,7 @@ end
 | -
 |===
 
-This cop identifies places where defining routes with `match`
+Identifies places where defining routes with `match`
 can be replaced with a specific HTTP method.
 
 Don't use `match` to define any routes unless there is a need to map multiple request types
@@ -3104,7 +3143,7 @@ match 'photos/:id', to: 'photos#show', via: :all
 | -
 |===
 
-This cop makes sure that each migration file defines a migration class
+Makes sure that each migration file defines a migration class
 whose name matches the file name.
 (e.g. `20220224111111_create_users.rb` should define `CreateUsers` class.)
 
@@ -3145,7 +3184,7 @@ end
 | 2.9
 |===
 
-This cop enforces the use of `collection.exclude?(obj)`
+Enforces the use of `collection.exclude?(obj)`
 over `!collection.include?(obj)`.
 
 === Safety
@@ -3182,7 +3221,7 @@ hash.exclude?(:key)
 | -
 |===
 
-This cop checks for add_column call with NOT NULL constraint
+Checks for add_column call with NOT NULL constraint
 in migration file.
 
 === Examples
@@ -3222,7 +3261,7 @@ add_reference :products, :category, null: false, default: 1
 | -
 |===
 
-This cop checks for places where ordering by `id` column is used.
+Checks for places where ordering by `id` column is used.
 
 Don't use the `id` column for ordering. The sequence of ids is not guaranteed
 to be in any particular order, despite often (incidentally) being chronological.
@@ -3259,7 +3298,7 @@ scope :chronological, -> { order(created_at: :asc) }
 | 0.19
 |===
 
-This cop checks for the use of output calls like puts and print
+Checks for the use of output calls like puts and print
 
 === Safety
 
@@ -3301,7 +3340,7 @@ Rails.logger.debug 'A debug message'
 | -
 |===
 
-This cop checks for the use of output safety calls like `html_safe`,
+Checks for the use of output safety calls like `html_safe`,
 `raw`, and `safe_concat`. These methods do not escape content. They
 simply return a SafeBuffer containing the content as is. Instead,
 use `safe_join` to join content and escape it and concat to
@@ -3377,7 +3416,7 @@ safe_join([user_content, " ", content_tag(:span, user_content)])
 | -
 |===
 
-This cop enforces the use of `pick` over `pluck(...).first`.
+Enforces the use of `pick` over `pluck(...).first`.
 
 Using `pluck` followed by `first` creates an intermediate array, which
 `pick` avoids. When called on an Active Record relation, `pick` adds a
@@ -3420,7 +3459,7 @@ Model.pick(:a)
 | -
 |===
 
-This cop enforces the use of `pluck` over `map`.
+Enforces the use of `pluck` over `map`.
 
 `pluck` can be used instead of `map` to extract a single key from each
 element in an enumerable. When called on an Active Record relation, it
@@ -3455,7 +3494,7 @@ Post.published.pluck(:title)
 | -
 |===
 
-This cop enforces the use of `ids` over `pluck(:id)` and `pluck(primary_key)`.
+Enforces the use of `ids` over `pluck(:id)` and `pluck(primary_key)`.
 
 === Safety
 
@@ -3498,7 +3537,7 @@ end
 | 2.8
 |===
 
-This cop identifies places where `pluck` is used in `where` query methods
+Identifies places where `pluck` is used in `where` query methods
 and can be replaced with `select`.
 
 Since `pluck` is an eager method and hits the database immediately,
@@ -3565,7 +3604,7 @@ Post.where(user_id: active_users.pluck(:id))
 | -
 |===
 
-This cop checks for correct grammar when using ActiveSupport's
+Checks for correct grammar when using ActiveSupport's
 core extensions to the numeric classes.
 
 === Examples
@@ -3593,7 +3632,7 @@ core extensions to the numeric classes.
 | -
 |===
 
-This cop checks code that can be written more easily using
+Checks code that can be written more easily using
 `Object#presence` defined by Active Support.
 
 === Examples
@@ -3646,13 +3685,13 @@ a.presence || b
 | 0.67
 |===
 
-This cop checks for code that can be written with simpler conditionals
+Checks for code that can be written with simpler conditionals
 using `Object#present?` defined by Active Support.
 
 Interaction with `Style/UnlessElse`:
 The configuration of `NotBlank` will not produce an offense in the
 context of `unless else` if `Style/UnlessElse` is inabled. This is
-to prevent interference between the auto-correction of the two cops.
+to prevent interference between the autocorrection of the two cops.
 
 === Examples
 
@@ -3731,7 +3770,7 @@ something if foo.present?
 | 2.6
 |===
 
-This cop checks for Rake tasks without the `:environment` task
+Checks for Rake tasks without the `:environment` task
 dependency. The `:environment` task loads application code for other
 Rake tasks. Without it, tasks cannot make use of application code like
 models.
@@ -3789,7 +3828,7 @@ end
 | 0.29
 |===
 
-This cop checks for the use of the `read_attribute` or `write_attribute`
+Checks for the use of the `read_attribute` or `write_attribute`
 methods and recommends square brackets instead.
 
 If an attribute is missing from the instance (for example, when
@@ -3900,7 +3939,7 @@ validates :x, length: { is: 5 }, allow_nil: true, allow_blank: false
 | -
 |===
 
-This cop detects cases where the `:foreign_key` option on associations
+Detects cases where the `:foreign_key` option on associations
 is redundant.
 
 === Examples
@@ -3983,7 +4022,7 @@ belongs_to :author, foreign_key: :user_id
 | -
 |===
 
-This cop checks for redundant receiver in `with_options`.
+Checks for redundant receiver in `with_options`.
 Receiver is implicit from Rails 4.2 or higher.
 
 === Examples
@@ -4053,7 +4092,7 @@ end
 | -
 |===
 
-This cop checks for redundant `travel_back` calls.
+Checks for redundant `travel_back` calls.
 Since Rails 5.2, `travel_back` is automatically called at the end of the test.
 
 === Examples
@@ -4105,7 +4144,7 @@ end
 | 2.10
 |===
 
-This cop checks if the value of the option `class_name`, in
+Checks if the value of the option `class_name`, in
 the definition of a reflection is a string.
 
 === Safety
@@ -4197,7 +4236,7 @@ refute_equal true, false
 | 2.13
 |===
 
-This cop checks whether constant value isn't relative date.
+Checks whether constant value isn't relative date.
 Because the relative date will be evaluated only once.
 
 === Safety
@@ -4242,7 +4281,7 @@ end
 | -
 |===
 
-This cop looks for inline rendering within controller actions.
+Looks for inline rendering within controller actions.
 
 === Examples
 
@@ -4283,7 +4322,7 @@ end
 | -
 |===
 
-This cop identifies places where `render text:` can be
+Identifies places where `render text:` can be
 replaced with `render plain:`.
 
 === Examples
@@ -4342,7 +4381,7 @@ render text: 'Ruby!'
 | -
 |===
 
-This cop checks for consistent uses of `request.referer` or
+Checks for consistent uses of `request.referer` or
 `request.referrer`, depending on the cop's configuration.
 
 === Examples
@@ -4391,7 +4430,7 @@ request.referrer
 | -
 |===
 
-This cop checks for the usage of `require_dependency`.
+Checks for the usage of `require_dependency`.
 
 `require_dependency` is an obsolete method for Rails applications running in Zeitwerk mode.
 In Zeitwerk mode, the semantics should match Ruby's and no need to be defensive with load order,
@@ -4426,7 +4465,7 @@ require_dependency 'some_lib'
 | 2.13
 |===
 
-This cop checks whether the change method of the migration file is
+Checks whether the change method of the migration file is
 reversible.
 
 === Examples
@@ -4642,7 +4681,7 @@ end
 | 2.13
 |===
 
-This cop checks whether the migration implements
+Checks whether the migration implements
 either a `change` method or both an `up` and a `down`
 method.
 
@@ -4727,7 +4766,38 @@ Rails.public_path.join('path', 'file.pdf')
 Rails.public_path.join('path', to, 'file.pdf')
 ----
 
+== Rails/RootPublicPath
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.15
+| -
+|===
+
+Favor `Rails.public_path` over `Rails.root` with `'public'`
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+Rails.root.join('public')
+Rails.root.join('public/file.pdf')
+Rails.root.join('public', 'file.pdf')
+
+# good
+Rails.public_path
+Rails.public_path.join('file.pdf')
+Rails.public_path.join('file.pdf')
+----
+
 == Rails/SafeNavigation
+
+NOTE: Required Ruby version: 2.3
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -4739,8 +4809,9 @@ Rails.public_path.join('path', to, 'file.pdf')
 | -
 |===
 
-This cop converts usages of `try!` to `&.`. It can also be configured
-to convert `try`. It will convert code to use safe navigation.
+Converts usages of `try!` to `&.`. It can also be configured
+to convert `try`. It will convert code to use safe navigation
+if the target Ruby version is set to 2.3+
 
 === Examples
 
@@ -4805,7 +4876,7 @@ foo&.bar { |e| e.baz }
 | -
 |===
 
-This cop checks to make sure safe navigation isn't used with `blank?` in
+Checks to make sure safe navigation isn't used with `blank?` in
 a conditional.
 
 === Safety
@@ -4847,7 +4918,7 @@ do_something unless foo.blank?
 | 0.59
 |===
 
-This cop identifies possible cases where Active Record save! or related
+Identifies possible cases where Active Record save! or related
 should be used instead of save because the model might have failed to
 save and an exception is better than unhandled failure.
 
@@ -4882,7 +4953,7 @@ end
 
 update_attributes
 
-# After running rubocop --safe-auto-correct
+# After running rubocop --safe-autocorrect
 def update_attributes
 end
 
@@ -5004,7 +5075,7 @@ Service::Mailer::update
 | -
 |===
 
-This cop enforces the use of the `comment` option when adding a new table or column
+Enforces the use of the `comment` option when adding a new table or column
 to the database during a migration.
 
 === Examples
@@ -5038,7 +5109,7 @@ end
 | 2.12
 |===
 
-This cop checks for scope calls where it was passed
+Checks for scope calls where it was passed
 a method (usually a scope) instead of a lambda/proc.
 
 === Examples
@@ -5074,7 +5145,7 @@ scope :something, -> { where(something: true) }
 | -
 |===
 
-This cop enforces that short forms of `I18n` methods are used:
+Enforces that short forms of `I18n` methods are used:
 `t` instead of `translate` and `l` instead of `localize`.
 
 This cop has two different enforcement modes. When the EnforcedStyle
@@ -5147,7 +5218,7 @@ l Time.now
 | 2.7
 |===
 
-This cop checks for the use of methods which skip
+Checks for the use of methods which skip
 validations which are listed in
 https://guides.rubyonrails.org/active_record_validations.html#skipping-validations
 
@@ -5222,7 +5293,7 @@ Checks SQL heredocs to use `.squish`.
 === Safety
 
 Some SQL syntax (e.g. PostgreSQL comments and functions) requires newlines
-to be preserved in order to work, thus auto-correction for this cop is not safe.
+to be preserved in order to work, thus autocorrection for this cop is not safe.
 
 === Examples
 
@@ -5263,6 +5334,46 @@ SQL
 
 * https://rails.rubystyle.guide/#squished-heredocs
 
+== Rails/StripHeredoc
+
+NOTE: Required Ruby version: 2.3
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.15
+| -
+|===
+
+Enforces the use of squiggly heredoc over `strip_heredoc`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+<<EOS.strip_heredoc
+  some text
+EOS
+
+# bad
+<<-EOS.strip_heredoc
+  some text
+EOS
+
+# good
+<<~EOS
+  some text
+EOS
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#prefer-squiggly-heredoc
+
 == Rails/TableNameAssignment
 
 |===
@@ -5275,7 +5386,7 @@ SQL
 | -
 |===
 
-This cop enforces the absence of explicit table name assignment.
+Enforces the absence of explicit table name assignment.
 
 `self.table_name=` should only be used for very good reasons,
 such as not having control over the database, or working
@@ -5327,7 +5438,7 @@ self.table_name = :some_other_name
 | 2.13
 |===
 
-This cop checks for the use of Time methods without zone.
+Checks for the use of Time methods without zone.
 
 Built on top of Ruby on Rails style guide (https://rails.rubystyle.guide#time)
 and the article http://danilenko.org/2012/7/6/rails_timezones/
@@ -5357,16 +5468,6 @@ Time.zone.parse('2015-03-02T19:05:37')
 Time.zone.parse('2015-03-02T19:05:37Z') # Respect ISO 8601 format with timezone specifier.
 ----
 
-==== EnforcedStyle: strict
-
-[source,ruby]
-----
-# `strict` means that `Time` should be used with `zone`.
-
-# bad
-Time.at(timestamp).in_time_zone
-----
-
 ==== EnforcedStyle: flexible (default)
 
 [source,ruby]
@@ -5374,6 +5475,16 @@ Time.at(timestamp).in_time_zone
 # `flexible` allows usage of `in_time_zone` instead of `zone`.
 
 # good
+Time.at(timestamp).in_time_zone
+----
+
+==== EnforcedStyle: strict
+
+[source,ruby]
+----
+# `strict` means that `Time` should be used with `zone`.
+
+# bad
 Time.at(timestamp).in_time_zone
 ----
 
@@ -5408,7 +5519,7 @@ Time.at(timestamp).in_time_zone
 | -
 |===
 
-This cop checks for the use of `Time.zone=` method.
+Checks for the use of `Time.zone=` method.
 
 The `zone` attribute persists for the rest of the Ruby runtime, potentially causing
 unexpected behavior at a later time.
@@ -5441,6 +5552,59 @@ end
 
 * https://thoughtbot.com/blog/its-about-time-zones
 
+== Rails/ToFormattedS
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.15
+| -
+|===
+
+Checks for consistent uses of `to_fs` or `to_formatted_s`,
+depending on the cop's configuration.
+
+=== Examples
+
+==== EnforcedStyle: to_fs (default)
+
+[source,ruby]
+----
+# bad
+time.to_formatted_s(:db)
+
+# good
+time.to_fs(:db)
+----
+
+==== EnforcedStyle: to_formatted_s
+
+[source,ruby]
+----
+# bad
+time.to_fs(:db)
+
+# good
+time.to_formatted_s(:db)
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| EnforcedStyle
+| `to_fs`
+| `to_fs`, `to_formatted_s`
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#prefer-to-fs
+
 == Rails/TransactionExitStatement
 
 |===
@@ -5453,7 +5617,7 @@ end
 | -
 |===
 
-This cop checks for the use of exit statements (namely `return`,
+Checks for the use of exit statements (namely `return`,
 `break` and `throw`) in transactions. This is due to the eventual
 unexpected behavior when using ActiveRecord >= 7, where transactions
 exitted using these statements are being rollbacked rather than
@@ -5479,6 +5643,11 @@ end
 
 # bad
 ApplicationRecord.transaction do
+  throw if user.active?
+end
+
+# bad, as `with_lock` implicitly opens a transaction too
+user.with_lock do
   throw if user.active?
 end
 
@@ -5628,7 +5797,7 @@ validates :account, length: { minimum: MIN_LENGTH }
 | -
 |===
 
-This cop checks that environments called with `Rails.env` predicates
+Checks that environments called with `Rails.env` predicates
 exist.
 By default the cop allows three environments which Rails ships with:
 `development`, `test`, and `production`.
@@ -5669,7 +5838,7 @@ Rails.env == 'production'
 | -
 |===
 
-This cop suggests you remove a column that does not exist in the schema from `ignored_columns`.
+Suggests you remove a column that does not exist in the schema from `ignored_columns`.
 `ignored_columns` is necessary to drop a column from RDBMS, but you don't need it after the migration
 to drop the column. You avoid forgetting to remove `ignored_columns` by this cop.
 
@@ -5710,7 +5879,7 @@ end
 | 0.41
 |===
 
-This cop checks for the use of old-style attribute validation macros.
+Checks for the use of old-style attribute validation macros.
 
 === Examples
 
@@ -5765,7 +5934,7 @@ validates :foo, uniqueness: true
 | 2.10
 |===
 
-This cop identifies places where manually constructed SQL
+Identifies places where manually constructed SQL
 in `where` can be replaced with `where(attribute: value)`.
 
 === Safety
@@ -5808,7 +5977,7 @@ User.where(users: { name: 'Gabe' })
 | 2.10
 |===
 
-This cop enforces consistent style when using `exists?`.
+Enforces consistent style when using `exists?`.
 
 Two styles are supported for this cop. When EnforcedStyle is 'exists'
 then the cop enforces `exists?(...)` over `where(...).exists?`.
@@ -5818,7 +5987,7 @@ When EnforcedStyle is 'where' then the cop enforces
 
 === Safety
 
-This cop is unsafe for auto-correction because the behavior may change on the following case:
+This cop is unsafe for autocorrection because the behavior may change on the following case:
 
 [source,ruby]
 ----
@@ -5887,7 +6056,7 @@ User.where('length(name) > 10').exists?
 | -
 |===
 
-This cop identifies places where manually constructed SQL
+Identifies places where manually constructed SQL
 in `where` can be replaced with `where.not(...)`.
 
 === Examples
