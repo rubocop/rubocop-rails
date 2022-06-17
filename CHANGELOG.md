@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+* [#TBC](#): New cop `CallbackOptionsUniqueness` checks for duplicated values in the only/except options of controller action callbacks. ([@olliebennett][])
+
 ## 2.15.0 (2022-06-14)
 
 ### New features
@@ -623,3 +625,4 @@
 [@nobuyo]: https://github.com/nobuyo
 [@dorkrawk]: https://github.com/dorkrawk
 [@ydah]: https://github.com/ydah
+[@olliebennett]: https://github.com/olliebennett
