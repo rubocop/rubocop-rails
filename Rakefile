@@ -47,7 +47,7 @@ task :new_cop, [:cop] do |_task, args|
   require 'rubocop'
 
   cop_name = args.fetch(:cop) do
-    warn 'usage: bundle exec rake new_cop[Rails/Name]'
+    warn "usage: bundle exec rake 'new_cop[Rails/Name]'"
     exit!
   end
 
