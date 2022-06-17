@@ -39,6 +39,7 @@ module RuboCop
             corrector.replace(node.loc.selector, style)
           end
         end
+        alias on_csend on_send
       end
     end
   end
