@@ -37,7 +37,20 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedActiveModelErrorsMethods, :config 
       end
 
       context 'when using `keys` method' do
-        it 'registers and corrects an offense' do
+        it 'registers and corrects an offense when root receiver is a variable' do
+          expect_offense(<<~RUBY, file_path)
+            user = create_user
+            user.errors.keys
+            ^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            user = create_user
+            user.errors.attribute_names
+          RUBY
+        end
+
+        it 'registers and corrects an offense when root receiver is a method' do
           expect_offense(<<~RUBY, file_path)
             user.errors.keys.include?(:name)
             ^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.

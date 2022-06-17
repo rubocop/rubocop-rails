@@ -119,7 +119,7 @@ module RuboCop
         def autocorrect(corrector, node)
           receiver = node.receiver
 
-          if receiver.receiver.method?(:messages)
+          if receiver.receiver.send_type? && receiver.receiver.method?(:messages)
             corrector.remove(receiver.receiver.loc.dot)
             corrector.remove(receiver.receiver.loc.selector)
           end
