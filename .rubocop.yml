@@ -27,6 +27,12 @@ Naming/InclusiveLanguage:
   Enabled: true
   CheckStrings: true
   FlaggedTerms:
+    auto-correct:
+      Suggestions:
+        - autocorrect
+    auto_correct:
+      Suggestions:
+        - autocorrect
     behaviour:
       Suggestions:
         - behavior
