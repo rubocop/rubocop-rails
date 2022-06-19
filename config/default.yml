@@ -160,7 +160,7 @@ Rails/AttributeDefaultBlockValue:
   Enabled: pending
   VersionAdded: '2.9'
   Include:
-    - 'models/**/*'
+    - 'app/models/**/*'
 
 Rails/BelongsTo:
   Description: >-
