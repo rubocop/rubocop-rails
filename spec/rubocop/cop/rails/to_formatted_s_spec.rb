@@ -16,6 +16,17 @@ RSpec.describe RuboCop::Cop::Rails::ToFormattedS, :config do
         RUBY
       end
 
+      it 'registers and corrects an offense when using `to_formatted_s` with safe navigation operator' do
+        expect_offense(<<~RUBY)
+          time&.to_formatted_s(:db)
+                ^^^^^^^^^^^^^^ Use `to_fs` instead.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          time&.to_fs(:db)
+        RUBY
+      end
+
       it 'does not register an offense when using `to_fs`' do
         expect_no_offenses(<<~RUBY)
           time.to_fs(:db)
@@ -34,6 +45,17 @@ RSpec.describe RuboCop::Cop::Rails::ToFormattedS, :config do
 
         expect_correction(<<~RUBY)
           time.to_formatted_s(:db)
+        RUBY
+      end
+
+      it 'registers and corrects an offense when using `to_fs` with safe navigation operator' do
+        expect_offense(<<~RUBY)
+          time&.to_fs(:db)
+                ^^^^^ Use `to_formatted_s` instead.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          time&.to_formatted_s(:db)
         RUBY
       end
 
