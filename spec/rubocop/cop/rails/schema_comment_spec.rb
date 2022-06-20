@@ -36,8 +36,7 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
       RUBY
     end
 
-    it 'does not register an offense when `add_column` has `comment` option'\
-       'among other options' do
+    it 'does not register an offense when `add_column` has `comment` option among other options' do
       expect_no_offenses(<<~RUBY)
         add_column :table, :column, :integer, null: false, comment: 'An integer field', default: 0
       RUBY
@@ -96,8 +95,7 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
       RUBY
     end
 
-    it 'does not register an offense when `t.column` has `comment` option' \
-       'among other options' do
+    it 'does not register an offense when `t.column` has `comment` option among other options' do
       expect_no_offenses(<<~RUBY)
         create_table :users, comment: 'Table' do |t|
           t.column :column, :integer, default: nil, comment: 'I am a column', null: true
@@ -105,8 +103,7 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
       RUBY
     end
 
-    it 'does not register an offense when `t.integer` has `comment` option'\
-       'among other options' do
+    it 'does not register an offense when `t.integer` has `comment` option among other options' do
       expect_no_offenses(<<~RUBY)
         create_table :users, comment: 'Table' do |t|
           t.integer :column, default: nil, comment: 'I am a column', null: true

@@ -20,8 +20,7 @@ module RuboCop
       class EnumHash < Base
         extend AutoCorrector
 
-        MSG = 'Enum defined as an array found in `%<enum>s` enum declaration. '\
-              'Use hash syntax instead.'
+        MSG = 'Enum defined as an array found in `%<enum>s` enum declaration. Use hash syntax instead.'
         RESTRICT_ON_SEND = %i[enum].freeze
 
         def_node_matcher :enum?, <<~PATTERN

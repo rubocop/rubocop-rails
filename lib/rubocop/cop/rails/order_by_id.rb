@@ -23,8 +23,7 @@ module RuboCop
       class OrderById < Base
         include RangeHelp
 
-        MSG = 'Do not use the `id` column for ordering. '\
-              'Use a timestamp column to order chronologically.'
+        MSG = 'Do not use the `id` column for ordering. Use a timestamp column to order chronologically.'
         RESTRICT_ON_SEND = %i[order].freeze
 
         def_node_matcher :order_by_id?, <<~PATTERN
