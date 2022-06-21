@@ -19,6 +19,8 @@ RSpec.describe RuboCop::Cop::Rails::DotSeparatedKeys, :config do
                     ^^^^^^^^^^^^^^^^^^^ Use the dot-separated keys instead of specifying the `:scope` option.
       I18n.t :key, scope: :one
                    ^^^^^^^^^^^ Use the dot-separated keys instead of specifying the `:scope` option.
+      I18n.t '.key', scope: :one
+                     ^^^^^^^^^^^ Use the dot-separated keys instead of specifying the `:scope` option.
     RUBY
 
     expect_correction(<<~RUBY)
@@ -29,6 +31,7 @@ RSpec.describe RuboCop::Cop::Rails::DotSeparatedKeys, :config do
       t 'one.two.key', default: 'Not here'
       I18n.t 'one.two.key'
       I18n.t 'one.two.key'
+      I18n.t 'one.key'
       I18n.t 'one.key'
     RUBY
   end

@@ -53,7 +53,7 @@ module RuboCop
         end
 
         def new_key(key_node, scope_node)
-          "'#{scopes(scope_node).map(&:value).join('.')}.#{key_node.value}'"
+          "'#{scopes(scope_node).map(&:value).join('.')}.#{key_node.value}'".squeeze('.')
         end
 
         def scopes(scope_node)
