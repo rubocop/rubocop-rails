@@ -46,6 +46,17 @@ RSpec.describe RuboCop::Cop::Rails::ExpandedDateRange, :config do
       RUBY
     end
 
+    it 'registers and corrects an offense when using `date.beginning_of_week(:sunday)..date.end_of_week(:sunday)`' do
+      expect_offense(<<~RUBY)
+        date.beginning_of_week(:sunday)..date.end_of_week(:sunday)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `date.all_week(:sunday)` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        date.all_week(:sunday)
+      RUBY
+    end
+
     it 'registers and corrects an offense when using `date.beginning_of_year..date.end_of_year`' do
       expect_offense(<<~RUBY)
         date.beginning_of_year..date.end_of_year
@@ -108,6 +119,36 @@ RSpec.describe RuboCop::Cop::Rails::ExpandedDateRange, :config do
     it 'does not register an offense when unmapped methods are at the beginning and end of the range' do
       expect_no_offenses(<<~RUBY)
         date.beginning_of_day..date.end_of_year
+      RUBY
+    end
+
+    it 'does not register an offense when `date.beginning_of_week(:sunday)..date.end_of_week(:saturday)`' do
+      expect_no_offenses(<<~RUBY)
+        date.beginning_of_week(:sunday)..date.end_of_week(:saturday)
+      RUBY
+    end
+
+    it 'does not register an offense when `date.beginning_of_day..date.end_of_day` with any argument' do
+      expect_no_offenses(<<~RUBY)
+        date.beginning_of_day(arg)..date.end_of_day(arg)
+      RUBY
+    end
+
+    it 'does not register an offense when `beginning_of_day..end_of_day`' do
+      expect_no_offenses(<<~RUBY)
+        beginning_of_day..end_of_day
+      RUBY
+    end
+
+    it 'does not register an offense when `beginning_of_day..date.end_of_day`' do
+      expect_no_offenses(<<~RUBY)
+        beginning_of_day..date.end_of_day
+      RUBY
+    end
+
+    it 'does not register an offense when `date.beginning_of_day..end_of_day`' do
+      expect_no_offenses(<<~RUBY)
+        date.beginning_of_day..end_of_day
       RUBY
     end
   end
