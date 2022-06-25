@@ -193,6 +193,11 @@ Rails/BulkChangeTable:
   Include:
     - db/migrate/*.rb
 
+Rails/CallbackOptionsUniqueness:
+  Description: 'Looks for duplicate action names in the `only` and `except` options of controller callbacks.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/CompactBlank:
   Description: 'Checks if collection can be blank-compacted with `compact_blank`.'
   Enabled: pending
