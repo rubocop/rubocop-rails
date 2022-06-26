@@ -643,7 +643,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+models/**/*+`
+| `+app/models/**/*+`
 | Array
 |===
 

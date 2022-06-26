@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.15.1 (2022-06-26)
+
 ### Bug fixes
 
 * [#723](https://github.com/rubocop/rubocop-rails/pull/723): Fix include value in `Rails/AttributeDefaultBlockValue`. ([@kkitadate][])
