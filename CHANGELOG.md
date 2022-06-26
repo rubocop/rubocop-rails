@@ -2,6 +2,13 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#723](https://github.com/rubocop/rubocop-rails/pull/723): Fix include value in `Rails/AttributeDefaultBlockValue`. ([@kkitadate][])
+* [#717](https://github.com/rubocop/rubocop-rails/issues/717): Fix an error for `Rails/DeprecatedActiveModelErrorsMethods` when root receiver is a variable. ([@koic][])
+* [#719](https://github.com/rubocop/rubocop-rails/issues/719): Fix a false negative for `Rails/FormattedS` when using safe navigation operator. ([@koic][])
+* [#725](https://github.com/rubocop/rubocop-rails/issues/725): Fix an incorrect autocorrect for `Rails/DotSeparatedKeys` when a key starts with dot. ([@koic][])
+
 ## 2.15.0 (2022-06-14)
 
 ### New features
@@ -623,3 +630,4 @@
 [@nobuyo]: https://github.com/nobuyo
 [@dorkrawk]: https://github.com/dorkrawk
 [@ydah]: https://github.com/ydah
+[@kkitadate]: https://github.com/kkitadate
