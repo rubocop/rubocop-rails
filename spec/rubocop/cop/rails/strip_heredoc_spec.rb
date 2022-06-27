@@ -74,6 +74,21 @@ RSpec.describe RuboCop::Cop::Rails::StripHeredoc, :config do
       RUBY
     end
 
+    it 'registers an offence when squiggly already present' do
+      expect_offense(<<~RUBY)
+        <<~EOS.strip_heredoc
+        ^^^^^^^^^^^^^^^^^^^^ Use squiggly heredoc (`<<~`) instead of `strip_heredoc`.
+          some text
+        EOS
+      RUBY
+
+      expect_correction(<<~RUBY)
+        <<~EOS
+          some text
+        EOS
+      RUBY
+    end
+
     it 'does not register an offense when using squiggly heredoc' do
       expect_no_offenses(<<~RUBY)
         <<~EOS
