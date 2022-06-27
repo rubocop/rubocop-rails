@@ -15,6 +15,10 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
         bar.foo
       end
     RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: :bar
+    RUBY
   end
 
   it 'finds trivial delegate with arguments' do
@@ -24,6 +28,10 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
         bar.foo(baz)
       end
     RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: :bar
+    RUBY
   end
 
   it 'finds trivial delegate with prefix' do
@@ -32,6 +40,10 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
       ^^^ Use `delegate` to define delegations.
         bar.foo
       end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: :bar, prefix: true
     RUBY
   end
 
@@ -180,57 +192,5 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
         bar&.foo
       end
     RUBY
-  end
-
-  describe '#autocorrect' do
-    context 'trivial delegation' do
-      let(:source) do
-        <<~RUBY
-          def bar
-            foo.bar
-          end
-        RUBY
-      end
-
-      let(:corrected_source) do
-        <<~RUBY
-          delegate :bar, to: :foo
-        RUBY
-      end
-
-      it 'autocorrects' do
-        expect(autocorrect_source(source)).to eq(corrected_source)
-      end
-    end
-
-    context 'trivial delegation with prefix' do
-      let(:source) do
-        <<~RUBY
-          def foo_bar
-            foo.bar
-          end
-        RUBY
-      end
-
-      let(:corrected_source) do
-        <<~RUBY
-          delegate :bar, to: :foo, prefix: true
-        RUBY
-      end
-
-      it 'autocorrects' do
-        expect(autocorrect_source(source)).to eq(corrected_source)
-      end
-
-      context 'with EnforceForPrefixed: false' do
-        let(:cop_config) do
-          { 'EnforceForPrefixed' => false }
-        end
-
-        it 'does not autocorrect' do
-          expect(autocorrect_source(source)).to eq(source)
-        end
-      end
-    end
   end
 end

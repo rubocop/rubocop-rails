@@ -19,13 +19,10 @@ RSpec.describe RuboCop::Cop::Rails::ActiveRecordAliases, :config do
           book&.update_attributes(author: "Alice")
                 ^^^^^^^^^^^^^^^^^ Use `update` instead of `update_attributes`.
         RUBY
-      end
 
-      it 'is autocorrected' do
-        new_source = autocorrect_source(
-          'book&.update_attributes(author: "Alice")'
-        )
-        expect(new_source).to eq 'book&.update(author: "Alice")'
+        expect_correction(<<~RUBY)
+          book&.update(author: "Alice")
+        RUBY
       end
     end
   end
