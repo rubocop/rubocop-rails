@@ -43,7 +43,7 @@ module RuboCop
 
         def register_offense(node, heredoc)
           add_offense(node) do |corrector|
-            squiggly_heredoc = heredoc.source.sub(/\A<<-?/, '<<~')
+            squiggly_heredoc = heredoc.source.sub(/\A<<(-|~)?/, '<<~')
 
             corrector.replace(heredoc, squiggly_heredoc)
             corrector.remove(node.loc.dot)
