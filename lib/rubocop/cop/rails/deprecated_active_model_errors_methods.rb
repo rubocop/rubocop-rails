@@ -106,6 +106,8 @@ module RuboCop
 
         def on_send(node)
           any_manipulation?(node) do
+            next if node.method?(:keys) && target_rails_version <= 6.0
+
             add_offense(node) do |corrector|
               next unless AUTOCORECTABLE_METHODS.include?(node.method_name)
 
