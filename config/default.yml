@@ -367,6 +367,7 @@ Rails/Exit:
 
 Rails/ExpandedDateRange:
   Description: 'Checks for expanded date range.'
+  StyleGuide: 'https://rails.rubystyle.guide/#date-time-range'
   Enabled: pending
   VersionAdded: '2.11'
 
