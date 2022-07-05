@@ -125,7 +125,7 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
         bar.fox
       end
 
-        private
+      private
 
       def fox
         bar.fox
@@ -143,6 +143,41 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
 
       def fox
         bar.fox
+      end
+    RUBY
+  end
+
+  it 'works with private methods declared in inner classes' do
+    expect_offense(<<~RUBY)
+      class A
+        class B
+
+          private
+
+          def foo
+            bar.foo
+          end
+        end
+
+        def baz
+        ^^^ Use `delegate` to define delegations.
+          foo.baz
+        end
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      class A
+        class B
+
+          private
+
+          def foo
+            bar.foo
+          end
+        end
+
+        delegate :baz, to: :foo
       end
     RUBY
   end

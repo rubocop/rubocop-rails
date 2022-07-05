@@ -54,6 +54,7 @@ module RuboCop
       #   delegate :bar, to: :foo, prefix: true
       class Delegate < Base
         extend AutoCorrector
+        include VisibilityHelp
 
         MSG = 'Use `delegate` to define delegations.'
 
@@ -112,17 +113,11 @@ module RuboCop
         end
 
         def private_or_protected_delegation(node)
-          line = node.first_line
-          private_or_protected_before(line) ||
-            private_or_protected_inline(line)
+          private_or_protected_inline(node) || node_visibility(node) != :public
         end
 
-        def private_or_protected_before(line)
-          (processed_source[0..line].map(&:strip) & %w[private protected]).any?
-        end
-
-        def private_or_protected_inline(line)
-          processed_source[line - 1].strip.match?(/\A(private )|(protected )/)
+        def private_or_protected_inline(node)
+          processed_source[node.first_line - 1].strip.match?(/\A(private )|(protected )/)
         end
       end
     end
