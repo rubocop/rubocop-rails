@@ -37,7 +37,8 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Avoid manipulating ActiveModel errors as hash directly.'
-        AUTOCORECTABLE_METHODS = %i[<< clear keys].freeze
+        AUTOCORRECTABLE_METHODS = %i[<< clear keys].freeze
+        INCOMPATIBLE_METHODS = %i[keys values to_h to_xml].freeze
 
         MANIPULATIVE_METHODS = Set[
           *%i[
@@ -55,7 +56,7 @@ module RuboCop
           {
             #root_manipulation?
             #root_assignment?
-            #errors_keys?
+            #errors_deprecated?
             #messages_details_manipulation?
             #messages_details_assignment?
           }
@@ -77,10 +78,10 @@ module RuboCop
             ...)
         PATTERN
 
-        def_node_matcher :errors_keys?, <<~PATTERN
+        def_node_matcher :errors_deprecated?, <<~PATTERN
           (send
             (send #receiver_matcher :errors)
-            :keys)
+            {:keys :values :to_h :to_xml})
         PATTERN
 
         def_node_matcher :messages_details_manipulation?, <<~PATTERN
@@ -106,10 +107,10 @@ module RuboCop
 
         def on_send(node)
           any_manipulation?(node) do
-            next if node.method?(:keys) && target_rails_version <= 6.0
+            next if target_rails_version <= 6.0 && INCOMPATIBLE_METHODS.include?(node.method_name)
 
             add_offense(node) do |corrector|
-              next unless AUTOCORECTABLE_METHODS.include?(node.method_name)
+              next if skip_autocorrect?(node)
 
               autocorrect(corrector, node)
             end
@@ -118,13 +119,15 @@ module RuboCop
 
         private
 
+        def skip_autocorrect?(node)
+          receiver = node.receiver.receiver
+          !AUTOCORRECTABLE_METHODS.include?(node.method_name) || (
+            receiver&.send_type? && receiver&.method?(:details) && node.method?(:<<)
+          )
+        end
+
         def autocorrect(corrector, node)
           receiver = node.receiver
-
-          if receiver.receiver.send_type? && receiver.receiver.method?(:messages)
-            corrector.remove(receiver.receiver.loc.dot)
-            corrector.remove(receiver.receiver.loc.selector)
-          end
 
           range = offense_range(node, receiver)
           replacement = replacement(node, receiver)
@@ -133,11 +136,12 @@ module RuboCop
         end
 
         def offense_range(node, receiver)
-          range_between(receiver.receiver.source_range.end_pos, node.source_range.end_pos)
+          receiver = receiver.receiver while receiver.send_type? && !receiver.method?(:errors) && receiver.receiver
+          range_between(receiver.source_range.end_pos, node.source_range.end_pos)
         end
 
         def replacement(node, receiver)
-          return '.errors.attribute_names' if node.method?(:keys)
+          return '.attribute_names' if node.method?(:keys)
 
           key = receiver.first_argument.source
 
