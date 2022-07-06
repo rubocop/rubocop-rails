@@ -16,6 +16,7 @@ Gemfile.local
 
 # rbenv
 .ruby-version
+.ruby-gemset
 
 # rspec
 /spec/examples.txt
