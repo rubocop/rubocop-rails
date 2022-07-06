@@ -37,7 +37,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Avoid manipulating ActiveModel errors as hash directly.'
-        AUTOCORECTABLE_METHODS = %i[<< clear keys].freeze
+        AUTOCORRECTABLE_METHODS = %i[<< clear keys].freeze
 
         MANIPULATIVE_METHODS = Set[
           *%i[
@@ -109,7 +109,7 @@ module RuboCop
             next if node.method?(:keys) && target_rails_version <= 6.0
 
             add_offense(node) do |corrector|
-              next unless AUTOCORECTABLE_METHODS.include?(node.method_name)
+              next if skip_autocorrect?(node)
 
               autocorrect(corrector, node)
             end
@@ -117,6 +117,13 @@ module RuboCop
         end
 
         private
+
+        def skip_autocorrect?(node)
+          return true unless AUTOCORRECTABLE_METHODS.include?(node.method_name)
+          return false unless (receiver = node.receiver.receiver)
+
+          receiver.send_type? && receiver.method?(:details) && node.method?(:<<)
+        end
 
         def autocorrect(corrector, node)
           receiver = node.receiver
