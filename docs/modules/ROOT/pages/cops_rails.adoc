@@ -1886,6 +1886,10 @@ date.all_quarter
 date.all_year
 ----
 
+=== References
+
+* https://rails.rubystyle.guide/#date-time-range
+
 == Rails/FilePath
 
 |===

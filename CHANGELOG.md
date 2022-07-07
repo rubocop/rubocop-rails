@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.15.2 (2022-07-07)
+
 ### Bug fixes
 
 * [#712](https://github.com/rubocop/rubocop-rails/issues/712): Fix false negative in `Rails/Delegate` when preceding nested class declares private or protected methods. ([@Darhazer][])
