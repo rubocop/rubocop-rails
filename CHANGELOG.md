@@ -2,6 +2,13 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#712](https://github.com/rubocop/rubocop-rails/issues/712): Fix false negative in `Rails/Delegate` when preceding nested class declares private or protected methods. ([@Darhazer][])
+* [#737](https://github.com/rubocop/rubocop-rails/issues/737): Fix a false positive for `Rails/DeprecatedActiveModelErrorsMethods` when using `keys` method with Rails 6.0. ([@koic][])
+* [#737](https://github.com/rubocop/rubocop-rails/pull/737): Make `Rails/ExpandedDateRange` aware `beginning_of_week` with an argument. ([@koic][])
+* [#731](https://github.com/rubocop/rubocop-rails/issues/731): Fix an incorrect autocorrect for `Rails/StripHeredoc`. ([@kazarin][])
+
 ## 2.15.1 (2022-06-26)
 
 ### Bug fixes
@@ -633,3 +640,5 @@
 [@dorkrawk]: https://github.com/dorkrawk
 [@ydah]: https://github.com/ydah
 [@kkitadate]: https://github.com/kkitadate
+[@Darhazer]: https://github.com/Darhazer
+[@kazarin]: https://github.com/kazarin
