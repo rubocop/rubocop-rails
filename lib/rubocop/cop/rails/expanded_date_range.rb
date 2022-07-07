@@ -29,14 +29,6 @@ module RuboCop
 
         minimum_target_rails_version 5.1
 
-        def_node_matcher :expanded_date_range, <<~PATTERN
-          (irange
-            (send
-              $_ {:beginning_of_day :beginning_of_week :beginning_of_month :beginning_of_quarter :beginning_of_year})
-            (send
-              $_ {:end_of_day :end_of_week :end_of_month :end_of_quarter :end_of_year}))
-        PATTERN
-
         PREFERRED_METHODS = {
           beginning_of_day: 'all_day',
           beginning_of_week: 'all_week',
@@ -54,31 +46,55 @@ module RuboCop
         }.freeze
 
         def on_irange(node)
-          return unless expanded_date_range(node)
-
           begin_node = node.begin
           end_node = node.end
-          return unless same_receiver?(begin_node, end_node)
+          return if allow?(begin_node, end_node)
 
-          beginning_method = begin_node.method_name
-          end_method = end_node.method_name
-          return unless use_mapped_methods?(beginning_method, end_method)
+          preferred_method = preferred_method(begin_node)
+          if begin_node.method?(:beginning_of_week) && begin_node.arguments.one?
+            return unless same_argument?(begin_node, end_node)
 
-          preferred_method = "#{begin_node.receiver.source}.#{PREFERRED_METHODS[beginning_method]}"
-
-          add_offense(node, message: format(MSG, preferred_method: preferred_method)) do |corrector|
-            corrector.replace(node, preferred_method)
+            preferred_method << "(#{begin_node.first_argument.source})"
+          elsif any_arguments?(begin_node, end_node)
+            return
           end
+
+          register_offense(node, preferred_method)
         end
 
         private
 
-        def same_receiver?(begin_node, end_node)
-          begin_node.receiver.source == end_node.receiver.source
+        def allow?(begin_node, end_node)
+          return true unless (begin_source = receiver_source(begin_node))
+          return true unless (end_source = receiver_source(end_node))
+
+          begin_source != end_source || MAPPED_DATE_RANGE_METHODS[begin_node.method_name] != end_node.method_name
         end
 
-        def use_mapped_methods?(beginning_method, end_method)
-          MAPPED_DATE_RANGE_METHODS[beginning_method] == end_method
+        def receiver_source(node)
+          return if !node&.send_type? || node.receiver.nil?
+
+          node.receiver.source
+        end
+
+        def same_argument?(begin_node, end_node)
+          begin_node.first_argument.source == end_node.first_argument.source
+        end
+
+        def preferred_method(begin_node)
+          +"#{begin_node.receiver.source}.#{PREFERRED_METHODS[begin_node.method_name]}"
+        end
+
+        def any_arguments?(begin_node, end_node)
+          begin_node.arguments.any? || end_node.arguments.any?
+        end
+
+        def register_offense(node, preferred_method)
+          message = format(MSG, preferred_method: preferred_method)
+
+          add_offense(node, message: message) do |corrector|
+            corrector.replace(node, preferred_method)
+          end
         end
       end
     end
