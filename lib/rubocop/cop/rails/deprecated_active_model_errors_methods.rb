@@ -121,11 +121,6 @@ module RuboCop
         def autocorrect(corrector, node)
           receiver = node.receiver
 
-          if receiver.receiver.send_type? && receiver.receiver.method?(:messages)
-            corrector.remove(receiver.receiver.loc.dot)
-            corrector.remove(receiver.receiver.loc.selector)
-          end
-
           range = offense_range(node, receiver)
           replacement = replacement(node, receiver)
 
@@ -133,11 +128,12 @@ module RuboCop
         end
 
         def offense_range(node, receiver)
-          range_between(receiver.receiver.source_range.end_pos, node.source_range.end_pos)
+          receiver = receiver.receiver while receiver.send_type? && !receiver.method?(:errors) && receiver.receiver
+          range_between(receiver.source_range.end_pos, node.source_range.end_pos)
         end
 
         def replacement(node, receiver)
-          return '.errors.attribute_names' if node.method?(:keys)
+          return '.attribute_names' if node.method?(:keys)
 
           key = receiver.first_argument.source
 
