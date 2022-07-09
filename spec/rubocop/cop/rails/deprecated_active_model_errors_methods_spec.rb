@@ -135,6 +135,8 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedActiveModelErrorsMethods, :config 
           user.errors.details[:name] << {}
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
         RUBY
+
+        expect_no_corrections
       end
 
       context 'when assigning' do
@@ -318,6 +320,8 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedActiveModelErrorsMethods, :config 
           errors.details[:name] << {}
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
         RUBY
+
+        expect_no_corrections_if_model_file(file_path)
       end
 
       context 'when assigning' do
