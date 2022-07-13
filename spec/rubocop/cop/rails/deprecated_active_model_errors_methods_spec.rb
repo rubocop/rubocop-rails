@@ -64,6 +64,39 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedActiveModelErrorsMethods, :config 
             RUBY
           end
         end
+
+        context 'when using `values` method' do
+          it 'registers an offense' do
+            expect_offense(<<~RUBY, file_path)
+              user.errors.values
+              ^^^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+            RUBY
+
+            expect_no_corrections
+          end
+        end
+
+        context 'when using `to_h` method' do
+          it 'registers an offense' do
+            expect_offense(<<~RUBY, file_path)
+              user.errors.to_h
+              ^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+            RUBY
+
+            expect_no_corrections
+          end
+        end
+
+        context 'when using `to_xml` method' do
+          it 'registers an offense' do
+            expect_offense(<<~RUBY, file_path)
+              user.errors.to_xml
+              ^^^^^^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+            RUBY
+
+            expect_no_corrections
+          end
+        end
       end
 
       context 'Rails <= 6.0', :rails60 do
@@ -78,6 +111,30 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedActiveModelErrorsMethods, :config 
           it 'does not register an offense when root receiver is a method' do
             expect_no_offenses(<<~RUBY, file_path)
               user.errors.keys.include?(:name)
+            RUBY
+          end
+        end
+
+        context 'when using `values` method' do
+          it 'does not register an offense' do
+            expect_no_offenses(<<~RUBY, file_path)
+              user.errors.values
+            RUBY
+          end
+        end
+
+        context 'when using `to_h` method' do
+          it 'does not register an offense' do
+            expect_no_offenses(<<~RUBY, file_path)
+              user.errors.to_h
+            RUBY
+          end
+        end
+
+        context 'when using `to_xml` method' do
+          it 'does not register an offense' do
+            expect_no_offenses(<<~RUBY, file_path)
+              user.errors.to_xml
             RUBY
           end
         end
@@ -240,6 +297,39 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedActiveModelErrorsMethods, :config 
             RUBY
           end
         end
+
+        context 'when using `values` method' do
+          it 'registers an offense' do
+            expect_offense_if_model_file(<<~RUBY, file_path)
+              errors.values
+              ^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+            RUBY
+
+            expect_no_corrections_if_model_file(file_path)
+          end
+        end
+
+        context 'when using `to_h` method' do
+          it 'registers an offense' do
+            expect_offense_if_model_file(<<~RUBY, file_path)
+              errors.to_h
+              ^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+            RUBY
+
+            expect_no_corrections_if_model_file(file_path)
+          end
+        end
+
+        context 'when using `to_xml` method' do
+          it 'registers an offense' do
+            expect_offense_if_model_file(<<~RUBY, file_path)
+              errors.to_xml
+              ^^^^^^^^^^^^^ Avoid manipulating ActiveModel errors as hash directly.
+            RUBY
+
+            expect_no_corrections_if_model_file(file_path)
+          end
+        end
       end
 
       context 'Rails <= 6.0', :rails60 do
@@ -247,6 +337,30 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedActiveModelErrorsMethods, :config 
           it 'does not register an offense' do
             expect_no_offenses(<<~RUBY, file_path)
               errors.keys
+            RUBY
+          end
+        end
+
+        context 'when using `values` method' do
+          it 'does not register an offense' do
+            expect_no_offenses(<<~RUBY, file_path)
+              user.errors.values
+            RUBY
+          end
+        end
+
+        context 'when using `to_h` method' do
+          it 'does not register an offense' do
+            expect_no_offenses(<<~RUBY, file_path)
+              user.errors.to_h
+            RUBY
+          end
+        end
+
+        context 'when using `to_xml` method' do
+          it 'does not register an offense' do
+            expect_no_offenses(<<~RUBY, file_path)
+              user.errors.to_xml
             RUBY
           end
         end
