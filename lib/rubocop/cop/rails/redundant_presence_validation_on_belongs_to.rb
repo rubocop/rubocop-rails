@@ -217,7 +217,7 @@ module RuboCop
           keys.each do |key|
             key_node = node.arguments.find { |arg| arg.value == key }
             key_range = range_with_surrounding_space(
-              range: range_with_surrounding_comma(key_node.source_range, :right),
+              range_with_surrounding_comma(key_node.source_range, :right),
               side: :right
             )
             corrector.remove(key_range)
@@ -226,7 +226,7 @@ module RuboCop
 
         def remove_presence_option(corrector, presence)
           range = range_with_surrounding_comma(
-            range_with_surrounding_space(range: presence.source_range, side: :left),
+            range_with_surrounding_space(presence.source_range, side: :left),
             :left
           )
           corrector.remove(range)

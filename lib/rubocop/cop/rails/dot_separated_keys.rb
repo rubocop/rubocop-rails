@@ -37,7 +37,7 @@ module RuboCop
 
             add_offense(scope_node) do |corrector|
               # Eat the comma on the left.
-              range = range_with_surrounding_space(range: scope_node.source_range, side: :left)
+              range = range_with_surrounding_space(scope_node.source_range, side: :left)
               range = range_with_surrounding_comma(range, :left)
               corrector.remove(range)
 

@@ -54,7 +54,7 @@ module RuboCop
 
         def index_range(pair_node)
           range_with_surrounding_comma(
-            range_with_surrounding_space(range: pair_node.loc.expression, side: :left),
+            range_with_surrounding_space(pair_node.loc.expression, side: :left),
             :left
           )
         end

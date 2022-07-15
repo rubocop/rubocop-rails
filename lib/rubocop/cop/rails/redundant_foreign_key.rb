@@ -41,7 +41,7 @@ module RuboCop
           association_with_foreign_key(node) do |type, name, options, foreign_key_pair, foreign_key|
             if redundant?(node, type, name, options, foreign_key)
               add_offense(foreign_key_pair.loc.expression) do |corrector|
-                range = range_with_surrounding_space(range: foreign_key_pair.source_range, side: :left)
+                range = range_with_surrounding_space(foreign_key_pair.source_range, side: :left)
                 range = range_with_surrounding_comma(range, :left)
 
                 corrector.remove(range)
