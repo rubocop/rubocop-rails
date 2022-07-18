@@ -417,6 +417,13 @@ Rails/FindEach:
     - select
     - lock
 
+Rails/FreezeTime:
+  Description: 'Prefer `freeze_time` over `travel_to` with an argument of the current time.'
+  StyleGuide: 'https://rails.rubystyle.guide/#freeze-time'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  SafeAutoCorrect: false
+
 Rails/HasAndBelongsToMany:
   Description: 'Prefer has_many :through to has_and_belongs_to_many.'
   StyleGuide: 'https://rails.rubystyle.guide#has-many-through'
