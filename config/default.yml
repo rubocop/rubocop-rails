@@ -952,6 +952,12 @@ Rails/ToFormattedS:
     - to_formatted_s
   VersionAdded: '2.15'
 
+Rails/ToSWithArgument:
+  Description: 'Identifies passing any argument to `#to_s`.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Rails/TransactionExitStatement:
   Description: 'Avoid the usage of `return`, `break` and `throw` in transaction blocks.'
   Enabled: pending
