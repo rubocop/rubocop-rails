@@ -1,6 +1,7 @@
 # Change log
 
 ## master (unreleased)
+* [#x](https://github.com/rubocop/rubocop-rails/issues/x): Add new `Rails/ZeitwerkFriendlyConstant` cop. ([@bdewater][])
 
 ## 2.15.2 (2022-07-07)
 
@@ -644,3 +645,4 @@
 [@kkitadate]: https://github.com/kkitadate
 [@Darhazer]: https://github.com/Darhazer
 [@kazarin]: https://github.com/kazarin
+[@bdewater]: https://github.com/bdewater

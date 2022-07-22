@@ -1024,6 +1024,12 @@ Rails/WhereNot:
   Enabled: 'pending'
   VersionAdded: '2.8'
 
+Rails/ZeitwerkFriendlyConstant:
+  Description: 'Define classes and file names such that it is independently loadable by Zeitwerk.'
+  StyleGuide: 'https://rails.rubystyle.guide/#zeitwerk-friendly-constant'
+  Enabled: 'pending'
+  VersionAdded: '<<next>>'
+
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
   EnforcedStyle: conditionals
