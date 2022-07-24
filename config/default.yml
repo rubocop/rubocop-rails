@@ -26,6 +26,24 @@ Lint/NumberConversion:
   # Add Rails' duration methods to the ignore list for `Lint/NumberConversion`
   # so that calling `to_i` on one of these does not register an offense.
   # See: https://github.com/rubocop/rubocop/issues/8950
+  AllowedMethods:
+    - ago
+    - from_now
+    - second
+    - seconds
+    - minute
+    - minutes
+    - hour
+    - hours
+    - day
+    - days
+    - week
+    - weeks
+    - fortnight
+    - fortnights
+    - in_milliseconds
+  AllowedPatterns: []
+  # Deprecated.
   IgnoredMethods:
     - ago
     - from_now
@@ -410,6 +428,14 @@ Rails/FindEach:
   VersionChanged: '2.9'
   Include:
     - app/models/**/*.rb
+  AllowedMethods:
+    # Methods that don't work well with `find_each`.
+    - order
+    - limit
+    - select
+    - lock
+  AllowedPatterns: []
+  # Deprecated.
   IgnoredMethods:
     # Methods that don't work well with `find_each`.
     - order

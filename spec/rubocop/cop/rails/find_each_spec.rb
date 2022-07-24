@@ -118,8 +118,54 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
     end
   end
 
+  context 'allowed methods' do
+    let(:cop_config) { { 'AllowedMethods' => %w[order lock], 'AllowedPatterns' => [], 'IgnoredMethods' => [] } }
+
+    it 'does not register an offense when using order(...) earlier' do
+      expect_no_offenses('User.order(:name).each { |u| u.something }')
+    end
+
+    it 'does not register an offense when using order(...) chained with other things' do
+      expect_no_offenses('User.order(:name).includes(:company).each { |u| u.something }')
+    end
+
+    it 'does not register an offense when using lock earlier' do
+      expect_no_offenses('User.lock.each { |u| u.something }')
+    end
+
+    it 'registers offense for methods not in `AllowedMethods`' do
+      expect_offense(<<~RUBY)
+        User.joins(:posts).each { |u| u.something }
+                           ^^^^ Use `find_each` instead of `each`.
+      RUBY
+    end
+  end
+
+  context 'allowed patterns' do
+    let(:cop_config) { { 'AllowedMethods' => [], 'AllowedPatterns' => [/order/, /lock/], 'IgnoredMethods' => [] } }
+
+    it 'does not register an offense when using order(...) earlier' do
+      expect_no_offenses('User.order(:name).each { |u| u.something }')
+    end
+
+    it 'does not register an offense when using order(...) chained with other things' do
+      expect_no_offenses('User.order(:name).includes(:company).each { |u| u.something }')
+    end
+
+    it 'does not register an offense when using lock earlier' do
+      expect_no_offenses('User.lock.each { |u| u.something }')
+    end
+
+    it 'registers offense for methods not in `AllowedPatterns`' do
+      expect_offense(<<~RUBY)
+        User.joins(:posts).each { |u| u.something }
+                           ^^^^ Use `find_each` instead of `each`.
+      RUBY
+    end
+  end
+
   context 'ignored methods' do
-    let(:cop_config) { { 'IgnoredMethods' => %w[order lock] } }
+    let(:cop_config) { { 'AllowedPatterns' => [], 'AllowedMethods' => [], 'IgnoredMethods' => %w[order lock] } }
 
     it 'does not register an offense when using order(...) earlier' do
       expect_no_offenses('User.order(:name).each { |u| u.something }')

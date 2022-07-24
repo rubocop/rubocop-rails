@@ -13,11 +13,17 @@ module RuboCop
       #   # good
       #   User.all.find_each
       #
-      # @example IgnoredMethods: ['order']
+      # @example AllowedMethods: ['order']
+      #   # good
+      #   User.order(:foo).each
+      #
+      # @example AllowedPattern: [/order/]
       #   # good
       #   User.order(:foo).each
       class FindEach < Base
         include ActiveRecordHelper
+        include AllowedMethods
+        include AllowedPattern
         extend AutoCorrector
 
         MSG = 'Use `find_each` instead of `each`.'
@@ -47,7 +53,7 @@ module RuboCop
 
           method_chain = node.each_node(:send).map(&:method_name)
 
-          (cop_config['IgnoredMethods'].map(&:to_sym) & method_chain).any?
+          method_chain.any? { |method_name| allowed_method?(method_name) || matches_allowed_pattern?(method_name) }
         end
 
         def active_model_error_where?(node)
