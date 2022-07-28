@@ -958,6 +958,12 @@ Rails/ToSWithArgument:
   Safe: false
   VersionAdded: '<<next>>'
 
+Rails/TopLevelHashWithIndifferentAccess:
+  Description: 'Identifies top-level `HashWithIndifferentAccess`.'
+  Reference: 'https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#top-level-hashwithindifferentaccess-is-soft-deprecated'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/TransactionExitStatement:
   Description: 'Avoid the usage of `return`, `break` and `throw` in transaction blocks.'
   Enabled: pending
