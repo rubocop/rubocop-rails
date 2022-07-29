@@ -51,7 +51,7 @@ RSpec.describe RuboCop::Cop::Rails::ToSWithArgument, :config, :rails70 do
   context 'with argument on Rails 6.1', :rails61 do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)
-        to_s
+        to_s(:delimited)
       RUBY
     end
   end
