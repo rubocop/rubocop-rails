@@ -37,9 +37,7 @@ module RuboCop
           return if node.arguments.count >= 3
 
           first_argument = node.first_argument
-          return if !first_argument ||
-                    allowed_argument?(first_argument) ||
-                    corrected_ancestor?(node)
+          return if !first_argument || allowed_argument?(first_argument) || corrected_ancestor?(node)
 
           preferred_method = node.first_argument.value.to_s.underscore
           message = format(MSG, preferred_method: preferred_method, current_argument: first_argument.source)

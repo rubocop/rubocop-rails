@@ -3,8 +3,7 @@
 RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
   let(:cop_config) { { 'EnforceForPrefixed' => true } }
   let(:config) do
-    merged = RuboCop::ConfigLoader
-             .default_configuration['Rails/Delegate'].merge(cop_config)
+    merged = RuboCop::ConfigLoader.default_configuration['Rails/Delegate'].merge(cop_config)
     RuboCop::Config.new('Rails/Delegate' => merged)
   end
 

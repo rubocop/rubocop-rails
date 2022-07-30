@@ -121,18 +121,12 @@ module RuboCop
         include NegativeConditional
         extend AutoCorrector
 
-        MSG = 'Use `%<prefer>s` instead of `%<current>s` if the return ' \
-              'value is not checked.'
-        CREATE_MSG = (MSG +
-                      ' Or check `persisted?` on model returned from ' \
-                      '`%<current>s`.').freeze
-        CREATE_CONDITIONAL_MSG = '`%<current>s` returns a model which is ' \
-                                 'always truthy.'
+        MSG = 'Use `%<prefer>s` instead of `%<current>s` if the return value is not checked.'
+        CREATE_MSG = "#{MSG} Or check `persisted?` on model returned from `%<current>s`."
+        CREATE_CONDITIONAL_MSG = '`%<current>s` returns a model which is always truthy.'
 
-        CREATE_PERSIST_METHODS = %i[create create_or_find_by
-                                    first_or_create find_or_create_by].freeze
-        MODIFY_PERSIST_METHODS = %i[save
-                                    update update_attributes destroy].freeze
+        CREATE_PERSIST_METHODS = %i[create create_or_find_by first_or_create find_or_create_by].freeze
+        MODIFY_PERSIST_METHODS = %i[save update update_attributes destroy].freeze
         RESTRICT_ON_SEND = (CREATE_PERSIST_METHODS + MODIFY_PERSIST_METHODS).freeze
 
         def self.joining_forces
@@ -244,8 +238,7 @@ module RuboCop
           parent = node.parent
           return false unless parent
 
-          operator_or_single_negative?(parent) ||
-            (conditional?(parent) && node == parent.condition)
+          operator_or_single_negative?(parent) || (conditional?(parent) && node == parent.condition)
         end
 
         def operator_or_single_negative?(node)
@@ -294,9 +287,7 @@ module RuboCop
         # NameSpace::Const != ::Const
         # Const != NameSpace::Const
         def const_matches?(const, allowed_const)
-          parts = allowed_const.split('::').reverse.zip(
-            const.split('::').reverse
-          )
+          parts = allowed_const.split('::').reverse.zip(const.split('::').reverse)
           parts.all? do |(allowed_part, const_part)|
             allowed_part == const_part.to_s
           end
@@ -335,9 +326,7 @@ module RuboCop
         end
 
         def persist_method?(node, methods = RESTRICT_ON_SEND)
-          methods.include?(node.method_name) &&
-            expected_signature?(node) &&
-            !allowed_receiver?(node)
+          methods.include?(node.method_name) && expected_signature?(node) && !allowed_receiver?(node)
         end
 
         # Check argument signature as no arguments or one hash
@@ -345,8 +334,7 @@ module RuboCop
           !node.arguments? ||
             (node.arguments.one? &&
               node.method_name != :destroy &&
-              (node.first_argument.hash_type? ||
-              !node.first_argument.literal?))
+              (node.first_argument.hash_type? || !node.first_argument.literal?))
         end
       end
     end

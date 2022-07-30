@@ -40,8 +40,7 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment, :config do
     RUBY
   end
 
-  it 'does not register an offense to task with :environment ' \
-     'but it has other dependency before it' do
+  it 'does not register an offense to task with :environment but it has other dependency before it' do
     expect_no_offenses(<<~RUBY)
       task foo: [:bar, `:environment`] do
       end
@@ -62,8 +61,7 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment, :config do
     RUBY
   end
 
-  it 'does not register an offense to task with a dependency ' \
-     'as an array literal element method call' do
+  it 'does not register an offense to task with a dependency as an array literal element method call' do
     expect_no_offenses(<<~RUBY)
       task foo: [:bar, dep]
     RUBY
@@ -76,8 +74,7 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment, :config do
     RUBY
   end
 
-  it 'does not register an offense to task with :environment ' \
-     'and other dependencies' do
+  it 'does not register an offense to task with :environment and other dependencies' do
     expect_no_offenses(<<~RUBY)
       task foo: [`:environment`, :bar] do
       end
@@ -91,15 +88,13 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment, :config do
     RUBY
   end
 
-  it 'does not register an offense to task with a dependency ' \
-     'as a method call' do
+  it 'does not register an offense to task with a dependency as a method call' do
     expect_no_offenses(<<~RUBY)
       task foo: dep
     RUBY
   end
 
-  it 'does not register an offense to task with dependencies ' \
-     'as a method call' do
+  it 'does not register an offense to task with dependencies as a method call' do
     expect_no_offenses(<<~RUBY)
       task foo: [dep, :bar]
     RUBY

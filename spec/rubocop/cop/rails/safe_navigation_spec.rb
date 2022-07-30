@@ -11,8 +11,7 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
     it "registers an offense for #{name}" do
       offenses = inspect_source("[1, 2].#{method}#{params}")
 
-      expect(offenses.first.message)
-        .to eq(format('Use safe navigation (`&.`) instead of `%s`.', method))
+      expect(offenses.first.message).to eq(format('Use safe navigation (`&.`) instead of `%s`.', method))
     end
   end
 
@@ -31,10 +30,8 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
 
     context 'target_ruby_version < 2.3', :ruby22 do
       it_behaves_like 'accepts', 'try! with a single parameter', 'try!(:join)'
-      it_behaves_like 'accepts', 'try! with a multiple parameters',
-                      'try!(:join, ",")'
-      it_behaves_like 'accepts', 'try! with a block',
-                      'try!(:map) { |e| e.some_method }'
+      it_behaves_like 'accepts', 'try! with a multiple parameters', 'try!(:join, ",")'
+      it_behaves_like 'accepts', 'try! with a block', 'try!(:map) { |e| e.some_method }'
       it_behaves_like 'accepts', 'try! with params and a block',
                       ['try!(:each_with_object, []) do |e, acc|',
                        '  acc << e.some_method',
@@ -43,23 +40,17 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
 
     context 'target_ruby_version > 2.3', :ruby23 do
       context 'try!' do
-        it_behaves_like 'offense', 'try! with a single parameter', 'try!',
-                        '(:join)'
-        it_behaves_like 'offense', 'try! with a multiple parameters', 'try!',
-                        '(:join, ",")'
-        it_behaves_like 'offense', 'try! with a block', 'try!',
-                        '(:map) { |e| e.some_method }'
+        it_behaves_like 'offense', 'try! with a single parameter', 'try!', '(:join)'
+        it_behaves_like 'offense', 'try! with a multiple parameters', 'try!', '(:join, ",")'
+        it_behaves_like 'offense', 'try! with a block', 'try!', '(:map) { |e| e.some_method }'
         it_behaves_like 'offense', 'try! with params and a block', 'try!',
                         ['(:each_with_object, []) do |e, acc|',
                          '  acc << e.some_method',
                          'end'].join("\n")
-        it_behaves_like 'offense', 'try! with a question method', 'try!',
-                        '(:something?)'
-        it_behaves_like 'offense', 'try! with a bang method', 'try!',
-                        '(:something!)'
+        it_behaves_like 'offense', 'try! with a question method', 'try!', '(:something?)'
+        it_behaves_like 'offense', 'try! with a bang method', 'try!', '(:something!)'
 
-        it_behaves_like 'accepts', 'try! used to call an enumerable accessor',
-                        'foo.try!(:[], :bar)'
+        it_behaves_like 'accepts', 'try! used to call an enumerable accessor', 'foo.try!(:[], :bar)'
         it_behaves_like 'accepts', 'try! with ==', 'foo.try!(:==, bar)'
         it_behaves_like 'accepts', 'try! with an operator', 'foo.try!(:+, bar)'
         it_behaves_like 'accepts', 'try! with a method stored as a variable',
@@ -70,22 +61,17 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
 
     context 'try' do
       it_behaves_like 'accepts', 'try with a single parameter', 'try(:join)'
-      it_behaves_like 'accepts', 'try with a multiple parameters',
-                      'try(:join, ",")'
-      it_behaves_like 'accepts', 'try with a block',
-                      'try(:map) { |e| e.some_method }'
+      it_behaves_like 'accepts', 'try with a multiple parameters', 'try(:join, ",")'
+      it_behaves_like 'accepts', 'try with a block', 'try(:map) { |e| e.some_method }'
       it_behaves_like 'accepts', 'try with params and a block',
                       ['try(:each_with_object, []) do |e, acc|',
                        '  acc << e.some_method',
                        'end'].join("\n")
     end
 
-    it_behaves_like 'autocorrect', 'try! a single parameter',
-                    'foo.try!(:thing=, bar)', 'foo&.thing = bar'
-    it_behaves_like 'autocorrect', 'try! a single parameter',
-                    '[1, 2].try!(:join)', '[1, 2]&.join'
-    it_behaves_like 'autocorrect', 'try! with 2 parameters',
-                    '[1, 2].try!(:join, ",")', '[1, 2]&.join(",")'
+    it_behaves_like 'autocorrect', 'try! a single parameter', 'foo.try!(:thing=, bar)', 'foo&.thing = bar'
+    it_behaves_like 'autocorrect', 'try! a single parameter', '[1, 2].try!(:join)', '[1, 2]&.join'
+    it_behaves_like 'autocorrect', 'try! with 2 parameters', '[1, 2].try!(:join, ",")', '[1, 2]&.join(",")'
     it_behaves_like 'autocorrect', 'try! with multiple parameters',
                     '[1, 2].try!(:join, bar, baz)', '[1, 2]&.join(bar, baz)'
     it_behaves_like 'autocorrect', 'try! with a block',
@@ -109,10 +95,8 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
 
     context 'target_ruby_version < 2.3', :ruby22 do
       it_behaves_like 'accepts', 'try! with a single parameter', 'try!(:join)'
-      it_behaves_like 'accepts', 'try! with a multiple parameters',
-                      'try!(:join, ",")'
-      it_behaves_like 'accepts', 'try! with a block',
-                      'try!(:map) { |e| e.some_method }'
+      it_behaves_like 'accepts', 'try! with a multiple parameters', 'try!(:join, ",")'
+      it_behaves_like 'accepts', 'try! with a block', 'try!(:map) { |e| e.some_method }'
       it_behaves_like 'accepts', 'try! with params and a block',
                       ['try!(:each_with_object, []) do |e, acc|',
                        '  acc << e.some_method',
@@ -121,28 +105,21 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
 
     context 'target_ruby_version > 2.3', :ruby23 do
       context 'try!' do
-        it_behaves_like 'offense', 'try! with a single parameter', 'try!',
-                        '(:join)'
-        it_behaves_like 'offense', 'try! with a multiple parameters', 'try!',
-                        '(:join, ",")'
-        it_behaves_like 'offense', 'try! with a block', 'try!',
-                        '(:map) { |e| e.some_method }'
+        it_behaves_like 'offense', 'try! with a single parameter', 'try!', '(:join)'
+        it_behaves_like 'offense', 'try! with a multiple parameters', 'try!', '(:join, ",")'
+        it_behaves_like 'offense', 'try! with a block', 'try!', '(:map) { |e| e.some_method }'
         it_behaves_like 'offense', 'try! with params and a block', 'try!',
                         ['(:each_with_object, []) do |e, acc|',
                          '  acc << e.some_method',
                          'end'].join("\n")
 
-        it_behaves_like 'accepts', 'try! used to call an enumerable accessor',
-                        'foo.try!(:[], :bar)'
+        it_behaves_like 'accepts', 'try! used to call an enumerable accessor', 'foo.try!(:[], :bar)'
 
-        it_behaves_like 'autocorrect', 'try! a single parameter',
-                        '[1, 2].try!(:join)', '[1, 2]&.join'
-        it_behaves_like 'autocorrect', 'try! with 2 parameters',
-                        '[1, 2].try!(:join, ",")', '[1, 2]&.join(",")'
+        it_behaves_like 'autocorrect', 'try! a single parameter', '[1, 2].try!(:join)', '[1, 2]&.join'
+        it_behaves_like 'autocorrect', 'try! with 2 parameters', '[1, 2].try!(:join, ",")', '[1, 2]&.join(",")'
         it_behaves_like 'autocorrect', 'try! with multiple parameters',
                         '[1, 2].try!(:join, bar, baz)', '[1, 2]&.join(bar, baz)'
-        it_behaves_like 'autocorrect', 'try! without receiver',
-                        'try!(:join)', 'self&.join'
+        it_behaves_like 'autocorrect', 'try! without receiver', 'try!(:join)', 'self&.join'
         it_behaves_like 'autocorrect', 'try! with a block',
                         ['[foo, bar].try!(:map) do |e|',
                          '  e.some_method',
@@ -160,24 +137,18 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
       end
 
       context 'try' do
-        it_behaves_like 'offense', 'try with a single parameter', 'try',
-                        '(:join)'
-        it_behaves_like 'offense', 'try with a multiple parameters', 'try',
-                        '(:join, ",")'
-        it_behaves_like 'offense', 'try with a block', 'try',
-                        '(:map) { |e| e.some_method }'
+        it_behaves_like 'offense', 'try with a single parameter', 'try', '(:join)'
+        it_behaves_like 'offense', 'try with a multiple parameters', 'try', '(:join, ",")'
+        it_behaves_like 'offense', 'try with a block', 'try', '(:map) { |e| e.some_method }'
         it_behaves_like 'offense', 'try with params and a block', 'try',
                         ['(:each_with_object, []) do |e, acc|',
                          '  acc << e.some_method',
                          'end'].join("\n")
 
-        it_behaves_like 'accepts', 'try! used to call an enumerable accessor',
-                        'foo.try!(:[], :bar)'
+        it_behaves_like 'accepts', 'try! used to call an enumerable accessor', 'foo.try!(:[], :bar)'
 
-        it_behaves_like 'autocorrect', 'try a single parameter',
-                        '[1, 2].try(:join)', '[1, 2]&.join'
-        it_behaves_like 'autocorrect', 'try with 2 parameters',
-                        '[1, 2].try(:join, ",")', '[1, 2]&.join(",")'
+        it_behaves_like 'autocorrect', 'try a single parameter', '[1, 2].try(:join)', '[1, 2]&.join'
+        it_behaves_like 'autocorrect', 'try with 2 parameters', '[1, 2].try(:join, ",")', '[1, 2]&.join(",")'
         it_behaves_like 'autocorrect', 'try with multiple parameters',
                         '[1, 2].try(:join, bar, baz)', '[1, 2]&.join(bar, baz)'
         it_behaves_like 'autocorrect', 'try with a block',

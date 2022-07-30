@@ -12,9 +12,7 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
     end
 
     it 'does not register an offense when specifying `inverse_of: false`' do
-      expect_no_offenses(
-        'has_many :foo, -> () { where(bar: true) }, inverse_of: false'
-      )
+      expect_no_offenses('has_many :foo, -> () { where(bar: true) }, inverse_of: false')
     end
 
     it 'registers an offense when specifying `inverse_of: nil`' do
@@ -32,9 +30,7 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
       end
 
       it 'does not register an offense when not specifying `:inverse_of`' do
-        expect_no_offenses(
-          'has_many :foo, -> () { where(bar: true) }'
-        )
+        expect_no_offenses('has_many :foo, -> () { where(bar: true) }')
       end
     end
   end
@@ -50,15 +46,11 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
     end
 
     it 'does not register an offense when specifying `:inverse_of`' do
-      expect_no_offenses(
-        "has_one :foo, foreign_key: 'foo_id', inverse_of: :bar"
-      )
+      expect_no_offenses("has_one :foo, foreign_key: 'foo_id', inverse_of: :bar")
     end
 
     it 'does not register an offense with `:inverse_of` as first option' do
-      expect_no_offenses(
-        "has_one :foo, inverse_of: :bar, foreign_key: 'foo_id'"
-      )
+      expect_no_offenses("has_one :foo, inverse_of: :bar, foreign_key: 'foo_id'")
     end
 
     it 'registers an offense with other option and `:inverse_of` unset' do
@@ -91,9 +83,7 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
     end
 
     it 'does not register an offense when specifying `:inverse_of`' do
-      expect_no_offenses(
-        "has_many :foo, -> { group 'x' }, dependent: :destroy, inverse_of: :baz"
-      )
+      expect_no_offenses("has_many :foo, -> { group 'x' }, dependent: :destroy, inverse_of: :baz")
     end
   end
 
@@ -111,9 +101,7 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
 
     context 'Rails >= 5.2', :rails52 do
       it 'does not register an offense when not specifying `:inverse_of`' do
-        expect_no_offenses(
-          'has_many :pictures, as: :imageable'
-        )
+        expect_no_offenses('has_many :pictures, as: :imageable')
       end
     end
   end

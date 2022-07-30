@@ -63,8 +63,7 @@ module RuboCop
 
         MSG_NIL_OR_EMPTY = 'Use `%<prefer>s` instead of `%<current>s`.'
         MSG_NOT_PRESENT = 'Use `%<prefer>s` instead of `%<current>s`.'
-        MSG_UNLESS_PRESENT = 'Use `if %<prefer>s` instead of ' \
-                             '`%<current>s`.'
+        MSG_UNLESS_PRESENT = 'Use `if %<prefer>s` instead of `%<current>s`.'
         RESTRICT_ON_SEND = %i[!].freeze
 
         # `(send nil $_)` is not actually a valid match for an offense. Nodes

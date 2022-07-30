@@ -38,8 +38,7 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         include_examples 'autocorrects'
       end
 
-      context "with validates_#{type}_of " \
-              'when method arguments are enclosed in parentheses' do
+      context "with validates_#{type}_of when method arguments are enclosed in parentheses" do
         let(:autocorrected_source) do
           "validates(:full_name, :birth_date, #{type}: true)"
         end
@@ -51,8 +50,7 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         include_examples 'autocorrects'
       end
 
-      context "with validates_#{type}_of when " \
-              'attributes are specified with array literal' do
+      context "with validates_#{type}_of when attributes are specified with array literal" do
         let(:autocorrected_source) do
           "validates :full_name, :birth_date, #{type}: true"
         end
@@ -64,8 +62,7 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         include_examples 'autocorrects'
       end
 
-      context "with validates_#{type}_of when " \
-              'attributes are specified with frozen array literal' do
+      context "with validates_#{type}_of when attributes are specified with frozen array literal" do
         let(:autocorrected_source) do
           "validates :full_name, :birth_date, #{type}: true"
         end
@@ -77,8 +74,7 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         include_examples 'autocorrects'
       end
 
-      context "with validates_#{type}_of when " \
-              'attributes are specified with symbol array literal' do
+      context "with validates_#{type}_of when attributes are specified with symbol array literal" do
         let(:autocorrected_source) do
           "validates :full_name, :birth_date, #{type}: true"
         end
@@ -90,8 +86,7 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
         include_examples 'autocorrects'
       end
 
-      context "with validates_#{type}_of when " \
-              'attributes are specified with frozen symbol array literal' do
+      context "with validates_#{type}_of when attributes are specified with frozen symbol array literal" do
         let(:autocorrected_source) do
           "validates :full_name, :birth_date, #{type}: true"
         end

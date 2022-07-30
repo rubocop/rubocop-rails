@@ -42,12 +42,7 @@ module RuboCop
           `%<ignore>s` option will be ignored when `%<prefer>s` and `%<ignore>s` are used together.
         MSG
 
-        RESTRICT_ON_SEND = %i[
-          skip_after_action
-          skip_around_action
-          skip_before_action
-          skip_action_callback
-        ].freeze
+        RESTRICT_ON_SEND = %i[skip_after_action skip_around_action skip_before_action skip_action_callback].freeze
 
         FILTERS = RESTRICT_ON_SEND.map { |method_name| ":#{method_name}" }
 
@@ -67,11 +62,9 @@ module RuboCop
           options = options_hash(options)
 
           if if_and_only?(options)
-            add_offense(options[:if],
-                        message: format(MSG, prefer: :only, ignore: :if))
+            add_offense(options[:if], message: format(MSG, prefer: :only, ignore: :if))
           elsif if_and_except?(options)
-            add_offense(options[:except],
-                        message: format(MSG, prefer: :if, ignore: :except))
+            add_offense(options[:except], message: format(MSG, prefer: :if, ignore: :except))
           end
         end
 

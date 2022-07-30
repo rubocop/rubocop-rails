@@ -240,10 +240,7 @@ module RuboCop
         def check_drop_table_node(node)
           drop_table_call(node) do
             unless node.parent.block_type? || node.last_argument.block_pass_type?
-              add_offense(
-                node,
-                message: format(MSG, action: 'drop_table(without block)')
-              )
+              add_offense(node, message: format(MSG, action: 'drop_table(without block)'))
             end
           end
         end
@@ -251,22 +248,12 @@ module RuboCop
         def check_reversible_hash_node(node)
           return if reversible_change_table_call?(node)
 
-          add_offense(
-            node,
-            message: format(
-              MSG, action: "#{node.method_name}(without :from and :to)"
-            )
-          )
+          add_offense(node, message: format(MSG, action: "#{node.method_name}(without :from and :to)"))
         end
 
         def check_remove_column_node(node)
           remove_column_call(node) do |args|
-            if args.to_a.size < 3
-              add_offense(
-                node,
-                message: format(MSG, action: 'remove_column(without type)')
-              )
-            end
+            add_offense(node, message: format(MSG, action: 'remove_column(without type)')) if args.to_a.size < 3
           end
         end
 
@@ -295,10 +282,7 @@ module RuboCop
             unless all_hash_key?(args, :type) && target_rails_version >= 6.1
               action = target_rails_version >= 6.1 ? 'remove_columns(without type)' : 'remove_columns'
 
-              add_offense(
-                node,
-                message: format(MSG, action: action)
-              )
+              add_offense(node, message: format(MSG, action: action))
             end
           end
         end
@@ -306,18 +290,14 @@ module RuboCop
         def check_remove_index_node(node)
           remove_index_call(node) do |args|
             if args.hash_type? && !all_hash_key?(args, :column)
-              add_offense(
-                node,
-                message: format(MSG, action: 'remove_index(without column)')
-              )
+              add_offense(node, message: format(MSG, action: 'remove_index(without column)'))
             end
           end
         end
 
         def check_change_table_offense(receiver, node)
           method_name = node.method_name
-          return if receiver != node.receiver &&
-                    reversible_change_table_call?(node)
+          return if receiver != node.receiver && reversible_change_table_call?(node)
 
           action = if method_name == :remove
                      target_rails_version >= 6.1 ? 't.remove (without type)' : 't.remove'
@@ -325,10 +305,7 @@ module RuboCop
                      "change_table(with #{method_name})"
                    end
 
-          add_offense(
-            node,
-            message: format(MSG, action: action)
-          )
+          add_offense(node, message: format(MSG, action: action))
         end
 
         def reversible_change_table_call?(node)
@@ -353,9 +330,7 @@ module RuboCop
 
         def within_reversible_or_up_only_block?(node)
           node.each_ancestor(:block).any? do |ancestor|
-            (ancestor.block_type? &&
-              ancestor.send_node.method?(:reversible)) ||
-              ancestor.send_node.method?(:up_only)
+            (ancestor.block_type? && ancestor.send_node.method?(:reversible)) || ancestor.send_node.method?(:up_only)
           end
         end
 

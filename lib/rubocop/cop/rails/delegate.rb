@@ -93,15 +93,12 @@ module RuboCop
           return false if arg_array.size != argument_array.size
 
           arg_array.zip(argument_array).all? do |arg, argument|
-            arg.arg_type? &&
-              argument.lvar_type? &&
-              arg.children == argument.children
+            arg.arg_type? && argument.lvar_type? && arg.children == argument.children
           end
         end
 
         def method_name_matches?(method_name, body)
-          method_name == body.method_name ||
-            (include_prefix_case? && method_name == prefixed_method_name(body))
+          method_name == body.method_name || (include_prefix_case? && method_name == prefixed_method_name(body))
         end
 
         def include_prefix_case?

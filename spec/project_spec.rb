@@ -33,10 +33,8 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
     it 'requires a nicely formatted `VersionAdded` metadata for all cops' do
       cop_names.each do |name|
         version = config.dig(name, 'VersionAdded')
-        expect(version.nil?).to(be(false),
-                                "`VersionAdded` configuration is required for `#{name}`.")
-        expect(version).to(match(version_regexp),
-                           "#{version} should be format ('X.Y' or '<<next>>') for #{name}.")
+        expect(version.nil?).to(be(false), "`VersionAdded` configuration is required for `#{name}`.")
+        expect(version).to(match(version_regexp), "#{version} should be format ('X.Y' or '<<next>>') for #{name}.")
       end
     end
 
@@ -46,8 +44,7 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
           version = config.dig(name, version_type)
           next unless version
 
-          expect(version).to(match(version_regexp),
-                             "#{version} should be format ('X.Y' or '<<next>>') for #{name}.")
+          expect(version).to(match(version_regexp), "#{version} should be format ('X.Y' or '<<next>>') for #{name}.")
         end
       end
     end
@@ -91,8 +88,7 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
       fname = File.expand_path('../config/default.yml', __dir__)
       content = File.read(fname)
       RuboCop::YAMLDuplicationChecker.check(content, fname) do |key1, key2|
-        raise "#{fname} has duplication of #{key1.value} " \
-              "on line #{key1.start_line} and line #{key2.start_line}"
+        raise "#{fname} has duplication of #{key1.value} on line #{key1.start_line} and line #{key2.start_line}"
       end
     end
 
@@ -177,10 +173,7 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
       describe 'body' do
         let(:bodies) do
           entries.map do |entry|
-            entry
-              .gsub(/`[^`]+`/, '``')
-              .sub(/^\*\s*(?:\[.+?\):\s*)?/, '')
-              .sub(/\s*\([^)]+\)$/, '')
+            entry.gsub(/`[^`]+`/, '``').sub(/^\*\s*(?:\[.+?\):\s*)?/, '').sub(/\s*\([^)]+\)$/, '')
           end
         end
 

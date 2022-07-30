@@ -81,11 +81,7 @@ module RuboCop
         end
 
         def offense_message(method_name)
-          format(
-            MSG,
-            bad_method: method_name,
-            good_method: convert_good_method(method_name)
-          )
+          format(MSG, bad_method: method_name, good_method: convert_good_method(method_name))
         end
 
         def convert_good_method(bad_method)

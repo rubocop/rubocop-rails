@@ -33,19 +33,7 @@ module RuboCop
 
         MSG = '`%<rails_root>s` is a `Pathname` so you can just append `#%<method>s`.'
 
-        DIR_METHODS = %i[
-          children
-          delete
-          each_child
-          empty?
-          entries
-          exist?
-          glob
-          mkdir
-          open
-          rmdir
-          unlink
-        ].to_set.freeze
+        DIR_METHODS = %i[children delete each_child empty? entries exist? glob mkdir open rmdir unlink].to_set.freeze
 
         FILE_METHODS = %i[
           atime
@@ -137,14 +125,7 @@ module RuboCop
           zero?
         ].to_set.freeze
 
-        FILE_UTILS_METHODS = %i[
-          chmod
-          chown
-          mkdir
-          mkpath
-          rmdir
-          rmtree
-        ].to_set.freeze
+        FILE_UTILS_METHODS = %i[chmod chown mkdir mkpath rmdir rmtree].to_set.freeze
 
         RESTRICT_ON_SEND = (DIR_METHODS + FILE_METHODS + FILE_TEST_METHODS + FILE_UTILS_METHODS).to_set.freeze
 

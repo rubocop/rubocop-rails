@@ -93,8 +93,7 @@ module RuboCop
         end
 
         def allowed_method?(node)
-          METHODS_WITH_ARGUMENTS.include?(node.method_name.to_s) &&
-            !node.arguments?
+          METHODS_WITH_ARGUMENTS.include?(node.method_name.to_s) && !node.arguments?
         end
 
         def forbidden_methods

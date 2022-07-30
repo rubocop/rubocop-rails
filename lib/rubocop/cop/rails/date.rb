@@ -53,22 +53,17 @@ module RuboCop
       class Date < Base
         include ConfigurableEnforcedStyle
 
-        MSG = 'Do not use `Date.%<method_called>s` without zone. Use ' \
-              '`Time.zone.%<day>s` instead.'
+        MSG = 'Do not use `Date.%<method_called>s` without zone. Use `Time.zone.%<day>s` instead.'
 
-        MSG_SEND = 'Do not use `%<method>s` on Date objects, because they ' \
-                   'know nothing about the time zone in use.'
+        MSG_SEND = 'Do not use `%<method>s` on Date objects, because they know nothing about the time zone in use.'
 
         RESTRICT_ON_SEND = %i[to_time to_time_in_current_zone].freeze
 
         BAD_DAYS = %i[today current yesterday tomorrow].freeze
 
-        DEPRECATED_METHODS = [
-          { deprecated: 'to_time_in_current_zone', relevant: 'in_time_zone' }
-        ].freeze
+        DEPRECATED_METHODS = [{ deprecated: 'to_time_in_current_zone', relevant: 'in_time_zone' }].freeze
 
-        DEPRECATED_MSG = '`%<deprecated>s` is deprecated. ' \
-                         'Use `%<relevant>s` instead.'
+        DEPRECATED_MSG = '`%<deprecated>s` is deprecated. Use `%<relevant>s` instead.'
 
         def on_const(node)
           mod, klass = *node.children

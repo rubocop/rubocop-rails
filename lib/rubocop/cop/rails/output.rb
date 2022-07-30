@@ -21,11 +21,8 @@ module RuboCop
         include RangeHelp
         extend AutoCorrector
 
-        MSG = 'Do not write to stdout. ' \
-              "Use Rails's logger if you want to log."
-        RESTRICT_ON_SEND = %i[
-          ap p pp pretty_print print puts binwrite syswrite write write_nonblock
-        ].freeze
+        MSG = "Do not write to stdout. Use Rails's logger if you want to log."
+        RESTRICT_ON_SEND = %i[ap p pp pretty_print print puts binwrite syswrite write write_nonblock].freeze
 
         def_node_matcher :output?, <<~PATTERN
           (send nil? {:ap :p :pp :pretty_print :print :puts} ...)

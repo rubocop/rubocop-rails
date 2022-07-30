@@ -72,11 +72,7 @@ module RuboCop
         end
 
         def message(node)
-          format(
-            MSG,
-            expect: "#{node.source}#{SQUISH}",
-            current: node.source
-          )
+          format(MSG, expect: "#{node.source}#{SQUISH}", current: node.source)
         end
       end
     end

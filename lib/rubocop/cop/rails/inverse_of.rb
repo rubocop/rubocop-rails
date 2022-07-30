@@ -192,8 +192,7 @@ module RuboCop
           end
           return if options_ignoring_inverse_of?(options)
 
-          return unless scope?(arguments) ||
-                        options_requiring_inverse_of?(options)
+          return unless scope?(arguments) || options_requiring_inverse_of?(options)
 
           return if options_contain_inverse_of?(options)
 
@@ -206,8 +205,7 @@ module RuboCop
 
         def options_requiring_inverse_of?(options)
           required = options.any? do |opt|
-            conditions_option?(opt) ||
-              foreign_key_option?(opt)
+            conditions_option?(opt) || foreign_key_option?(opt)
           end
 
           return required if target_rails_version >= 5.2
@@ -227,8 +225,7 @@ module RuboCop
 
         def with_options_arguments(recv, node)
           blocks = node.each_ancestor(:block).select do |block|
-            block.send_node.command?(:with_options) &&
-              same_context_in_with_options?(block.arguments.first, recv)
+            block.send_node.command?(:with_options) && same_context_in_with_options?(block.arguments.first, recv)
           end
           blocks.flat_map { |n| n.send_node.arguments }
         end

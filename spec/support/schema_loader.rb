@@ -10,8 +10,7 @@ RSpec.shared_context 'with SchemaLoader' do
   before do
     RuboCop::Rails::SchemaLoader.reset!
     schema_path.write(schema)
-    allow(RuboCop::Rails::SchemaLoader).to receive(:db_schema_path)
-      .and_return(schema_path)
+    allow(RuboCop::Rails::SchemaLoader).to receive(:db_schema_path).and_return(schema_path)
   end
 
   after do

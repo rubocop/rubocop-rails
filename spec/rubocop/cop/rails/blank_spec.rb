@@ -49,18 +49,14 @@ RSpec.describe RuboCop::Cop::Rails::Blank, :config do
       it_behaves_like 'offense', 'foo.nil? || foo.empty?',
                       'foo.blank?',
                       'Use `foo.blank?` instead of `foo.nil? || foo.empty?`.'
-      it_behaves_like 'offense', 'nil? || empty?',
-                      'blank?',
-                      'Use `blank?` instead of `nil? || empty?`.'
+      it_behaves_like 'offense', 'nil? || empty?', 'blank?', 'Use `blank?` instead of `nil? || empty?`.'
       it_behaves_like 'offense', 'foo == nil || foo.empty?',
                       'foo.blank?',
                       'Use `foo.blank?` instead of `foo == nil || foo.empty?`.'
       it_behaves_like 'offense', 'nil == foo || foo.empty?',
                       'foo.blank?',
                       'Use `foo.blank?` instead of `nil == foo || foo.empty?`.'
-      it_behaves_like 'offense', '!foo || foo.empty?',
-                      'foo.blank?',
-                      'Use `foo.blank?` instead of `!foo || foo.empty?`.'
+      it_behaves_like 'offense', '!foo || foo.empty?', 'foo.blank?', 'Use `foo.blank?` instead of `!foo || foo.empty?`.'
 
       it_behaves_like 'offense', 'foo.nil? || !!foo.empty?',
                       'foo.blank?',
@@ -116,15 +112,9 @@ RSpec.describe RuboCop::Cop::Rails::Blank, :config do
       { 'NotPresent' => true }
     end
 
-    it_behaves_like 'offense', '!foo.present?',
-                    'foo.blank?',
-                    'Use `foo.blank?` instead of `!foo.present?`.'
-    it_behaves_like 'offense', 'not foo.present?',
-                    'foo.blank?',
-                    'Use `foo.blank?` instead of `not foo.present?`.'
-    it_behaves_like 'offense', '!present?',
-                    'blank?',
-                    'Use `blank?` instead of `!present?`.'
+    it_behaves_like 'offense', '!foo.present?', 'foo.blank?', 'Use `foo.blank?` instead of `!foo.present?`.'
+    it_behaves_like 'offense', 'not foo.present?', 'foo.blank?', 'Use `foo.blank?` instead of `not foo.present?`.'
+    it_behaves_like 'offense', '!present?', 'blank?', 'Use `blank?` instead of `!present?`.'
 
     it 'accepts !present? if its in the body of a `blank?` method' do
       expect_no_offenses('def blank?; !present? end')

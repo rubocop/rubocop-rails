@@ -98,10 +98,7 @@ module RuboCop
 
         captures = extract_captures(correction.match)
         correction.set_new_arg_name(captures.transformed_argname, corrector)
-        correction.set_new_body_expression(
-          captures.transforming_body_expr,
-          corrector
-        )
+        correction.set_new_body_expression(captures.transforming_body_expr, corrector)
       end
 
       # Internal helper class to hold match data
@@ -110,8 +107,7 @@ module RuboCop
         :transforming_body_expr
       ) do
         def noop_transformation?
-          transforming_body_expr.lvar_type? &&
-            transforming_body_expr.children == [transformed_argname]
+          transforming_body_expr.lvar_type? && transforming_body_expr.children == [transformed_argname]
         end
       end
 
@@ -157,17 +153,11 @@ module RuboCop
         end
 
         def set_new_arg_name(transformed_argname, corrector)
-          corrector.replace(
-            block_node.arguments.loc.expression,
-            "|#{transformed_argname}|"
-          )
+          corrector.replace(block_node.arguments.loc.expression, "|#{transformed_argname}|")
         end
 
         def set_new_body_expression(transforming_body_expr, corrector)
-          corrector.replace(
-            block_node.body.loc.expression,
-            transforming_body_expr.loc.expression.source
-          )
+          corrector.replace(block_node.body.loc.expression, transforming_body_expr.loc.expression.source)
         end
       end
     end

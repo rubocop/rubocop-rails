@@ -21,10 +21,7 @@ module RuboCop
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
 
-        ALIASES = {
-          update_attributes: :update,
-          update_attributes!: :update!
-        }.freeze
+        ALIASES = { update_attributes: :update, update_attributes!: :update! }.freeze
 
         RESTRICT_ON_SEND = ALIASES.keys.freeze
 

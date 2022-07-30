@@ -94,8 +94,7 @@ module RuboCop
         end
 
         def duration_method?(method_name)
-          SINGULAR_DURATION_METHODS.key?(method_name) ||
-            PLURAL_DURATION_METHODS.key?(method_name)
+          SINGULAR_DURATION_METHODS.key?(method_name) || PLURAL_DURATION_METHODS.key?(method_name)
         end
       end
     end

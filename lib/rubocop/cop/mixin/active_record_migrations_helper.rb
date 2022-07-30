@@ -10,9 +10,7 @@ module RuboCop
         bigint binary boolean date datetime decimal float integer json string
         text time timestamp virtual
       ].freeze
-      RAILS_ABSTRACT_SCHEMA_DEFINITIONS_HELPERS = %i[
-        column references belongs_to primary_key numeric
-      ].freeze
+      RAILS_ABSTRACT_SCHEMA_DEFINITIONS_HELPERS = %i[column references belongs_to primary_key numeric].freeze
       POSTGRES_SCHEMA_DEFINITIONS = %i[
         bigserial bit bit_varying cidr citext daterange hstore inet interval
         int4range int8range jsonb ltree macaddr money numrange oid point line

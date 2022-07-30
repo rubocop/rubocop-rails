@@ -44,10 +44,7 @@ module RuboCop
 
         MSG = 'Use `%<good_method>s` instead of `%<bad_method>s`.'
 
-        PREFERRED_METHODS = {
-          translate: :t,
-          localize: :l
-        }.freeze
+        PREFERRED_METHODS = { translate: :t, localize: :l }.freeze
 
         RESTRICT_ON_SEND = PREFERRED_METHODS.keys.freeze
 

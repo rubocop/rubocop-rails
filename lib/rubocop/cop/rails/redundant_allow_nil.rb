@@ -30,11 +30,9 @@ module RuboCop
         include RangeHelp
         extend AutoCorrector
 
-        MSG_SAME =
-          '`allow_nil` is redundant when `allow_blank` has the same value.'
+        MSG_SAME = '`allow_nil` is redundant when `allow_blank` has the same value.'
 
-        MSG_ALLOW_NIL_FALSE =
-          '`allow_nil: false` is redundant when `allow_blank` is true.'
+        MSG_ALLOW_NIL_FALSE = '`allow_nil: false` is redundant when `allow_blank` is true.'
 
         RESTRICT_ON_SEND = %i[validates].freeze
 

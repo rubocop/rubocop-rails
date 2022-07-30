@@ -50,8 +50,7 @@ module RuboCop
           return unless node.children.last.str_type?
 
           last_child_source = node.children.last.source
-          return unless last_child_source.start_with?('.') ||
-                        last_child_source.include?(File::SEPARATOR)
+          return unless last_child_source.start_with?('.') || last_child_source.include?(File::SEPARATOR)
           return if last_child_source.start_with?(':')
 
           register_offense(node)
@@ -97,8 +96,7 @@ module RuboCop
 
         def register_offense(node)
           line_range = node.loc.column...node.loc.last_column
-          source_range = source_range(processed_source.buffer, node.first_line,
-                                      line_range)
+          source_range = source_range(processed_source.buffer, node.first_line, line_range)
           add_offense(source_range)
         end
 

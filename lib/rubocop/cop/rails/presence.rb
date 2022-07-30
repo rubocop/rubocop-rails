@@ -106,9 +106,7 @@ module RuboCop
         end
 
         def message(node, receiver, other)
-          format(MSG,
-                 prefer: replacement(receiver, other),
-                 current: node.source)
+          format(MSG, prefer: replacement(receiver, other), current: node.source)
         end
 
         def replacement(receiver, other)

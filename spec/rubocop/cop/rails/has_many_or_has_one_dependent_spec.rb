@@ -202,8 +202,7 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
       end
 
       context 'Multiple associations' do
-        it "doesn't register an offense for " \
-           '`with_options dependent: :destroy`' do
+        it "doesn't register an offense for `with_options dependent: :destroy`" do
           expect_no_offenses(<<~RUBY)
             class Person < ApplicationRecord
               with_options dependent: :destroy do
@@ -242,8 +241,7 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
       RUBY
     end
 
-    it 'registers an offense when using mix-in module that has ' \
-       'an association of Active Record' do
+    it 'registers an offense when using mix-in module that has an association of Active Record' do
       expect_offense(<<~RUBY)
         module Foo
           extend ActiveSupport::Concern
@@ -256,8 +254,7 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
       RUBY
     end
 
-    it 'does not register an offense when using associations of ' \
-       'Active Resource' do
+    it 'does not register an offense when using associations of Active Resource' do
       expect_no_offenses(<<~RUBY)
         class User < ActiveResource::Base
           has_many :projects, class_name: 'API::Project'

@@ -48,10 +48,7 @@ module RuboCop
 
         class_nodes = class_node.defined_module.each_node
         namespaces = class_node.each_ancestor(:class, :module).map(&:identifier)
-        [*class_nodes, *namespaces]
-          .reverse
-          .map { |node| node.children[1] }.join('_')
-          .tableize
+        [*class_nodes, *namespaces].reverse.map { |node| node.children[1] }.join('_').tableize
       end
 
       # Resolve relation into column name.

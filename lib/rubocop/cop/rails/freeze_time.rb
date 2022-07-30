@@ -44,10 +44,9 @@ module RuboCop
 
         def on_send(node)
           child_node, method_name = *node.first_argument.children
-          if current_time?(child_node, method_name) ||
-             current_time_with_convert?(child_node, method_name)
-            add_offense(node) { |corrector| corrector.replace(node, 'freeze_time') }
-          end
+          return unless current_time?(child_node, method_name) || current_time_with_convert?(child_node, method_name)
+
+          add_offense(node) { |corrector| corrector.replace(node, 'freeze_time') }
         end
 
         private

@@ -84,10 +84,8 @@ module RuboCop
 
         # :nodoc:
         class SymbolicStyleChecker
-          MSG = 'Prefer `%<prefer>s` over `%<current>s` ' \
-                'to define HTTP status code.'
-          DEFAULT_MSG = 'Prefer `symbolic` over `numeric` ' \
-                        'to define HTTP status code.'
+          MSG = 'Prefer `%<prefer>s` over `%<current>s` to define HTTP status code.'
+          DEFAULT_MSG = 'Prefer `symbolic` over `numeric` to define HTTP status code.'
 
           attr_reader :node
 
@@ -118,17 +116,14 @@ module RuboCop
           end
 
           def custom_http_status_code?
-            node.int_type? &&
-              !::Rack::Utils::SYMBOL_TO_STATUS_CODE.value?(number)
+            node.int_type? && !::Rack::Utils::SYMBOL_TO_STATUS_CODE.value?(number)
           end
         end
 
         # :nodoc:
         class NumericStyleChecker
-          MSG = 'Prefer `%<prefer>s` over `%<current>s` ' \
-                'to define HTTP status code.'
-          DEFAULT_MSG = 'Prefer `numeric` over `symbolic` ' \
-                        'to define HTTP status code.'
+          MSG = 'Prefer `%<prefer>s` over `%<current>s` to define HTTP status code.'
+          DEFAULT_MSG = 'Prefer `numeric` over `symbolic` to define HTTP status code.'
           PERMITTED_STATUS = %i[error success missing redirect].freeze
 
           attr_reader :node

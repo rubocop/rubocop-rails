@@ -43,21 +43,17 @@ module RuboCop
         include ConfigurableEnforcedStyle
         extend AutoCorrector
 
-        MSG = 'Do not use `%<current>s` without zone. Use `%<prefer>s` ' \
-              'instead.'
+        MSG = 'Do not use `%<current>s` without zone. Use `%<prefer>s` instead.'
 
-        MSG_ACCEPTABLE = 'Do not use `%<current>s` without zone. ' \
-                         'Use one of %<prefer>s instead.'
+        MSG_ACCEPTABLE = 'Do not use `%<current>s` without zone. Use one of %<prefer>s instead.'
 
-        MSG_LOCALTIME = 'Do not use `Time.localtime` without ' \
-                        'offset or zone.'
+        MSG_LOCALTIME = 'Do not use `Time.localtime` without offset or zone.'
 
         GOOD_METHODS = %i[zone zone_default find_zone find_zone!].freeze
 
         DANGEROUS_METHODS = %i[now local new parse at].freeze
 
-        ACCEPTED_METHODS = %i[in_time_zone utc getlocal xmlschema iso8601
-                              jisx0301 rfc3339 httpdate to_i to_f].freeze
+        ACCEPTED_METHODS = %i[in_time_zone utc getlocal xmlschema iso8601 jisx0301 rfc3339 httpdate to_i to_f].freeze
 
         TIMEZONE_SPECIFIER = /[A-z]/.freeze
 
@@ -100,13 +96,11 @@ module RuboCop
         # remove redundant `.in_time_zone` from `Time.zone.now.in_time_zone`
         def remove_redundant_in_time_zone(corrector, node)
           time_methods_called = extract_method_chain(node)
-          return unless time_methods_called.include?(:in_time_zone) ||
-                        time_methods_called.include?(:zone)
+          return unless time_methods_called.include?(:in_time_zone) || time_methods_called.include?(:zone)
 
           while node&.send_type?
             if node.children.last == :in_time_zone
-              in_time_zone_with_dot =
-                node.loc.selector.adjust(begin_pos: -1)
+              in_time_zone_with_dot = node.loc.selector.adjust(begin_pos: -1)
               corrector.remove(in_time_zone_with_dot)
             end
             node = node.parent
@@ -144,9 +138,7 @@ module RuboCop
             )
           else
             safe_method_name = safe_method(method_name, node)
-            format(MSG,
-                   current: "#{klass}.#{method_name}",
-                   prefer: "Time.zone.#{safe_method_name}")
+            format(MSG, current: "#{klass}.#{method_name}", prefer: "Time.zone.#{safe_method_name}")
           end
         end
 
@@ -227,10 +219,7 @@ module RuboCop
         end
 
         def acceptable_methods(klass, method_name, node)
-          acceptable = [
-            "`Time.zone.#{safe_method(method_name, node)}`",
-            "`#{klass}.current`"
-          ]
+          acceptable = ["`Time.zone.#{safe_method(method_name, node)}`", "`#{klass}.current`"]
 
           ACCEPTED_METHODS.each do |am|
             acceptable << "`#{klass}.#{method_name}.#{am}`"

@@ -111,25 +111,13 @@ module RuboCop
           remove_timestamps
         ].freeze
 
-        MYSQL_COMBINABLE_TRANSFORMATIONS = %i[
-          rename
-          index
-          remove_index
-        ].freeze
+        MYSQL_COMBINABLE_TRANSFORMATIONS = %i[rename index remove_index].freeze
 
-        MYSQL_COMBINABLE_ALTER_METHODS = %i[
-          rename_column
-          add_index
-          remove_index
-        ].freeze
+        MYSQL_COMBINABLE_ALTER_METHODS = %i[rename_column add_index remove_index].freeze
 
-        POSTGRESQL_COMBINABLE_TRANSFORMATIONS = %i[
-          change_default
-        ].freeze
+        POSTGRESQL_COMBINABLE_TRANSFORMATIONS = %i[change_default].freeze
 
-        POSTGRESQL_COMBINABLE_ALTER_METHODS = %i[
-          change_column_default
-        ].freeze
+        POSTGRESQL_COMBINABLE_ALTER_METHODS = %i[change_column_default].freeze
 
         def on_def(node)
           return unless support_bulk_alter?
@@ -186,8 +174,7 @@ module RuboCop
           options = node.arguments[1]
           return false unless options
 
-          options.hash_type? &&
-            options.keys.any? { |key| key.sym_type? && key.value == :bulk }
+          options.hash_type? && options.keys.any? { |key| key.sym_type? && key.value == :bulk }
         end
 
         def database
@@ -237,8 +224,7 @@ module RuboCop
         end
 
         def call_to_combinable_alter_method?(child_node)
-          child_node.send_type? &&
-            combinable_alter_methods.include?(child_node.method_name)
+          child_node.send_type? && combinable_alter_methods.include?(child_node.method_name)
         end
 
         def combinable_alter_methods

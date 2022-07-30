@@ -6,17 +6,8 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
       offenses = inspect_source(source)
 
       expect(offenses.count).to eq 1
-      expect(offenses).to all(
-        have_attributes(
-          first_line: first_line,
-          last_line: end_line
-        )
-      )
-      expect(offenses).to all(
-        have_attributes(
-          message: "Use `#{correction}` instead of `#{source}`."
-        )
-      )
+      expect(offenses).to all(have_attributes(first_line: first_line, last_line: end_line))
+      expect(offenses).to all(have_attributes(message: "Use `#{correction}` instead of `#{source}`."))
     end
 
     it 'auto correct' do
@@ -40,10 +31,7 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
                   'a(:bar).map(&:baz).presence',
                   1, 1
 
-  it_behaves_like 'offense',
-                  'a.present? ? a : b[:c]',
-                  'a.presence || b[:c]',
-                  1, 1
+  it_behaves_like 'offense', 'a.present? ? a : b[:c]', 'a.presence || b[:c]', 1, 1
 
   it_behaves_like 'offense', <<~RUBY.chomp, 'a.presence', 1, 5
     if a.present?
@@ -76,8 +64,7 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
                 .map { |num| num + 2 }.presence || b
   FIXED
 
-  context 'when a method argument of `else` branch ' \
-          'is enclosed in parentheses' do
+  context 'when a method argument of `else` branch is enclosed in parentheses' do
     it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
       if value.present?
         value
@@ -89,8 +76,7 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     CORRECTION
   end
 
-  context 'when a method argument of `else` branch ' \
-          'is not enclosed in parentheses' do
+  context 'when a method argument of `else` branch is not enclosed in parentheses' do
     it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
       if value.present?
         value
@@ -102,8 +88,7 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     CORRECTION
   end
 
-  context 'when multiple method arguments of `else` branch ' \
-          'is not enclosed in parentheses' do
+  context 'when multiple method arguments of `else` branch is not enclosed in parentheses' do
     it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
       if value.present?
         value
@@ -115,8 +100,7 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     CORRECTION
   end
 
-  context 'when a method argument with a receiver of `else` branch ' \
-          'is not enclosed in parentheses' do
+  context 'when a method argument with a receiver of `else` branch is not enclosed in parentheses' do
     it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
       if value.present?
         value
@@ -134,8 +118,7 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     RUBY
   end
 
-  it 'does not register an offense when the expression does not ' \
-     'return the receiver of `#present?`' do
+  it 'does not register an offense when the expression does not return the receiver of `#present?`' do
     expect_no_offenses(<<~RUBY)
       a.present? ? b : nil
     RUBY
@@ -146,8 +129,7 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     RUBY
   end
 
-  it 'does not register an offense when the expression does not ' \
-     'return the receiver of `#blank?`' do
+  it 'does not register an offense when the expression does not return the receiver of `#blank?`' do
     expect_no_offenses(<<~RUBY)
       a.blank? ? nil : b
     RUBY
@@ -177,8 +159,7 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     RUBY
   end
 
-  it 'does not register an offense when the else block has multiple ' \
-     'statements' do
+  it 'does not register an offense when the else block has multiple statements' do
     expect_no_offenses(<<~RUBY)
       if a.present?
         a

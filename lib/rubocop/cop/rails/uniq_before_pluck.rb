@@ -54,11 +54,9 @@ module RuboCop
         NEWLINE = "\n"
         PATTERN = '[!^block (send (send %<type>s :pluck ...) :uniq ...)]'
 
-        def_node_matcher :conservative_node_match,
-                         format(PATTERN, type: 'const')
+        def_node_matcher :conservative_node_match, format(PATTERN, type: 'const')
 
-        def_node_matcher :aggressive_node_match,
-                         format(PATTERN, type: '_')
+        def_node_matcher :aggressive_node_match, format(PATTERN, type: '_')
 
         def on_send(node)
           uniq = if style == :conservative
@@ -80,8 +78,7 @@ module RuboCop
         private
 
         def dot_method_with_whitespace(method, node)
-          range_between(dot_method_begin_pos(method, node),
-                        node.loc.selector.end_pos)
+          range_between(dot_method_begin_pos(method, node), node.loc.selector.end_pos)
         end
 
         def dot_method_begin_pos(method, node)

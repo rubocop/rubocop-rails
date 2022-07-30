@@ -105,9 +105,7 @@ module RuboCop
 
             return false unless node.parent
 
-            return true if contain_valid_options_in_with_options_block?(
-              node.parent.parent
-            )
+            return true if contain_valid_options_in_with_options_block?(node.parent.parent)
           end
 
           false

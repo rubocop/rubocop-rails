@@ -70,8 +70,7 @@ module RuboCop
         end
 
         def allowed_invocation?(node)
-          allowed_method?(node) || allowed_receiver?(node) ||
-            whitelisted?(node)
+          allowed_method?(node) || allowed_receiver?(node) || whitelisted?(node)
         end
 
         def allowed_method?(node)
@@ -95,8 +94,7 @@ module RuboCop
         end
 
         def autocorrect_method_name(corrector, node)
-          corrector.replace(node.loc.selector,
-                            static_method_name(node.method_name.to_s))
+          corrector.replace(node.loc.selector, static_method_name(node.method_name.to_s))
         end
 
         def autocorrect_argument_keywords(corrector, node, keywords)

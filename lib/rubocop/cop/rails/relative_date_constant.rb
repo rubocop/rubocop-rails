@@ -34,8 +34,7 @@ module RuboCop
         include RangeHelp
         extend AutoCorrector
 
-        MSG = 'Do not assign `%<method_name>s` to constants as it ' \
-              'will be evaluated only once.'
+        MSG = 'Do not assign `%<method_name>s` to constants as it will be evaluated only once.'
         RELATIVE_DATE_METHODS = %i[since from_now after ago until before yesterday tomorrow].to_set.freeze
 
         def on_casgn(node)
@@ -77,9 +76,7 @@ module RuboCop
           return unless scope.nil?
 
           indent = ' ' * node.loc.column
-          new_code = ["def self.#{const_name.downcase}",
-                      "#{indent}#{value.source}",
-                      'end'].join("\n#{indent}")
+          new_code = ["def self.#{const_name.downcase}", "#{indent}#{value.source}", 'end'].join("\n#{indent}")
 
           corrector.replace(node.source_range, new_code)
         end

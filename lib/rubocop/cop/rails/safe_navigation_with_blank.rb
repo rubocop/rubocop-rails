@@ -31,9 +31,7 @@ module RuboCop
       class SafeNavigationWithBlank < Base
         extend AutoCorrector
 
-        MSG =
-          'Avoid calling `blank?` with the safe navigation operator ' \
-          'in conditionals.'
+        MSG = 'Avoid calling `blank?` with the safe navigation operator in conditionals.'
 
         def_node_matcher :safe_navigation_blank_in_conditional?, <<~PATTERN
           (if $(csend ... :blank?) ...)

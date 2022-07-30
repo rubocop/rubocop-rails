@@ -15,8 +15,7 @@ RSpec.describe RuboCop::Cop::Rails::RefuteMethods, :config do
   context 'when EnforcedStyle is `assert_not`' do
     let(:enforced_style) { 'assert_not' }
 
-    it 'registers an offense and correct using `refute` ' \
-       'with a single argument' do
+    it 'registers an offense and correct using `refute` with a single argument' do
       expect_offense(<<~RUBY)
         refute foo
         ^^^^^^ Prefer `assert_not` over `refute`.
@@ -27,8 +26,7 @@ RSpec.describe RuboCop::Cop::Rails::RefuteMethods, :config do
       RUBY
     end
 
-    it 'registers an offense and corrects using `refute` ' \
-       'with multiple arguments' do
+    it 'registers an offense and corrects using `refute` with multiple arguments' do
       expect_offense(<<~RUBY)
         refute foo, bar, baz
         ^^^^^^ Prefer `assert_not` over `refute`.
@@ -50,15 +48,13 @@ RSpec.describe RuboCop::Cop::Rails::RefuteMethods, :config do
       RUBY
     end
 
-    it 'does not register an offense when using `assert_not` ' \
-       'with a single argument' do
+    it 'does not register an offense when using `assert_not` with a single argument' do
       expect_no_offenses(<<~RUBY)
         assert_not foo
       RUBY
     end
 
-    it 'does not register an offense when using `assert_not` ' \
-       'with a multiple arguments' do
+    it 'does not register an offense when using `assert_not` with a multiple arguments' do
       expect_no_offenses(<<~RUBY)
         assert_not foo, bar, baz
       RUBY
@@ -68,8 +64,7 @@ RSpec.describe RuboCop::Cop::Rails::RefuteMethods, :config do
   context 'when EnforcedStyle is `refute`' do
     let(:enforced_style) { 'refute' }
 
-    it 'registers an offense and correct using `assert_not` ' \
-       'with a single argument' do
+    it 'registers an offense and correct using `assert_not` with a single argument' do
       expect_offense(<<~RUBY)
         assert_not foo
         ^^^^^^^^^^ Prefer `refute` over `assert_not`.
@@ -80,8 +75,7 @@ RSpec.describe RuboCop::Cop::Rails::RefuteMethods, :config do
       RUBY
     end
 
-    it 'registers an offense and corrects using `assert_not` ' \
-       'with multiple arguments' do
+    it 'registers an offense and corrects using `assert_not` with multiple arguments' do
       expect_offense(<<~RUBY)
         assert_not foo, bar, baz
         ^^^^^^^^^^ Prefer `refute` over `assert_not`.
@@ -103,15 +97,13 @@ RSpec.describe RuboCop::Cop::Rails::RefuteMethods, :config do
       RUBY
     end
 
-    it 'does not register an offense when using `refute` ' \
-       'with a single argument' do
+    it 'does not register an offense when using `refute` with a single argument' do
       expect_no_offenses(<<~RUBY)
         refute foo
       RUBY
     end
 
-    it 'does not register an offense when using `refute` ' \
-       'with a multiple arguments' do
+    it 'does not register an offense when using `refute` with a multiple arguments' do
       expect_no_offenses(<<~RUBY)
         refute foo, bar, baz
       RUBY

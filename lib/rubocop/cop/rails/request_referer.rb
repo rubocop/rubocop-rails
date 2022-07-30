@@ -23,8 +23,7 @@ module RuboCop
         include ConfigurableEnforcedStyle
         extend AutoCorrector
 
-        MSG = 'Use `request.%<prefer>s` instead of ' \
-              '`request.%<current>s`.'
+        MSG = 'Use `request.%<prefer>s` instead of `request.%<current>s`.'
         RESTRICT_ON_SEND = %i[referer referrer].freeze
 
         def_node_matcher :referer?, <<~PATTERN

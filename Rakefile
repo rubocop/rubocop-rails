@@ -36,11 +36,7 @@ end
 desc 'Run RuboCop over itself'
 RuboCop::RakeTask.new(:internal_investigation)
 
-task default: %i[
-  documentation_syntax_check
-  spec
-  internal_investigation
-]
+task default: %i[documentation_syntax_check spec internal_investigation]
 
 desc 'Generate a new cop template'
 task :new_cop, [:cop] do |_task, args|
@@ -55,9 +51,7 @@ task :new_cop, [:cop] do |_task, args|
 
   generator.write_source
   generator.write_spec
-  generator.inject_require(
-    root_file_path: 'lib/rubocop/cop/rails_cops.rb'
-  )
+  generator.inject_require(root_file_path: 'lib/rubocop/cop/rails_cops.rb')
   generator.inject_config(config_file_path: 'config/default.yml')
 
   puts generator.todo

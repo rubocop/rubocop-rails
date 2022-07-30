@@ -96,8 +96,7 @@ module RuboCop
         end
 
         def rails_env_on_lhs?(node)
-          comparing_str_env_with_rails_env_on_lhs?(node) ||
-            comparing_sym_env_with_rails_env_on_lhs?(node)
+          comparing_str_env_with_rails_env_on_lhs?(node) || comparing_sym_env_with_rails_env_on_lhs?(node)
         end
 
         def build_predicate_method_for_rails_env_on_lhs(node)

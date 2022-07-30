@@ -35,8 +35,7 @@ module RuboCop
       class Validation < Base
         extend AutoCorrector
 
-        MSG = 'Prefer the new style validations `%<prefer>s` over ' \
-              '`%<current>s`.'
+        MSG = 'Prefer the new style validations `%<prefer>s` over `%<current>s`.'
 
         TYPES = %w[
           acceptance
@@ -62,8 +61,7 @@ module RuboCop
 
           add_offense(range, message: message(node)) do |corrector|
             last_argument = node.arguments.last
-            return if !last_argument.literal? && !last_argument.splat_type? &&
-                      !frozen_array_argument?(last_argument)
+            return if !last_argument.literal? && !last_argument.splat_type? && !frozen_array_argument?(last_argument)
 
             corrector.replace(range, 'validates')
             correct_validate_type(corrector, node)
@@ -104,10 +102,7 @@ module RuboCop
         end
 
         def correct_validate_type_for_hash(corrector, node, arguments)
-          corrector.replace(
-            arguments.loc.expression,
-            "#{validate_type(node)}: #{braced_options(arguments)}"
-          )
+          corrector.replace(arguments.loc.expression, "#{validate_type(node)}: #{braced_options(arguments)}")
         end
 
         def correct_validate_type_for_array(corrector, node, arguments, loc)
@@ -121,10 +116,7 @@ module RuboCop
                           end
           end
 
-          corrector.replace(
-            loc.expression,
-            "#{attributes.join(', ')}, #{validate_type(node)}: true"
-          )
+          corrector.replace(loc.expression, "#{attributes.join(', ')}, #{validate_type(node)}: true")
         end
 
         def validate_type(node)

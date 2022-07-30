@@ -16,8 +16,7 @@ Gem::Specification.new do |s|
   DESCRIPTION
 
   s.email = 'rubocop@googlegroups.com'
-  s.files = `git ls-files bin config lib LICENSE.txt README.md`
-            .split($RS)
+  s.files = `git ls-files bin config lib LICENSE.txt README.md`.split($RS)
   s.extra_rdoc_files = ['LICENSE.txt', 'README.md']
   s.homepage = 'https://github.com/rubocop/rubocop-rails'
   s.licenses = ['MIT']

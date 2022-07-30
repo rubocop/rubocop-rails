@@ -59,9 +59,7 @@ module RuboCop
           add_indices = schema.add_indices_by(table_name: table_name(klass))
 
           (table.indices + add_indices).any? do |index|
-            index.unique &&
-              (index.columns.to_set == names ||
-               include_column_names_in_expression_index?(index, names))
+            index.unique && (index.columns.to_set == names || include_column_names_in_expression_index?(index, names))
           end
         end
 

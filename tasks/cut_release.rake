@@ -38,10 +38,7 @@ namespace :cut_release do
     antora_metadata = File.read('docs/antora.yml')
 
     File.open('docs/antora.yml', 'w') do |f|
-      f << antora_metadata.sub(
-        'version: ~',
-        "version: '#{version_sans_patch(new_version)}'"
-      )
+      f << antora_metadata.sub('version: ~', "version: '#{version_sans_patch(new_version)}'")
     end
   end
 
@@ -52,8 +49,7 @@ namespace :cut_release do
   # Replace `<<next>>` (and variations) with version being cut.
   def update_cop_versions(_old_version, new_version)
     update_file('config/default.yml') do |default|
-      default.gsub(/['"]?<<\s*next\s*>>['"]?/i,
-                   "'#{version_sans_patch(new_version)}'")
+      default.gsub(/['"]?<<\s*next\s*>>['"]?/i, "'#{version_sans_patch(new_version)}'")
     end
   end
 
@@ -70,8 +66,7 @@ namespace :cut_release do
 
   def user_links(text)
     names = text.scan(/\[@(\S+)\]\[\]/).map(&:first).uniq
-    names.map { |name| "[@#{name}]: https://github.com/#{name}" }
-         .join("\n")
+    names.map { |name| "[@#{name}]: https://github.com/#{name}" }.join("\n")
   end
 
   def run(release_type)

@@ -119,8 +119,7 @@ RSpec.describe RuboCop::Rails::SchemaLoader do
 
       context 'when the current directory is a sub-directory of Rails.root' do
         before do
-          allow(Pathname).to receive(:pwd)
-            .and_return(rails_root.join('app/models'))
+          allow(Pathname).to receive(:pwd).and_return(rails_root.join('app/models'))
         end
 
         it_behaves_like 'returns a schema'

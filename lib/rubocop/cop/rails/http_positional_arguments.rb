@@ -22,11 +22,8 @@ module RuboCop
         extend AutoCorrector
         extend TargetRailsVersion
 
-        MSG = 'Use keyword arguments instead of ' \
-              'positional arguments for http call: `%<verb>s`.'
-        KEYWORD_ARGS = %i[
-          method params session body flash xhr as headers env to
-        ].freeze
+        MSG = 'Use keyword arguments instead of positional arguments for http call: `%<verb>s`.'
+        KEYWORD_ARGS = %i[method params session body flash xhr as headers env to].freeze
         ROUTING_METHODS = %i[draw routes].freeze
         RESTRICT_ON_SEND = %i[get post put patch delete head].freeze
 
@@ -75,8 +72,7 @@ module RuboCop
           return false if kwsplat_hash?(data)
 
           data.each_pair.none? do |pair|
-            special_keyword_arg?(pair.key) ||
-              (format_arg?(pair.key) && data.pairs.one?)
+            special_keyword_arg?(pair.key) || (format_arg?(pair.key) && data.pairs.one?)
           end
         end
 
@@ -98,8 +94,7 @@ module RuboCop
           return '' if data.hash_type? && data.empty?
 
           hash_data = if data.hash_type?
-                        format('{ %<data>s }',
-                               data: data.pairs.map(&:source).join(', '))
+                        format('{ %<data>s }', data: data.pairs.map(&:source).join(', '))
                       else
                         # user supplies an object,
                         # no need to surround with braces

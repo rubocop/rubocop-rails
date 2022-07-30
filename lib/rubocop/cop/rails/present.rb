@@ -47,10 +47,8 @@ module RuboCop
         extend AutoCorrector
 
         MSG_NOT_BLANK = 'Use `%<prefer>s` instead of `%<current>s`.'
-        MSG_EXISTS_AND_NOT_EMPTY = 'Use `%<prefer>s` instead of ' \
-                                   '`%<current>s`.'
-        MSG_UNLESS_BLANK = 'Use `if %<prefer>s` instead of ' \
-                           '`%<current>s`.'
+        MSG_EXISTS_AND_NOT_EMPTY = 'Use `%<prefer>s` instead of `%<current>s`.'
+        MSG_UNLESS_BLANK = 'Use `if %<prefer>s` instead of `%<current>s`.'
         RESTRICT_ON_SEND = %i[!].freeze
 
         def_node_matcher :exists_and_not_empty?, <<~PATTERN
@@ -118,8 +116,7 @@ module RuboCop
 
           unless_blank?(node) do |method_call, receiver|
             range = unless_condition(node, method_call)
-            msg = format(MSG_UNLESS_BLANK, prefer: replacement(receiver),
-                                           current: range.source)
+            msg = format(MSG_UNLESS_BLANK, prefer: replacement(receiver), current: range.source)
             add_offense(range, message: msg) do |corrector|
               autocorrect(corrector, node)
             end

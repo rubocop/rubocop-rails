@@ -184,13 +184,9 @@ module RuboCop
         # @return [String]
         def message(methods, parent)
           if methods.size == 1
-            format(MSG,
-                   action: "`#{methods[0]}` is",
-                   type: parent.type)
+            format(MSG, action: "`#{methods[0]}` is", type: parent.type)
           else
-            format(MSG,
-                   action: "`#{methods.join('`, `')}` are",
-                   type: parent.type)
+            format(MSG, action: "`#{methods.join('`, `')}` are", type: parent.type)
           end
         end
       end

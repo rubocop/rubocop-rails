@@ -70,8 +70,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
-    context 'when concat Rails.root and file separator ' \
-            'using string interpolation' do
+    context 'when concat Rails.root and file separator using string interpolation' do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           system "rm -rf #{Rails.root}/foo/bar"
@@ -80,8 +79,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
-    context 'when concat Rails.root.join and extension ' \
-            'using string interpolation' do
+    context 'when concat Rails.root.join and extension using string interpolation' do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           "#{Rails.root.join('tmp', user.id, 'icon')}.png"
@@ -200,8 +198,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
-    context 'when concat Rails.root and file separator ' \
-            'using string interpolation' do
+    context 'when concat Rails.root and file separator using string interpolation' do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           system "rm -rf #{Rails.root}/foo/bar"
@@ -210,8 +207,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
-    context 'when concat Rails.root.join and extension ' \
-            'using string interpolation' do
+    context 'when concat Rails.root.join and extension using string interpolation' do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
           "#{Rails.root.join('tmp', user.id, 'icon')}.png"

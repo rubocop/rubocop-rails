@@ -21,9 +21,7 @@ RSpec.describe RuboCop::Cop::Rails::ScopeArgs, :config do
   end
 
   it 'accepts a stabby lambda with arguments' do
-    expect_no_offenses(
-      'scope :active, ->(active) { where(active: active) }'
-    )
+    expect_no_offenses('scope :active, ->(active) { where(active: active) }')
   end
 
   it 'accepts a lambda' do
@@ -31,9 +29,7 @@ RSpec.describe RuboCop::Cop::Rails::ScopeArgs, :config do
   end
 
   it 'accepts a lambda with a block argument' do
-    expect_no_offenses(
-      'scope :active, lambda { |active| where(active: active) }'
-    )
+    expect_no_offenses('scope :active, lambda { |active| where(active: active) }')
   end
 
   it 'accepts a lambda with a multiline block' do
