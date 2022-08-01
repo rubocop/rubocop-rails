@@ -1030,6 +1030,12 @@ Rails/WhereExists:
   VersionAdded: '2.7'
   VersionChanged: '2.10'
 
+Rails/WhereMissing:
+  Description: 'Use `where.missing(...)` to find missing relationship records.'
+  StyleGuide: 'https://rails.rubystyle.guide/#finding-missing-relationship-records'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/WhereNot:
   Description: 'Use `where.not(...)` instead of manually constructing negated SQL in `where`.'
   StyleGuide: 'https://rails.rubystyle.guide/#hash-conditions'
