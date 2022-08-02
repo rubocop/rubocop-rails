@@ -255,8 +255,7 @@ RSpec.describe RuboCop::Cop::Rails::WhereMissing, :config do
       RUBY
     end
 
-    it 'does not register an offense when ' \
-       '`left_joins` and `where` argument is not same relationship' do
+    it 'does not register an offense when `left_joins` and `where` argument is not same relationship' do
       expect_no_offenses(<<~RUBY)
         Foo.left_joins(:foo).where(bazs: { id: nil })
         Foo.left_joins(:foobar).where(foo: { id: nil })
