@@ -68,6 +68,17 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
       RUBY
     end
 
+    it 'registers and corrects an offense when using `reject(&:blank?)` in block' do
+      expect_offense(<<~RUBY)
+        hash.transform_values { |value| value.reject(&:blank?) }
+                                              ^^^^^^^^^^^^^^^^ Use `compact_blank` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        hash.transform_values { |value| value.compact_blank }
+      RUBY
+    end
+
     it 'does not register an offense when using `compact_blank`' do
       expect_no_offenses(<<~RUBY)
         collection.compact_blank
