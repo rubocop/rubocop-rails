@@ -93,7 +93,11 @@ module RuboCop
         end
 
         def offense_range(node)
-          end_pos = node.parent&.block_type? ? node.parent.loc.expression.end_pos : node.loc.expression.end_pos
+          end_pos = if node.parent&.block_type? && node.parent&.send_node == node
+                      node.parent.loc.expression.end_pos
+                    else
+                      node.loc.expression.end_pos
+                    end
 
           range_between(node.loc.selector.begin_pos, end_pos)
         end
