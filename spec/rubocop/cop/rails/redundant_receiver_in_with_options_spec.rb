@@ -29,6 +29,36 @@ RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
     RUBY
   end
 
+  context 'Ruby >= 2.7', :ruby27 do
+    it 'registers an offense and corrects using explicit receiver in `with_options`' do
+      expect_offense(<<~RUBY)
+        class Account < ApplicationRecord
+          with_options dependent: :destroy do
+            _1.has_many :customers
+            ^^ Redundant receiver in `with_options`.
+            _1.has_many :products
+            ^^ Redundant receiver in `with_options`.
+            _1.has_many :invoices
+            ^^ Redundant receiver in `with_options`.
+            _1.has_many :expenses
+            ^^ Redundant receiver in `with_options`.
+          end
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class Account < ApplicationRecord
+          with_options dependent: :destroy do
+            has_many :customers
+            has_many :products
+            has_many :invoices
+            has_many :expenses
+          end
+        end
+      RUBY
+    end
+  end
+
   it 'does not register an offense when using implicit receiver in `with_options`' do
     expect_no_offenses(<<~RUBY)
       class Account < ApplicationRecord

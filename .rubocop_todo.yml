@@ -14,9 +14,6 @@ InternalAffairs/NodeDestructuring:
     - 'lib/rubocop/cop/rails/relative_date_constant.rb'
     - 'lib/rubocop/cop/rails/time_zone.rb'
 
-InternalAffairs/NumblockHandler:
-  Enabled: false
-
 # Offense count: 10
 Metrics/AbcSize:
   Max: 17

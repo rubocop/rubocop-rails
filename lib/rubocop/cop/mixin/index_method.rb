@@ -6,7 +6,7 @@ module RuboCop
     module IndexMethod # rubocop:disable Metrics/ModuleLength
       RESTRICT_ON_SEND = %i[each_with_object to_h map collect []].freeze
 
-      def on_block(node)
+      def on_block(node) # rubocop:todo InternalAffairs/NumblockHandler
         on_bad_each_with_object(node) do |*match|
           handle_possible_offense(node, match, 'each_with_object')
         end

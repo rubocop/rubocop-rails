@@ -39,7 +39,7 @@ module RuboCop
           (block $(send nil? :task ...) ...)
         PATTERN
 
-        def on_block(node)
+        def on_block(node) # rubocop:disable InternalAffairs/NumblockHandler
           task_definition?(node) do |task_method|
             return if task_name(task_method) == :default
             return if with_dependencies?(task_method)
