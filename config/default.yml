@@ -61,6 +61,10 @@ Lint/NumberConversion:
     - fortnights
     - in_milliseconds
 
+Rails:
+  Enabled: true
+  DocumentationBaseURL: https://docs.rubocop.org/rubocop-rails
+
 Rails/ActionControllerTestCase:
   Description: 'Use `ActionDispatch::IntegrationTest` instead of `ActionController::TestCase`.'
   StyleGuide: 'https://rails.rubystyle.guide/#integration-testing'
