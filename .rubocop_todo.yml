@@ -11,6 +11,7 @@ InternalAffairs/NodeDestructuring:
   Exclude:
     - 'lib/rubocop/cop/rails/environment_comparison.rb'
     - 'lib/rubocop/cop/rails/exit.rb'
+    - 'lib/rubocop/cop/rails/reflection_class_name.rb'
     - 'lib/rubocop/cop/rails/relative_date_constant.rb'
     - 'lib/rubocop/cop/rails/time_zone.rb'
 

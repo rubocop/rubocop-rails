@@ -34,11 +34,28 @@ module RuboCop
 
         def on_send(node)
           association_with_reflection(node) do |reflection_class_name|
+            return if reflection_class_name.value.send_type? && reflection_class_name.value.receiver.nil?
+            return if reflection_class_name.value.lvar_type? && str_assigned?(reflection_class_name)
+
             add_offense(reflection_class_name.loc.expression)
           end
         end
 
         private
+
+        def str_assigned?(reflection_class_name)
+          lvar = reflection_class_name.value.source
+
+          reflection_class_name.ancestors.each do |nodes|
+            return true if nodes.each_child_node(:lvasgn).detect do |node|
+              lhs, rhs = *node
+
+              lhs.to_s == lvar && ALLOWED_REFLECTION_CLASS_TYPES.include?(rhs.type)
+            end
+          end
+
+          false
+        end
 
         def reflection_class_value?(class_value)
           if class_value.send_type?
