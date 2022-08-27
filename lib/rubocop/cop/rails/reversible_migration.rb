@@ -229,6 +229,8 @@ module RuboCop
           check_change_table_node(node.send_node, node.body)
         end
 
+        alias on_numblock on_block
+
         private
 
         def check_irreversible_schema_statement_node(node)

@@ -60,15 +60,6 @@ module RuboCop
 
         MSG = 'Redundant receiver in `with_options`.'
 
-        def_node_matcher :with_options?, <<~PATTERN
-          (block
-            (send nil? :with_options
-              (...))
-            (args
-              $_arg)
-            $_body)
-        PATTERN
-
         def_node_search :all_block_nodes_in, <<~PATTERN
           (block ...)
         PATTERN
@@ -78,29 +69,40 @@ module RuboCop
         PATTERN
 
         def on_block(node)
-          with_options?(node) do |arg, body|
-            return if body.nil?
-            return unless all_block_nodes_in(body).count.zero?
+          return unless node.method?(:with_options)
+          return unless (body = node.body)
+          return unless all_block_nodes_in(body).count.zero?
 
-            send_nodes = all_send_nodes_in(body)
+          send_nodes = all_send_nodes_in(body)
+          return unless redundant_receiver?(send_nodes, node)
 
-            if send_nodes.all? { |n| same_value?(arg, n.receiver) }
-              send_nodes.each do |send_node|
-                receiver = send_node.receiver
-                add_offense(receiver.source_range) do |corrector|
-                  autocorrect(corrector, send_node)
-                end
-              end
+          send_nodes.each do |send_node|
+            receiver = send_node.receiver
+            add_offense(receiver.source_range) do |corrector|
+              autocorrect(corrector, send_node, node)
             end
           end
         end
 
+        alias on_numblock on_block
+
         private
 
-        def autocorrect(corrector, node)
-          corrector.remove(node.receiver.source_range)
-          corrector.remove(node.loc.dot)
-          corrector.remove(block_argument_range(node))
+        def autocorrect(corrector, send_node, node)
+          corrector.remove(send_node.receiver.source_range)
+          corrector.remove(send_node.loc.dot)
+          corrector.remove(block_argument_range(send_node)) unless node.numblock_type?
+        end
+
+        def redundant_receiver?(send_nodes, node)
+          proc = if node.numblock_type?
+                   ->(n) { n.receiver.lvar_type? && n.receiver.source == '_1' }
+                 else
+                   arg = node.arguments.first
+                   ->(n) { same_value?(arg, n.receiver) }
+                 end
+
+          send_nodes.all?(&proc)
         end
 
         def block_argument_range(node)

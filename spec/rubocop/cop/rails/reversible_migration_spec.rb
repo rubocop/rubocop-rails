@@ -35,6 +35,14 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     end
   RUBY
 
+  context 'Ruby >= 2.7', :ruby27 do
+    it_behaves_like 'accepts', 'create_table using numbered parameter', <<~RUBY
+      create_table :users do
+        _1.string :name
+      end
+    RUBY
+  end
+
   it_behaves_like 'offense', 'execute', <<~RUBY
     execute "ALTER TABLE `pages_linked_pages` ADD UNIQUE `page_id_linked_page_id` (`page_id`,`linked_page_id`)"
   RUBY
@@ -226,6 +234,14 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
         t.change_default :authorized, 1
       end
     RUBY
+
+    context 'Ruby >= 2.7', :ruby27 do
+      it_behaves_like 'offense', 'change_table(with change_default)', <<~RUBY
+        change_table :users do
+          _1.change_default :authorized, 1
+        end
+      RUBY
+    end
 
     context 'remove' do
       context 'Rails >= 6.1', :rails61 do
