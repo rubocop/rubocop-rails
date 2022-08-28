@@ -8,6 +8,7 @@ require_relative 'mixin/index_method'
 require_relative 'mixin/migrations_helper'
 require_relative 'mixin/target_rails_version'
 
+require_relative 'rails/action_controller_flash_before_render'
 require_relative 'rails/action_controller_test_case'
 require_relative 'rails/action_filter'
 require_relative 'rails/active_record_aliases'
