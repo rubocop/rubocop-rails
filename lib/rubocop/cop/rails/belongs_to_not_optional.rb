@@ -36,18 +36,19 @@ module RuboCop
 
         def find_information(node)
           # Note that this only works if `optional: true` is at the end of the line
-          belongs_to_says_it_is_optional = find_belongs_to(node).to_a.last&.last_argument.values.last.to_s == "(true)"
+          belongs_to_says_it_is_optional = find_belongs_to(node).to_a&.last&.last_argument&.values&.last.to_s == "(true)"
+          return unless belongs_to_says_it_is_optional
 
           klass = class_node(node)
           return unless klass
 
           table = schema.table_by(name: table_name(klass))
-          return [false, false] unless table
+          return unless table
 
           column_name = belongs_to(node) + "_id"
           # column = schema.table_by(name: table_name).columns.find { |c| c.name == column_name }
           column = table.columns.find { |c| c.name == column_name }
-          return [false, false] unless column
+          return unless column
 
           column_not_null_case = column.not_null
           [belongs_to_says_it_is_optional, column_not_null_case]
