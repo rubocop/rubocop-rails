@@ -51,6 +51,31 @@ RSpec.describe RuboCop::Cop::Rails::BelongsToNotOptional, :config do
           end
         RUBY
       end
+
+      context 'when belongs_has other arguments' do
+        it 'registers an offense' do
+          expect_offense(<<~RUBY)
+          class User
+            belongs_to "company", inverse_of: 'authors', optional: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Relationship is required. Either remove 'optional: true' or add a NOT NULL constraint to column.
+          end
+          RUBY
+        end
+
+        it 'correctly autocorrects' do
+          new_source = autocorrect_source(<<~RUBY)
+          class User
+            belongs_to "company", inverse_of: 'authors', optional: true
+          end
+          RUBY
+
+          expect(new_source).to eq(<<~RUBY)
+          class User
+            belongs_to "company", inverse_of: 'authors'
+          end
+          RUBY
+        end
+      end
     end
 
     context 'when the table has an optional belongs_to' do

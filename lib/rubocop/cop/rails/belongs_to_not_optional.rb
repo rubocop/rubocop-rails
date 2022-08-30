@@ -35,27 +35,30 @@ module RuboCop
         end
 
         def find_information(node)
+          # Note that this only works if `optional: true` is at the end of the line
+          belongs_to_says_it_is_optional = find_belongs_to(node).to_a.last&.last_argument.values.last.to_s == "(true)"
+
           klass = class_node(node)
           return unless klass
-
-          belongs_to_optional = find_belongs_to(klass).to_a.last&.last_argument.values.last.to_s == "(true)"
 
           table = schema.table_by(name: table_name(klass))
           return [false, false] unless table
 
-          column_name = belongs_to(klass) + "_id"
+          column_name = belongs_to(node) + "_id"
           # column = schema.table_by(name: table_name).columns.find { |c| c.name == column_name }
           column = table.columns.find { |c| c.name == column_name }
+          return [false, false] unless column
+
           column_not_null_case = column.not_null
-          [belongs_to_optional, column_not_null_case]
+          [belongs_to_says_it_is_optional, column_not_null_case]
         end
 
         def class_node(node)
           node.each_ancestor.find(&:class_type?)
         end
 
-        def belongs_to(class_node)
-          belongs_to = find_belongs_to(class_node).to_a.last&.first_argument
+        def belongs_to(node)
+          belongs_to = find_belongs_to(node).to_a.last&.first_argument
           return belongs_to.value.to_s if belongs_to
 
           # help! see active_record_helper#table_name for ideas
