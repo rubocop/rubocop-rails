@@ -24,7 +24,7 @@ RSpec.describe RuboCop::Cop::Rails::BelongsToNotOptional, :config do
 
           create_table "users", force: :cascade do |t|
             t.string "name"
-            t.belongs_to "company", null: false
+            t.belongs_to "company_id", null: false
           end
         end
       RUBY
@@ -34,6 +34,20 @@ RSpec.describe RuboCop::Cop::Rails::BelongsToNotOptional, :config do
           class User
             belongs_to "company", optional: true
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Relationship is required. Either remove 'optional: true' or add a NOT NULL constraint to column.
+          end
+        RUBY
+      end
+
+      it 'correctly autocorrects' do
+        new_source = autocorrect_source(<<~RUBY)
+          class User
+            belongs_to "company", optional: true
+          end
+        RUBY
+
+        expect(new_source).to eq(<<~RUBY)
+          class User
+            belongs_to "company"
           end
         RUBY
       end
@@ -48,7 +62,7 @@ RSpec.describe RuboCop::Cop::Rails::BelongsToNotOptional, :config do
 
           create_table "users", force: :cascade do |t|
             t.string "name"
-            t.belongs_to "company", null: true
+            t.belongs_to "company_id", null: true
           end
         end
       RUBY
@@ -71,7 +85,7 @@ RSpec.describe RuboCop::Cop::Rails::BelongsToNotOptional, :config do
 
           create_table "admin_users", force: :cascade do |t|
             t.string "name"
-            t.belongs_to "company", null: false
+            t.belongs_to "company_id", null: false
           end
         end
       RUBY

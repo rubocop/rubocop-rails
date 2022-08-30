@@ -16,17 +16,21 @@ module RuboCop
       #
       class BelongsToNotOptional < Base
         include ActiveRecordHelper
+        extend AutoCorrector
 
         MSG = "Relationship is required. Either remove 'optional: true' or add a NOT NULL constraint to column."
 
         def on_send(node)
           return unless schema
+          return unless node.source.include?('belongs_to')
+          return unless node.source.include?('optional')
 
           belongs_to_optional, column_not_null_case = find_information(node)
-          # binding.pry
 
           if belongs_to_optional && column_not_null_case
-            add_offense(node)
+            add_offense(node) do |corrector|
+              corrector.replace(node, node.source.sub(', optional: true', ''))
+            end
           end
         end
 
@@ -39,7 +43,7 @@ module RuboCop
           table = schema.table_by(name: table_name(klass))
           return [false, false] unless table
 
-          column_name = belongs_to(klass)
+          column_name = belongs_to(klass) + "_id"
           # column = schema.table_by(name: table_name).columns.find { |c| c.name == column_name }
           column = table.columns.find { |c| c.name == column_name }
           column_not_null_case = column.not_null
