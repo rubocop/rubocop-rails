@@ -65,6 +65,14 @@ Rails:
   Enabled: true
   DocumentationBaseURL: https://docs.rubocop.org/rubocop-rails
 
+Rails/ActionControllerFlashBeforeRender:
+  Description: 'Use `flash.now` instead of `flash` before `render`.'
+  StyleGuide: 'https://rails.rubystyle.guide/#flash-before-render'
+  Reference: 'https://api.rubyonrails.org/classes/ActionController/FlashBeforeRender.html'
+  Enabled: 'pending'
+  SafeAutocorrect: false
+  VersionAdded: '<<next>>'
+
 Rails/ActionControllerTestCase:
   Description: 'Use `ActionDispatch::IntegrationTest` instead of `ActionController::TestCase`.'
   StyleGuide: 'https://rails.rubystyle.guide/#integration-testing'
