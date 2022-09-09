@@ -18,7 +18,7 @@ module RuboCop
       #     self.ignored_columns = %w(profile birthday)
       #   end
       #
-      class AvoidDuplicateIgnoredColumns < Base
+      class DuplicateIgnoredColumns < Base
         include ActiveRecordHelper
 
         MESSAGE = '`self.ignored_columns=` has already been called on line %<other_line_number>s.'

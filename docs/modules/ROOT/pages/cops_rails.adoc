@@ -647,40 +647,6 @@ end
 | Array
 |===
 
-== Rails/AvoidDuplicateIgnoredColumns
-
-|===
-| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
-
-| Pending
-| Yes
-| No
-| -
-| -
-|===
-
-Checks for duplicate calls to `ActiveRecord::Base.ignored_columns=` as the
-subsequent calls will override the first call.
-
-=== Examples
-
-[source,ruby]
-----
-# bad
-class User < ApplicationRecord
-  self.ignored_columns = %w(profile)
-
-  # ...
-
-  self.ignored_columns = %w(birthday)
-end
-
-# good
-class User < ApplicationRecord
-  self.ignored_columns = %w(profile birthday)
-end
-----
-
 == Rails/BelongsTo
 
 |===
@@ -1452,6 +1418,40 @@ has_one :foo
 # good
 belongs_to :bar
 has_one :foo
+----
+
+== Rails/DuplicateIgnoredColumns
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| No
+| -
+| -
+|===
+
+Checks for duplicate calls to `ActiveRecord::Base.ignored_columns=` as the
+subsequent calls will override the first call.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class User < ApplicationRecord
+  self.ignored_columns = %w(profile)
+
+  # ...
+
+  self.ignored_columns = %w(birthday)
+end
+
+# good
+class User < ApplicationRecord
+  self.ignored_columns = %w(profile birthday)
+end
 ----
 
 == Rails/DuplicateScope

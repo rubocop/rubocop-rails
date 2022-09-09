@@ -195,11 +195,6 @@ Rails/AttributeDefaultBlockValue:
   Include:
     - 'app/models/**/*'
 
-Rails/AvoidDuplicateIgnoredColumns:
-  Description: 'Checks for duplicate calls to `ActiveRecord::Base.ignored_columns=` in a single file.'
-  Enabled: 'pending'
-  VersionAdded: '<<next>>'
-
 Rails/BelongsTo:
   Description: >-
                   Use `optional: true` instead of `required: false` for
@@ -322,6 +317,11 @@ Rails/DuplicateAssociation:
   Description: "Don't repeat associations in a model."
   Enabled: pending
   VersionAdded: '2.14'
+
+Rails/DuplicateIgnoredColumns:
+  Description: 'Checks for duplicate calls to `ActiveRecord::Base.ignored_columns=` in a single file.'
+  Enabled: 'pending'
+  VersionAdded: '<<next>>'
 
 Rails/DuplicateScope:
   Description: 'Multiple scopes share this same where clause.'

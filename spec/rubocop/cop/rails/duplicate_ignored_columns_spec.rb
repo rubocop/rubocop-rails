@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::AvoidDuplicateIgnoredColumns, :config do
+RSpec.describe RuboCop::Cop::Rails::DuplicateIgnoredColumns, :config do
   context 'with no duplicate `self.ignored_columns=` call' do
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY)
