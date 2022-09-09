@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # Checks for duplicate calls to ActiveRecord::Base.ignore_columns= as the
+      # Checks for duplicate calls to `ActiveRecord::Base.ignored_columns=` as the
       # subsequent calls will override the first call.
       #
       # @example
