@@ -19,8 +19,9 @@ module RuboCop
       #   end
       #
       class AvoidDuplicateIgnoredColumns < Base
-        MESSAGE = 'self.ignored_columns= has already been called on line %<other_line_number>s.'
-        ACTIVE_RECORD_CLASSES = %w[ApplicationRecord ActiveRecord::Base].freeze
+        include ActiveRecordHelper
+
+        MESSAGE = '`self.ignored_columns=` has already been called on line %<other_line_number>s.'
 
         def initialize(config = nil, options = nil)
           super
@@ -32,9 +33,7 @@ module RuboCop
         def on_send(current_node)
           return unless current_node.method?(:ignored_columns=)
           return unless current_node.self_receiver?
-
-          parent_class_name = find_parent_class_name(current_node)
-          return unless active_model?(parent_class_name)
+          return unless inherit_active_record_base?(current_node)
 
           @found_nodes[current_node.first_line] = current_node
           return if @found_nodes.size == 1
@@ -43,24 +42,6 @@ module RuboCop
         end
 
         private
-
-        def active_model?(parent_class_name)
-          ACTIVE_RECORD_CLASSES.include?(parent_class_name)
-        end
-
-        def find_parent_class_name(node)
-          return nil unless node
-
-          if node.class_type?
-            parent_class_name = node.node_parts[1]
-
-            return nil if parent_class_name.nil?
-
-            return parent_class_name.source
-          end
-
-          find_parent_class_name(node.parent)
-        end
 
         def add_offenses
           # Remove the earliest found node as we don't want to report offense on it.
