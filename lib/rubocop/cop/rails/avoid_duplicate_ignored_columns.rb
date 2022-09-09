@@ -30,12 +30,12 @@ module RuboCop
           @reported_lines = []
         end
 
-        def on_send(current_node)
-          return unless current_node.method?(:ignored_columns=)
-          return unless current_node.self_receiver?
-          return unless inherit_active_record_base?(current_node)
+        def on_send(node)
+          return unless node.method?(:ignored_columns=)
+          return unless node.self_receiver?
+          return unless inherit_active_record_base?(node)
 
-          @found_nodes[current_node.first_line] = current_node
+          @found_nodes[node.first_line] = node
           return if @found_nodes.size == 1
 
           add_offenses
