@@ -195,6 +195,11 @@ Rails/AttributeDefaultBlockValue:
   Include:
     - 'app/models/**/*'
 
+Rails/AvoidDuplicateIgnoredColumns:
+  Description: 'Checks for duplicate calls to `ActiveRecord::Base.ignore_columns=` in a single file.'
+  Enabled: 'pending'
+  VersionAdded: '<<next>>'
+
 Rails/BelongsTo:
   Description: >-
                   Use `optional: true` instead of `required: false` for
