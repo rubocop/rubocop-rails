@@ -129,6 +129,15 @@ Rails/ActiveSupportAliases:
   Enabled: true
   VersionAdded: '0.48'
 
+Rails/ActiveSupportOnLoad:
+  Description: 'Use `ActiveSupport.on_load(...)` to patch Rails framework classes.'
+  Enabled: 'pending'
+  Reference:
+    - 'https://api.rubyonrails.org/classes/ActiveSupport/LazyLoadHooks.html'
+    - 'https://guides.rubyonrails.org/engines.html#available-load-hooks'
+  SafeAutoCorrect: false
+  VersionAdded: '<<next>>'
+
 Rails/AddColumnIndex:
   Description: >-
     Rails migrations don't make use of a given `index` key, but also
