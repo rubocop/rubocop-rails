@@ -22,6 +22,7 @@ module RuboCop
         include ActiveRecordHelper
 
         MESSAGE = '`self.ignored_columns=` has already been called on line %<other_line_number>s.'
+        RESTRICT_ON_SEND = %i[ignored_columns=].freeze
 
         def initialize(config = nil, options = nil)
           super
@@ -31,7 +32,6 @@ module RuboCop
         end
 
         def on_send(node)
-          return unless node.method?(:ignored_columns=)
           return unless node.self_receiver?
           return unless inherit_active_record_base?(node)
 
