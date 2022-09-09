@@ -45,13 +45,13 @@ module RuboCop
 
         def add_offenses
           # Remove the earliest found node as we don't want to report offense on it.
-          first_occurance_line_number = @found_nodes.keys.min
-          @found_nodes.delete(first_occurance_line_number)
+          first_occurrence_line_number = @found_nodes.keys.min
+          @found_nodes.delete(first_occurrence_line_number)
 
           @found_nodes.each do |line_number, node|
             next if @reported_lines.include?(line_number)
 
-            add_offense(node, message: format(MESSAGE, other_line_number: first_occurance_line_number))
+            add_offense(node, message: format(MESSAGE, other_line_number: first_occurrence_line_number))
 
             @reported_lines << line_number
           end
