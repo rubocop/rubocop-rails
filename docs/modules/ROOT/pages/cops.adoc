@@ -16,12 +16,14 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 
 === Department xref:cops_rails.adoc[Rails]
 
+* xref:cops_rails.adoc#railsactioncontrollerflashbeforerender[Rails/ActionControllerFlashBeforeRender]
 * xref:cops_rails.adoc#railsactioncontrollertestcase[Rails/ActionControllerTestCase]
 * xref:cops_rails.adoc#railsactionfilter[Rails/ActionFilter]
 * xref:cops_rails.adoc#railsactiverecordaliases[Rails/ActiveRecordAliases]
 * xref:cops_rails.adoc#railsactiverecordcallbacksorder[Rails/ActiveRecordCallbacksOrder]
 * xref:cops_rails.adoc#railsactiverecordoverride[Rails/ActiveRecordOverride]
 * xref:cops_rails.adoc#railsactivesupportaliases[Rails/ActiveSupportAliases]
+* xref:cops_rails.adoc#railsactivesupportonload[Rails/ActiveSupportOnLoad]
 * xref:cops_rails.adoc#railsaddcolumnindex[Rails/AddColumnIndex]
 * xref:cops_rails.adoc#railsaftercommitoverride[Rails/AfterCommitOverride]
 * xref:cops_rails.adoc#railsapplicationcontroller[Rails/ApplicationController]
@@ -58,6 +60,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsfindby[Rails/FindBy]
 * xref:cops_rails.adoc#railsfindbyid[Rails/FindById]
 * xref:cops_rails.adoc#railsfindeach[Rails/FindEach]
+* xref:cops_rails.adoc#railsfreezetime[Rails/FreezeTime]
 * xref:cops_rails.adoc#railshasandbelongstomany[Rails/HasAndBelongsToMany]
 * xref:cops_rails.adoc#railshasmanyorhasonedependent[Rails/HasManyOrHasOneDependent]
 * xref:cops_rails.adoc#railshelperinstancevariable[Rails/HelperInstanceVariable]
@@ -105,6 +108,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsreversiblemigration[Rails/ReversibleMigration]
 * xref:cops_rails.adoc#railsreversiblemigrationmethoddefinition[Rails/ReversibleMigrationMethodDefinition]
 * xref:cops_rails.adoc#railsrootjoinchain[Rails/RootJoinChain]
+* xref:cops_rails.adoc#railsrootpathnamemethods[Rails/RootPathnameMethods]
 * xref:cops_rails.adoc#railsrootpublicpath[Rails/RootPublicPath]
 * xref:cops_rails.adoc#railssafenavigation[Rails/SafeNavigation]
 * xref:cops_rails.adoc#railssafenavigationwithblank[Rails/SafeNavigationWithBlank]
@@ -119,6 +123,8 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railstimezone[Rails/TimeZone]
 * xref:cops_rails.adoc#railstimezoneassignment[Rails/TimeZoneAssignment]
 * xref:cops_rails.adoc#railstoformatteds[Rails/ToFormattedS]
+* xref:cops_rails.adoc#railstoswithargument[Rails/ToSWithArgument]
+* xref:cops_rails.adoc#railstoplevelhashwithindifferentaccess[Rails/TopLevelHashWithIndifferentAccess]
 * xref:cops_rails.adoc#railstransactionexitstatement[Rails/TransactionExitStatement]
 * xref:cops_rails.adoc#railsuniqbeforepluck[Rails/UniqBeforePluck]
 * xref:cops_rails.adoc#railsuniquevalidationwithoutindex[Rails/UniqueValidationWithoutIndex]
@@ -127,6 +133,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsvalidation[Rails/Validation]
 * xref:cops_rails.adoc#railswhereequals[Rails/WhereEquals]
 * xref:cops_rails.adoc#railswhereexists[Rails/WhereExists]
+* xref:cops_rails.adoc#railswheremissing[Rails/WhereMissing]
 * xref:cops_rails.adoc#railswherenot[Rails/WhereNot]
 
 // END_COP_LIST

@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.16.0 (2022-09-09)
+
 ### New features
 
 * [#714](https://github.com/rubocop/rubocop-rails/pull/714): Add new `Rails/FreezeTime` cop. ([@ydah][])

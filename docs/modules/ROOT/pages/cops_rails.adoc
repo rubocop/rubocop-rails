@@ -1,5 +1,61 @@
 = Rails
 
+== Rails/ActionControllerFlashBeforeRender
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.16
+| -
+|===
+
+Using `flash` assignment before `render` in Rails controllers will persist the message for too long.
+Check https://guides.rubyonrails.org/action_controller_overview.html#flash-now
+
+=== Safety
+
+This cop's autocorrection is unsafe because it replaces `flash` by `flash.now`.
+Even though it is usually a mistake, it might be used intentionally.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class HomeController < ApplicationController
+  def create
+    flash[:alert] = "msg"
+    render :index
+  end
+end
+
+# good
+class HomeController < ApplicationController
+  def create
+    flash.now[:alert] = "msg"
+    render :index
+  end
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| SafeAutocorrect
+| `false`
+| Boolean
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#flash-before-render
+* https://api.rubyonrails.org/classes/ActionController/FlashBeforeRender.html
+
 == Rails/ActionControllerTestCase
 
 |===
@@ -271,6 +327,42 @@ are not used.
 [1, 2, 'a'].append('b')
 [1, 2, 'a'].prepend('b')
 ----
+
+== Rails/ActiveSupportOnLoad
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes (Unsafe)
+| 2.16
+| -
+|===
+
+Checks for Rails framework classes that are patched directly instead of using Active Support load hooks. Direct
+patching forcibly loads the framework referenced, using hooks defers loading until it's actually needed.
+
+=== Safety
+
+While using lazy load hooks is recommended, it changes the order in which is code is loaded and may reveal
+load order dependency bugs.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+ActiveRecord::Base.include(MyClass)
+
+# good
+ActiveSupport.on_load(:active_record) { include MyClass }
+----
+
+=== References
+
+* https://api.rubyonrails.org/classes/ActiveSupport/LazyLoadHooks.html
+* https://guides.rubyonrails.org/engines.html#available-load-hooks
 
 == Rails/AddColumnIndex
 
@@ -2067,7 +2159,15 @@ User.all.each
 User.all.find_each
 ----
 
-==== IgnoredMethods: ['order']
+==== AllowedMethods: ['order']
+
+[source,ruby]
+----
+# good
+User.order(:foo).each
+----
+
+==== AllowedPattern: [/order/]
 
 [source,ruby]
 ----
@@ -2084,6 +2184,14 @@ User.order(:foo).each
 | `+app/models/**/*.rb+`
 | Array
 
+| AllowedMethods
+| `order`, `limit`, `select`, `lock`
+| Array
+
+| AllowedPatterns
+| `[]`
+| Array
+
 | IgnoredMethods
 | `order`, `limit`, `select`, `lock`
 | Array
@@ -2092,6 +2200,48 @@ User.order(:foo).each
 === References
 
 * https://rails.rubystyle.guide#find-each
+
+== Rails/FreezeTime
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes (Unsafe)
+| 2.16
+| -
+|===
+
+Identifies usages of `travel_to` with an argument of the current time and
+change them to use `freeze_time` instead.
+
+=== Safety
+
+This cop’s autocorrection is unsafe because `freeze_time` just delegates to
+`travel_to` with a default `Time.now`, it is not strictly equivalent to `Time.now`
+if the argument of `travel_to` is the current time considering time zone.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+travel_to(Time.now)
+travel_to(Time.new)
+travel_to(DateTime.now)
+travel_to(Time.current)
+travel_to(Time.zone.now)
+travel_to(Time.now.in_time_zone)
+travel_to(Time.current.to_time)
+
+# good
+freeze_time
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#freeze-time
 
 == Rails/HasAndBelongsToMany
 
@@ -4770,6 +4920,47 @@ Rails.public_path.join('path', 'file.pdf')
 Rails.public_path.join('path', to, 'file.pdf')
 ----
 
+== Rails/RootPathnameMethods
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.16
+| -
+|===
+
+Use `Rails.root` IO methods instead of passing it to `File`.
+
+`Rails.root` is an instance of `Pathname`
+so we can apply many IO methods directly.
+
+This cop works best when used together with
+`Style/FileRead`, `Style/FileWrite` and `Rails/RootJoinChain`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+File.open(Rails.root.join('db', 'schema.rb'))
+File.open(Rails.root.join('db', 'schema.rb'), 'w')
+File.read(Rails.root.join('db', 'schema.rb'))
+File.binread(Rails.root.join('db', 'schema.rb'))
+File.write(Rails.root.join('db', 'schema.rb'), content)
+File.binwrite(Rails.root.join('db', 'schema.rb'), content)
+
+# good
+Rails.root.join('db', 'schema.rb').open
+Rails.root.join('db', 'schema.rb').open('w')
+Rails.root.join('db', 'schema.rb').read
+Rails.root.join('db', 'schema.rb').binread
+Rails.root.join('db', 'schema.rb').write(content)
+Rails.root.join('db', 'schema.rb').binwrite(content)
+----
+
 == Rails/RootPublicPath
 
 |===
@@ -5609,6 +5800,66 @@ time.to_formatted_s(:db)
 
 * https://rails.rubystyle.guide/#prefer-to-fs
 
+== Rails/ToSWithArgument
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| Yes (Unsafe)
+| 2.16
+| -
+|===
+
+Identifies passing any argument to `#to_s`.
+
+=== Safety
+
+This cop is marked as unsafe because it may detect `#to_s` calls
+that are not related to Active Support implementation.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+obj.to_s(:delimited)
+
+# good
+obj.to_formatted_s(:delimited)
+----
+
+== Rails/TopLevelHashWithIndifferentAccess
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.16
+| -
+|===
+
+Identifies top-level `HashWithIndifferentAccess`.
+This has been soft-deprecated since Rails 5.1.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+HashWithIndifferentAccess.new(foo: 'bar')
+
+# good
+ActiveSupport::HashWithIndifferentAccess.new(foo: 'bar')
+----
+
+=== References
+
+* https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#top-level-hashwithindifferentaccess-is-soft-deprecated
+
 == Rails/TransactionExitStatement
 
 |===
@@ -6047,6 +6298,37 @@ User.where('length(name) > 10').exists?
 | `exists`
 | `exists`, `where`
 |===
+
+== Rails/WhereMissing
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.16
+| -
+|===
+
+Use `where.missing(...)` to find missing relationship records.
+
+This cop is enabled in Rails 6.1 or higher.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+Post.left_joins(:author).where(authors: { id: nil })
+
+# good
+Post.where.missing(:author)
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#finding-missing-relationship-records
 
 == Rails/WhereNot
 

@@ -71,7 +71,7 @@ Rails/ActionControllerFlashBeforeRender:
   Reference: 'https://api.rubyonrails.org/classes/ActionController/FlashBeforeRender.html'
   Enabled: 'pending'
   SafeAutocorrect: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.16'
 
 Rails/ActionControllerTestCase:
   Description: 'Use `ActionDispatch::IntegrationTest` instead of `ActionController::TestCase`.'
@@ -136,7 +136,7 @@ Rails/ActiveSupportOnLoad:
     - 'https://api.rubyonrails.org/classes/ActiveSupport/LazyLoadHooks.html'
     - 'https://guides.rubyonrails.org/engines.html#available-load-hooks'
   SafeAutoCorrect: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.16'
 
 Rails/AddColumnIndex:
   Description: >-
@@ -468,7 +468,7 @@ Rails/FreezeTime:
   Description: 'Prefer `freeze_time` over `travel_to` with an argument of the current time.'
   StyleGuide: 'https://rails.rubystyle.guide/#freeze-time'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.16'
   SafeAutoCorrect: false
 
 Rails/HasAndBelongsToMany:
@@ -845,7 +845,7 @@ Rails/RootJoinChain:
 Rails/RootPathnameMethods:
   Description: 'Use `Rails.root` IO methods instead of passing it to `File`.'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.16'
 
 Rails/RootPublicPath:
   Description: "Favor `Rails.public_path` over `Rails.root` with `'public'`."
@@ -1003,13 +1003,13 @@ Rails/ToSWithArgument:
   Description: 'Identifies passing any argument to `#to_s`.'
   Enabled: pending
   Safe: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.16'
 
 Rails/TopLevelHashWithIndifferentAccess:
   Description: 'Identifies top-level `HashWithIndifferentAccess`.'
   Reference: 'https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#top-level-hashwithindifferentaccess-is-soft-deprecated'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.16'
 
 Rails/TransactionExitStatement:
   Description: 'Avoid the usage of `return`, `break` and `throw` in transaction blocks.'
@@ -1081,7 +1081,7 @@ Rails/WhereMissing:
   Description: 'Use `where.missing(...)` to find missing relationship records.'
   StyleGuide: 'https://rails.rubystyle.guide/#finding-missing-relationship-records'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.16'
 
 Rails/WhereNot:
   Description: 'Use `where.not(...)` instead of manually constructing negated SQL in `where`.'
