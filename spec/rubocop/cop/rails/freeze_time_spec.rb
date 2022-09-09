@@ -70,4 +70,10 @@ RSpec.describe RuboCop::Cop::Rails::FreezeTime, :config do
       travel_to(Time.zone.yesterday.in_time_zone)
     RUBY
   end
+
+  it 'does not register an offense when using `travel_to` with an argument of `current` method without receiver' do
+    expect_no_offenses(<<~RUBY)
+      travel_to(current)
+    RUBY
+  end
 end
