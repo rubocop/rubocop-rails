@@ -56,6 +56,21 @@ RSpec.describe RuboCop::Cop::Rails::FreezeTime, :config do
     RUBY
   end
 
+  it 'registers an offense when using `travel_to` with an argument of the current time and proc argument' do
+    expect_offense(<<~RUBY)
+      around do |example|
+        travel_to(Time.current, &example)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `freeze_time` instead of `travel_to`.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      around do |example|
+        freeze_time(&example)
+      end
+    RUBY
+  end
+
   it 'does not register an offense when using `freeze_time`' do
     expect_no_offenses(<<~RUBY)
       freeze_time
