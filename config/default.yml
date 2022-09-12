@@ -845,6 +845,7 @@ Rails/RootJoinChain:
 Rails/RootPathnameMethods:
   Description: 'Use `Rails.root` IO methods instead of passing it to `File`.'
   Enabled: pending
+  SafeAutocorrect: false
   VersionAdded: '2.16'
 
 Rails/RootPublicPath:

@@ -9,6 +9,8 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
     IO: described_class::FILE_METHODS
   }.each do |receiver, methods|
     methods.each do |method|
+      next if method == :glob
+
       it "registers an offense when using `#{receiver}.#{method}(Rails.public_path)` (if arity exists)" do
         expect_offense(<<~RUBY, receiver: receiver, method: method)
           %{receiver}.%{method}(Rails.public_path)
@@ -41,6 +43,63 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
           ::Rails.root.join('db', 'schema.rb').#{method}(20, 5)
         RUBY
       end
+    end
+  end
+
+  context 'when using `Dir.glob`' do
+    it "registers an offense when using `Dir.glob(Rails.root.join('**/*.rb'))`" do
+      expect_offense(<<~RUBY)
+        Dir.glob(Rails.root.join('**/*.rb'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#glob`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Rails.root.glob('**/*.rb')
+      RUBY
+    end
+
+    it "registers an offense when using `::Dir.glob(Rails.root.join('**/*.rb'))`" do
+      expect_offense(<<~RUBY)
+        ::Dir.glob(Rails.root.join('**/*.rb'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#glob`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Rails.root.glob('**/*.rb')
+      RUBY
+    end
+
+    it "registers an offense when using `Dir.glob(Rails.root.join('**/\#{path}/*.rb'))`" do
+      expect_offense(<<~'RUBY')
+        Dir.glob(Rails.root.join("**/#{path}/*.rb"))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#glob`.
+      RUBY
+
+      expect_correction(<<~'RUBY')
+        Rails.root.glob("**/#{path}/*.rb")
+      RUBY
+    end
+
+    it "registers an offense when using `Dir.glob(Rails.root.join('**', '*.rb'))`" do
+      expect_offense(<<~RUBY)
+        Dir.glob(Rails.root.join('**', '*.rb'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#glob`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Rails.root.glob('**/*.rb')
+      RUBY
+    end
+
+    it "registers an offense when using `Dir.glob(Rails.root.join('**', \"\#{path}\", '*.rb'))`" do
+      expect_offense(<<~'RUBY')
+        Dir.glob(Rails.root.join('**', "#{path}", '*.rb'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#glob`.
+      RUBY
+
+      expect_correction(<<~'RUBY')
+        Rails.root.glob("**/#{path}/*.rb")
+      RUBY
     end
   end
 

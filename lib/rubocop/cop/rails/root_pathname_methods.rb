@@ -11,6 +11,10 @@ module RuboCop
       # This cop works best when used together with
       # `Style/FileRead`, `Style/FileWrite` and `Rails/RootJoinChain`.
       #
+      # @safety
+      #   This cop is unsafe for autocorrection because `Dir`'s `children`, `each_child`, `entries`, and `glob`
+      #   methods return string element, but these methods of `Pathname` return `Pathname` element.
+      #
       # @example
       #   # bad
       #   File.open(Rails.root.join('db', 'schema.rb'))
@@ -30,6 +34,7 @@ module RuboCop
       #
       class RootPathnameMethods < Base
         extend AutoCorrector
+        include RangeHelp
 
         MSG = '`%<rails_root>s` is a `Pathname` so you can just append `#%<method>s`.'
 
@@ -138,6 +143,11 @@ module RuboCop
           }
         PATTERN
 
+        def_node_matcher :dir_glob?, <<~PATTERN
+          (send
+            (const {cbase nil?} :Dir) :glob ...)
+        PATTERN
+
         def_node_matcher :rails_root_pathname?, <<~PATTERN
           {
             $#rails_root?
@@ -153,8 +163,12 @@ module RuboCop
         def on_send(node)
           evidence(node) do |method, path, args, rails_root|
             add_offense(node, message: format(MSG, method: method, rails_root: rails_root.source)) do |corrector|
-              replacement = "#{path.source}.#{method}"
-              replacement += "(#{args.map(&:source).join(', ')})" unless args.empty?
+              if dir_glob?(node)
+                replacement = build_path_glob(path, method)
+              else
+                replacement = "#{path.source}.#{method}"
+                replacement += "(#{args.map(&:source).join(', ')})" unless args.empty?
+              end
 
               corrector.replace(node, replacement)
             end
@@ -168,6 +182,31 @@ module RuboCop
           return unless (method, path, args = pathname_method(node)) && (rails_root = rails_root_pathname?(path))
 
           yield(method, path, args, rails_root)
+        end
+
+        def build_path_glob(path, method)
+          receiver = range_between(path.loc.expression.begin_pos, path.children.first.loc.selector.end_pos).source
+
+          argument = if path.arguments.one?
+                       path.first_argument.source
+                     else
+                       join_arguments(path.arguments)
+                     end
+
+          "#{receiver}.#{method}(#{argument})"
+        end
+
+        def include_interpolation?(arguments)
+          arguments.any? do |argument|
+            argument.children.any? { |child| child.respond_to?(:begin_type?) && child.begin_type? }
+          end
+        end
+
+        def join_arguments(arguments)
+          quote = include_interpolation?(arguments) ? '"' : "'"
+          joined_arguments = arguments.map(&:value).join('/')
+
+          "#{quote}#{joined_arguments}#{quote}"
         end
       end
     end
