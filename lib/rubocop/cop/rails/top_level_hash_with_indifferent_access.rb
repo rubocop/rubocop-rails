@@ -31,6 +31,7 @@ module RuboCop
         # @param [RuboCop::AST::ConstNode] node
         def on_const(node)
           return unless top_level_hash_with_indifferent_access?(node)
+          return if node.parent&.class_type? && node.parent.ancestors.any?(&:module_type?)
 
           add_offense(node) do |corrector|
             autocorrect(corrector, node)
