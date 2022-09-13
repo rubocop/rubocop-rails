@@ -121,9 +121,7 @@ module RuboCop
         end
 
         def on_if(node)
-          return unless cop_config['UnlessPresent']
-          return unless node.unless?
-          return if node.else? && config.for_cop('Style/UnlessElse')['Enabled']
+          return if any_excluding_pattern?(node)
 
           unless_present?(node) do |method_call, receiver|
             range = unless_condition(node, method_call)
@@ -136,6 +134,13 @@ module RuboCop
         end
 
         private
+
+        def any_excluding_pattern?(node)
+          return true unless cop_config['UnlessPresent']
+          return true unless node.unless?
+          return true if node.descendants.any?(&:csend_type?)
+          return true if node.else? && config.for_cop('Style/UnlessElse')['Enabled']
+        end
 
         def autocorrect(corrector, node)
           method_call, variable1 = unless_present?(node)

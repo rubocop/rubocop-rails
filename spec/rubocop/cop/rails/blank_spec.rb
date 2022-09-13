@@ -162,15 +162,29 @@ RSpec.describe RuboCop::Cop::Rails::Blank, :config do
 
     context 'modifier unless' do
       context 'with a receiver' do
-        it 'registers an offense and corrects' do
-          expect_offense(<<~RUBY)
-            something unless foo.present?
-                      ^^^^^^^^^^^^^^^^^^^ Use `if foo.blank?` instead of `unless foo.present?`.
-          RUBY
+        context 'with safe navigation operator' do
+          it 'does not register an offense' do
+            expect_no_offenses(<<~RUBY)
+              something unless foo&.bar.present?
+            RUBY
 
-          expect_correction(<<~RUBY)
-            something if foo.blank?
-          RUBY
+            expect_no_offenses(<<~RUBY)
+              something unless foo&.bar&.baz.present?
+            RUBY
+          end
+        end
+
+        context 'without safe navigation operator' do
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              something unless foo.present?
+                        ^^^^^^^^^^^^^^^^^^^ Use `if foo.blank?` instead of `unless foo.present?`.
+            RUBY
+
+            expect_correction(<<~RUBY)
+              something if foo.blank?
+            RUBY
+          end
         end
       end
 
