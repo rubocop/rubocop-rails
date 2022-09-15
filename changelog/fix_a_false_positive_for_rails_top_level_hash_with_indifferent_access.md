@@ -1,0 +1,1 @@
+* [#772](https://github.com/rubocop/rubocop-rails/pull/772): Fix a false positive for `Rails/TopLevelHashWithIndifferentAccess` when using `HashWithIndifferentAccess` under namespace module. ([@koic][])
