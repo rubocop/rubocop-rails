@@ -122,18 +122,18 @@ module RuboCop
         end
 
         def build_source_for_or_method(other)
-          if other.parenthesized? || other.method?('[]') || !other.arguments?
+          if other.parenthesized? || other.method?('[]') || other.arithmetic_operation? || !other.arguments?
             " || #{other.source}"
           else
-            method = range_between(
-              other.source_range.begin_pos,
-              other.first_argument.source_range.begin_pos - 1
-            ).source
-
+            method = method_range(other).source
             arguments = other.arguments.map(&:source).join(', ')
 
             " || #{method}(#{arguments})"
           end
+        end
+
+        def method_range(node)
+          range_between(node.source_range.begin_pos, node.first_argument.source_range.begin_pos - 1)
         end
       end
     end
