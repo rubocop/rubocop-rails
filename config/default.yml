@@ -1123,3 +1123,9 @@ Rails/WhereNotWithMultipleConditions:
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
   EnforcedStyle: conditionals
+
+Style/SymbolProc:
+  AllowedMethods:
+    - define_method
+    - mail
+    - respond_to
