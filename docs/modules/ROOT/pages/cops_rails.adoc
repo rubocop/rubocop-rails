@@ -4940,6 +4940,11 @@ so we can apply many IO methods directly.
 This cop works best when used together with
 `Style/FileRead`, `Style/FileWrite` and `Rails/RootJoinChain`.
 
+=== Safety
+
+This cop is unsafe for autocorrection because `Dir`'s `children`, `each_child`, `entries`, and `glob`
+methods return string element, but these methods of `Pathname` return `Pathname` element.
+
 === Examples
 
 [source,ruby]
@@ -4960,6 +4965,16 @@ Rails.root.join('db', 'schema.rb').binread
 Rails.root.join('db', 'schema.rb').write(content)
 Rails.root.join('db', 'schema.rb').binwrite(content)
 ----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| SafeAutocorrect
+| `false`
+| Boolean
+|===
 
 == Rails/RootPublicPath
 
