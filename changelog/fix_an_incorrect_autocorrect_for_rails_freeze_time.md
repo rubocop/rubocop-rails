@@ -1,1 +1,0 @@
-* [#764](https://github.com/rubocop/rubocop-rails/issues/764): Fix an incorrect autocorrect for `Rails/FreezeTime` when using `travel_to` with an argument of the current time and proc argument. ([@koic][])
