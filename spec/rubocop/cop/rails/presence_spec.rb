@@ -49,6 +49,22 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     end
   RUBY
 
+  it_behaves_like 'offense', <<~RUBY.chomp, 'a.presence || b.to_f + 12.0', 1, 5
+    if a.present?
+      a
+    else
+      b.to_f + 12.0
+    end
+  RUBY
+
+  it_behaves_like 'offense', <<~RUBY.chomp, 'a.presence || b.to_f * 12.0', 1, 5
+    if a.present?
+      a
+    else
+      b.to_f * 12.0
+    end
+  RUBY
+
   it_behaves_like 'offense', 'a if a.present?', 'a.presence', 1, 1
   it_behaves_like 'offense', 'a unless a.blank?', 'a.presence', 1, 1
   it_behaves_like 'offense', <<~RUBY.chomp, <<~FIXED.chomp, 1, 7
