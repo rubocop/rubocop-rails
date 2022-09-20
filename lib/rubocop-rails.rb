@@ -14,6 +14,14 @@ RuboCop::Rails::Inject.defaults!
 
 require_relative 'rubocop/cop/rails_cops'
 
+RuboCop::Cop::Style::MethodCallWithArgsParentheses.singleton_class.prepend(
+  Module.new do
+    def autocorrect_incompatible_with
+      super.push(RuboCop::Cop::Rails::EagerEvaluationLogMessage)
+    end
+  end
+)
+
 RuboCop::Cop::Style::RedundantSelf.singleton_class.prepend(
   Module.new do
     def autocorrect_incompatible_with

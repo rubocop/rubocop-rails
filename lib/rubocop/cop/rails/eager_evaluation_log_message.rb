@@ -37,6 +37,10 @@ module RuboCop
           )
         PATTERN
 
+        def self.autocorrect_incompatible_with
+          [Style::MethodCallWithArgsParentheses]
+        end
+
         def on_send(node)
           return if node.parent&.block_type?
 
