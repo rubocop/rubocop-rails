@@ -146,7 +146,7 @@ RSpec.describe RuboCop::Cop::Rails::DynamicFindBy, :config do
     expect_no_offenses('Post.find_by_title_and_id("foo", limit: 1)')
   end
 
-  it 'accepts method in whitelist' do
+  it 'accepts method in allowed list' do
     expect_no_offenses(<<~RUBY)
       User.find_by_sql(["select * from users where name = ?", name])
     RUBY
@@ -201,7 +201,7 @@ RSpec.describe RuboCop::Cop::Rails::DynamicFindBy, :config do
       { 'AllowedReceivers' => %w[Gem::Specification] }
     end
 
-    it 'accepts dynamic find_by for receiver names in whitelist' do
+    it 'accepts dynamic find_by for receiver names in allowed list' do
       expect_no_offenses(<<~RUBY)
         Gem::Specification.find_by_name("backend").gem_dir
       RUBY
