@@ -1,0 +1,1 @@
+* [#786](https://github.com/rubocop/rubocop-rails/issues/786): Fix a false negative for `Rails/ActionControllerTestCase` when extending `ActionController::TestCase` and having a method definition. ([@koic][])

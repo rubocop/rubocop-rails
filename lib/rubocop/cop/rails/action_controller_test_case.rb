@@ -31,7 +31,7 @@ module RuboCop
         def_node_matcher :action_controller_test_case?, <<~PATTERN
           (class
             (const nil? _)
-            (const (const {nil? cbase} :ActionController) :TestCase) nil?)
+            (const (const {nil? cbase} :ActionController) :TestCase) _)
         PATTERN
 
         def on_class(node)
