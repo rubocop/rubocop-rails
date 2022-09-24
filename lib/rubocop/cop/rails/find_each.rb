@@ -17,7 +17,7 @@ module RuboCop
       #   # good
       #   User.order(:foo).each
       #
-      # @example AllowedPattern: [/order/]
+      # @example AllowedPattern: ['order']
       #   # good
       #   User.order(:foo).each
       class FindEach < Base
