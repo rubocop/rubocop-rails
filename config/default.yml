@@ -1090,6 +1090,11 @@ Rails/WhereNot:
   Enabled: 'pending'
   VersionAdded: '2.8'
 
+Rails/WhereNotWithMultipleConditions:
+  Description: 'Do not use `where.not(...)` with multiple conditions.'
+  Enabled: 'pending'
+  VersionAdded: '<<next>>'
+
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
   EnforcedStyle: conditionals
