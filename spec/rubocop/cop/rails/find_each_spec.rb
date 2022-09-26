@@ -142,7 +142,7 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
   end
 
   context 'allowed patterns' do
-    let(:cop_config) { { 'AllowedMethods' => [], 'AllowedPatterns' => [/order/, /lock/], 'IgnoredMethods' => [] } }
+    let(:cop_config) { { 'AllowedMethods' => [], 'AllowedPatterns' => %w[order lock], 'IgnoredMethods' => [] } }
 
     it 'does not register an offense when using order(...) earlier' do
       expect_no_offenses('User.order(:name).each { |u| u.something }')
