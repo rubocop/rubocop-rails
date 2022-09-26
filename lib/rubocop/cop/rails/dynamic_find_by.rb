@@ -22,14 +22,14 @@ module RuboCop
       #   User.find_by(name: name, email: email)
       #   User.find_by!(email: email)
       #
-      # @example AllowedMethods: find_by_sql
+      # @example AllowedMethods: ['find_by_sql'] (default)
       #   # bad
       #   User.find_by_query(users_query)
       #
       #   # good
       #   User.find_by_sql(users_sql)
       #
-      # @example AllowedReceivers: Gem::Specification
+      # @example AllowedReceivers: ['Gem::Specification'] (default)
       #   # bad
       #   Specification.find_by_name('backend').gem_dir
       #
