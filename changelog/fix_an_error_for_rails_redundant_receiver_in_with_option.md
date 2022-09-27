@@ -1,0 +1,1 @@
+* [#794](https://github.com/rubocop/rubocop-rails/issues/794): Fix an error for `Rails/RedundantReceiverInWithOptions` when calling a method with a receiver in `with_options` without block arguments. ([@koic][])
