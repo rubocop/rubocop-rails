@@ -22,12 +22,14 @@ module RuboCop
       #   User.find_by(name: name, email: email)
       #   User.find_by!(email: email)
       #
-      # @example AllowedMethods: ['find_by_sql'] (default)
+      # @example AllowedMethods: ['find_by_sql', 'find_by_token_for'] (default)
       #   # bad
       #   User.find_by_query(users_query)
+      #   User.find_by_token_for(:password_reset, token)
       #
       #   # good
       #   User.find_by_sql(users_sql)
+      #   User.find_by_token_for(:password_reset, token)
       #
       # @example AllowedReceivers: ['Gem::Specification'] (default)
       #   # bad
