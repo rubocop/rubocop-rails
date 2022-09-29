@@ -10,6 +10,9 @@ AllCops:
     # Exclude db/schema.rb and db/[CONFIGURATION_NAMESPACE]_schema.rb by default.
     # See: https://guides.rubyonrails.org/active_record_multiple_databases.html#setting-up-your-application
     - db/*schema.rb
+    - log/**/*
+    - public/**/*
+    - storage/**/*
   # Enable checking Active Support extensions.
   # See: https://docs.rubocop.org/rubocop/configuration.html#enable-checking-active-support-extensions
   ActiveSupportExtensionsEnabled: true
