@@ -115,8 +115,8 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when string contains an interpolation followed by a period' do
       it 'does not register an offense' do
-        expect_no_offenses(<<~RUBY)
-          puts "test #\{123\}. Hey!"
+        expect_no_offenses(<<~'RUBY')
+          puts "test #{123}. Hey!"
         RUBY
       end
     end
@@ -244,8 +244,8 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when string contains an interpolation followed by a period' do
       it 'does not register an offense' do
-        expect_no_offenses(<<~RUBY)
-          puts "test #\{123\}. Hey!"
+        expect_no_offenses(<<~'RUBY')
+          puts "test #{123}. Hey!"
         RUBY
       end
     end
