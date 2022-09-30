@@ -31,12 +31,14 @@ module RuboCop
       #   User.find_by_sql(users_sql)
       #   User.find_by_token_for(:password_reset, token)
       #
-      # @example AllowedReceivers: ['Gem::Specification'] (default)
+      # @example AllowedReceivers: ['Gem::Specification', 'page'] (default)
       #   # bad
       #   Specification.find_by_name('backend').gem_dir
+      #   page.find_by_id('a_dom_id').click
       #
       #   # good
       #   Gem::Specification.find_by_name('backend').gem_dir
+      #   page.find_by_id('a_dom_id').click
       class DynamicFindBy < Base
         include ActiveRecordHelper
         extend AutoCorrector

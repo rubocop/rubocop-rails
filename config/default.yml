@@ -354,6 +354,7 @@ Rails/DynamicFindBy:
     - find_by_token_for
   AllowedReceivers:
     - Gem::Specification
+    - page # Prevents a warning for `page.find_by_id`. See: https://github.com/rubocop/rubocop-rails/issues/778
 
 Rails/EagerEvaluationLogMessage:
   Description: 'Checks that blocks are used for interpolated strings passed to `Rails.logger.debug`.'
