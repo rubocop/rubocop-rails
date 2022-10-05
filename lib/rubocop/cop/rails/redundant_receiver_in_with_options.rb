@@ -98,6 +98,8 @@ module RuboCop
           proc = if node.numblock_type?
                    ->(n) { n.receiver.lvar_type? && n.receiver.source == '_1' }
                  else
+                   return false if node.arguments.empty?
+
                    arg = node.arguments.first
                    ->(n) { same_value?(arg, n.receiver) }
                  end

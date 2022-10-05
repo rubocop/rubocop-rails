@@ -108,6 +108,14 @@ RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
     RUBY
   end
 
+  it 'does not register an offense when calling a method with a receiver in `with_options` without block arguments' do
+    expect_no_offenses(<<~RUBY)
+      with_options do
+        obj.do_something
+      end
+    RUBY
+  end
+
   it 'does not register an offense when empty' do
     expect_no_offenses(<<~RUBY)
       with_options options: false do |merger|
