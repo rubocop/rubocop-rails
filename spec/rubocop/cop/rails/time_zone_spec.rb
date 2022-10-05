@@ -123,6 +123,18 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
       RUBY
     end
 
+    it 'does not register an offense when attaching timezone offset' do
+      expect_no_offenses(<<~RUBY)
+        Time.parse("2012-03-02 16:05:37 +0100")
+      RUBY
+    end
+
+    it 'does not register an offense when attaching timezone offset using a colon' do
+      expect_no_offenses(<<~RUBY)
+        Time.parse("2012-03-02 16:05:37 +01:00")
+      RUBY
+    end
+
     it 'registers an offense for Time.at' do
       expect_offense(<<~RUBY)
         Time.at(ts)

@@ -55,7 +55,7 @@ module RuboCop
 
         ACCEPTED_METHODS = %i[in_time_zone utc getlocal xmlschema iso8601 jisx0301 rfc3339 httpdate to_i to_f].freeze
 
-        TIMEZONE_SPECIFIER = /[A-z]/.freeze
+        TIMEZONE_SPECIFIER = /([A-z]|[+-]\d{2}:?\d{2})\z/.freeze
 
         def on_const(node)
           mod, klass = *node
@@ -126,7 +126,7 @@ module RuboCop
         end
 
         def attach_timezone_specifier?(date)
-          date.respond_to?(:value) && TIMEZONE_SPECIFIER.match?(date.value.to_s[-1])
+          date.respond_to?(:value) && TIMEZONE_SPECIFIER.match?(date.value.to_s)
         end
 
         def build_message(klass, method_name, node)
