@@ -19,6 +19,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsactioncontrollerflashbeforerender[Rails/ActionControllerFlashBeforeRender]
 * xref:cops_rails.adoc#railsactioncontrollertestcase[Rails/ActionControllerTestCase]
 * xref:cops_rails.adoc#railsactionfilter[Rails/ActionFilter]
+* xref:cops_rails.adoc#railsactionorder[Rails/ActionOrder]
 * xref:cops_rails.adoc#railsactiverecordaliases[Rails/ActiveRecordAliases]
 * xref:cops_rails.adoc#railsactiverecordcallbacksorder[Rails/ActiveRecordCallbacksOrder]
 * xref:cops_rails.adoc#railsactiverecordoverride[Rails/ActiveRecordOverride]
