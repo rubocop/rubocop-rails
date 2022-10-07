@@ -3,11 +3,10 @@
 module RuboCop
   module Cop
     module Rails
-      # This cop enforces consistent ordering of the standard Rails RESTful
-      # controller actions.
+      # Enforces consistent ordering of the standard Rails RESTful controller actions.
       #
-      # The cop is configurable and can enforce any ordering of the standard
-      # actions. All other methods are ignored.
+      # The cop is configurable and can enforce any ordering of the standard actions.
+      # All other methods are ignored.
       #
       # [source,yaml]
       # ----

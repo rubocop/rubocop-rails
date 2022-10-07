@@ -1,1 +1,1 @@
-* [#547](https://github.com/rubocop/rubocop/pull/547): action order cop. ([@mollerhoj][])
+* [#547](https://github.com/rubocop/rubocop-rails/pull/547): Add new `Rails/ActionOrder` cop. ([@mollerhoj][])
