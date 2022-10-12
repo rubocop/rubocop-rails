@@ -174,6 +174,14 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       end
     end
 
+    context 'when the first argument is keyword arguments' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          tag(factory: :tag)
+        RUBY
+      end
+    end
+
     context 'when `tag` is not a top-level method (e.g. using intercom-ruby)' do
       it 'does not register an offense' do
         expect_no_offenses(<<~RUBY)

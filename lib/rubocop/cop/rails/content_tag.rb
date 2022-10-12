@@ -56,7 +56,8 @@ module RuboCop
             argument.send_type? ||
             argument.const_type? ||
             argument.splat_type? ||
-            allowed_name?(argument)
+            allowed_name?(argument) ||
+            !argument.respond_to?(:value)
         end
 
         def register_offense(node, message, preferred_method)
