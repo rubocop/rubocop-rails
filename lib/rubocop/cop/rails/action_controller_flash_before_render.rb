@@ -37,8 +37,8 @@ module RuboCop
           ^(send (send nil? :flash) :[]= ...)
         PATTERN
 
-        def_node_search :render?, <<~PATTERN
-          (send nil? :render ...)
+        def_node_search :redirect_to?, <<~PATTERN
+          (send nil? :redirect_to ...)
         PATTERN
 
         def_node_search :action_controller?, <<~PATTERN
@@ -53,7 +53,7 @@ module RuboCop
         def on_send(flash_node)
           return unless flash_assignment?(flash_node)
 
-          return unless followed_by_render?(flash_node)
+          return if followed_by_redirect_to?(flash_node)
 
           return unless instance_method_or_block?(flash_node)
 
@@ -66,12 +66,13 @@ module RuboCop
 
         private
 
-        def followed_by_render?(flash_node)
+        def followed_by_redirect_to?(flash_node)
           flash_assigment_node = find_ancestor(flash_node, type: :send)
           context = flash_assigment_node.parent
 
-          context.each_child_node.any? do |node|
-            render?(node)
+          flash_index = context.children.index(flash_assigment_node)
+          context.each_child_node.with_index.any? do |node, index|
+            index > flash_index && redirect_to?(node)
           end
         end
 

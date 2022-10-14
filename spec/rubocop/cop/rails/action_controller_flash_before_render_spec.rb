@@ -5,7 +5,7 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
     context 'within an instance method' do
       %w[ActionController::Base ApplicationController].each do |parent_class|
         context "within a class inherited from #{parent_class}" do
-          it 'registers an offense and corrects' do
+          it 'registers an offense and corrects when the render call is explicit' do
             expect_offense(<<~RUBY)
               class HomeController < #{parent_class}
                 def create
@@ -21,6 +21,25 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
                 def create
                   flash.now[:alert] = "msg"
                   render :index
+                end
+              end
+            RUBY
+          end
+
+          it 'registers an offense and corrects when the render call is implicit' do
+            expect_offense(<<~RUBY)
+              class HomeController < #{parent_class}
+                def create
+                  flash[:alert] = "msg"
+                  ^^^^^ Use `flash.now` before `render`.
+                end
+              end
+            RUBY
+
+            expect_correction(<<~RUBY)
+              class HomeController < #{parent_class}
+                def create
+                  flash.now[:alert] = "msg"
                 end
               end
             RUBY
@@ -121,6 +140,20 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
       expect_no_offenses(<<~RUBY)
         class HomeController < ApplicationController
           def create
+            flash[:alert] = "msg"
+            redirect_to "https://www.example.com/"
+          end
+        end
+      RUBY
+    end
+  end
+
+  context 'when using `flash` after `render` but before a `redirect_to`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class HomeController < ApplicationController
+          def create
+            render :index and return if foo?
             flash[:alert] = "msg"
             redirect_to "https://www.example.com/"
           end
