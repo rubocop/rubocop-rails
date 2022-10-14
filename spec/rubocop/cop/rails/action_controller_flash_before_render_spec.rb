@@ -101,6 +101,46 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
       end
     end
 
+    context 'with a condition' do
+      %w[ActionController::Base ApplicationController].each do |parent_class|
+        context "within a class inherited from #{parent_class}" do
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              class HomeController < #{parent_class}
+                def create
+                  flash[:alert] = "msg" if condition
+                  ^^^^^ Use `flash.now` before `render`.
+                  render :index
+                end
+              end
+            RUBY
+
+            expect_correction(<<~RUBY)
+              class HomeController < #{parent_class}
+                def create
+                  flash.now[:alert] = "msg" if condition
+                  render :index
+                end
+              end
+            RUBY
+          end
+        end
+      end
+
+      context 'within a non Rails controller class' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            class NonController < ApplicationRecord
+              before_action do
+                flash[:alert] = "msg"
+                render :index
+              end
+            end
+          RUBY
+        end
+      end
+    end
+
     context 'within a class method' do
       it 'does not register an offense' do
         expect_no_offenses(<<~RUBY)
