@@ -97,4 +97,10 @@ RSpec.describe RuboCop::Cop::Rails::FreezeTime, :config do
       travel_to(DateTime.new(2022, 5, 3, 12, 0, 0))
     RUBY
   end
+
+  it 'does not register an offense when using `travel_to` without argument' do
+    expect_no_offenses(<<~RUBY)
+      travel_to
+    RUBY
+  end
 end

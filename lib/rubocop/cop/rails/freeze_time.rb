@@ -43,7 +43,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          child_node, method_name, time_argument = *node.first_argument.children
+          child_node, method_name, time_argument = *node.first_argument&.children
           return if time_argument || !child_node
           return unless current_time?(child_node, method_name) || current_time_with_convert?(child_node, method_name)
 
