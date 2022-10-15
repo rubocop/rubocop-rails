@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # This cops looks for assignments of `ignored_columns` that may override previous
+      # Looks for assignments of `ignored_columns` that may override previous
       # assignments.
       #
       # Overwriting previous assignments is usually a mistake, since it will
