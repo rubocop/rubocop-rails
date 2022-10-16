@@ -143,7 +143,7 @@ module RuboCop
         def_node_matcher :belongs_to_without_fk?, <<~PATTERN
           {
             (send nil? :belongs_to (sym %1))        # belongs_to :user
-            (send nil? :belongs_to (sym %1) !hash)  # belongs_to :user, -> { not_deleted }
+            (send nil? :belongs_to (sym %1) !hash ...)  # belongs_to :user, -> { not_deleted }
             (send nil? :belongs_to (sym %1) !(hash <(pair (sym :foreign_key) _) ...>))
           }
         PATTERN
