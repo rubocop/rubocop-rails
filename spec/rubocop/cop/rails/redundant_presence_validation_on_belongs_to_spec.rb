@@ -180,6 +180,14 @@ RSpec.describe RuboCop::Cop::Rails::RedundantPresenceValidationOnBelongsTo, :con
         RUBY
       end
 
+      it 'registers an offense for multiple attributes and options in belongs_to' do
+        expect_offense(<<~RUBY)
+          belongs_to :user, -> { where(foo: true) }, inverse_of: :employee
+          validates :user_id, presence: true
+                              ^^^^^^^^^^^^^^ Remove explicit presence validation for `user_id`.
+        RUBY
+      end
+
       pending 'registers an offense even when the presence option is factored out' do
         expect_offense(<<~RUBY)
           belongs_to :user

@@ -1,0 +1,1 @@
+* [#792](https://github.com/rubocop/rubocop-rails/issues/792): Fix a false negative for `Rails/RedundantPresenceValidationOnBelongsTo` when belongs_to at least one block and one hash like `belongs_to :company, -> { where(foo: true) }, inverse_of: :employee`. ([@PedroAugustoRamalhoDuarte][])
