@@ -106,7 +106,17 @@ module RuboCop
         end
 
         def message(node, receiver, other)
-          format(MSG, prefer: replacement(receiver, other), current: node.source)
+          prefer = replacement(receiver, other).gsub(/^\s*|\n/, '')
+          current = current(node).gsub(/^\s*|\n/, '')
+          format(MSG, prefer: prefer, current: current)
+        end
+
+        def current(node)
+          if node.source.include?("\n")
+            "#{node.loc.keyword.with(end_pos: node.condition.loc.selector.end_pos).source} ... end"
+          else
+            node.source
+          end
         end
 
         def replacement(receiver, other)
