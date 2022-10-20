@@ -1,131 +1,304 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::Presence, :config do
-  shared_examples 'offense' do |source, correction, first_line, end_line|
-    it 'registers an offense' do
-      offenses = inspect_source(source)
+  it 'registers an offense and corrects when `a.present? ? a : nil`' do
+    expect_offense(<<~RUBY)
+      a.present? ? a : nil
+      ^^^^^^^^^^^^^^^^^^^^ Use `a.presence` instead of `a.present? ? a : nil`.
+    RUBY
 
-      expect(offenses.count).to eq 1
-      expect(offenses).to all(have_attributes(first_line: first_line, last_line: end_line))
-      expect(offenses).to all(have_attributes(message: "Use `#{correction}` instead of `#{source}`."))
-    end
-
-    it 'auto correct' do
-      expect(autocorrect_source(source)).to eq(correction)
-    end
+    expect_correction(<<~RUBY)
+      a.presence
+    RUBY
   end
 
-  it_behaves_like 'offense', 'a.present? ? a : nil', 'a.presence', 1, 1
-  it_behaves_like 'offense', '!a.present? ? nil: a', 'a.presence', 1, 1
-  it_behaves_like 'offense', 'a.blank? ? nil : a', 'a.presence', 1, 1
-  it_behaves_like 'offense', '!a.blank? ? a : nil', 'a.presence', 1, 1
-  it_behaves_like 'offense', 'a.present? ? a : b', 'a.presence || b', 1, 1
-  it_behaves_like 'offense', '!a.present? ? b : a', 'a.presence || b', 1, 1
-  it_behaves_like 'offense', 'a.blank? ? b : a', 'a.presence || b', 1, 1
-  it_behaves_like 'offense', '!a.blank? ? a : b', 'a.presence || b', 1, 1
-  it_behaves_like 'offense', 'a.present? ? a : 1', 'a.presence || 1', 1, 1
-  it_behaves_like 'offense', 'a.blank? ? 1 : a', 'a.presence || 1', 1, 1
+  it 'registers an offense and corrects when `!a.present? ? nil: a`' do
+    expect_offense(<<~RUBY)
+      !a.present? ? nil: a
+      ^^^^^^^^^^^^^^^^^^^^ Use `a.presence` instead of `!a.present? ? nil: a`.
+    RUBY
 
-  it_behaves_like 'offense',
-                  'a(:bar).map(&:baz).present? ? a(:bar).map(&:baz) : nil',
-                  'a(:bar).map(&:baz).presence',
-                  1, 1
+    expect_correction(<<~RUBY)
+      a.presence
+    RUBY
+  end
 
-  it_behaves_like 'offense', 'a.present? ? a : b[:c]', 'a.presence || b[:c]', 1, 1
+  it 'registers an offense and corrects when `a.blank? ? nil : a`' do
+    expect_offense(<<~RUBY)
+      a.blank? ? nil : a
+      ^^^^^^^^^^^^^^^^^^ Use `a.presence` instead of `a.blank? ? nil : a`.
+    RUBY
 
-  it_behaves_like 'offense', <<~RUBY.chomp, 'a.presence', 1, 5
-    if a.present?
-      a
-    else
-      nil
-    end
-  RUBY
+    expect_correction(<<~RUBY)
+      a.presence
+    RUBY
+  end
 
-  it_behaves_like 'offense', <<~RUBY.chomp, 'a.presence', 1, 5
-    unless a.present?
-      nil
-    else
-      a
-    end
-  RUBY
+  it 'registers an offense and corrects when `!a.blank? ? a : nil`' do
+    expect_offense(<<~RUBY)
+      !a.blank? ? a : nil
+      ^^^^^^^^^^^^^^^^^^^ Use `a.presence` instead of `!a.blank? ? a : nil`.
+    RUBY
 
-  it_behaves_like 'offense', <<~RUBY.chomp, 'a.presence || b.to_f + 12.0', 1, 5
-    if a.present?
-      a
-    else
-      b.to_f + 12.0
-    end
-  RUBY
+    expect_correction(<<~RUBY)
+      a.presence
+    RUBY
+  end
 
-  it_behaves_like 'offense', <<~RUBY.chomp, 'a.presence || b.to_f * 12.0', 1, 5
-    if a.present?
-      a
-    else
-      b.to_f * 12.0
-    end
-  RUBY
+  it 'registers an offense and corrects when `a.present? ? a : b`' do
+    expect_offense(<<~RUBY)
+      a.present? ? a : b
+      ^^^^^^^^^^^^^^^^^^ Use `a.presence || b` instead of `a.present? ? a : b`.
+    RUBY
 
-  it_behaves_like 'offense', 'a if a.present?', 'a.presence', 1, 1
-  it_behaves_like 'offense', 'a unless a.blank?', 'a.presence', 1, 1
-  it_behaves_like 'offense', <<~RUBY.chomp, <<~FIXED.chomp, 1, 7
-    if [1, 2, 3].map { |num| num + 1 }
-                .map { |num| num + 2 }
-                .present?
-      [1, 2, 3].map { |num| num + 1 }.map { |num| num + 2 }
-    else
-      b
-    end
-  RUBY
-    [1, 2, 3].map { |num| num + 1 }
-                .map { |num| num + 2 }.presence || b
-  FIXED
+    expect_correction(<<~RUBY)
+      a.presence || b
+    RUBY
+  end
+
+  it 'registers an offense and corrects when `!a.present? ? b : a`' do
+    expect_offense(<<~RUBY)
+      !a.present? ? b : a
+      ^^^^^^^^^^^^^^^^^^^ Use `a.presence || b` instead of `!a.present? ? b : a`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence || b
+    RUBY
+  end
+
+  it 'registers an offense and corrects when `a.blank? ? b : a`' do
+    expect_offense(<<~RUBY)
+      a.blank? ? b : a
+      ^^^^^^^^^^^^^^^^ Use `a.presence || b` instead of `a.blank? ? b : a`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence || b
+    RUBY
+  end
+
+  it 'registers an offense and corrects when `!a.blank? ? a : b`' do
+    expect_offense(<<~RUBY)
+      !a.blank? ? a : b
+      ^^^^^^^^^^^^^^^^^ Use `a.presence || b` instead of `!a.blank? ? a : b`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence || b
+    RUBY
+  end
+
+  it 'registers an offense and corrects when `a.present? ? a : 1`' do
+    expect_offense(<<~RUBY)
+      a.present? ? a : 1
+      ^^^^^^^^^^^^^^^^^^ Use `a.presence || 1` instead of `a.present? ? a : 1`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence || 1
+    RUBY
+  end
+
+  it 'registers an offense and corrects when `a.blank? ? 1 : a`' do
+    expect_offense(<<~RUBY)
+      a.blank? ? 1 : a
+      ^^^^^^^^^^^^^^^^ Use `a.presence || 1` instead of `a.blank? ? 1 : a`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence || 1
+    RUBY
+  end
+
+  it 'registers an offense and corrects when `a(:bar).map(&:baz).present? ? a(:bar).map(&:baz) : nil`' do
+    expect_offense(<<~RUBY)
+      a(:bar).map(&:baz).present? ? a(:bar).map(&:baz) : nil
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `a(:bar).map(&:baz).presence` instead of `a(:bar).map(&:baz).present? ? a(:bar).map(&:baz) : nil`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a(:bar).map(&:baz).presence
+    RUBY
+  end
+
+  it 'registers an offense and corrects when `a.present? ? a : b[:c]`' do
+    expect_offense(<<~RUBY)
+      a.present? ? a : b[:c]
+      ^^^^^^^^^^^^^^^^^^^^^^ Use `a.presence || b[:c]` instead of `a.present? ? a : b[:c]`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence || b[:c]
+    RUBY
+  end
+
+  it 'registers an offense and corrects when multi-line if node' do
+    expect_offense(<<~RUBY)
+      if a.present?
+      ^^^^^^^^^^^^^ Use `a.presence` instead of `if a.present? ... end`.
+        a
+      else
+        nil
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence
+    RUBY
+  end
+
+  it 'registers an offense and corrects when multi-line unless node' do
+    expect_offense(<<~RUBY)
+      unless a.present?
+      ^^^^^^^^^^^^^^^^^ Use `a.presence` instead of `unless a.present? ... end`.
+        nil
+      else
+        a
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence
+    RUBY
+  end
+
+  it 'registers an offense and corrects when multi-line if node with `+` operators in the else branch' do
+    expect_offense(<<~RUBY)
+      if a.present?
+      ^^^^^^^^^^^^^ Use `a.presence || b.to_f + 12.0` instead of `if a.present? ... end`.
+        a
+      else
+        b.to_f + 12.0
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence || b.to_f + 12.0
+    RUBY
+  end
+
+  it 'registers an offense and corrects when multi-line if `*` operators in the else branch' do
+    expect_offense(<<~RUBY)
+      if a.present?
+      ^^^^^^^^^^^^^ Use `a.presence || b.to_f * 12.0` instead of `if a.present? ... end`.
+        a
+      else
+        b.to_f * 12.0
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence || b.to_f * 12.0
+    RUBY
+  end
+
+  it 'registers an offense and corrects when `a if a.present?`' do
+    expect_offense(<<~RUBY)
+      a if a.present?
+      ^^^^^^^^^^^^^^^ Use `a.presence` instead of `a if a.present?`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence
+    RUBY
+  end
+
+  it 'registers an offense and corrects when `a unless a.blank?`' do
+    expect_offense(<<~RUBY)
+      a unless a.blank?
+      ^^^^^^^^^^^^^^^^^ Use `a.presence` instead of `a unless a.blank?`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      a.presence
+    RUBY
+  end
+
+  it 'registers an offense and corrects when `.present?` with method chain' do
+    expect_offense(<<~RUBY)
+      if [1, 2, 3].map { |num| num + 1 }
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `[1, 2, 3].map { |num| num + 1 }.map { |num| num + 2 }.presence || b` instead of `if [1, 2, 3].map { |num| num + 1 }.map { |num| num + 2 }.present? ... end`.
+                  .map { |num| num + 2 }
+                  .present?
+                  [1, 2, 3].map { |num| num + 1 }.map { |num| num + 2 }
+      else
+        b
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      [1, 2, 3].map { |num| num + 1 }
+                  .map { |num| num + 2 }.presence || b
+    RUBY
+  end
 
   context 'when a method argument of `else` branch is enclosed in parentheses' do
-    it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
-      if value.present?
-        value
-      else
-        do_something(value)
-      end
-    SOURCE
-      value.presence || do_something(value)
-    CORRECTION
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        if value.present?
+        ^^^^^^^^^^^^^^^^^ Use `value.presence || do_something(value)` instead of `if value.present? ... end`.
+          value
+        else
+          do_something(value)
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        value.presence || do_something(value)
+      RUBY
+    end
   end
 
   context 'when a method argument of `else` branch is not enclosed in parentheses' do
-    it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
-      if value.present?
-        value
-      else
-        do_something value
-      end
-    SOURCE
-      value.presence || do_something(value)
-    CORRECTION
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        if value.present?
+        ^^^^^^^^^^^^^^^^^ Use `value.presence || do_something(value)` instead of `if value.present? ... end`.
+          value
+        else
+          do_something value
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        value.presence || do_something(value)
+      RUBY
+    end
   end
 
   context 'when multiple method arguments of `else` branch is not enclosed in parentheses' do
-    it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
-      if value.present?
-        value
-      else
-        do_something arg1, arg2
-      end
-    SOURCE
-      value.presence || do_something(arg1, arg2)
-    CORRECTION
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        if value.present?
+        ^^^^^^^^^^^^^^^^^ Use `value.presence || do_something(arg1, arg2)` instead of `if value.present? ... end`.
+          value
+        else
+          do_something arg1, arg2
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        value.presence || do_something(arg1, arg2)
+      RUBY
+    end
   end
 
   context 'when a method argument with a receiver of `else` branch is not enclosed in parentheses' do
-    it_behaves_like 'offense', <<~SOURCE.chomp, <<~CORRECTION.chomp, 1, 5
-      if value.present?
-        value
-      else
-        foo.do_something value
-      end
-    SOURCE
-      value.presence || foo.do_something(value)
-    CORRECTION
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        if value.present?
+        ^^^^^^^^^^^^^^^^^ Use `value.presence || foo.do_something(value)` instead of `if value.present? ... end`.
+          value
+        else
+          foo.do_something value
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        value.presence || foo.do_something(value)
+      RUBY
+    end
   end
 
   it 'does not register an offense when using `#presence`' do
