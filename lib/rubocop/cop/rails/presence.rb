@@ -93,7 +93,7 @@ module RuboCop
 
         def register_offense(node, receiver, other)
           add_offense(node, message: message(node, receiver, other)) do |corrector|
-            corrector.replace(node.source_range, replacement(receiver, other))
+            corrector.replace(node.source_range, replacement(receiver, other, node.left_sibling))
           end
         end
 
@@ -106,7 +106,7 @@ module RuboCop
         end
 
         def message(node, receiver, other)
-          prefer = replacement(receiver, other).gsub(/^\s*|\n/, '')
+          prefer = replacement(receiver, other, node.left_sibling).gsub(/^\s*|\n/, '')
           current = current(node).gsub(/^\s*|\n/, '')
           format(MSG, prefer: prefer, current: current)
         end
@@ -119,7 +119,7 @@ module RuboCop
           end
         end
 
-        def replacement(receiver, other)
+        def replacement(receiver, other, left_sibling)
           or_source = if other&.send_type?
                         build_source_for_or_method(other)
                       elsif other.nil? || other.nil_type?
@@ -128,7 +128,8 @@ module RuboCop
                         " || #{other.source}"
                       end
 
-          "#{receiver.source}.presence" + or_source
+          replaced = "#{receiver.source}.presence#{or_source}"
+          left_sibling ? "(#{replaced})" : replaced
         end
 
         def build_source_for_or_method(other)
