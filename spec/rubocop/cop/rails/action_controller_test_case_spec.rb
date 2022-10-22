@@ -53,6 +53,19 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerTestCase, :config do
     RUBY
   end
 
+  it 'adds offense when extending `ActionController::TestCase` with a namespace' do
+    expect_offense(<<~RUBY)
+      class Foo::Bar::MyControllerTest < ActionController::TestCase
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `ActionDispatch::IntegrationTest` instead.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      class Foo::Bar::MyControllerTest < ActionDispatch::IntegrationTest
+      end
+    RUBY
+  end
+
   it 'does not add offense when extending `ActionDispatch::IntegrationTest`' do
     expect_no_offenses(<<~RUBY)
       class MyControllerTest < ActionDispatch::IntegrationTest
