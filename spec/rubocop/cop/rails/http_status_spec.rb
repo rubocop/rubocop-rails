@@ -24,6 +24,8 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
              ^^^ Prefer `:ok` over `200` to define HTTP status code.
         head 200, location: 'accounts'
              ^^^ Prefer `:ok` over `200` to define HTTP status code.
+        get '/foobar', to: redirect('/foobar/baz', status: 301)
+                                                           ^^^ Prefer `:moved_permanently` over `301` to define HTTP status code.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -36,6 +38,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_path(utm_source: :pr, utm_medium: :web), status: :moved_permanently
         head :ok
         head :ok, location: 'accounts'
+        get '/foobar', to: redirect('/foobar/baz', status: :moved_permanently)
       RUBY
     end
 
@@ -47,6 +50,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_url, status: :moved_permanently
         redirect_to root_path(utm_source: :pr, utm_medium: :web), status: :moved_permanently
         head :ok
+        get '/foobar', to: redirect('/foobar/baz', status: :moved_permanently)
       RUBY
     end
 
@@ -58,6 +62,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_url, status: 550
         redirect_to root_path(utm_source: :pr, utm_medium: :web), status: 550
         head 550
+        get '/foobar', to: redirect('/foobar/baz', status: 550)
       RUBY
     end
   end
@@ -85,6 +90,8 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
              ^^^ Prefer `200` over `:ok` to define HTTP status code.
         head :ok, location: 'accounts'
              ^^^ Prefer `200` over `:ok` to define HTTP status code.
+        get '/foobar', to: redirect('/foobar/baz', status: :moved_permanently)
+                                                           ^^^^^^^^^^^^^^^^^^ Prefer `301` over `:moved_permanently` to define HTTP status code.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -97,6 +104,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_path(utm_source: :pr, utm_medium: :web), status: 301
         head 200
         head 200, location: 'accounts'
+        get '/foobar', to: redirect('/foobar/baz', status: 301)
       RUBY
     end
 
@@ -108,6 +116,7 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_url, status: 301
         redirect_to root_path(utm_source: :pr, utm_medium: :web), status: 301
         head 200
+        get '/foobar', to: redirect('/foobar/baz', status: 301)
       RUBY
     end
 
