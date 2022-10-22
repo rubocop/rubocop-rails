@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.17.0 (2022-10-22)
+
 ### New features
 
 * [#547](https://github.com/rubocop/rubocop-rails/pull/547): Add new `Rails/ActionOrder` cop. ([@mollerhoj][])

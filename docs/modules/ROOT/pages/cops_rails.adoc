@@ -175,20 +175,19 @@ skip_after_filter :do_stuff
 == Rails/ActionOrder
 
 |===
-| Enabled by default | Safe | Supports autocorrection | VersionAdded | VersionChanged
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
-| Disabled
+| Pending
 | Yes
 | Yes
-| 2.13
+| 2.17
 | -
 |===
 
-This cop enforces consistent ordering of the standard Rails RESTful
-controller actions.
+Enforces consistent ordering of the standard Rails RESTful controller actions.
 
-The cop is configurable and can enforce any ordering of the standard
-actions. All other methods are ignored.
+The cop is configurable and can enforce any ordering of the standard actions.
+All other methods are ignored.
 
 [source,yaml]
 ----
@@ -228,7 +227,7 @@ def destroy; end
 | Array
 
 | Include
-| `app/controllers/**/*.rb`
+| `+app/controllers/**/*.rb+`
 | Array
 |===
 
@@ -1672,26 +1671,30 @@ User.find_by(name: name, email: email)
 User.find_by!(email: email)
 ----
 
-==== AllowedMethods: find_by_sql
+==== AllowedMethods: ['find_by_sql', 'find_by_token_for'] (default)
 
 [source,ruby]
 ----
 # bad
 User.find_by_query(users_query)
+User.find_by_token_for(:password_reset, token)
 
 # good
 User.find_by_sql(users_sql)
+User.find_by_token_for(:password_reset, token)
 ----
 
-==== AllowedReceivers: Gem::Specification
+==== AllowedReceivers: ['Gem::Specification', 'page'] (default)
 
 [source,ruby]
 ----
 # bad
 Specification.find_by_name('backend').gem_dir
+page.find_by_id('a_dom_id').click
 
 # good
 Gem::Specification.find_by_name('backend').gem_dir
+page.find_by_id('a_dom_id').click
 ----
 
 === Configurable attributes
@@ -1700,15 +1703,15 @@ Gem::Specification.find_by_name('backend').gem_dir
 | Name | Default value | Configurable values
 
 | Whitelist
-| `find_by_sql`
+| `find_by_sql`, `find_by_token_for`
 | Array
 
 | AllowedMethods
-| `find_by_sql`
+| `find_by_sql`, `find_by_token_for`
 | Array
 
 | AllowedReceivers
-| `Gem::Specification`
+| `Gem::Specification`, `page`
 | Array
 |===
 
@@ -2227,7 +2230,7 @@ User.all.find_each
 User.order(:foo).each
 ----
 
-==== AllowedPattern: [/order/]
+==== AllowedPattern: ['order']
 
 [source,ruby]
 ----
@@ -2524,6 +2527,7 @@ render json: { foo: 'bar' }, status: 200
 render plain: 'foo/bar', status: 304
 redirect_to root_url, status: 301
 head 200
+get '/foobar', to: redirect('/foobar/baz', status: 301)
 
 # good
 render :foo, status: :ok
@@ -2531,6 +2535,7 @@ render json: { foo: 'bar' }, status: :ok
 render plain: 'foo/bar', status: :not_modified
 redirect_to root_url, status: :moved_permanently
 head :ok
+get '/foobar', to: redirect('/foobar/baz', status: :moved_permanently)
 ----
 
 ==== EnforcedStyle: numeric
@@ -2543,6 +2548,7 @@ render json: { foo: 'bar' }, status: :not_found
 render plain: 'foo/bar', status: :not_modified
 redirect_to root_url, status: :moved_permanently
 head :ok
+get '/foobar', to: redirect('/foobar/baz', status: :moved_permanently)
 
 # good
 render :foo, status: 200
@@ -2550,6 +2556,7 @@ render json: { foo: 'bar' }, status: 404
 render plain: 'foo/bar', status: 304
 redirect_to root_url, status: 301
 head 200
+get '/foobar', to: redirect('/foobar/baz', status: 301)
 ----
 
 === Configurable attributes
@@ -2741,6 +2748,55 @@ end
 === References
 
 * https://rails.rubystyle.guide/#locale-texts
+
+== Rails/IgnoredColumnsAssignment
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes (Unsafe)
+| 2.17
+| -
+|===
+
+Looks for assignments of `ignored_columns` that may override previous
+assignments.
+
+Overwriting previous assignments is usually a mistake, since it will
+un-ignore the first set of columns. Since duplicate column names is not
+a problem, it is better to simply append to the list.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class User < ActiveRecord::Base
+  self.ignored_columns = [:one]
+end
+
+# bad
+class User < ActiveRecord::Base
+  self.ignored_columns = [:one, :two]
+end
+
+# good
+class User < ActiveRecord::Base
+  self.ignored_columns += [:one, :two]
+end
+
+# good
+class User < ActiveRecord::Base
+  self.ignored_columns += [:one]
+  self.ignored_columns += [:two]
+end
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#append-ignored-columns
 
 == Rails/IgnoredSkipActionFilterOption
 
@@ -6444,3 +6500,39 @@ User.where.not(users: { name: 'Gabe' })
 === References
 
 * https://rails.rubystyle.guide/#hash-conditions
+
+== Rails/WhereNotWithMultipleConditions
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| No
+| 2.17
+| -
+|===
+
+Identifies calls to `where.not` with multiple hash arguments.
+
+The behavior of `where.not` changed in Rails 6.1. Prior to the change,
+`.where.not(trashed: true, role: 'admin')` evaluated to
+`WHERE trashed != TRUE AND role != 'admin'`.
+From Rails 6.1 onwards, this executes the query
+`WHERE NOT (trashed == TRUE AND roles == 'admin')`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+User.where.not(trashed: true, role: 'admin')
+User.where.not(trashed: true, role: ['moderator', 'admin'])
+User.joins(:posts).where.not(posts: { trashed: true, title: 'Rails' })
+
+# good
+User.where.not(trashed: true)
+User.where.not(role: ['moderator', 'admin'])
+User.where.not(trashed: true).where.not(role: ['moderator', 'admin'])
+User.where.not('trashed = ? OR role = ?', true, 'admin')
+----

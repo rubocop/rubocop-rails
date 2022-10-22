@@ -70,6 +70,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsi18nlazylookup[Rails/I18nLazyLookup]
 * xref:cops_rails.adoc#railsi18nlocaleassignment[Rails/I18nLocaleAssignment]
 * xref:cops_rails.adoc#railsi18nlocaletexts[Rails/I18nLocaleTexts]
+* xref:cops_rails.adoc#railsignoredcolumnsassignment[Rails/IgnoredColumnsAssignment]
 * xref:cops_rails.adoc#railsignoredskipactionfilteroption[Rails/IgnoredSkipActionFilterOption]
 * xref:cops_rails.adoc#railsindexby[Rails/IndexBy]
 * xref:cops_rails.adoc#railsindexwith[Rails/IndexWith]
@@ -136,5 +137,6 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railswhereexists[Rails/WhereExists]
 * xref:cops_rails.adoc#railswheremissing[Rails/WhereMissing]
 * xref:cops_rails.adoc#railswherenot[Rails/WhereNot]
+* xref:cops_rails.adoc#railswherenotwithmultipleconditions[Rails/WhereNotWithMultipleConditions]
 
 // END_COP_LIST

@@ -101,7 +101,7 @@ Rails/ActionFilter:
 Rails/ActionOrder:
   Description: 'Enforce consistent ordering of controller actions.'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.17'
   ExpectedOrder:
     - index
     - show
@@ -561,7 +561,7 @@ Rails/IgnoredColumnsAssignment:
   StyleGuide: 'https://rails.rubystyle.guide/#append-ignored-columns'
   Enabled: pending
   SafeAutoCorrect: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.17'
 
 Rails/IgnoredSkipActionFilterOption:
   Description: 'Checks that `if` and `only` (or `except`) are not used together as options of `skip_*` action filter.'
@@ -1121,7 +1121,7 @@ Rails/WhereNot:
 Rails/WhereNotWithMultipleConditions:
   Description: 'Do not use `where.not(...)` with multiple conditions.'
   Enabled: 'pending'
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.17'
 
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
