@@ -104,7 +104,7 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
     context 'with a condition' do
       %w[ActionController::Base ApplicationController].each do |parent_class|
         context "within a class inherited from #{parent_class}" do
-          it 'registers an offense and corrects' do
+          it 'registers an offense and corrects when using `flash` before `render`' do
             expect_offense(<<~RUBY)
               class HomeController < #{parent_class}
                 def create
@@ -120,6 +120,34 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
                 def create
                   flash.now[:alert] = "msg" if condition
                   render :index
+                end
+              end
+            RUBY
+          end
+
+          it 'does not register an offense when using `flash` before `redirect_to`' do
+            expect_no_offenses(<<~RUBY)
+              class HomeController < #{parent_class}
+                def create
+                  if condition
+                    flash[:alert] = "msg"
+                  end
+
+                  redirect_to :index
+                end
+              end
+            RUBY
+          end
+
+          it 'does not register an offense when using `flash` before `redirect_back`' do
+            expect_no_offenses(<<~RUBY)
+              class HomeController < #{parent_class}
+                def create
+                  if condition
+                    flash[:alert] = "msg"
+                  end
+
+                  redirect_back fallback_location: root_path
                 end
               end
             RUBY
