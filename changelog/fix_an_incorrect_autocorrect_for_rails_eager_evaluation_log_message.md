@@ -1,1 +1,0 @@
-* [#782](https://github.com/rubocop/rubocop-rails/issues/782): Fix an incorrect autocorrect for `Rails/EagerEvaluationLogMessage` when using `Style/MethodCallWithArgsParentheses`'s autocorrection together. ([@koic][])
