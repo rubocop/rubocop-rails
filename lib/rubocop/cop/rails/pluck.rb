@@ -26,15 +26,16 @@ module RuboCop
         minimum_target_rails_version 5.0
 
         def_node_matcher :pluck_candidate?, <<~PATTERN
-          ({block numblock} (send _ {:map :collect}) $_argument (send (lvar $_element) :[] $_key))
+          ({block numblock} (send _ {:map :collect}) $_argument (send lvar :[] $_key))
         PATTERN
 
         def on_block(node)
-          pluck_candidate?(node) do |argument, element, key|
+          pluck_candidate?(node) do |argument, key|
             match = if node.block_type?
-                      argument.children.first.source.to_sym == element
+                      block_argument = argument.children.first.source
+                      use_block_argument_in_key?(block_argument, key)
                     else # numblock
-                      argument == 1 && element == :_1
+                      argument == 1 && use_block_argument_in_key?('_1', key)
                     end
             next unless match
 
@@ -49,6 +50,10 @@ module RuboCop
         alias on_numblock on_block
 
         private
+
+        def use_block_argument_in_key?(block_argument, key)
+          key.each_descendant(:lvar).none? { |lvar| block_argument == lvar.source }
+        end
 
         def offense_range(node)
           node.send_node.loc.selector.join(node.loc.end)
