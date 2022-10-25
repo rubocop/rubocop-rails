@@ -1,0 +1,1 @@
+* [#832](https://github.com/rubocop/rubocop-rails/issues/832): Mark `Rails/ActionControllerFlashBeforeRender`, `Rails/ActionControllerTestCase`, and `Rails/RootPathnameMethods` cops as unsafe autocorrection. ([@koic][])
