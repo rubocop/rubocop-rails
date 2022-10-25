@@ -2,6 +2,11 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#829](https://github.com/rubocop/rubocop-rails/pull/829): Revert "Extends `Rails/HttpStatus` cop to check `routes.rb`" introduced in 2.17.0. ([@jdufresne][])
+* [#831](https://github.com/rubocop/rubocop-rails/pull/831): Fix a false positive for `Rails/Pluck` when using block argument in `[]`. ([@koic][])
+
 ## 2.17.0 (2022-10-22)
 
 ### New features
@@ -722,3 +727,4 @@
 [@mollerhoj]: https://github.com/mollerhoj
 [@niklas-hasselmeyer]: https://github.com/niklas-hasselmeyer
 [@fsateler]: https://github.com/fsateler
+[@jdufresne]: https://github.com/jdufresne
