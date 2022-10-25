@@ -50,6 +50,14 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
         end
       end
 
+      context 'when the block argument is used in `[]`' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            x.#{method} { |a| a[foo...a.to_someghing] }
+          RUBY
+        end
+      end
+
       context 'when using Ruby 2.7 or newer', :ruby27 do
         context 'when using numbered parameter' do
           context "when `#{method}` can be replaced with `pluck`" do
@@ -61,6 +69,14 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
 
               expect_correction(<<~RUBY)
                 x.pluck(:foo)
+              RUBY
+            end
+          end
+
+          context 'when the numblock argument is used in `[]`' do
+            it 'does not register an offense' do
+              expect_no_offenses(<<~RUBY)
+                x.#{method} { _1[foo..._1.to_someghing] }
               RUBY
             end
           end
