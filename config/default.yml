@@ -73,7 +73,7 @@ Rails/ActionControllerFlashBeforeRender:
   StyleGuide: 'https://rails.rubystyle.guide/#flash-before-render'
   Reference: 'https://api.rubyonrails.org/classes/ActionController/FlashBeforeRender.html'
   Enabled: 'pending'
-  SafeAutocorrect: false
+  SafeAutoCorrect: false
   VersionAdded: '2.16'
 
 Rails/ActionControllerTestCase:
@@ -81,7 +81,7 @@ Rails/ActionControllerTestCase:
   StyleGuide: 'https://rails.rubystyle.guide/#integration-testing'
   Reference: 'https://api.rubyonrails.org/classes/ActionController/TestCase.html'
   Enabled: 'pending'
-  SafeAutocorrect: false
+  SafeAutoCorrect: false
   VersionAdded: '2.14'
   Include:
     - '**/test/**/*.rb'
@@ -873,7 +873,7 @@ Rails/RootJoinChain:
 Rails/RootPathnameMethods:
   Description: 'Use `Rails.root` IO methods instead of passing it to `File`.'
   Enabled: pending
-  SafeAutocorrect: false
+  SafeAutoCorrect: false
   VersionAdded: '2.16'
 
 Rails/RootPublicPath:
