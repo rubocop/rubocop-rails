@@ -60,6 +60,12 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         head 550
       RUBY
     end
+
+    it 'does not register an offense when using numeric value for `redirect`' do
+      expect_no_offenses(<<~RUBY)
+        get '/foobar', to: redirect('/foobar/baz', status: 301)
+      RUBY
+    end
   end
 
   context 'when EnforcedStyle is `numeric`' do
