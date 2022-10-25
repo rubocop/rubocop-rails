@@ -44,4 +44,10 @@ RSpec.describe RuboCop::Cop::Rails::WhereNotWithMultipleConditions, :config do
       User.where.not(trashed: true).where.not(role: 'admin')
     RUBY
   end
+
+  it 'does not register an offense for `where.not` with empty hash literal' do
+    expect_no_offenses(<<~RUBY)
+      User.where.not(data: {})
+    RUBY
+  end
 end

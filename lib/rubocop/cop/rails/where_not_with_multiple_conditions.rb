@@ -45,7 +45,7 @@ module RuboCop
 
         def multiple_arguments_hash?(hash)
           return true if hash.pairs.size >= 2
-          return false unless hash.values[0].hash_type?
+          return false unless hash.values[0]&.hash_type?
 
           multiple_arguments_hash?(hash.values[0])
         end
