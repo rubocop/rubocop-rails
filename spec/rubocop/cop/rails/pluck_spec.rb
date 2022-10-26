@@ -58,6 +58,15 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
         end
       end
 
+      context 'when receiver is not block argument for `[]`' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            lvar = do_something
+            x.#{method} { |id| lvar[id] }
+          RUBY
+        end
+      end
+
       context 'when there are multiple block arguments' do
         it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)

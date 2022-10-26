@@ -55,6 +55,8 @@ module RuboCop
         end
 
         def use_block_argument_in_key?(block_argument, key)
+          return false if block_argument == key.source
+
           key.each_descendant(:lvar).none? { |lvar| block_argument == lvar.source }
         end
 
