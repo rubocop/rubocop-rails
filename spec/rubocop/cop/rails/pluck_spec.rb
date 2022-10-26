@@ -58,6 +58,14 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
         end
       end
 
+      context 'when there are multiple block arguments' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            x.#{method} { |_, obj| obj['id'] }
+          RUBY
+        end
+      end
+
       context 'when using Ruby 2.7 or newer', :ruby27 do
         context 'when using numbered parameter' do
           context "when `#{method}` can be replaced with `pluck`" do
@@ -77,6 +85,14 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
             it 'does not register an offense' do
               expect_no_offenses(<<~RUBY)
                 x.#{method} { _1[foo..._1.to_someghing] }
+              RUBY
+            end
+          end
+
+          context 'when numblock argument is not `_1`' do
+            it 'does not register an offense' do
+              expect_no_offenses(<<~RUBY)
+                x.#{method} { _2['id'] }
               RUBY
             end
           end

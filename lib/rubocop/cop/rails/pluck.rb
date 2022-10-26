@@ -31,6 +31,8 @@ module RuboCop
 
         def on_block(node)
           pluck_candidate?(node) do |argument, key|
+            next unless use_one_block_argument?(argument)
+
             match = if node.block_type?
                       block_argument = argument.children.first.source
                       use_block_argument_in_key?(block_argument, key)
@@ -39,17 +41,18 @@ module RuboCop
                     end
             next unless match
 
-            replacement = "pluck(#{key.source})"
-            message = message(replacement, node)
-
-            add_offense(offense_range(node), message: message) do |corrector|
-              corrector.replace(offense_range(node), replacement)
-            end
+            register_offense(node, key)
           end
         end
         alias on_numblock on_block
 
         private
+
+        def use_one_block_argument?(argument)
+          return true if argument == 1 # Checks for numbered argument `_1`.
+
+          argument.respond_to?(:one?) && argument.one?
+        end
 
         def use_block_argument_in_key?(block_argument, key)
           key.each_descendant(:lvar).none? { |lvar| block_argument == lvar.source }
@@ -57,6 +60,15 @@ module RuboCop
 
         def offense_range(node)
           node.send_node.loc.selector.join(node.loc.end)
+        end
+
+        def register_offense(node, key)
+          replacement = "pluck(#{key.source})"
+          message = message(replacement, node)
+
+          add_offense(offense_range(node), message: message) do |corrector|
+            corrector.replace(offense_range(node), replacement)
+          end
         end
 
         def message(replacement, node)
