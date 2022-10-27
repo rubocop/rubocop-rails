@@ -115,6 +115,46 @@ RSpec.describe RuboCop::Cop::Rails::ActionOrder, :config do
     RUBY
   end
 
+  it 'corrects order of resources only argument' do
+    expect_offense(<<~RUBY)
+      resources :books, only: [:show, :index]
+                                      ^^^^^^ Action `index` should appear before `show`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      resources :books, only: [:index, :show]
+    RUBY
+  end
+
+  it 'corrects order of resources except argument' do
+    expect_offense(<<~RUBY)
+      resources :books, except: [:update, :edit]
+                                          ^^^^^ Action `edit` should appear before `update`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      resources :books, except: [:edit, :update]
+    RUBY
+  end
+
+  it 'corrects order of resources both only and except argument' do
+    expect_offense(<<~RUBY)
+      resources :books, only: [:show, :index], except: [:update, :edit]
+                                                                 ^^^^^ Action `edit` should appear before `update`.
+                                      ^^^^^^ Action `index` should appear before `show`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      resources :books, only: [:index, :show], except: [:edit, :update]
+    RUBY
+  end
+
+  it 'has no offenses for resources with arguments in stardard oreder' do
+    expect_no_offenses(<<~RUBY)
+      resources :books, only: [:index, :show], except: [:edit, :update]
+    RUBY
+  end
+
   context 'with custom ordering' do
     it 'enforces custom order' do
       cop_config['ExpectedOrder'] = %w[show index new edit create update destroy]
