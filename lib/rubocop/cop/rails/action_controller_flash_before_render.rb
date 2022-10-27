@@ -69,9 +69,12 @@ module RuboCop
         def followed_by_render?(flash_node)
           flash_assigment_node = find_ancestor(flash_node, type: :send)
           context = flash_assigment_node
-          context = context.parent if context.parent.if_type?
+          if (if_node = context.each_ancestor(:if).first)
+            context = if_node
+          elsif context.right_siblings.empty?
+            return true
+          end
           context = context.right_siblings
-          return true if context.empty?
 
           context.compact.any? do |node|
             render?(node)

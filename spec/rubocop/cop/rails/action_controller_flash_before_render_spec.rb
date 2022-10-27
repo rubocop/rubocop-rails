@@ -152,6 +152,50 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
               end
             RUBY
           end
+
+          it 'registers an offense when using `flash` in multiline `if` branch before `render_to`' do
+            expect_offense(<<~RUBY)
+              class HomeController < #{parent_class}
+                def create
+                  if condition
+                    do_something
+                    flash[:alert] = "msg"
+                    ^^^^^ Use `flash.now` before `render`.
+                  end
+
+                  render :index
+                end
+              end
+            RUBY
+
+            expect_correction(<<~RUBY)
+              class HomeController < #{parent_class}
+                def create
+                  if condition
+                    do_something
+                    flash.now[:alert] = "msg"
+                  end
+
+                  render :index
+                end
+              end
+            RUBY
+          end
+
+          it 'does not register an offense when using `flash` in multiline `if` branch before `redirect_to`' do
+            expect_no_offenses(<<~RUBY)
+              class HomeController < #{parent_class}
+                def create
+                  if condition
+                    do_something
+                    flash[:alert] = "msg"
+                  end
+
+                  redirect_to :index
+                end
+              end
+            RUBY
+          end
         end
       end
 
