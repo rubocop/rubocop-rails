@@ -7,7 +7,7 @@
 
 | Pending
 | Yes
-| Yes
+| Yes (Unsafe)
 | 2.16
 | -
 |===
@@ -41,16 +41,6 @@ class HomeController < ApplicationController
 end
 ----
 
-=== Configurable attributes
-
-|===
-| Name | Default value | Configurable values
-
-| SafeAutocorrect
-| `false`
-| Boolean
-|===
-
 === References
 
 * https://rails.rubystyle.guide/#flash-before-render
@@ -63,7 +53,7 @@ end
 
 | Pending
 | Yes
-| Yes
+| Yes (Unsafe)
 | 2.14
 | -
 |===
@@ -94,10 +84,6 @@ end
 
 |===
 | Name | Default value | Configurable values
-
-| SafeAutocorrect
-| `false`
-| Boolean
 
 | Include
 | `+**/test/**/*.rb+`
@@ -5039,7 +5025,7 @@ Rails.public_path.join('path', to, 'file.pdf')
 
 | Pending
 | Yes
-| Yes
+| Yes (Unsafe)
 | 2.16
 | -
 |===
@@ -5077,16 +5063,6 @@ Rails.root.join('db', 'schema.rb').binread
 Rails.root.join('db', 'schema.rb').write(content)
 Rails.root.join('db', 'schema.rb').binwrite(content)
 ----
-
-=== Configurable attributes
-
-|===
-| Name | Default value | Configurable values
-
-| SafeAutocorrect
-| `false`
-| Boolean
-|===
 
 == Rails/RootPublicPath
 
