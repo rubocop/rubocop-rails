@@ -71,9 +71,16 @@ module RuboCop
             current: current.method_name
           )
           add_offense(current, message: message) do |corrector|
+            current = correction_target(current)
+            previous = correction_target(previous)
+
             corrector.replace(current, previous.source)
             corrector.replace(previous, current.source)
           end
+        end
+
+        def correction_target(def_node)
+          def_node.each_ancestor(:if).first || def_node
         end
       end
     end
