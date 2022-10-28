@@ -18,6 +18,26 @@ RSpec.describe RuboCop::Cop::Rails::ActionOrder, :config do
     RUBY
   end
 
+  it 'detects unconventional order of multiple actions' do
+    expect_offense(<<~RUBY)
+      class UserController < ApplicationController
+        def create; end
+        def edit; end
+        ^^^^^^^^^^^^^ Action `edit` should appear before `create`.
+        def show; end
+        ^^^^^^^^^^^^^ Action `show` should appear before `edit`.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      class UserController < ApplicationController
+        def show; end
+        def edit; end
+        def create; end
+      end
+    RUBY
+  end
+
   it 'supports methods with content' do
     expect_offense(<<~RUBY)
       class UserController < ApplicationController
@@ -33,10 +53,10 @@ RSpec.describe RuboCop::Cop::Rails::ActionOrder, :config do
     expect_correction(<<~RUBY)
       class UserController < ApplicationController
         def index; end
-
         def show
           @user = User.find(params[:id])
         end
+
       end
     RUBY
   end
@@ -137,11 +157,11 @@ RSpec.describe RuboCop::Cop::Rails::ActionOrder, :config do
           def index
           end
         end
-
         unless Rails.env.development?
           def edit
           end
         end
+
       end
     RUBY
   end
@@ -181,8 +201,8 @@ RSpec.describe RuboCop::Cop::Rails::ActionOrder, :config do
       expect_correction(<<~RUBY)
         class UserController < ApplicationController
           def show; end
-          def edit; end
           def index; end
+          def edit; end
         end
       RUBY
     end
@@ -205,9 +225,9 @@ RSpec.describe RuboCop::Cop::Rails::ActionOrder, :config do
         class UserController < ApplicationController
           # index
           def index; end
-
           # show
           def show; end
+
         end
       RUBY
     end
