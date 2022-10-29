@@ -115,6 +115,37 @@ RSpec.describe RuboCop::Cop::Rails::ActionOrder, :config do
     RUBY
   end
 
+  it 'detects unconventional order of actions in conditions' do
+    expect_offense(<<~RUBY)
+      class TestController < BaseController
+        unless Rails.env.development?
+          def edit
+          end
+        end
+
+        if Rails.env.development?
+          def index
+          ^^^^^^^^^ Action `index` should appear before `edit`.
+          end
+        end
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      class TestController < BaseController
+        if Rails.env.development?
+          def index
+          end
+        end
+
+        unless Rails.env.development?
+          def edit
+          end
+        end
+      end
+    RUBY
+  end
+
   context 'with custom ordering' do
     it 'enforces custom order' do
       cop_config['ExpectedOrder'] = %w[show index new edit create update destroy]
