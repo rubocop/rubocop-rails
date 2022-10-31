@@ -34,6 +34,8 @@ module RuboCop
 
         MSG = 'Use "lazy" lookup for the text used in controllers.'
 
+        RESTRICT_ON_SEND = %i[translate t].freeze
+
         def_node_matcher :translate_call?, <<~PATTERN
           (send nil? {:translate :t} ${sym_type? str_type?} ...)
         PATTERN

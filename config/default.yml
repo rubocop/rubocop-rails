@@ -540,7 +540,7 @@ Rails/I18nLazyLookup:
   Enabled: pending
   VersionAdded: '2.14'
   Include:
-    - 'controllers/**/*'
+    - 'app/controllers/**/*.rb'
 
 Rails/I18nLocaleAssignment:
   Description: 'Prefer the usage of `I18n.with_locale` instead of manually updating `I18n.locale` value.'
