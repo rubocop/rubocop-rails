@@ -29,7 +29,7 @@ module RuboCop
 
         MSG = 'Use `freeze_time` instead of `travel_to`.'
         NOW_METHODS = %i[now new current].freeze
-        CONV_METHODS = %i[to_time in_time_zone].freeze
+        CONVERT_METHODS = %i[to_time in_time_zone].freeze
         RESTRICT_ON_SEND = %i[travel_to].freeze
 
         # @!method time_now?(node)
@@ -63,9 +63,11 @@ module RuboCop
         end
 
         def current_time_with_convert?(node, method_name)
-          return false unless CONV_METHODS.include?(method_name)
+          return false unless CONVERT_METHODS.include?(method_name)
 
-          child_node, child_method_name = *node.children
+          child_node, child_method_name, time_argument = *node.children
+          return if time_argument
+
           current_time?(child_node, child_method_name)
         end
       end

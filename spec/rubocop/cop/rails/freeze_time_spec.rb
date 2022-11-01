@@ -98,6 +98,12 @@ RSpec.describe RuboCop::Cop::Rails::FreezeTime, :config do
     RUBY
   end
 
+  it 'does not register an offense when using `travel_to` with an argument of `Time.new(...).in_time_zone`' do
+    expect_no_offenses(<<~RUBY)
+      travel_to(Time.new(2019, 4, 3, 12, 30).in_time_zone)
+    RUBY
+  end
+
   it 'does not register an offense when using `travel_to` without argument' do
     expect_no_offenses(<<~RUBY)
       travel_to
