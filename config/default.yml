@@ -306,6 +306,11 @@ Rails/Date:
     - flexible
   AllowToTime: true
 
+Rails/DateAndTimeCalculation:
+  Description: Prefer ActiveSupport date and time helper.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/DefaultScope:
   Description: 'Avoid use of `default_scope`.'
   StyleGuide: 'https://rails.rubystyle.guide#avoid-default-scope'
