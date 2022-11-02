@@ -148,35 +148,6 @@ module RuboCop
           :yesterday
         ].freeze
 
-        # @param node [RuboCop::AST::SendNode]
-        # @return [void]
-        def on_send(node) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
-          case node.method_name
-          when :-
-            check_subtraction(node)
-          when :+
-            check_addition(node)
-          when :==
-            check_equality(node)
-          when :<, :before?
-            check_less_than(node)
-          when :>, :after?
-            check_greater_than(node)
-          when :now
-            check_now(node)
-          when :to_date
-            check_to_date(node)
-          when :today
-            check_today(node)
-          when :tomorrow
-            check_tomorrow(node)
-          when :yesterday
-            check_yesterday(node)
-          end
-        end
-
-        private
-
         # @!method comparison_to_time_current?(node)
         #   @param node [RuboCop::AST::Node]
         #   @return [Boolean]
@@ -405,6 +376,35 @@ module RuboCop
             %1
           )
         PATTERN
+
+        # @param node [RuboCop::AST::SendNode]
+        # @return [void]
+        def on_send(node) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
+          case node.method_name
+          when :-
+            check_subtraction(node)
+          when :+
+            check_addition(node)
+          when :==
+            check_equality(node)
+          when :<, :before?
+            check_less_than(node)
+          when :>, :after?
+            check_greater_than(node)
+          when :now
+            check_now(node)
+          when :to_date
+            check_to_date(node)
+          when :today
+            check_today(node)
+          when :tomorrow
+            check_tomorrow(node)
+          when :yesterday
+            check_yesterday(node)
+          end
+        end
+
+        private
 
         # @param corrector [RuboCop::Cop::Corrector]
         # @param node [RuboCop::AST::SendNode]
