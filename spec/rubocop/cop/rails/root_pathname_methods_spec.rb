@@ -148,4 +148,15 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
       files.map { |file| Rails.root.join('db', file).open('wb') }
     RUBY
   end
+
+  it 'registers an offense when using `File.open Rails.root.join ...` without parens' do
+    expect_offense(<<~RUBY)
+      file = File.open Rails.root.join 'docs', 'invoice.pdf'
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#open`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      file = Rails.root.join('docs', 'invoice.pdf').open
+    RUBY
+  end
 end

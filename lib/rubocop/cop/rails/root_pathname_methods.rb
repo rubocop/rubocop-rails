@@ -163,12 +163,11 @@ module RuboCop
         def on_send(node)
           evidence(node) do |method, path, args, rails_root|
             add_offense(node, message: format(MSG, method: method, rails_root: rails_root.source)) do |corrector|
-              if dir_glob?(node)
-                replacement = build_path_glob(path, method)
-              else
-                replacement = "#{path.source}.#{method}"
-                replacement += "(#{args.map(&:source).join(', ')})" unless args.empty?
-              end
+              replacement = if dir_glob?(node)
+                              build_path_glob_replacement(path, method)
+                            else
+                              build_path_replacement(path, method, args)
+                            end
 
               corrector.replace(node, replacement)
             end
@@ -184,7 +183,7 @@ module RuboCop
           yield(method, path, args, rails_root)
         end
 
-        def build_path_glob(path, method)
+        def build_path_glob_replacement(path, method)
           receiver = range_between(path.loc.expression.begin_pos, path.children.first.loc.selector.end_pos).source
 
           argument = if path.arguments.one?
@@ -194,6 +193,18 @@ module RuboCop
                      end
 
           "#{receiver}.#{method}(#{argument})"
+        end
+
+        def build_path_replacement(path, method, args)
+          path_replacement = path.source
+          if path.arguments? && !path.parenthesized_call?
+            path_replacement[' '] = '('
+            path_replacement << ')'
+          end
+
+          replacement = "#{path_replacement}.#{method}"
+          replacement += "(#{args.map(&:source).join(', ')})" unless args.empty?
+          replacement
         end
 
         def include_interpolation?(arguments)
