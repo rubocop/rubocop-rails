@@ -187,4 +187,29 @@ RSpec.describe RuboCop::Cop::Rails::ActionOrder, :config do
       RUBY
     end
   end
+
+  context 'when action has some comments' do
+    it 'corrects comments properly' do
+      expect_offense(<<~RUBY)
+        class UserController < ApplicationController
+          # show
+          def show; end
+
+          # index
+          def index; end
+          ^^^^^^^^^^^^^^ Action `index` should appear before `show`.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class UserController < ApplicationController
+          # index
+          def index; end
+
+          # show
+          def show; end
+        end
+      RUBY
+    end
+  end
 end
