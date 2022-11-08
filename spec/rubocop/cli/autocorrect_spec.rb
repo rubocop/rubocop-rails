@@ -51,7 +51,7 @@ RSpec.describe 'RuboCop::CLI --autocorrect', :isolated_environment do # rubocop:
       {foo: 1, bar: 2, baz: 3}.reject {|k, v| k == :bar }
     RUBY
 
-    expect(cli.run(['-a', '--only', 'Style/HashExcept'])).to eq(0)
+    expect(cli.run(['-A', '--only', 'Style/HashExcept'])).to eq(0)
     expect(File.read('example.rb')).to eq(<<~RUBY)
       {foo: 1, bar: 2, baz: 3}.except(:bar)
     RUBY
