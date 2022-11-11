@@ -6,7 +6,8 @@ module RuboCop
       # Enforces consistent ordering of the standard Rails RESTful controller actions.
       #
       # The cop is configurable and can enforce any ordering of the standard actions.
-      # All other methods are ignored.
+      # All other methods are ignored. So, the actions specified in `ExpectedOrder` should be
+      # defined before actions not specified.
       #
       # [source,yaml]
       # ----
@@ -75,8 +76,7 @@ module RuboCop
             current = correction_target(current)
             previous = correction_target(previous)
 
-            corrector.replace(current, previous.source)
-            corrector.replace(previous, current.source)
+            swap_range(corrector, current, previous)
           end
         end
 
@@ -105,6 +105,11 @@ module RuboCop
 
         def range_with_comments_and_lines(node)
           range_by_whole_lines(range_with_comments(node), include_final_newline: true)
+        end
+
+        def swap_range(corrector, range1, range2)
+          corrector.insert_before(range2, range1.source)
+          corrector.remove(range1)
         end
       end
     end
