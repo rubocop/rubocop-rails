@@ -847,6 +847,17 @@ Rails/RequireDependency:
   Enabled: false
   VersionAdded: '2.10'
 
+Rails/ResponseParsedBody:
+  Description: Prefer `response.parsed_body` to `JSON.parse(response.body)`.
+  Enabled: pending
+  SafeAutoCorrect: false
+  VersionAdded: "<<next>>"
+  Include:
+    - spec/controllers/**/*.rb
+    - spec/requests/**/*.rb
+    - test/controllers/**/*.rb
+    - test/integration/**/*.rb
+
 Rails/ReversibleMigration:
   Description: 'Checks whether the change method of the migration file is reversible.'
   StyleGuide: 'https://rails.rubystyle.guide#reversible-migration'
