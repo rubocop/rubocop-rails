@@ -81,7 +81,7 @@ module RuboCop
         def allowed_name?(argument)
           return false unless argument.str_type? || argument.sym_type?
 
-          !/^[a-zA-Z\-][a-zA-Z\-0-9]*$/.match?(argument.value)
+          !/^[a-zA-Z-][a-zA-Z\-0-9]*$/.match?(argument.value)
         end
 
         def correction_range(node)
