@@ -105,24 +105,18 @@ RSpec.describe RuboCop::Cop::Rails::DynamicFindBy, :config do
   end
 
   context 'with too much arguments' do
-    it 'registers an offense and no corrects' do
-      expect_offense(<<~RUBY)
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
         User.find_by_name_and_email(name, email, token)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by` instead of dynamic `find_by_name_and_email`.
       RUBY
-
-      expect_no_corrections
     end
   end
 
   context 'with too few arguments' do
-    it 'registers an offense and no corrects' do
-      expect_offense(<<~RUBY)
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
         User.find_by_name_and_email(name)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `find_by` instead of dynamic `find_by_name_and_email`.
       RUBY
-
-      expect_no_corrections
     end
   end
 

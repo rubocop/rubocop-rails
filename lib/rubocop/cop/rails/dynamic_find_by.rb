@@ -53,7 +53,7 @@ module RuboCop
           method_name = node.method_name
           static_name = static_method_name(method_name)
           return unless static_name
-          return if node.arguments.any? { |argument| IGNORED_ARGUMENT_TYPES.include?(argument.type) }
+          return unless dynamic_find_by_arguments?(node)
 
           message = format(MSG, static_name: static_name, method: method_name)
           add_offense(node, message: message) do |corrector|
@@ -65,12 +65,8 @@ module RuboCop
         private
 
         def autocorrect(corrector, node)
-          keywords = column_keywords(node.method_name)
-
-          return if keywords.size != node.arguments.size
-
           autocorrect_method_name(corrector, node)
-          autocorrect_argument_keywords(corrector, node, keywords)
+          autocorrect_argument_keywords(corrector, node, column_keywords(node.method_name))
         end
 
         def allowed_invocation?(node)
@@ -119,6 +115,20 @@ module RuboCop
           return nil unless match
 
           match[2] ? 'find_by!' : 'find_by'
+        end
+
+        def dynamic_find_by_arguments?(node)
+          dynamic_find_by_arguments_count?(node) && dynamic_find_by_arguments_type?(node)
+        end
+
+        def dynamic_find_by_arguments_count?(node)
+          column_keywords(node.method_name).size == node.arguments.size
+        end
+
+        def dynamic_find_by_arguments_type?(node)
+          node.arguments.none? do |argument|
+            IGNORED_ARGUMENT_TYPES.include?(argument.type)
+          end
         end
       end
     end
