@@ -43,8 +43,8 @@ module RuboCop
 
         def_node_search :action_controller?, <<~PATTERN
           {
-            (const nil? :ApplicationController)
-            (const (const nil? :ActionController) :Base)
+            (const {nil? cbase} :ApplicationController)
+            (const (const {nil? cbase} :ActionController) :Base)
           }
         PATTERN
 

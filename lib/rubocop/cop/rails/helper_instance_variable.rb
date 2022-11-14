@@ -37,7 +37,7 @@ module RuboCop
         def_node_matcher :form_builder_class?, <<~PATTERN
           (const
             (const
-               (const nil? :ActionView) :Helpers) :FormBuilder)
+               (const {nil? cbase} :ActionView) :Helpers) :FormBuilder)
         PATTERN
 
         def on_ivar(node)

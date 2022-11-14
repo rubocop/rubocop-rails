@@ -29,7 +29,7 @@ module RuboCop
 
         MSG = 'Models should subclass `ApplicationRecord`.'
         SUPERCLASS = 'ApplicationRecord'
-        BASE_PATTERN = '(const (const nil? :ActiveRecord) :Base)'
+        BASE_PATTERN = '(const (const {nil? cbase} :ActiveRecord) :Base)'
 
         # rubocop:disable Layout/ClassStructure
         include RuboCop::Cop::EnforceSuperclass

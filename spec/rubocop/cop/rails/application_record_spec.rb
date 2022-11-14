@@ -70,6 +70,19 @@ RSpec.describe RuboCop::Cop::Rails::ApplicationRecord, :config, :config do
       RUBY
     end
 
+    it 'corrects models that subclass ::ActiveRecord::Base' do
+      expect_offense(<<~RUBY)
+        class MyModel < ::ActiveRecord::Base
+                        ^^^^^^^^^^^^^^^^^^^^ Models should subclass `ApplicationRecord`.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class MyModel < ApplicationRecord
+        end
+      RUBY
+    end
+
     it 'corrects single-line class definitions' do
       expect_offense(<<~RUBY)
         class MyModel < ActiveRecord::Base; end

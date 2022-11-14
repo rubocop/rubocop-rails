@@ -261,6 +261,14 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
         end
       RUBY
     end
+
+    it 'does not register an offense when using associations of Active Resource and `::ActiveResource::Base`' do
+      expect_no_offenses(<<~RUBY)
+        class User < ::ActiveResource::Base
+          has_many :projects, class_name: 'API::Project'
+        end
+      RUBY
+    end
   end
 
   context 'when defining `readonly?` method' do

@@ -28,7 +28,7 @@ module RuboCop
 
         MSG = 'Jobs should subclass `ApplicationJob`.'
         SUPERCLASS = 'ApplicationJob'
-        BASE_PATTERN = '(const (const nil? :ActiveJob) :Base)'
+        BASE_PATTERN = '(const (const {nil? cbase} :ActiveJob) :Base)'
 
         # rubocop:disable Layout/ClassStructure
         include RuboCop::Cop::EnforceSuperclass

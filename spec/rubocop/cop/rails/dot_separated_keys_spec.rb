@@ -36,6 +36,17 @@ RSpec.describe RuboCop::Cop::Rails::DotSeparatedKeys, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when translating keys with convertible scopes are used with `::I18n`' do
+    expect_offense(<<~RUBY)
+      ::I18n.t :key, scope: [:one, :two]
+                     ^^^^^^^^^^^^^^^^^^^ Use the dot-separated keys instead of specifying the `:scope` option.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      ::I18n.t 'one.two.key'
+    RUBY
+  end
+
   it 'does not register an offense when key is an array' do
     expect_no_offenses(<<~RUBY)
       t [:key1, :key2], scope: :one

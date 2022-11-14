@@ -17,9 +17,18 @@ RSpec.describe RuboCop::Cop::Rails::FreezeTime, :config do
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `freeze_time` instead of `travel_to`.
       travel_to(Time.current.to_time)
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `freeze_time` instead of `travel_to`.
+      travel_to(::Time.now)
+      ^^^^^^^^^^^^^^^^^^^^^ Use `freeze_time` instead of `travel_to`.
+      travel_to(::DateTime.now)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `freeze_time` instead of `travel_to`.
+      travel_to(::Time.zone.now)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `freeze_time` instead of `travel_to`.
     RUBY
 
     expect_correction(<<~RUBY)
+      freeze_time
+      freeze_time
+      freeze_time
       freeze_time
       freeze_time
       freeze_time

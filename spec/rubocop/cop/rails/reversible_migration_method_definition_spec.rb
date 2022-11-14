@@ -23,6 +23,18 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config
     RUBY
   end
 
+  it 'registers an offense with only an up method and `::` prefixed class name' do
+    expect_offense(<<~RUBY)
+      class ::SomeMigration < ActiveRecord::Migration[6.0]
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Migrations must contain either a `change` method, or both an `up` and a `down` method.
+
+        def up
+          add_column :users, :email, :text, null: false
+        end
+      end
+    RUBY
+  end
+
   it 'registers an offense with only a down method' do
     expect_offense(<<~RUBY)
       class SomeMigration < ActiveRecord::Migration[6.0]

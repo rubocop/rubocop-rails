@@ -32,7 +32,7 @@ module RuboCop
           (send
             {
               (gvar #match_gvar?)
-              {(const nil? :STDOUT) (const nil? :STDERR)}
+              (const {nil? cbase} {:STDOUT :STDERR})
             }
             {:binwrite :syswrite :write :write_nonblock}
             ...)

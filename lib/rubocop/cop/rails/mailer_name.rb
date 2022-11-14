@@ -34,8 +34,8 @@ module RuboCop
 
         def_node_matcher :mailer_base_class?, <<~PATTERN
           {
-            (const (const nil? :ActionMailer) :Base)
-            (const nil? :ApplicationMailer)
+            (const (const {nil? cbase} :ActionMailer) :Base)
+            (const {nil? cbase} :ApplicationMailer)
           }
         PATTERN
 
@@ -44,7 +44,7 @@ module RuboCop
         PATTERN
 
         def_node_matcher :class_new_definition?, <<~PATTERN
-          (send (const nil? :Class) :new #mailer_base_class?)
+          (send (const {nil? cbase} :Class) :new #mailer_base_class?)
         PATTERN
 
         def on_class(node)

@@ -34,12 +34,12 @@ module RuboCop
 
         # @!method time_now?(node)
         def_node_matcher :time_now?, <<~PATTERN
-          (const nil? {:Time :DateTime})
+          (const {nil? cbase} {:Time :DateTime})
         PATTERN
 
         # @!method zoned_time_now?(node)
         def_node_matcher :zoned_time_now?, <<~PATTERN
-          (send (const nil? :Time) :zone)
+          (send (const {nil? cbase} :Time) :zone)
         PATTERN
 
         def on_send(node)

@@ -108,9 +108,27 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
       RUBY
     end
 
+    it 'registers an offense when inheriting `::ApplicationRecord`' do
+      expect_offense(<<~RUBY)
+        class C < ::ApplicationRecord
+          all.each { |u| u.x }
+              ^^^^ Use `find_each` instead of `each`.
+        end
+      RUBY
+    end
+
     it 'registers an offense when inheriting `ActiveRecord::Base`' do
       expect_offense(<<~RUBY)
         class C < ActiveRecord::Base
+          all.each { |u| u.x }
+              ^^^^ Use `find_each` instead of `each`.
+        end
+      RUBY
+    end
+
+    it 'registers an offense when inheriting `::ActiveRecord::Base`' do
+      expect_offense(<<~RUBY)
+        class C < ::ActiveRecord::Base
           all.each { |u| u.x }
               ^^^^ Use `find_each` instead of `each`.
         end

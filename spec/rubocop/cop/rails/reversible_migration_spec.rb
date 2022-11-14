@@ -332,4 +332,17 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
       RUBY
     end
   end
+
+  context 'when irreversible operation is used in `::` prefixed class definition' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY, 'db/migrate/20211007000002_remove_animals.rb')
+        class ::RemoveAnimals < ActiveRecord::Migration[7.0]
+          def change
+            drop_table :animals
+            ^^^^^^^^^^^^^^^^^^^ drop_table(without block) is not reversible.
+          end
+        end
+      RUBY
+    end
+  end
 end

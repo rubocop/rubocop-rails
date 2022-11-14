@@ -13,6 +13,17 @@ RSpec.describe RuboCop::Cop::Rails::ShortI18n, :config do
       RUBY
     end
 
+    it 'registers an offense and corrects when using `::I18n.translate`' do
+      expect_offense(<<~RUBY)
+        ::I18n.translate :key
+               ^^^^^^^^^ Use `t` instead of `translate`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        ::I18n.t :key
+      RUBY
+    end
+
     it 'registers an offense and corrects when using `I18n.localize`' do
       expect_offense(<<~RUBY)
         I18n.localize Time.now
@@ -21,6 +32,17 @@ RSpec.describe RuboCop::Cop::Rails::ShortI18n, :config do
 
       expect_correction(<<~RUBY)
         I18n.l Time.now
+      RUBY
+    end
+
+    it 'registers an offense and corrects when using `::I18n.localize`' do
+      expect_offense(<<~RUBY)
+        ::I18n.localize Time.now
+               ^^^^^^^^ Use `l` instead of `localize`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        ::I18n.l Time.now
       RUBY
     end
 

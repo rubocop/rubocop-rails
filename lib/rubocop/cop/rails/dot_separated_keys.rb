@@ -24,7 +24,7 @@ module RuboCop
         TRANSLATE_METHODS = %i[translate t].freeze
 
         def_node_matcher :translate_with_scope?, <<~PATTERN
-          (send {nil? (const nil? :I18n)} {:translate :t} ${sym_type? str_type?}
+          (send {nil? (const {nil? cbase} :I18n)} {:translate :t} ${sym_type? str_type?}
             (hash <$(pair (sym :scope) ${array_type? sym_type?}) ...>)
           )
         PATTERN

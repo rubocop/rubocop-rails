@@ -36,6 +36,19 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerTestCase, :config do
     RUBY
   end
 
+  it 'adds offense when defining `::MyControllerTest`' do
+    expect_offense(<<~RUBY)
+      class ::MyControllerTest < ActionController::TestCase
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `ActionDispatch::IntegrationTest` instead.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      class ::MyControllerTest < ActionDispatch::IntegrationTest
+      end
+    RUBY
+  end
+
   it 'adds offense when extending `ActionController::TestCase` and having a method definition' do
     expect_offense(<<~RUBY)
       class MyControllerTest < ActionController::TestCase

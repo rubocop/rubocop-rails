@@ -37,7 +37,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[has_many has_one].freeze
 
         def_node_search :active_resource_class?, <<~PATTERN
-          (const (const nil? :ActiveResource) :Base)
+          (const (const {nil? cbase} :ActiveResource) :Base)
         PATTERN
 
         def_node_matcher :association_without_options?, <<~PATTERN
