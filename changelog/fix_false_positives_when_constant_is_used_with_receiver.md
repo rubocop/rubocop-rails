@@ -1,0 +1,1 @@
+* [#866](https://github.com/rubocop/rubocop-rails/pull/866): Fix false-positives when constant is used with receiver on `Rails/DurationArithmetic`, `Rails/IndexBy`, `Rails/IndexWIth`, and `Rails/RequireDependency`. ([@r7kamura][])

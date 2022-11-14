@@ -70,8 +70,8 @@ module RuboCop
         #   @return [Boolean] true if matches
         def_node_matcher :time_current?, <<~PATTERN
           {
-            (send (const _ :Time) :current)
-            (send (send (const _ :Time) :zone) :now)
+            (send (const {nil? cbase} :Time) :current)
+            (send (send (const {nil? cbase} :Time) :zone) :now)
           }
         PATTERN
 

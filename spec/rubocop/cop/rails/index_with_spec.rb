@@ -129,6 +129,12 @@ RSpec.describe RuboCop::Cop::Rails::IndexWith, :config do
       RUBY
     end
 
+    it 'does not register an offense for `Foo::Hash[map { ... }]`' do
+      expect_no_offenses(<<~RUBY)
+        Foo::Hash[x.map { |el| [el, el.to_sym] }]
+      RUBY
+    end
+
     context 'when using Ruby 2.6 or newer', :ruby26 do
       it 'registers an offense for `to_h { ... }`' do
         expect_offense(<<~RUBY)

@@ -19,11 +19,39 @@ RSpec.describe RuboCop::Cop::Rails::RequireDependency, :config do
 
   context 'when require_dependency' do
     context 'when using Rails 6.0 or newer', :rails60 do
-      it 'registers an offense' do
-        expect_offense(<<~RUBY)
-          require_dependency 'foo'
-          ^^^^^^^^^^^^^^^^^^^^^^^^ Do not use `require_dependency` with Zeitwerk mode.
-        RUBY
+      context 'without receiver' do
+        it 'registers an offense' do
+          expect_offense(<<~RUBY)
+            require_dependency 'foo'
+            ^^^^^^^^^^^^^^^^^^^^^^^^ Do not use `require_dependency` with Zeitwerk mode.
+          RUBY
+        end
+      end
+
+      context 'with `Kernel` as receiver' do
+        it 'registers an offense' do
+          expect_offense(<<~RUBY)
+            Kernel.require_dependency 'foo'
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Do not use `require_dependency` with Zeitwerk mode.
+          RUBY
+        end
+      end
+
+      context 'with `::Kernel` as receiver' do
+        it 'registers an offense' do
+          expect_offense(<<~RUBY)
+            ::Kernel.require_dependency 'foo'
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Do not use `require_dependency` with Zeitwerk mode.
+          RUBY
+        end
+      end
+
+      context 'with `Foo::Kernel` as receiver' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            Foo::Kernel.require_dependency 'foo'
+          RUBY
+        end
       end
     end
 

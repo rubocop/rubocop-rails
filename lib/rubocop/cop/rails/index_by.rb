@@ -46,7 +46,7 @@ module RuboCop
 
         def_node_matcher :on_bad_hash_brackets_map, <<~PATTERN
           (send
-            (const _ :Hash)
+            (const {nil? cbase} :Hash)
             :[]
             (block
               (call _ {:map :collect})
