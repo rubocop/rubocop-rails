@@ -13,6 +13,15 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
+    context 'when using ::Rails.root.join with some path strings' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          ::Rails.root.join('app', 'models', 'user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
+        RUBY
+      end
+    end
+
     context 'when using Rails.root.join in string interpolation of argument' do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
@@ -51,6 +60,15 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         expect_offense(<<~RUBY)
           File.join(Rails.root, 'app', 'models')
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
+        RUBY
+      end
+    end
+
+    context 'when using ::File.join with Rails.root' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          ::File.join(Rails.root, 'app', 'models')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
       end
     end

@@ -34,15 +34,15 @@ module RuboCop
         RESTRICT_ON_SEND = %i[join].freeze
 
         def_node_matcher :file_join_nodes?, <<~PATTERN
-          (send (const nil? :File) :join ...)
+          (send (const {nil? cbase} :File) :join ...)
         PATTERN
 
         def_node_search :rails_root_nodes?, <<~PATTERN
-          (send (const nil? :Rails) :root)
+          (send (const {nil? cbase} :Rails) :root)
         PATTERN
 
         def_node_matcher :rails_root_join_nodes?, <<~PATTERN
-          (send (send (const nil? :Rails) :root) :join ...)
+          (send #rails_root_nodes? :join ...)
         PATTERN
 
         def on_dstr(node)
