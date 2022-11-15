@@ -134,7 +134,7 @@ module RuboCop
         end
 
         def self.from_hash_brackets_map(node, match)
-          new(match, node.children.last, 'Hash['.length, ']'.length)
+          new(match, node.children.last, "#{node.receiver.source}[".length, ']'.length)
         end
 
         def strip_prefix_and_suffix(node, corrector)

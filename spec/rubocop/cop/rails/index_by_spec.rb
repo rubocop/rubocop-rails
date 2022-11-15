@@ -145,6 +145,17 @@ RSpec.describe RuboCop::Cop::Rails::IndexBy, :config do
     RUBY
   end
 
+  it 'registers an offense for `::Hash[map { ... }]`' do
+    expect_offense(<<~RUBY)
+      ::Hash[x.map { |el| [el.to_sym, el] }]
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `Hash[map { ... }]`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      x.index_by { |el| el.to_sym }
+    RUBY
+  end
+
   context 'when using Ruby 2.6 or newer', :ruby26 do
     it 'registers an offense for `to_h { ... }`' do
       expect_offense(<<~RUBY)
