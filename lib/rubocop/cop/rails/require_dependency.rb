@@ -26,7 +26,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[require_dependency].freeze
 
         def_node_matcher :require_dependency_call?, <<~PATTERN
-          (send {nil? (const _ :Kernel)} :require_dependency _)
+          (send {nil? (const {nil? cbase} :Kernel)} :require_dependency _)
         PATTERN
 
         def on_send(node)
