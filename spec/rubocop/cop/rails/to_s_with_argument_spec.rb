@@ -9,6 +9,14 @@ RSpec.describe RuboCop::Cop::Rails::ToSWithArgument, :config, :rails70 do
     end
   end
 
+  context 'with unrelated argument' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        10.to_s(2)
+      RUBY
+    end
+  end
+
   context 'with argument' do
     it 'registers an offense' do
       expect_offense(<<~RUBY)
