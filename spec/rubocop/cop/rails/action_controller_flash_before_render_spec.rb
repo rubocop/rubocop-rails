@@ -3,7 +3,12 @@
 RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config do
   context 'when using `flash` before `render`' do
     context 'within an instance method' do
-      %w[ActionController::Base ApplicationController].each do |parent_class|
+      %w[
+        ::ActionController::Base
+        ::ApplicationController
+        ActionController::Base
+        ApplicationController
+      ].each do |parent_class|
         context "within a class inherited from #{parent_class}" do
           it 'registers an offense and corrects when the render call is explicit' do
             expect_offense(<<~RUBY)

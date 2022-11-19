@@ -8,7 +8,7 @@ module RuboCop
 
       def_node_matcher :migration_class?, <<~PATTERN
         (class
-          (const nil? _)
+          (const {nil? cbase} _)
           (send
             (const (const {nil? cbase} :ActiveRecord) :Migration)
             :[]

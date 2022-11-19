@@ -25,7 +25,7 @@ module RuboCop
 
         MSG = 'Controllers should subclass `ApplicationController`.'
         SUPERCLASS = 'ApplicationController'
-        BASE_PATTERN = '(const (const nil? :ActionController) :Base)'
+        BASE_PATTERN = '(const (const {nil? cbase} :ActionController) :Base)'
 
         # rubocop:disable Layout/ClassStructure
         include RuboCop::Cop::EnforceSuperclass

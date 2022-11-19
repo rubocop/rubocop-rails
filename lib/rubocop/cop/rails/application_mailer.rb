@@ -28,7 +28,7 @@ module RuboCop
 
         MSG = 'Mailers should subclass `ApplicationMailer`.'
         SUPERCLASS = 'ApplicationMailer'
-        BASE_PATTERN = '(const (const nil? :ActionMailer) :Base)'
+        BASE_PATTERN = '(const (const {nil? cbase} :ActionMailer) :Base)'
 
         # rubocop:disable Layout/ClassStructure
         include RuboCop::Cop::EnforceSuperclass

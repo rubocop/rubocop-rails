@@ -23,7 +23,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[zone=].freeze
 
         def_node_matcher :time_zone_assignment?, <<~PATTERN
-          (send (const nil? :Time) :zone= ...)
+          (send (const {nil? cbase} :Time) :zone= ...)
         PATTERN
 
         def on_send(node)

@@ -45,7 +45,7 @@ RSpec.describe RuboCop::Cop::Rails::Output, :config do
     RUBY
   end
 
-  it 'registers and corrects an offense for using `$stdout` method without a receiver' do
+  it 'registers and corrects an offense with `$stdout.write`' do
     expect_offense(<<~RUBY)
       $stdout.write "lord wilmore"
       ^^^^^^^^^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
@@ -56,7 +56,7 @@ RSpec.describe RuboCop::Cop::Rails::Output, :config do
     RUBY
   end
 
-  it 'registers and corrects an offense for using `syswrite` method without a receiver' do
+  it 'registers and corrects an offense with `$stderr.syswrite`' do
     expect_offense(<<~RUBY)
       $stderr.syswrite "faria"
       ^^^^^^^^^^^^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
@@ -67,10 +67,43 @@ RSpec.describe RuboCop::Cop::Rails::Output, :config do
     RUBY
   end
 
-  it 'registers and corrects an offense for using `write` method without a receiver' do
+  it 'registers and corrects an offense with `STDOUT.write`' do
     expect_offense(<<~RUBY)
       STDOUT.write "bertuccio"
       ^^^^^^^^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.logger.debug "bertuccio"
+    RUBY
+  end
+
+  it 'registers and corrects an offense with `::STDOUT.write`' do
+    expect_offense(<<~RUBY)
+      ::STDOUT.write "bertuccio"
+      ^^^^^^^^^^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.logger.debug "bertuccio"
+    RUBY
+  end
+
+  it 'registers and corrects an offense with `STDERR.write`' do
+    expect_offense(<<~RUBY)
+      STDERR.write "bertuccio"
+      ^^^^^^^^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.logger.debug "bertuccio"
+    RUBY
+  end
+
+  it 'registers and corrects an offense with `::STDERR.write`' do
+    expect_offense(<<~RUBY)
+      ::STDERR.write "bertuccio"
+      ^^^^^^^^^^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
     RUBY
 
     expect_correction(<<~RUBY)

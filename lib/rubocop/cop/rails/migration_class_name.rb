@@ -29,7 +29,7 @@ module RuboCop
 
           basename = basename_without_timestamp_and_suffix(processed_source.file_path)
 
-          class_identifier = node.identifier
+          class_identifier = node.identifier.location.name
           camelized_basename = camelize(basename)
           return if class_identifier.source.casecmp(camelized_basename).zero?
 

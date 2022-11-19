@@ -73,6 +73,19 @@ RSpec.describe RuboCop::Cop::Rails::ApplicationJob, :config, :config do
       end
     end
 
+    context 'when subclassing `::ActiveJob::Base`' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          class MyJob < ::ActiveJob::Base; end
+                        ^^^^^^^^^^^^^^^^^ Jobs should subclass `ApplicationJob`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          class MyJob < ApplicationJob; end
+        RUBY
+      end
+    end
+
     context 'when subclassing `ActiveJob::Base` in a module namespace' do
       it 'registers an offense' do
         expect_offense(<<~RUBY)

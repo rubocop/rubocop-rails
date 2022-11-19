@@ -10,8 +10,8 @@ module RuboCop
 
       def_node_matcher :active_record?, <<~PATTERN
         {
-          (const nil? :ApplicationRecord)
-          (const (const nil? :ActiveRecord) :Base)
+          (const {nil? cbase} :ApplicationRecord)
+          (const (const {nil? cbase} :ActiveRecord) :Base)
         }
       PATTERN
 

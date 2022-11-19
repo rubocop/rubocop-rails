@@ -49,7 +49,7 @@ module RuboCop
         RESTRICT_ON_SEND = PREFERRED_METHODS.keys.freeze
 
         def_node_matcher :long_i18n?, <<~PATTERN
-          (send {nil? (const nil? :I18n)} ${:translate :localize} ...)
+          (send {nil? (const {nil? cbase} :I18n)} ${:translate :localize} ...)
         PATTERN
 
         def on_send(node)

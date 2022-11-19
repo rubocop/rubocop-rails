@@ -77,6 +77,17 @@ RSpec.describe RuboCop::Cop::Rails::ApplicationMailer, :config, :config do
       RUBY
     end
 
+    it 'corrects mailers that subclass `::ActionMailer::Base`' do
+      expect_offense(<<~RUBY)
+        class MyMailer < ::ActionMailer::Base; end
+                         ^^^^^^^^^^^^^^^^^^^^ Mailers should subclass `ApplicationMailer`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class MyMailer < ApplicationMailer; end
+      RUBY
+    end
+
     it 'corrects mailers defined in module namespaces' do
       expect_offense(<<~RUBY)
         module Nested

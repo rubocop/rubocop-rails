@@ -24,6 +24,17 @@ RSpec.describe RuboCop::Cop::Rails::ApplicationController, :config do
     RUBY
   end
 
+  it 'corrects controllers that subclass `::ActionController::Base`' do
+    expect_offense(<<~RUBY)
+      class MyController < ::ActionController::Base; end
+                           ^^^^^^^^^^^^^^^^^^^^^^^^ Controllers should subclass `ApplicationController`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      class MyController < ApplicationController; end
+    RUBY
+  end
+
   it 'corrects controllers defined in module namespaces' do
     expect_offense(<<~RUBY)
       module Nested
