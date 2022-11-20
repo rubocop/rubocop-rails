@@ -1,1 +1,0 @@
-* [#843](https://github.com/rubocop/rubocop-rails/issues/843): Fix a false positive for `Rails/ActionControllerFlashBeforeRender` when using `flash` in multiline `if` branch before `redirect_to`. ([@koic][])
