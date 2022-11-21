@@ -101,6 +101,21 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
         Rails.root.glob("**/#{path}/*.rb")
       RUBY
     end
+
+    it 'registers an offense when using `Rails.env` argument within `Dir.glob`' do
+      expect_offense(<<~'RUBY')
+        Dir.glob(Rails.root.join("db", "seeds", Rails.env, "*.rb")).sort.each do |file|
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#glob`.
+          load file
+        end
+      RUBY
+
+      expect_correction(<<~'RUBY')
+        Rails.root.glob("db/seeds/#{Rails.env}/*.rb").sort.each do |file|
+          load file
+        end
+      RUBY
+    end
   end
 
   # This is handled by `Rails/RootJoinChain`
