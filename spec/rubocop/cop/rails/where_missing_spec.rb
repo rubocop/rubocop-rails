@@ -230,6 +230,40 @@ RSpec.describe RuboCop::Cop::Rails::WhereMissing, :config do
       RUBY
     end
 
+    it 'does not register an offense when `left_joins(:foo)` and `where(foos: {id: nil})` separated by `or`' do
+      expect_no_offenses(<<~RUBY)
+        Foo.left_joins(:foo).or(Foo.where(foos: {id: nil}))
+      RUBY
+    end
+
+    it 'does not register an offense when `left_joins(:foo)` and `where(foos: {id: nil})` separated by `and`' do
+      expect_no_offenses(<<~RUBY)
+        Foo.where(foos: {id: nil}).and(Foo.left_joins(:foo))
+      RUBY
+    end
+
+    it 'registers an offense when using `left_joins(:foo).where(foo: {id: nil})` outside `or` conditional expression' do
+      expect_offense(<<~RUBY)
+        Foo.left_joins(:foo).where(foos: {id: nil}).or(Foo.where(bar: "bar").left_joins(:foo))
+            ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Foo.where.missing(:foo).or(Foo.where(bar: "bar").left_joins(:foo))
+      RUBY
+    end
+
+    it 'registers an offense when using `left_joins(:foo).where(foo: {id: nil})` within `and` conditional expression' do
+      expect_offense(<<~RUBY)
+        Foo.left_joins(:foo).where(bar: "bar").and(Foo.where(foos: {id: nil}).left_joins(:foo))
+                                                                              ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Foo.left_joins(:foo).where(bar: "bar").and(Foo.where.missing(:foo))
+      RUBY
+    end
+
     it "registers an offense when using `left_joins(:foo).where(foos: {id: nil}, bar: 'bar')` " \
        "with other `left_joins(:foo).where(foos: {id: nil}, bar: 'bar')`" do
       expect_offense(<<~RUBY)

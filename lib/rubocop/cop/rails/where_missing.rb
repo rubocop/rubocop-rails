@@ -38,7 +38,9 @@ module RuboCop
         def on_send(node)
           return unless node.first_argument.sym_type?
 
-          where_node_and_argument(root_receiver(node)) do |where_node, where_argument|
+          root_receiver = root_receiver(node)
+          where_node_and_argument(root_receiver) do |where_node, where_argument|
+            next unless root_receiver == root_receiver(where_node)
             next unless same_relationship?(where_argument, node.first_argument)
 
             range = range_between(node.loc.selector.begin_pos, node.loc.expression.end_pos)
@@ -50,7 +52,12 @@ module RuboCop
         private
 
         def root_receiver(node)
-          node&.parent&.send_type? ? root_receiver(node.parent) : node
+          parent = node.parent
+          if !parent&.send_type? || parent.method?(:or) || parent.method?(:and)
+            node
+          else
+            root_receiver(parent)
+          end
         end
 
         def same_relationship?(where, left_joins)
