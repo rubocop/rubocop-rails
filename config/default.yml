@@ -122,6 +122,13 @@ Rails/ActiveRecordAliases:
   VersionAdded: '0.53'
   SafeAutoCorrect: false
 
+Rails/ActiveRecordBulkPersistence:
+  Description: >-
+                  Checks for iterative save/create/update methods instead of using insert_all/upsert_all
+                  Use `insert_all`/`upsert_all` instead of `xs.each { |x| x.save }`.
+  Enabled: false
+  VersionAdded: '2.17'
+
 Rails/ActiveRecordCallbacksOrder:
   Description: 'Order callback declarations in the order in which they will be executed.'
   StyleGuide: 'https://rails.rubystyle.guide/#callbacks-order'
