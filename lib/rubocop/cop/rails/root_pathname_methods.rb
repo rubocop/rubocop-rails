@@ -214,8 +214,17 @@ module RuboCop
         end
 
         def join_arguments(arguments)
-          quote = include_interpolation?(arguments) ? '"' : "'"
-          joined_arguments = arguments.map(&:value).join('/')
+          use_interpolation = false
+
+          joined_arguments = arguments.map do |arg|
+            if arg.respond_to?(:value)
+              arg.value
+            else
+              use_interpolation = true
+              "\#{#{arg.source}}"
+            end
+          end.join('/')
+          quote = include_interpolation?(arguments) || use_interpolation ? '"' : "'"
 
           "#{quote}#{joined_arguments}#{quote}"
         end
