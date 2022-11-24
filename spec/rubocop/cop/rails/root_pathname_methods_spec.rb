@@ -91,6 +91,23 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
       RUBY
     end
 
+    context 'when double-quoted string literals are preferred' do
+      let(:other_cops) do
+        super().merge('Style/StringLiterals' => { 'EnforcedStyle' => 'double_quotes' })
+      end
+
+      it "registers an offense when using `Dir.glob(Rails.root.join('**', '*.rb'))`" do
+        expect_offense(<<~RUBY)
+          Dir.glob(Rails.root.join('**', '*.rb'))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#glob`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.glob("**/*.rb")
+        RUBY
+      end
+    end
+
     it "registers an offense when using `Dir.glob(Rails.root.join('**', \"\#{path}\", '*.rb'))`" do
       expect_offense(<<~'RUBY')
         Dir.glob(Rails.root.join('**', "#{path}", '*.rb'))
