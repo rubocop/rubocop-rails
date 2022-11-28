@@ -977,6 +977,11 @@ Rails/SquishedSQLHeredocs:
   # to be preserved in order to work, thus autocorrection is not safe.
   SafeAutoCorrect: false
 
+Rails/StrictLoadingAssociations:
+  Description: 'Declare a `strict_loading` option on `has_many` associations.'
+  Enabled: pending
+  VersionAdded: '2.18'
+
 Rails/StripHeredoc:
   Description: 'Enforces the use of squiggly heredoc over `strip_heredoc`.'
   StyleGuide: 'https://rails.rubystyle.guide/#prefer-squiggly-heredoc'
