@@ -11,6 +11,19 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
       RUBY
     end
 
+    it 'registers an offense for Time.now with nil :in option' do
+      expect_offense(<<~RUBY)
+        Time.now(in: nil)
+             ^^^ Do not use `Time.now` without zone. Use `Time.zone.now` instead.
+      RUBY
+    end
+
+    it 'does not register an offense for Time.now with :in option' do
+      expect_no_offenses(<<~RUBY)
+        Time.now(in: '+03:00')
+      RUBY
+    end
+
     it 'registers an offense for Time.new without argument' do
       expect_offense(<<~RUBY)
         Time.new
@@ -42,6 +55,19 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
     it 'does not register an offense for Time.new with zone argument' do
       expect_no_offenses(<<~RUBY)
         Time.new(1988, 3, 15, 3, 0, 0, '-05:00')
+      RUBY
+    end
+
+    it 'registers an offense for Time.new with nil :in option' do
+      expect_offense(<<~RUBY)
+        Time.new(2012, 6, 10, 12, 00, in: nil)
+             ^^^ Do not use `Time.new` without zone. Use `Time.zone.local` instead.
+      RUBY
+    end
+
+    it 'does not register an offense for Time.new with :in option' do
+      expect_no_offenses(<<~RUBY)
+        Time.new(2012, 6, 10, 12, 00, in: '-05:00')
       RUBY
     end
 
@@ -146,6 +172,19 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
       expect_offense(<<~RUBY)
         Time.at(ts).in_time_zone
              ^^ Do not use `Time.at` without zone. Use `Time.zone.at` instead.
+      RUBY
+    end
+
+    it 'registers an offense for Time.at with nil :in option' do
+      expect_offense(<<~RUBY)
+        Time.at(ts, in: nil)
+             ^^ Do not use `Time.at` without zone. Use `Time.zone.at` instead.
+      RUBY
+    end
+
+    it 'does not register an offense for Time.at with :in option' do
+      expect_no_offenses(<<~RUBY)
+        Time.at(ts, in: '+03:00')
       RUBY
     end
 
