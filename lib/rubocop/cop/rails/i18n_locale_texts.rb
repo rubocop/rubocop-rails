@@ -69,7 +69,7 @@ module RuboCop
       class I18nLocaleTexts < Base
         MSG = 'Move locale texts to the locale files in the `config/locales` directory.'
 
-        RESTRICT_ON_SEND = %i[validates redirect_to []= mail].freeze
+        RESTRICT_ON_SEND = %i[validates redirect_to redirect_back []= mail].freeze
 
         def_node_search :validation_message, <<~PATTERN
           (pair (sym :message) $str)
@@ -94,7 +94,7 @@ module RuboCop
               add_offense(text_node)
             end
             return
-          when :redirect_to
+          when :redirect_to, :redirect_back
             text_node = redirect_to_flash(node).to_a.last
           when :[]=
             text_node = flash_assignment?(node)
