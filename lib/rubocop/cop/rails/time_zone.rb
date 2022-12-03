@@ -228,12 +228,25 @@ module RuboCop
           acceptable
         end
 
-        # Time.new can be called with a time zone offset
+        # Time.new, Time.at, and Time.now can be called with a time zone offset
         # When it is, that should be considered safe
         # Example:
         # Time.new(1988, 3, 15, 3, 0, 0, "-05:00")
         def offset_provided?(node)
-          node.arguments.size >= 7
+          case node.method_name
+          when :new
+            node.arguments.size == 7 || offset_option_provided?(node)
+          when :at, :now
+            offset_option_provided?(node)
+          end
+        end
+
+        def offset_option_provided?(node)
+          options = node.last_argument
+          options&.hash_type? &&
+            options.each_pair.any? do |pair|
+              pair.key.sym_type? && pair.key.value == :in && !pair.value.nil_type?
+            end
         end
       end
     end
