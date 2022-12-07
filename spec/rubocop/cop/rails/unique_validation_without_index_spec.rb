@@ -371,6 +371,16 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
             end
           RUBY
         end
+
+        it 'does not register an offense with a conditions option on the specific validator' do
+          expect_no_offenses(<<~RUBY)
+            class Article
+              belongs_to :user
+              enum :status, [:draft, :published]
+              validates :user, uniqueness: { conditions: -> { published } }
+            end
+          RUBY
+        end
       end
 
       context 'without column definition' do
