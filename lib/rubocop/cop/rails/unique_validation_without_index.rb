@@ -139,6 +139,15 @@ module RuboCop
           pairs = node.arguments.last
           return unless pairs.hash_type?
 
+          return true if condition_hash_part?(pairs)
+
+          uniqueness_node = uniqueness_part(node)
+          return unless uniqueness_node&.hash_type?
+
+          condition_hash_part?(uniqueness_node)
+        end
+
+        def condition_hash_part?(pairs)
           pairs.each_pair.any? do |pair|
             key = pair.key
             next unless key.sym_type?
