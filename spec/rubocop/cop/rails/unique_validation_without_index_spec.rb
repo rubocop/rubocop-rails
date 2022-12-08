@@ -327,7 +327,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         end
       end
 
-      context 'with an if condition on the validation' do
+      context 'without the proper index' do
         let(:schema) { <<~RUBY }
           ActiveRecord::Schema.define(version: 2020_02_02_075409) do
             create_table "articles", force: :cascade do |t|
@@ -336,7 +336,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           end
         RUBY
 
-        it 'does not register an offense' do
+        it 'does not register an offense with an if condition on validates' do
           expect_no_offenses(<<~RUBY)
             class Article
               belongs_to :user
@@ -344,22 +344,40 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
             end
           RUBY
         end
-      end
 
-      context 'with an unless condition on the validation' do
-        let(:schema) { <<~RUBY }
-          ActiveRecord::Schema.define(version: 2020_02_02_075409) do
-            create_table "articles", force: :cascade do |t|
-              t.bigint "user_id", null: false
-            end
-          end
-        RUBY
-
-        it 'does not register an offense' do
+        it 'does not register an offense with an unless condition on validates' do
           expect_no_offenses(<<~RUBY)
             class Article
               belongs_to :user
               validates :user, uniqueness: true, unless: -> { true }
+            end
+          RUBY
+        end
+
+        it 'does not register an offense with an if condition on the specific validator' do
+          expect_no_offenses(<<~RUBY)
+            class Article
+              belongs_to :user
+              validates :user, uniqueness: { if: -> { false } }
+            end
+          RUBY
+        end
+
+        it 'does not register an offense with an unless condition on the specific validator' do
+          expect_no_offenses(<<~RUBY)
+            class Article
+              belongs_to :user
+              validates :user, uniqueness: { unless: -> { false } }
+            end
+          RUBY
+        end
+
+        it 'does not register an offense with a conditions option on the specific validator' do
+          expect_no_offenses(<<~RUBY)
+            class Article
+              belongs_to :user
+              enum :status, [:draft, :published]
+              validates :user, uniqueness: { conditions: -> { published } }
             end
           RUBY
         end
