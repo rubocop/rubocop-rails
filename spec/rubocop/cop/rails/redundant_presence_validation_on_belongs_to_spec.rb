@@ -188,7 +188,9 @@ RSpec.describe RuboCop::Cop::Rails::RedundantPresenceValidationOnBelongsTo, :con
         RUBY
       end
 
-      pending 'registers an offense even when the presence option is factored out' do
+      it 'registers an offense even when the presence option is factored out' do
+        pending 'Not yet implemented.'
+
         expect_offense(<<~RUBY)
           belongs_to :user
           with_options presence: true do
@@ -198,7 +200,9 @@ RSpec.describe RuboCop::Cop::Rails::RedundantPresenceValidationOnBelongsTo, :con
         RUBY
       end
 
-      pending 'registers an offense for non-absence option' do
+      it 'registers an offense for non-absence option' do
+        pending 'Not yet implemented.'
+
         expect_offense(<<~RUBY)
           belongs_to :user
           validates :user, absence: false
@@ -210,7 +214,9 @@ RSpec.describe RuboCop::Cop::Rails::RedundantPresenceValidationOnBelongsTo, :con
         RUBY
       end
 
-      pending 'registers an offense when validation key is a string' do
+      it 'registers an offense when validation key is a string' do
+        pending 'Not yet implemented.'
+
         expect_offense(<<~RUBY)
           belongs_to :user
           validates 'user', presence: true
