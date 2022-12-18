@@ -74,6 +74,7 @@ RSpec.describe RuboCop::Config do
                     bundler (>= 1.3.0, < 2.0)
                     railties (= 4.1.0)
                     sprockets-rails (~> 2.0)
+                  railties (4.1.0)
 
                 PLATFORMS
                   ruby
@@ -108,6 +109,7 @@ RSpec.describe RuboCop::Config do
                     bundler (>= 1.3.0, < 2.0)
                     railties (= 4.1.0)
                     sprockets-rails (~> 2.0)
+                  railties (400.33.22)
 
                 PLATFORMS
                   ruby
