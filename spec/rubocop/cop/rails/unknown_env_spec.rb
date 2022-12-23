@@ -24,6 +24,8 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
                     ^^^^^^^^^^^^^ Unknown environment `developpment`. Did you mean `development`?
           Rails.env.something?
                     ^^^^^^^^^^ Unknown environment `something`.
+          Rails.env.local?
+                    ^^^^^^ Unknown environment `local`.
         RUBY
       end
 
@@ -36,6 +38,9 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
 
           'something' === Rails.env
           ^^^^^^^^^^^ Unknown environment `something`.
+
+          'local' === Rails.env
+          ^^^^^^^ Unknown environment `local`.
         RUBY
       end
     end
@@ -49,6 +54,9 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
                     ^^^^^^^^^^^^^ Unknown environment `developpment`.
           Rails.env.something?
                     ^^^^^^^^^^ Unknown environment `something`.
+
+          Rails.env.local?
+                    ^^^^^^ Unknown environment `local`.
         RUBY
       end
 
@@ -61,6 +69,9 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
 
           'something' === Rails.env
           ^^^^^^^^^^^ Unknown environment `something`.
+
+          'local' === Rails.env
+          ^^^^^^^ Unknown environment `local`.
         RUBY
       end
     end
@@ -71,5 +82,31 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
       Rails.env.production?
       Rails.env == 'production'
     RUBY
+  end
+
+  context 'Rails 7.1' do
+    let(:config) do
+      RuboCop::Config.new(
+        {
+          'AllCops' => {
+            'TargetRailsVersion' => '7.1'
+          },
+          'Rails/UnknownEnv' => {
+            'Environments' => %w[
+              development
+              production
+              test
+            ]
+          }
+        }
+      )
+    end
+
+    it 'accepts local as an environment name on Rails 7.1' do
+      expect_no_offenses(<<~RUBY)
+        Rails.env.local?
+        Rails.env == 'local'
+      RUBY
+    end
   end
 end
