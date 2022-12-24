@@ -135,7 +135,9 @@ Rails/ActiveRecordOverride:
                   Check for overriding Active Record methods instead of using
                   callbacks.
   Enabled: true
+  Severity: warning
   VersionAdded: '0.67'
+  VersionChanged: '<<next>>'
   Include:
     - app/models/**/*.rb
 
@@ -330,9 +332,10 @@ Rails/DelegateAllowBlank:
 Rails/DeprecatedActiveModelErrorsMethods:
   Description: 'Avoid manipulating ActiveModel errors hash directly.'
   Enabled: pending
+  Severity: warning
   Safe: false
   VersionAdded: '2.14'
-  VersionChanged: '2.15'
+  VersionChanged: '<<next>>'
 
 Rails/DotSeparatedKeys:
   Description: 'Enforces the use of dot-separated keys instead of `:scope` options in `I18n` translation methods.'
@@ -343,12 +346,16 @@ Rails/DotSeparatedKeys:
 Rails/DuplicateAssociation:
   Description: "Don't repeat associations in a model."
   Enabled: pending
+  Severity: warning
   VersionAdded: '2.14'
+  VersionChanged: '<<next>>'
 
 Rails/DuplicateScope:
   Description: 'Multiple scopes share this same where clause.'
   Enabled: pending
+  Severity: warning
   VersionAdded: '2.14'
+  VersionChanged: '<<next>>'
 
 Rails/DurationArithmetic:
   Description: 'Do not use duration as arithmetic operand with `Time.current`.'
@@ -1038,7 +1045,9 @@ Rails/TopLevelHashWithIndifferentAccess:
   Description: 'Identifies top-level `HashWithIndifferentAccess`.'
   Reference: 'https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#top-level-hashwithindifferentaccess-is-soft-deprecated'
   Enabled: pending
+  Severity: warning
   VersionAdded: '2.16'
+  VersionChanged: '<<next>>'
 
 Rails/TransactionExitStatement:
   Description: 'Avoid the usage of `return`, `break` and `throw` in transaction blocks.'
@@ -1066,7 +1075,9 @@ Rails/UniqueValidationWithoutIndex:
 Rails/UnknownEnv:
   Description: 'Use correct environment name.'
   Enabled: true
+  Severity: warning
   VersionAdded: '0.51'
+  VersionChanged: '<<next>>'
   Environments:
     - development
     - test
@@ -1121,7 +1132,9 @@ Rails/WhereNot:
 Rails/WhereNotWithMultipleConditions:
   Description: 'Do not use `where.not(...)` with multiple conditions.'
   Enabled: 'pending'
+  Severity: warning
   VersionAdded: '2.17'
+  VersionChanged: '<<next>>'
 
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
