@@ -2,6 +2,19 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#870](https://github.com/rubocop/rubocop-rails/issues/870): Fix an error for `Rails/RootPathnameMethods` when using `Rails.env` argument within `Dir.glob`. ([@koic][])
+* [#881](https://github.com/rubocop/rubocop-rails/pull/881): Fix a false positive for `Rails/ActionControllerFlashBeforeRender` when using `flash` in multiline `rescue` branch before `redirect_to`. ([@gurix][])
+* [#871](https://github.com/rubocop/rubocop-rails/pull/871): Fix a false positive for `Rails/WhereMissing` when `left_joins(:foo)` and `where(foos: {id: nil})` separated by `or`, `and`. ([@ydah][])
+* [#875](https://github.com/rubocop/rubocop-rails/pull/875): Make `Rails/RootPathnameMethods` aware of enforced style of `Style/StringLiterals`. ([@koic][])
+* [#882](https://github.com/rubocop/rubocop-rails/pull/882): Fix false positive for `Rails/UniqueValidationWithoutIndex` with :conditions option. ([@etiennebarrie][])
+* [#821](https://github.com/rubocop/rubocop-rails/issues/821): Enhance `Rails/TimeZone` to accept methods with the `:in` timezone option. ([@fatkodima][])
+
+### Changes
+
+* [#880](https://github.com/rubocop/rubocop-rails/pull/880): Add Rails/I18nLocaleTexts match for redirect_back. ([@bensheldon][])
+
 ## 2.17.3 (2022-11-20)
 
 ### Bug fixes
@@ -766,3 +779,6 @@
 [@jdufresne]: https://github.com/jdufresne
 [@vlad-pisanov]: https://github.com/vlad-pisanov
 [@gsamokovarov]: https://github.com/gsamokovarov
+[@bensheldon]: https://github.com/bensheldon
+[@gurix]: https://github.com/gurix
+[@etiennebarrie]: https://github.com/etiennebarrie
