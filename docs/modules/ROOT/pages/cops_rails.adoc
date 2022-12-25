@@ -846,6 +846,11 @@ class Post < ApplicationRecord
 end
 ----
 
+=== References
+
+* https://guides.rubyonrails.org/5_0_release_notes.html
+* https://github.com/rails/rails/pull/18937
+
 == Rails/Blank
 
 |===
@@ -1038,6 +1043,11 @@ end
 | `+db/migrate/*.rb+`
 | Array
 |===
+
+=== References
+
+* https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-change_table
+* https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/Table.html
 
 == Rails/CompactBlank
 
@@ -2845,6 +2855,7 @@ end
 === References
 
 * https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options
+* https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options
 
 == Rails/IndexBy
 
@@ -3125,6 +3136,11 @@ end
 | `+app/models/**/*.rb+`
 | Array
 |===
+
+=== References
+
+* https://guides.rubyonrails.org/association_basics.html#bi-directional-associations
+* https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Setting+Inverses
 
 == Rails/LexicallyScopedActionFilter
 
@@ -4921,6 +4937,7 @@ end
 
 * https://rails.rubystyle.guide#reversible-migration
 * https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
+* https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
 
 == Rails/ReversibleMigrationMethodDefinition
 
@@ -6022,6 +6039,10 @@ ApplicationRecord.transaction do
   next if user.active?
 end
 ----
+
+=== References
+
+* https://github.com/rails/rails/commit/15aa4200e083
 
 == Rails/UniqBeforePluck
 

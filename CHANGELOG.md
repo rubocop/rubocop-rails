@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 2.17.4 (2022-12-25)
+
 ### Bug fixes
 
 * [#870](https://github.com/rubocop/rubocop-rails/issues/870): Fix an error for `Rails/RootPathnameMethods` when using `Rails.env` argument within `Dir.glob`. ([@koic][])
