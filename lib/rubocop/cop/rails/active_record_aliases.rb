@@ -26,6 +26,8 @@ module RuboCop
         RESTRICT_ON_SEND = ALIASES.keys.freeze
 
         def on_send(node)
+          return if node.arguments.empty?
+
           method_name = node.method_name
           alias_method = ALIASES[method_name]
 

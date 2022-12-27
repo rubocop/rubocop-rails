@@ -25,6 +25,14 @@ RSpec.describe RuboCop::Cop::Rails::ActiveRecordAliases, :config do
         RUBY
       end
     end
+
+    context 'when arguments of `update_attributes` is empty' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          user.update(update_attributes)
+        RUBY
+      end
+    end
   end
 
   describe '#update_attributes!' do
