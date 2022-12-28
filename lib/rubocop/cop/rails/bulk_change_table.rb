@@ -62,9 +62,6 @@ module RuboCop
       #       t.string :nickname
       #     end
       #   end
-      #
-      # @see https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-change_table
-      # @see https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/Table.html
       class BulkChangeTable < Base
         MSG_FOR_CHANGE_TABLE = <<~MSG.chomp
           You can combine alter queries using `bulk: true` options.
@@ -216,7 +213,7 @@ module RuboCop
             true
           when POSTGRESQL
             # Add bulk alter support for PostgreSQL in 5.2.0
-            # @see https://github.com/rails/rails/pull/31331
+            # See: https://github.com/rails/rails/pull/31331
             target_rails_version >= 5.2
           else
             false

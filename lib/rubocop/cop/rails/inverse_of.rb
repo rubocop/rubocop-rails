@@ -137,9 +137,6 @@ module RuboCop
       #   class Blog < ApplicationRecord
       #     has_many :posts, -> { order(published_at: :desc) }
       #   end
-      #
-      # @see https://guides.rubyonrails.org/association_basics.html#bi-directional-associations
-      # @see https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Setting+Inverses
       class InverseOf < Base
         SPECIFY_MSG = 'Specify an `:inverse_of` option.'
         NIL_MSG = 'You specified `inverse_of: nil`, you probably meant to use `inverse_of: false`.'

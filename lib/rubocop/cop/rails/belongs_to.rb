@@ -47,9 +47,6 @@ module RuboCop
       #   class Post < ApplicationRecord
       #     belongs_to :blog, optional: false
       #   end
-      #
-      # @see https://guides.rubyonrails.org/5_0_release_notes.html
-      # @see https://github.com/rails/rails/pull/18937
       class BelongsTo < Base
         extend AutoCorrector
         extend TargetRailsVersion

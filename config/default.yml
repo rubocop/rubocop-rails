@@ -226,6 +226,9 @@ Rails/BelongsTo:
   Description: >-
                   Use `optional: true` instead of `required: false` for
                   `belongs_to` relations.
+  Reference:
+    - https://guides.rubyonrails.org/5_0_release_notes.html
+    - https://github.com/rails/rails/pull/18937
   Enabled: true
   VersionAdded: '0.62'
 
@@ -244,6 +247,9 @@ Rails/Blank:
 
 Rails/BulkChangeTable:
   Description: 'Check whether alter queries are combinable.'
+  Reference:
+    - https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-change_table
+    - https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/Table.html
   Enabled: true
   VersionAdded: '0.57'
   Database: null
@@ -592,6 +598,9 @@ Rails/Inquiry:
 
 Rails/InverseOf:
   Description: 'Checks for associations where the inverse cannot be determined automatically.'
+  Reference:
+    - https://guides.rubyonrails.org/association_basics.html#bi-directional-associations
+    - https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Setting+Inverses
   Enabled: true
   VersionAdded: '0.52'
   IgnoreScopes: false
@@ -1042,6 +1051,8 @@ Rails/TopLevelHashWithIndifferentAccess:
 
 Rails/TransactionExitStatement:
   Description: 'Avoid the usage of `return`, `break` and `throw` in transaction blocks.'
+  Reference:
+    - https://github.com/rails/rails/commit/15aa4200e083
   Enabled: pending
   VersionAdded: '2.14'
 

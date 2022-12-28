@@ -45,8 +45,6 @@ module RuboCop
       #     # Commit
       #     next if user.active?
       #   end
-      #
-      # @see https://github.com/rails/rails/commit/15aa4200e083
       class TransactionExitStatement < Base
         MSG = <<~MSG.chomp
           Exit statement `%<statement>s` is not allowed. Use `raise` (rollback) or `next` (commit).
