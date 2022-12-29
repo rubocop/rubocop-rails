@@ -173,8 +173,6 @@ module RuboCop
       #   def change
       #     remove_index :users, column: :email
       #   end
-      #
-      # @see https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
       class ReversibleMigration < Base
         include MigrationsHelper
 

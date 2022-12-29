@@ -35,8 +35,6 @@ module RuboCop
       #     skip_before_action :login_required,
       #       if: -> { trusted_origin? && action_name != "admin" }
       #   end
-      #
-      # @see https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options
       class IgnoredSkipActionFilterOption < Base
         MSG = <<~MSG.chomp.freeze
           `%<ignore>s` option will be ignored when `%<prefer>s` and `%<ignore>s` are used together.
