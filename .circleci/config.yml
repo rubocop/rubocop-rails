@@ -6,7 +6,7 @@ jobs:
       image:
         description: "Name of the Docker image."
         type: string
-        default: "cimg/ruby:3.1"
+        default: "cimg/ruby:3.2"
     docker:
       - image: << parameters.image >>
     environment:
@@ -23,7 +23,7 @@ jobs:
   # Miscellaneous tasks
   documentation-checks:
     docker:
-      - image: cimg/ruby:3.1
+      - image: cimg/ruby:3.2
     steps:
       - checkout
       - run: bundle install
@@ -47,6 +47,9 @@ workflows:
       - rake_default:
           name: Ruby 3.1
           image: cimg/ruby:3.1
+      - rake_default:
+          name: Ruby 3.2
+          image: cimg/ruby:3.2
       - rake_default:
           name: Ruby HEAD
           image: rubocophq/circleci-ruby-snapshot:latest # Nightly snapshot build
