@@ -529,4 +529,46 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       it_behaves_like 'no offense'
     end
   end
+
+  context 'when `DATABASE_URL` is set' do
+    before do
+      allow(ENV).to receive(:[]).with('DATABASE_URL').and_return(database_url)
+    end
+
+    context 'mysql2' do
+      let(:database_url) { 'mysql2://localhost/my_database' }
+
+      it_behaves_like 'offense for mysql'
+    end
+
+    context 'postgres' do
+      let(:database_url) { 'postgres://localhost/my_database' }
+
+      context 'with Rails 5.2', :rails52 do
+        it_behaves_like 'offense for postgresql'
+      end
+
+      context 'with Rails 5.1', :rails51 do
+        it_behaves_like 'no offense for postgresql'
+      end
+    end
+
+    context 'postgresql' do
+      let(:database_url) { 'postgresql://localhost/my_database' }
+
+      context 'with Rails 5.2', :rails52 do
+        it_behaves_like 'offense for postgresql'
+      end
+
+      context 'with Rails 5.1', :rails51 do
+        it_behaves_like 'no offense for postgresql'
+      end
+    end
+
+    context 'unsupported (e.g. sqlserver)' do
+      let(:database_url) { 'sqlserver://localhost/my_database' }
+
+      it_behaves_like 'no offense'
+    end
+  end
 end
