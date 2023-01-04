@@ -18,6 +18,8 @@ module RuboCop
       #   # good
       #   has_many :accounts, class_name: 'Account'
       class ReflectionClassName < Base
+        extend AutoCorrector
+
         MSG = 'Use a string value for `class_name`.'
         RESTRICT_ON_SEND = %i[has_many has_one belongs_to].freeze
         ALLOWED_REFLECTION_CLASS_TYPES = %i[dstr str sym].freeze
@@ -32,12 +34,18 @@ module RuboCop
           (pair (sym :class_name) #reflection_class_value?)
         PATTERN
 
+        def_node_matcher :const_or_string, <<~PATTERN
+          {$(const nil? _) (send $(const nil? _) :name) (send $(const nil? _) :to_s)}
+        PATTERN
+
         def on_send(node)
           association_with_reflection(node) do |reflection_class_name|
             return if reflection_class_name.value.send_type? && reflection_class_name.value.receiver.nil?
             return if reflection_class_name.value.lvar_type? && str_assigned?(reflection_class_name)
 
-            add_offense(reflection_class_name.source_range)
+            add_offense(reflection_class_name.source_range) do |corrector|
+              autocorrect(corrector, reflection_class_name)
+            end
           end
         end
 
@@ -63,6 +71,14 @@ module RuboCop
           else
             !ALLOWED_REFLECTION_CLASS_TYPES.include?(class_value.type)
           end
+        end
+
+        def autocorrect(corrector, class_config)
+          class_value = class_config.value
+          replacement = const_or_string(class_value)
+          return unless replacement.present?
+
+          corrector.replace(class_value, replacement.source.inspect)
         end
       end
     end
