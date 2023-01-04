@@ -97,7 +97,7 @@ RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
     RUBY
   end
 
-  it 'does not register an offense when including block nodein `with_options`' do
+  it 'does not register an offense when including block node in `with_options`' do
     expect_no_offenses(<<~RUBY)
       with_options options: false do |merger|
         merger.invoke

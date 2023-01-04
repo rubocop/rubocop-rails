@@ -53,7 +53,7 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
       context 'when the block argument is used in `[]`' do
         it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)
-            x.#{method} { |a| a[foo...a.to_someghing] }
+            x.#{method} { |a| a[foo...a.to_something] }
           RUBY
         end
       end
@@ -93,7 +93,7 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
           context 'when the numblock argument is used in `[]`' do
             it 'does not register an offense' do
               expect_no_offenses(<<~RUBY)
-                x.#{method} { _1[foo..._1.to_someghing] }
+                x.#{method} { _1[foo..._1.to_something] }
               RUBY
             end
           end

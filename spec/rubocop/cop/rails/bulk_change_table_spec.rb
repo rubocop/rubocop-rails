@@ -26,7 +26,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
   end
 
   shared_examples 'no offense' do
-    it 'does not register an offensewhen including combinable transformations' do
+    it 'does not register an offense when including combinable transformations' do
       expect_no_offenses(<<~RUBY)
         def change
           change_table :users do |t|
@@ -37,7 +37,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'does not register an offensewhen including combinable alter methods' do
+    it 'does not register an offense when including combinable alter methods' do
       expect_no_offenses(<<~RUBY)
         def change
           add_column :users, :name, :string, null: false
@@ -72,7 +72,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
   end
 
   shared_examples 'no offense for mysql' do
-    it 'does not register an offensewhen including combinable transformations' do
+    it 'does not register an offense when including combinable transformations' do
       expect_no_offenses(<<~RUBY)
         def change
           change_table :users do |t|
@@ -83,7 +83,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'does not register an offensewhen including combinable alter methods' do
+    it 'does not register an offense when including combinable alter methods' do
       expect_no_offenses(<<~RUBY)
         def change
           remove_index :users, :name
@@ -127,7 +127,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
   end
 
   shared_examples 'no offense for postgresql' do
-    it 'does not register an offensewhen including combinable transformations' do
+    it 'does not register an offense when including combinable transformations' do
       expect_no_offenses(<<~RUBY)
         def change
           change_table :users do |t|
@@ -138,7 +138,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'does not register an offensewhen including combinable alter methods' do
+    it 'does not register an offense when including combinable alter methods' do
       expect_no_offenses(<<~RUBY)
         def change
           change_column_default :users, :name, false
@@ -193,7 +193,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'does not register an offensewhen including combinable transformations with `bulk: true`' do
+    it 'does not register an offense when including combinable transformations with `bulk: true`' do
       expect_no_offenses(<<~RUBY)
         def change
           change_table :users, bulk: true do |t|
@@ -204,7 +204,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'does not register an offensewhen including combinable transformations with `bulk: false`' do
+    it 'does not register an offense when including combinable transformations with `bulk: false`' do
       expect_no_offenses(<<~RUBY)
         def change
           change_table :users, bulk: false do |t|
@@ -215,7 +215,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'does not register an offensewhen including a combinable transformation' do
+    it 'does not register an offense when including a combinable transformation' do
       expect_no_offenses(<<~RUBY)
         def change
           change_table :users do |t|
@@ -252,7 +252,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'does not register an offensewhen including transformations with block' do
+    it 'does not register an offense when including transformations with block' do
       expect_no_offenses(<<~RUBY)
         def change
           reversible do |dir|
@@ -272,7 +272,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'does not register an offensewhen the target of the alter method is another table' do
+    it 'does not register an offense when the target of the alter method is another table' do
       expect_no_offenses(<<~RUBY)
         def change
           add_reference :users, :team
@@ -282,7 +282,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'does not register an offensewhen including non-combinable alter method between' do
+    it 'does not register an offense when including non-combinable alter method between' do
       expect_no_offenses(<<~RUBY)
         def change
           add_column :users, :name, :string, null: false
@@ -304,7 +304,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'does not register an offensewhen including a combinable alter method' do
+    it 'does not register an offense when including a combinable alter method' do
       expect_no_offenses(<<~RUBY)
         def change
           add_reference :users, :team

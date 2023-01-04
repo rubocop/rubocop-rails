@@ -67,8 +67,8 @@ module RuboCop
         private
 
         def followed_by_render?(flash_node)
-          flash_assigment_node = find_ancestor(flash_node, type: :send)
-          context = flash_assigment_node
+          flash_assignment_node = find_ancestor(flash_node, type: :send)
+          context = flash_assignment_node
           if (node = context.each_ancestor(:if, :rescue).first)
             context = node
           elsif context.right_siblings.empty?
