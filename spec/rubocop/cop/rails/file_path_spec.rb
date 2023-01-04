@@ -139,7 +139,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
-    context 'when concat Rails.root and colon using string interpoloation' do
+    context 'when concat Rails.root and colon using string interpolation' do
       it 'does not register an offense' do
         expect_no_offenses(<<~'RUBY')
           "#{Rails.root}:/foo/bar"
@@ -268,7 +268,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
-    context 'when concat Rails.root and colon using string interpoloation' do
+    context 'when concat Rails.root and colon using string interpolation' do
       it 'does not register an offense' do
         expect_no_offenses(<<~'RUBY')
           "#{Rails.root}:/foo/bar"
