@@ -27,3 +27,7 @@ end
 RSpec.shared_context 'with Rails 7.0', :rails70 do
   let(:rails_version) { 7.0 }
 end
+
+RSpec.shared_context 'with Rails 7.1', :rails71 do
+  let(:rails_version) { 7.1 }
+end
