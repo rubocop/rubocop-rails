@@ -1138,6 +1138,13 @@ Rails/WhereNotWithMultipleConditions:
 Style/AndOr:
   EnforcedStyle: conditionals
 
+Style/FormatStringToken:
+  AllowedMethods:
+    - redirect
+  # Deprecated.
+  IgnoredMethods:
+    - redirect
+
 Style/SymbolProc:
   AllowedMethods:
     - define_method
