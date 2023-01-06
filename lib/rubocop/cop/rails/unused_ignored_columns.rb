@@ -28,12 +28,16 @@ module RuboCop
           (send self :ignored_columns= $array)
         PATTERN
 
+        def_node_matcher :appended_ignored_columns, <<~PATTERN
+          (op-asgn (send self :ignored_columns) :+ $array)
+        PATTERN
+
         def_node_matcher :column_name, <<~PATTERN
           ({str sym} $_)
         PATTERN
 
         def on_send(node)
-          return unless (columns = ignored_columns(node))
+          return unless (columns = ignored_columns(node) || appended_ignored_columns(node))
           return unless schema
 
           table = table(node)
@@ -43,6 +47,7 @@ module RuboCop
             check_column_existence(column_node, table)
           end
         end
+        alias on_op_asgn on_send
 
         private
 

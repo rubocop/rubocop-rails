@@ -105,6 +105,17 @@ RSpec.describe RuboCop::Cop::Rails::UnusedIgnoredColumns, :config do
         RUBY
       end
     end
+
+    context 'when using addition assignment on ignored_columns' do
+      it 'registers an offense to the nonexistent column' do
+        expect_offense(<<~RUBY)
+          class User < ApplicationRecord
+            self.ignored_columns += ['real_name']
+                                     ^^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist.
+          end
+        RUBY
+      end
+    end
   end
 
   context 'with no tables db/schema.rb' do
