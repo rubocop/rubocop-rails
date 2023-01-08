@@ -21,7 +21,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[add_column add_reference].freeze
 
         def_node_matcher :add_not_null_column?, <<~PATTERN
-          (send nil? :add_column _ _ _ (hash $...))
+          (send nil? :add_column _ _ $_ (hash $...))
         PATTERN
 
         def_node_matcher :add_not_null_reference?, <<~PATTERN
@@ -44,17 +44,20 @@ module RuboCop
         private
 
         def check_add_column(node)
-          pairs = add_not_null_column?(node)
-          check_pairs(pairs)
+          add_not_null_column?(node) do |type, pairs|
+            return if type.value == :virtual || type.value == 'virtual'
+
+            check_pairs(pairs)
+          end
         end
 
         def check_add_reference(node)
-          pairs = add_not_null_reference?(node)
-          check_pairs(pairs)
+          add_not_null_reference?(node) do |pairs|
+            check_pairs(pairs)
+          end
         end
 
         def check_pairs(pairs)
-          return unless pairs
           return if pairs.any? { |pair| default_option?(pair) }
 
           null_false = pairs.find { |pair| null_false?(pair) }

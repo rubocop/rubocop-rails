@@ -28,6 +28,13 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
                                              ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.
         RUBY
       end
+
+      it 'does not register an offense for virtual columns' do
+        expect_no_offenses(<<~RUBY)
+          add_column :users, :height_in, :virtual, as: "height_cm / 2.54", null: false, default: nil
+          add_column :users, :height_in, 'virtual', as: "height_cm / 2.54", null: false, default: nil
+        RUBY
+      end
     end
 
     context 'with null: true' do
