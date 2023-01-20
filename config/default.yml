@@ -476,7 +476,7 @@ Rails/FindById:
   VersionAdded: '2.7'
 
 Rails/FindEach:
-  Description: 'Prefer all.find_each over all.find.'
+  Description: 'Prefer all.find_each over all.each.'
   StyleGuide: 'https://rails.rubystyle.guide#find-each'
   Enabled: true
   VersionAdded: '0.30'
