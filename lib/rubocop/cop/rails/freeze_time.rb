@@ -26,6 +26,9 @@ module RuboCop
       #
       class FreezeTime < Base
         extend AutoCorrector
+        extend TargetRailsVersion
+
+        minimum_target_rails_version 5.2
 
         MSG = 'Use `freeze_time` instead of `travel_to`.'
         NOW_METHODS = %i[now new current].freeze
