@@ -329,6 +329,7 @@ Rails/Delegate:
   # method name without using the `delegate` method will be a
   # violation. When set to false, this case is legal.
   EnforceForPrefixed: true
+  SafeAutoCorrect: false
 
 Rails/DelegateAllowBlank:
   Description: 'Do not use allow_blank as an option to delegate.'

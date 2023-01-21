@@ -15,6 +15,13 @@ module RuboCop
       # without using the `delegate` method will be a violation.
       # When set to `false`, this case is legal.
       #
+      # @safety
+      #   This cop's autocorrection is unsafe when a refinement defines
+      #   the receiver. Since `delegate` defines the method dynamically
+      #   in a separate source file, the refinement is not applied in
+      #   the context of the method definition. Thus, calling the method
+      #   will result in a NameError because the receiver is not found.
+      #
       # @example
       #   # bad
       #   def bar
