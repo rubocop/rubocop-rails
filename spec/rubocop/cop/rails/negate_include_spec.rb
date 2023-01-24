@@ -12,6 +12,12 @@ RSpec.describe RuboCop::Cop::Rails::NegateInclude, :config do
     RUBY
   end
 
+  it 'does not register an offense when using `!include?` without receiver' do
+    expect_no_offenses(<<~RUBY)
+      !include?(2)
+    RUBY
+  end
+
   it 'does not register an offense when using `include?` or `exclude?`' do
     expect_no_offenses(<<~RUBY)
       array.include?(2)

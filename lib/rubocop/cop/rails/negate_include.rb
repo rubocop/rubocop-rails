@@ -26,7 +26,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[!].freeze
 
         def_node_matcher :negate_include_call?, <<~PATTERN
-          (send (send $_ :include? $_) :!)
+          (send (send $!nil? :include? $_) :!)
         PATTERN
 
         def on_send(node)
