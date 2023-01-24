@@ -150,6 +150,41 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter, :config do
     RUBY
   end
 
+  it 'does not register an offense when action method is aliased by `alias`' do
+    expect_no_offenses(<<~RUBY)
+      class FooController < ApplicationController
+        before_action :authorize!, only: %i[index show]
+
+        def index
+        end
+        alias show index
+
+        private
+
+        def authorize!
+        end
+      end
+    RUBY
+  end
+
+  it 'registers an offense when action method is not aliased by `alias`' do
+    expect_offense(<<~RUBY)
+      class FooController < ApplicationController
+        before_action :authorize!, only: %i[foo show]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `foo` is not explicitly defined on the class.
+
+        def index
+        end
+        alias show index
+
+        private
+
+        def authorize!
+        end
+      end
+    RUBY
+  end
+
   it "doesn't register an offense when using conditional statements" do
     expect_no_offenses <<~RUBY
       class Test < ActionController
