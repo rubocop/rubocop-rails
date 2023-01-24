@@ -41,11 +41,11 @@ module RuboCop
         PATTERN
 
         def_node_matcher :association_without_options?, <<~PATTERN
-          (send nil? {:has_many :has_one} _)
+          (send _ {:has_many :has_one} _)
         PATTERN
 
         def_node_matcher :association_with_options?, <<~PATTERN
-          (send nil? {:has_many :has_one} ... (hash $...))
+          (send _ {:has_many :has_one} ... (hash $...))
         PATTERN
 
         def_node_matcher :dependent_option?, <<~PATTERN

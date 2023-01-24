@@ -241,17 +241,41 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
       RUBY
     end
 
-    it 'registers an offense when using mix-in module that has an association of Active Record' do
-      expect_offense(<<~RUBY)
-        module Foo
-          extend ActiveSupport::Concern
+    context 'mix-in module' do
+      it 'registers an offense when has an association of Active Record' do
+        expect_offense(<<~RUBY)
+          module Foo
+            extend ActiveSupport::Concern
 
-          included do
-            has_many :bazs
-            ^^^^^^^^ Specify a `:dependent` option.
+            included do
+              has_many :bazs
+              ^^^^^^^^ Specify a `:dependent` option.
+            end
           end
-        end
-      RUBY
+        RUBY
+      end
+
+      it 'registers an offense when association method is called on the base class and no `:dependent` strategy' do
+        expect_offense(<<~RUBY)
+          module Foo
+            def self.included(base)
+              base.has_many :bazs
+                   ^^^^^^^^ Specify a `:dependent` option.
+            end
+          end
+        RUBY
+      end
+
+      it 'does not register an offense when association method is called on the base class' \
+         'and has `:dependent` strategy' do
+        expect_no_offenses(<<~RUBY)
+          module Foo
+            def self.included(base)
+              base.has_many :bazs, dependent: :destroy
+            end
+          end
+        RUBY
+      end
     end
 
     it 'does not register an offense when using associations of Active Resource' do
