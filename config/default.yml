@@ -711,7 +711,9 @@ Rails/Pluck:
   Description: 'Prefer `pluck` over `map { ... }`.'
   StyleGuide: 'https://rails.rubystyle.guide#pluck'
   Enabled: 'pending'
+  Safe: false
   VersionAdded: '2.7'
+  VersionChanged: '<<next>>'
 
 Rails/PluckId:
   Description: 'Use `ids` instead of `pluck(:id)` or `pluck(primary_key)`.'
