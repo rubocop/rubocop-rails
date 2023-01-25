@@ -46,23 +46,6 @@ Lint/NumberConversion:
     - fortnights
     - in_milliseconds
   AllowedPatterns: []
-  # Deprecated.
-  IgnoredMethods:
-    - ago
-    - from_now
-    - second
-    - seconds
-    - minute
-    - minutes
-    - hour
-    - hours
-    - day
-    - days
-    - week
-    - weeks
-    - fortnight
-    - fortnights
-    - in_milliseconds
 
 Rails:
   Enabled: true
@@ -490,13 +473,6 @@ Rails/FindEach:
     - select
     - lock
   AllowedPatterns: []
-  # Deprecated.
-  IgnoredMethods:
-    # Methods that don't work well with `find_each`.
-    - order
-    - limit
-    - select
-    - lock
 
 Rails/FreezeTime:
   Description: 'Prefer `freeze_time` over `travel_to` with an argument of the current time.'
@@ -1153,9 +1129,6 @@ Style/AndOr:
 
 Style/FormatStringToken:
   AllowedMethods:
-    - redirect
-  # Deprecated.
-  IgnoredMethods:
     - redirect
 
 Style/SymbolProc:
