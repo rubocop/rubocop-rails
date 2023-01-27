@@ -48,6 +48,7 @@ module RuboCop
         SQL = 'SQL'
         SQUISH = '.squish'
         MSG = 'Use `%<expect>s` instead of `%<current>s`.'
+        SQL_IDENTIFIER_MARKERS = /(".+?")|('.+?')|(\[.+?\])/.freeze
 
         def on_heredoc(node)
           return unless offense_detected?(node)
@@ -60,7 +61,7 @@ module RuboCop
         private
 
         def offense_detected?(node)
-          sql_heredoc?(node) && !using_squish?(node)
+          sql_heredoc?(node) && !using_squish?(node) && !singleline_comments_present?(node)
         end
 
         def sql_heredoc?(node)
@@ -69,6 +70,12 @@ module RuboCop
 
         def using_squish?(node)
           node.parent&.send_type? && node.parent&.method?(:squish)
+        end
+
+        def singleline_comments_present?(node)
+          sql = node.children.map { |c| c.is_a?(String) ? c : c.source }.join('\n')
+
+          sql.gsub(SQL_IDENTIFIER_MARKERS, '').include?('--')
         end
 
         def message(node)
