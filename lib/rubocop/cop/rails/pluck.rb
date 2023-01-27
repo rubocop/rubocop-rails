@@ -9,6 +9,22 @@ module RuboCop
       # element in an enumerable. When called on an Active Record relation, it
       # results in a more efficient query that only selects the necessary key.
       #
+      # @safety
+      #   This cop is unsafe because model can define attribute aliases.
+      #
+      #   [source,ruby]
+      #   ----
+      #   class User < ApplicationRecord
+      #     alias_attribute :nickname, :name
+      #   end
+      #
+      #   # Original code
+      #   User.map { |user| user[:nickname] } # => array of nicknames
+      #
+      #   # After autocorrection
+      #   User.pluck(:nickname) # => raises ActiveRecord::StatementInvalid
+      #   ----
+      #
       # @example
       #   # bad
       #   Post.published.map { |post| post[:title] }
