@@ -144,17 +144,27 @@ module RuboCop
         end
 
         def aliased_action_methods(node, defined_methods)
-          alias_methods = node.each_child_node(:send).select { |send_node| send_node.method?(:alias_method) }
-
-          hash_of_alias_methods = alias_methods.each_with_object({}) do |alias_method, result|
-            result[alias_method.last_argument.value] = alias_method.first_argument.value
-          end
-
+          alias_methods = alias_methods(node)
           defined_methods.each_with_object([]) do |defined_method, aliased_method|
-            if (new_method_name = hash_of_alias_methods[defined_method])
+            if (new_method_name = alias_methods[defined_method])
               aliased_method << new_method_name
             end
           end
+        end
+
+        def alias_methods(node)
+          result = {}
+          node.each_child_node(:send, :alias) do |child_node|
+            case child_node.type
+            when :send
+              if child_node.method?(:alias_method)
+                result[child_node.last_argument.value] = child_node.first_argument.value
+              end
+            when :alias
+              result[child_node.old_identifier.value] = child_node.new_identifier.value
+            end
+          end
+          result
         end
 
         # @param node [RuboCop::AST::Node]
