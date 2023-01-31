@@ -10,19 +10,15 @@ module RuboCop
       # results in a more efficient query that only selects the necessary key.
       #
       # @safety
-      #   This cop is unsafe because model can define attribute aliases.
+      #   This cop is unsafe because model can use column aliases.
       #
       #   [source,ruby]
       #   ----
-      #   class User < ApplicationRecord
-      #     alias_attribute :nickname, :name
-      #   end
-      #
       #   # Original code
-      #   User.map { |user| user[:nickname] } # => array of nicknames
+      #   User.select('name AS nickname').map { |user| user[:nickname] } # => array of nicknames
       #
       #   # After autocorrection
-      #   User.pluck(:nickname) # => raises ActiveRecord::StatementInvalid
+      #   User.select('name AS nickname').pluck(:nickname) # => raises ActiveRecord::StatementInvalid
       #   ----
       #
       # @example
