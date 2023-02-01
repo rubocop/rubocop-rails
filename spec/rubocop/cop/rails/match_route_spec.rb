@@ -107,7 +107,7 @@ RSpec.describe RuboCop::Cop::Rails::MatchRoute, :config do
   end
 
   it 'does not register an offense when via is a variable' do
-    expect_no_offenses(<<~'RUBY')
+    expect_no_offenses(<<~RUBY)
       routes.draw do
         match ':controller/:action/:id', via: method
       end

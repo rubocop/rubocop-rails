@@ -54,13 +54,13 @@ RSpec.describe RuboCop::Cop::Rails::ReflectionClassName, :config do
   end
 
   it 'does not register an offense when using `class_name: do_something.to_s`' do
-    expect_no_offenses(<<~'RUBY')
+    expect_no_offenses(<<~RUBY)
       has_many :accounts, class_name: do_something.to_s
     RUBY
   end
 
   it 'does not register an offense when using `class_name: to_s`' do
-    expect_no_offenses(<<~'RUBY')
+    expect_no_offenses(<<~RUBY)
       has_many :accounts, class_name: to_s
     RUBY
   end
