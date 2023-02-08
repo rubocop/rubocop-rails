@@ -233,6 +233,21 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     RUBY
   end
 
+  context 'when multiline ternary can be replaced' do
+    it 'registers an offense and corrects' do
+      expect_offense(<<~RUBY)
+        a.present? ?
+        ^^^^^^^^^^^^ Use `a.presence` instead of `a.present? ? a : nil`.
+          a :
+          nil
+      RUBY
+
+      expect_correction(<<~RUBY)
+        a.presence
+      RUBY
+    end
+  end
+
   context 'when a method argument of `else` branch is enclosed in parentheses' do
     it 'registers an offense and corrects' do
       expect_offense(<<~RUBY)
