@@ -112,10 +112,10 @@ module RuboCop
         end
 
         def current(node)
-          if node.source.include?("\n")
+          if !node.ternary? && node.source.include?("\n")
             "#{node.loc.keyword.with(end_pos: node.condition.loc.selector.end_pos).source} ... end"
           else
-            node.source
+            node.source.gsub(/\n\s*/, ' ')
           end
         end
 
