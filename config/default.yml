@@ -1144,6 +1144,14 @@ Style/FormatStringToken:
   AllowedMethods:
     - redirect
 
+Style/InverseMethods:
+  # `InverseMethods` are methods that can be inverted by a not (`not` or `!`)
+  # The relationship of inverse methods only needs to be defined in one direction.
+  # Keys and values both need to be defined as symbols.
+  InverseMethods:
+    :present?: :blank?
+    :include?: :exclude?
+
 Style/SymbolProc:
   AllowedMethods:
     - define_method
