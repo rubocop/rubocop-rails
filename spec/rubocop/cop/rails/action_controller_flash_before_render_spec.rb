@@ -202,6 +202,23 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
             RUBY
           end
 
+          it 'does not register an offense when using `flash` before `redirect_to` in `if` branch' do
+            expect_no_offenses(<<~RUBY)
+              class HomeController < #{parent_class}
+                def create
+                  if condition
+                    flash[:alert] = "msg"
+                    redirect_to :index
+
+                    return
+                  end
+
+                  render :index
+                end
+              end
+            RUBY
+          end
+
           it 'does not register an offense when using `flash` in multiline `rescue` branch before `redirect_to`' do
             expect_no_offenses(<<~RUBY)
               class HomeController < #{parent_class}
