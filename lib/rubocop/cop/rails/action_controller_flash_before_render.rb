@@ -70,6 +70,8 @@ module RuboCop
           flash_assignment_node = find_ancestor(flash_node, type: :send)
           context = flash_assignment_node
           if (node = context.each_ancestor(:if, :rescue).first)
+            return false if use_redirect_to?(context)
+
             context = node
           elsif context.right_siblings.empty?
             return true
@@ -93,6 +95,12 @@ module RuboCop
           block_node = find_ancestor(node, type: :block)
 
           def_node || block_node
+        end
+
+        def use_redirect_to?(context)
+          context.right_siblings.compact.any? do |sibling|
+            sibling.send_type? && sibling.method?(:redirect_to)
+          end
         end
 
         def find_ancestor(node, type:)
