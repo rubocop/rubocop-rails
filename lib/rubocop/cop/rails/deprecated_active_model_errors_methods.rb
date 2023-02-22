@@ -160,7 +160,7 @@ module RuboCop
         end
 
         def model_file?
-          processed_source.buffer.name.include?('/models/')
+          processed_source.file_path.include?('/models/')
         end
       end
     end
