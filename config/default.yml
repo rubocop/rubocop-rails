@@ -1151,6 +1151,7 @@ Style/InverseMethods:
   InverseMethods:
     :present?: :blank?
     :include?: :exclude?
+    :valid?: :invalid?
 
 Style/SymbolProc:
   AllowedMethods:
