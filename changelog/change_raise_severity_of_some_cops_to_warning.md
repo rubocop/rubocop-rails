@@ -1,1 +1,0 @@
-* [#896](https://github.com/rubocop/rubocop-rails/pull/896): Raise severity of `Rails/ActiveRecordOverride`, `Rails/DeprecatedActiveModelErrorsMethods`, `Rails/DuplicateAssociation`, `Rails/DuplicateScope`, `Rails/TopLevelHashWithIndifferentAccess`, and `Rails/WhereNotWithMultipleConditions` cops to warning. ([@koic][])
