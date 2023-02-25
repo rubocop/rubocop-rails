@@ -120,7 +120,7 @@ Rails/ActiveRecordOverride:
   Enabled: true
   Severity: warning
   VersionAdded: '0.67'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.18'
   Include:
     - app/models/**/*.rb
 
@@ -324,7 +324,7 @@ Rails/DeprecatedActiveModelErrorsMethods:
   Severity: warning
   Safe: false
   VersionAdded: '2.14'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.18'
 
 Rails/DotSeparatedKeys:
   Description: 'Enforces the use of dot-separated keys instead of `:scope` options in `I18n` translation methods.'
@@ -337,14 +337,14 @@ Rails/DuplicateAssociation:
   Enabled: pending
   Severity: warning
   VersionAdded: '2.14'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.18'
 
 Rails/DuplicateScope:
   Description: 'Multiple scopes share this same where clause.'
   Enabled: pending
   Severity: warning
   VersionAdded: '2.14'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.18'
 
 Rails/DurationArithmetic:
   Description: 'Do not use duration as arithmetic operand with `Time.current`.'
@@ -689,7 +689,7 @@ Rails/Pluck:
   Enabled: 'pending'
   Safe: false
   VersionAdded: '2.7'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.18'
 
 Rails/PluckId:
   Description: 'Use `ids` instead of `pluck(:id)` or `pluck(primary_key)`.'
@@ -845,7 +845,7 @@ Rails/ResponseParsedBody:
   Description: Prefer `response.parsed_body` to `JSON.parse(response.body)`.
   Enabled: pending
   SafeAutoCorrect: false
-  VersionAdded: "<<next>>"
+  VersionAdded: '2.18'
   Include:
     - spec/controllers/**/*.rb
     - spec/requests/**/*.rb
@@ -1045,7 +1045,7 @@ Rails/TopLevelHashWithIndifferentAccess:
   Enabled: pending
   Severity: warning
   VersionAdded: '2.16'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.18'
 
 Rails/TransactionExitStatement:
   Description: 'Avoid the usage of `return`, `break` and `throw` in transaction blocks.'
@@ -1077,7 +1077,7 @@ Rails/UnknownEnv:
   Enabled: true
   Severity: warning
   VersionAdded: '0.51'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.18'
   Environments:
     - development
     - test
@@ -1134,7 +1134,7 @@ Rails/WhereNotWithMultipleConditions:
   Enabled: 'pending'
   Severity: warning
   VersionAdded: '2.17'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.18'
 
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:

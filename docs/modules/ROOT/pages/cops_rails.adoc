@@ -304,7 +304,7 @@ end
 | Yes
 | No
 | 0.67
-| -
+| 2.18
 |===
 
 Checks for overriding built-in Active Record methods instead of using
@@ -336,6 +336,10 @@ end
 
 |===
 | Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
 
 | Include
 | `+app/models/**/*.rb+`
@@ -1466,7 +1470,7 @@ delegate :foo, to: :bar, allow_nil: true
 | No
 | Yes (Unsafe)
 | 2.14
-| 2.15
+| 2.18
 |===
 
 Checks direct manipulation of ActiveModel#errors as hash.
@@ -1502,6 +1506,16 @@ user.errors.keys.include?(:attr)
 # good
 user.errors.attribute_names.include?(:attr)
 ----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
+|===
 
 == Rails/DotSeparatedKeys
 
@@ -1545,7 +1559,7 @@ I18n.t :record_invalid, scope: 'activerecord.errors.messages'
 | Yes
 | Yes
 | 2.14
-| -
+| 2.18
 |===
 
 Looks for associations that have been defined multiple times in the same file.
@@ -1568,6 +1582,16 @@ belongs_to :bar
 has_one :foo
 ----
 
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
+|===
+
 == Rails/DuplicateScope
 
 |===
@@ -1577,7 +1601,7 @@ has_one :foo
 | Yes
 | No
 | 2.14
-| -
+| 2.18
 |===
 
 Checks for multiple scopes in a model that have the same `where` clause. This
@@ -1595,6 +1619,16 @@ scope :hidden, -> { where(visible: true) }
 scope :visible, -> { where(visible: true) }
 scope :hidden, -> { where(visible: false) }
 ----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
+|===
 
 == Rails/DurationArithmetic
 
@@ -2251,10 +2285,6 @@ User.order(:foo).each
 | AllowedPatterns
 | `[]`
 | Array
-
-| IgnoredMethods
-| `order`, `limit`, `select`, `lock`
-| Array
 |===
 
 === References
@@ -2854,7 +2884,6 @@ end
 
 === References
 
-* https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options
 * https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options
 
 == Rails/IndexBy
@@ -3722,10 +3751,10 @@ Model.pick(:a)
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
 | Pending
-| Yes
-| Yes
+| No
+| Yes (Unsafe)
 | 2.7
-| -
+| 2.18
 |===
 
 Enforces the use of `pluck` over `map`.
@@ -3733,6 +3762,19 @@ Enforces the use of `pluck` over `map`.
 `pluck` can be used instead of `map` to extract a single key from each
 element in an enumerable. When called on an Active Record relation, it
 results in a more efficient query that only selects the necessary key.
+
+=== Safety
+
+This cop is unsafe because model can use column aliases.
+
+[source,ruby]
+----
+# Original code
+User.select('name AS nickname').map { |user| user[:nickname] } # => array of nicknames
+
+# After autocorrection
+User.select('name AS nickname').pluck(:nickname) # => raises ActiveRecord::StatementInvalid
+----
 
 === Examples
 
@@ -4722,6 +4764,47 @@ require_dependency 'some_lib'
 
 * https://guides.rubyonrails.org/autoloading_and_reloading_constants.html
 
+== Rails/ResponseParsedBody
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes (Unsafe)
+| 2.18
+| -
+|===
+
+Prefer `response.parsed_body` to `JSON.parse(response.body)`.
+
+=== Safety
+
+This cop's autocorrection is unsafe because Content-Type may not be `application/json`. For example, the
+proprietary Content-Type provided by corporate entities such as `application/vnd.github+json` is not
+supported at `response.parsed_body` by default, so you still have to use `JSON.parse(response.body)` there.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+JSON.parse(response.body)
+
+# good
+response.parsed_body
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `+spec/controllers/**/*.rb+`, `+spec/requests/**/*.rb+`, `+test/controllers/**/*.rb+`, `+test/integration/**/*.rb+`
+| Array
+|===
+
 == Rails/ReversibleMigration
 
 |===
@@ -4750,23 +4833,15 @@ end
 
 # good
 def change
-  create_table :users do |t|
-    t.string :name
+  change_table :users do |t|
+    t.remove :name, :string
   end
 end
 
 # good
 def change
-  reversible do |dir|
-    change_table :users do |t|
-      dir.up do
-        t.column :name, :string
-      end
-
-      dir.down do
-        t.remove :name
-      end
-    end
+  create_table :users do |t|
+    t.string :name
   end
 end
 ----
@@ -4857,21 +4932,6 @@ def change
     t.string :name
   end
 end
-
-# good
-def change
-  reversible do |dir|
-    change_table :users do |t|
-      dir.up do
-        t.change :price, :string
-      end
-
-      dir.down do
-        t.change :price, :integer
-      end
-    end
-  end
-end
 ----
 
 [source,ruby]
@@ -4936,7 +4996,6 @@ end
 === References
 
 * https://rails.rubystyle.guide#reversible-migration
-* https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
 * https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
 
 == Rails/ReversibleMigrationMethodDefinition
@@ -5960,7 +6019,7 @@ obj.to_formatted_s(:delimited)
 | Yes
 | Yes
 | 2.16
-| -
+| 2.18
 |===
 
 Identifies top-level `HashWithIndifferentAccess`.
@@ -5976,6 +6035,16 @@ HashWithIndifferentAccess.new(foo: 'bar')
 # good
 ActiveSupport::HashWithIndifferentAccess.new(foo: 'bar')
 ----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
+|===
 
 === References
 
@@ -6174,7 +6243,7 @@ validates :account, length: { minimum: MIN_LENGTH }
 | Yes
 | No
 | 0.51
-| -
+| 2.18
 |===
 
 Checks that environments called with `Rails.env` predicates
@@ -6200,6 +6269,10 @@ Rails.env == 'production'
 
 |===
 | Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
 
 | Environments
 | `development`, `test`, `production`
@@ -6504,7 +6577,7 @@ User.where.not(users: { name: 'Gabe' })
 | Yes
 | No
 | 2.17
-| -
+| 2.18
 |===
 
 Identifies calls to `where.not` with multiple hash arguments.
@@ -6530,3 +6603,13 @@ User.where.not(role: ['moderator', 'admin'])
 User.where.not(trashed: true).where.not(role: ['moderator', 'admin'])
 User.where.not('trashed = ? OR role = ?', true, 'admin')
 ----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
+|===

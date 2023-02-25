@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.18.0 (2023-02-25)
+
 ### New features
 
 * [#863](https://github.com/rubocop/rubocop-rails/pull/863): Add `Rails/ResponseParsedBody` cop. ([@r7kamura][])
