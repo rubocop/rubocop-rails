@@ -68,7 +68,7 @@ module RuboCop
 
         def append_to_rel(rel_node, corrector)
           existing_rel = rel_node.children.last.value
-          str_range = rel_node.children.last.loc.expression.adjust(begin_pos: 1, end_pos: -1)
+          str_range = rel_node.children.last.source_range.adjust(begin_pos: 1, end_pos: -1)
           corrector.replace(str_range, "#{existing_rel} noopener")
         end
 

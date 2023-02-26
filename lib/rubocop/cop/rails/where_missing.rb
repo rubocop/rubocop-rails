@@ -43,7 +43,7 @@ module RuboCop
             next unless root_receiver == root_receiver(where_node)
             next unless same_relationship?(where_argument, node.first_argument)
 
-            range = range_between(node.loc.selector.begin_pos, node.loc.expression.end_pos)
+            range = range_between(node.loc.selector.begin_pos, node.source_range.end_pos)
             register_offense(node, where_node, where_argument, range)
             break
           end
@@ -83,9 +83,9 @@ module RuboCop
 
         def replace_range(child)
           if (right_sibling = child.right_sibling)
-            range_between(child.loc.expression.begin_pos, right_sibling.loc.expression.begin_pos)
+            range_between(child.source_range.begin_pos, right_sibling.source_range.begin_pos)
           else
-            range_between(child.left_sibling.loc.expression.end_pos, child.loc.expression.end_pos)
+            range_between(child.left_sibling.source_range.end_pos, child.source_range.end_pos)
           end
         end
 

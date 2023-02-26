@@ -42,7 +42,7 @@ module RuboCop
                   "#{source(elem)} => #{index}"
                 end.join(', ')
 
-                corrector.replace(array.loc.expression, "{#{hash}}")
+                corrector.replace(array.source_range, "{#{hash}}")
               end
             end
           end

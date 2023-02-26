@@ -104,7 +104,7 @@ module RuboCop
         end
 
         def end_position_for(node)
-          end_line = buffer.line_for_position(node.loc.expression.end_pos)
+          end_line = buffer.line_for_position(node.source_range.end_pos)
           buffer.line_range(end_line).end_pos
         end
 
@@ -124,7 +124,7 @@ module RuboCop
         end
 
         def inline_comment?(comment)
-          !comment_line?(comment.loc.expression.source_line)
+          !comment_line?(comment.source_range.source_line)
         end
 
         def start_line_position(node)

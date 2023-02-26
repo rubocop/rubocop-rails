@@ -42,7 +42,7 @@ module RuboCop
             add_index_opts = ''
 
             if value.hash_type?
-              hash = value.loc.expression.adjust(begin_pos: 1, end_pos: -1).source.strip
+              hash = value.source_range.adjust(begin_pos: 1, end_pos: -1).source.strip
               add_index_opts = ", #{hash}"
             end
 
@@ -53,7 +53,7 @@ module RuboCop
         private
 
         def index_range(pair_node)
-          range_with_surrounding_comma(range_with_surrounding_space(pair_node.loc.expression, side: :left), :left)
+          range_with_surrounding_comma(range_with_surrounding_space(pair_node.source_range, side: :left), :left)
         end
       end
     end

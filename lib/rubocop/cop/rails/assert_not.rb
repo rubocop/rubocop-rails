@@ -25,7 +25,7 @@ module RuboCop
           return unless offensive?(node)
 
           add_offense(node) do |corrector|
-            expression = node.loc.expression
+            expression = node.source_range
 
             corrector.replace(expression, corrected_source(expression.source))
           end

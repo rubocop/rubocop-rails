@@ -65,11 +65,11 @@ module RuboCop
         end
 
         def where_take_offense_range(node, where)
-          range_between(where.loc.selector.begin_pos, node.loc.expression.end_pos)
+          range_between(where.loc.selector.begin_pos, node.source_range.end_pos)
         end
 
         def find_by_offense_range(node)
-          range_between(node.loc.selector.begin_pos, node.loc.expression.end_pos)
+          range_between(node.loc.selector.begin_pos, node.source_range.end_pos)
         end
 
         def build_good_method(id_value)

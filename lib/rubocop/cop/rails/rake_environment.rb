@@ -48,7 +48,7 @@ module RuboCop
               task_name = task_method.arguments[0]
               task_dependency = correct_task_dependency(task_name)
 
-              corrector.replace(task_name.loc.expression, task_dependency)
+              corrector.replace(task_name.source_range, task_dependency)
             end
           end
         end

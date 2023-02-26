@@ -86,7 +86,7 @@ module RuboCop
         end
 
         def offense_range(name, value)
-          range_between(name.loc.expression.begin_pos, value.loc.expression.end_pos)
+          range_between(name.source_range.begin_pos, value.source_range.end_pos)
         end
 
         def nested_relative_date(node, &callback)

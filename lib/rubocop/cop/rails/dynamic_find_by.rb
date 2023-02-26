@@ -99,7 +99,7 @@ module RuboCop
 
         def autocorrect_argument_keywords(corrector, node, keywords)
           keywords.each.with_index do |keyword, idx|
-            corrector.insert_before(node.arguments[idx].loc.expression, keyword)
+            corrector.insert_before(node.arguments[idx].source_range, keyword)
           end
         end
 

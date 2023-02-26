@@ -62,7 +62,7 @@ module RuboCop
             elsif prv_sib
               corrector.remove(range_between(node_end(prv_sib), node_end(allow_nil)))
             else
-              corrector.remove(allow_nil.loc.expression)
+              corrector.remove(allow_nil.source_range)
             end
           end
         end
@@ -87,11 +87,11 @@ module RuboCop
         end
 
         def node_beg(node)
-          node.loc.expression.begin_pos
+          node.source_range.begin_pos
         end
 
         def node_end(node)
-          node.loc.expression.end_pos
+          node.source_range.end_pos
         end
       end
     end

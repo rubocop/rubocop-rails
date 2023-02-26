@@ -37,7 +37,7 @@ module RuboCop
             return if reflection_class_name.value.send_type? && reflection_class_name.value.receiver.nil?
             return if reflection_class_name.value.lvar_type? && str_assigned?(reflection_class_name)
 
-            add_offense(reflection_class_name.loc.expression)
+            add_offense(reflection_class_name.source_range)
           end
         end
 

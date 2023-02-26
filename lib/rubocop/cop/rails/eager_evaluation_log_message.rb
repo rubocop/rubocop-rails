@@ -59,7 +59,7 @@ module RuboCop
         private
 
         def replacement_range(node)
-          stop = node.loc.expression.end
+          stop = node.source_range.end
           start = node.loc.selector.end
 
           if node.parenthesized_call?

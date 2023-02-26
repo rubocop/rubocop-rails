@@ -64,7 +64,7 @@ module RuboCop
         private
 
         def offense_range(node)
-          range_between(node.loc.selector.begin_pos, node.loc.expression.end_pos)
+          range_between(node.loc.selector.begin_pos, node.source_range.end_pos)
         end
 
         def extract_column_and_value(template_node, value_node)

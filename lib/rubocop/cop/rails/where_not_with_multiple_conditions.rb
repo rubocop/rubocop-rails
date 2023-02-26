@@ -35,7 +35,7 @@ module RuboCop
             next unless args[0].hash_type?
             next unless multiple_arguments_hash? args[0]
 
-            range = node.receiver.loc.selector.with(end_pos: node.loc.expression.end_pos)
+            range = node.receiver.loc.selector.with(end_pos: node.source_range.end_pos)
 
             add_offense(range)
           end

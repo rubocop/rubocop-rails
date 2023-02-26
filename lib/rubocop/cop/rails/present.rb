@@ -128,10 +128,10 @@ module RuboCop
 
           if method_call
             corrector.replace(node.loc.keyword, 'if')
-            range = method_call.loc.expression
+            range = method_call.source_range
           else
             variable1, _variable2 = exists_and_not_empty?(node) || not_blank?(node)
-            range = node.loc.expression
+            range = node.source_range
           end
 
           corrector.replace(range, replacement(variable1))
@@ -141,9 +141,9 @@ module RuboCop
 
         def unless_condition(node, method_call)
           if node.modifier_form?
-            node.loc.keyword.join(node.loc.expression.end)
+            node.loc.keyword.join(node.source_range.end)
           else
-            node.loc.expression.begin.join(method_call.loc.expression)
+            node.source_range.begin.join(method_call.source_range)
           end
         end
 

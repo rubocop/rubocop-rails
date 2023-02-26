@@ -73,7 +73,7 @@ module RuboCop
           method = method_node.source[1..]
 
           range = if node.receiver
-                    range_between(node.loc.dot.begin_pos, node.loc.expression.end_pos)
+                    range_between(node.loc.dot.begin_pos, node.source_range.end_pos)
                   else
                     corrector.insert_before(node, 'self')
                     node

@@ -85,7 +85,7 @@ module RuboCop
         end
 
         def correction_range(node)
-          range_between(node.loc.selector.begin_pos, node.loc.expression.end_pos)
+          range_between(node.loc.selector.begin_pos, node.source_range.end_pos)
         end
       end
     end

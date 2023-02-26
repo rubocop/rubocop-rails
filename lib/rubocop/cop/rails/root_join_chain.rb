@@ -39,7 +39,7 @@ module RuboCop
         def on_send(node)
           evidence(node) do |rails_node, args|
             add_offense(node, message: format(MSG, root: rails_node.source)) do |corrector|
-              range = range_between(rails_node.loc.selector.end_pos, node.loc.expression.end_pos)
+              range = range_between(rails_node.loc.selector.end_pos, node.source_range.end_pos)
               replacement = ".join(#{args.map(&:source).join(', ')})"
 
               corrector.replace(range, replacement)

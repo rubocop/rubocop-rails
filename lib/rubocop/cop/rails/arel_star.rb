@@ -38,7 +38,7 @@ module RuboCop
           return unless (star = star_bracket?(node))
 
           add_offense(star) do |corrector|
-            corrector.replace(star.loc.expression, 'Arel.star')
+            corrector.replace(star.source_range, 'Arel.star')
           end
         end
       end

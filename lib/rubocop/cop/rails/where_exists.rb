@@ -105,7 +105,7 @@ module RuboCop
           if exists_style?
             node.receiver.loc.selector.join(node.loc.selector)
           elsif where_style?
-            node.loc.selector.with(end_pos: node.loc.expression.end_pos)
+            node.loc.selector.with(end_pos: node.source_range.end_pos)
           end
         end
 

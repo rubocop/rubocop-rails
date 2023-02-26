@@ -80,7 +80,7 @@ module RuboCop
               end
 
             add_offense(node.loc.selector, message: message) do |corrector|
-              corrector.replace(option_node.loc.expression, replacement)
+              corrector.replace(option_node.source_range, replacement)
             end
           end
         end

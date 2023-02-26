@@ -56,7 +56,7 @@ module RuboCop
               # that represents the path/action on the Rails controller
               # the data is the http parameters and environment sent in
               # the Rails 5 http call
-              corrector.replace(node.loc.expression, correction(node))
+              corrector.replace(node.source_range, correction(node))
             end
           end
         end

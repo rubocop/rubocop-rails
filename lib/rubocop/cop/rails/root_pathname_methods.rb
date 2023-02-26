@@ -184,7 +184,7 @@ module RuboCop
         end
 
         def build_path_glob_replacement(path, method)
-          receiver = range_between(path.loc.expression.begin_pos, path.children.first.loc.selector.end_pos).source
+          receiver = range_between(path.source_range.begin_pos, path.children.first.loc.selector.end_pos).source
 
           argument = path.arguments.one? ? path.first_argument.source : join_arguments(path.arguments)
 
