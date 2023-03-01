@@ -92,7 +92,11 @@ module RuboCop
         end
 
         def range_with_comments(node)
-          ranges = [node, *processed_source.ast_with_comments[node]].map(&:source_range)
+          # rubocop:todo InternalAffairs/LocationExpression
+          # Using `RuboCop::Ext::Comment#source_range` requires RuboCop > 1.46,
+          # which introduces https://github.com/rubocop/rubocop/pull/11630.
+          ranges = [node, *processed_source.ast_with_comments[node]].map { |comment| comment.loc.expression }
+          # rubocop:enable InternalAffairs/LocationExpression
           ranges.reduce do |result, range|
             add_range(result, range)
           end
