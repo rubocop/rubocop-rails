@@ -53,8 +53,6 @@ Rails:
 
 Rails/ActionControllerFlashBeforeRender:
   Description: 'Use `flash.now` instead of `flash` before `render`.'
-  StyleGuide: 'https://rails.rubystyle.guide/#flash-before-render'
-  Reference: 'https://api.rubyonrails.org/classes/ActionController/FlashBeforeRender.html'
   Enabled: 'pending'
   SafeAutoCorrect: false
   VersionAdded: '2.16'
