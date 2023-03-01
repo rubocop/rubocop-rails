@@ -157,7 +157,7 @@ module RuboCop
         end
 
         def set_new_body_expression(transforming_body_expr, corrector)
-          corrector.replace(block_node.body.source_range, transforming_body_expr.source_range.source)
+          corrector.replace(block_node.body.source_range, transforming_body_expr.source)
         end
       end
     end
