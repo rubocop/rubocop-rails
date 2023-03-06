@@ -4,7 +4,7 @@ module RuboCop
   module Cop
     module Rails
       # When you define a uniqueness validation in Active Record model,
-      # you also should add a unique index for the column. There are two reasons
+      # you also should add a unique index for the column. There are two reasons.
       # First, duplicated records may occur even if Active Record's validation
       # is defined.
       # Second, it will cause slow queries. The validation executes a `SELECT`
