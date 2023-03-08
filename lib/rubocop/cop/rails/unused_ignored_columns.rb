@@ -21,7 +21,8 @@ module RuboCop
       class UnusedIgnoredColumns < Base
         include ActiveRecordHelper
 
-        MSG = 'Remove `%<column_name>s` from `ignored_columns` because the column does not exist.'
+        MSG = 'Remove `%<column_name>s` from `ignored_columns` because the column does not ' \
+              'exist in schema `%<schema_path>s`.'
         RESTRICT_ON_SEND = %i[ignored_columns=].freeze
 
         def_node_matcher :ignored_columns, <<~PATTERN
@@ -56,7 +57,7 @@ module RuboCop
           return unless column_name
           return if table.with_column?(name: column_name.to_s)
 
-          message = format(MSG, column_name: column_name)
+          message = format(MSG, column_name: column_name, schema_path: configured_schema_path)
           add_offense(column_node, message: message)
         end
 
@@ -69,6 +70,14 @@ module RuboCop
           return unless klass
 
           schema.table_by(name: table_name(klass))
+        end
+
+        def configured_schema_path
+          @configured_schema_path ||= cop_config['SchemaPath'] || 'db/schema.rb'
+        end
+
+        def schema
+          RuboCop::Rails::SchemaLoader.load(target_ruby_version, configured_schema_path)
         end
       end
     end

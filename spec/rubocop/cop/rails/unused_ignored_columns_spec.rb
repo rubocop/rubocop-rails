@@ -27,7 +27,7 @@ RSpec.describe RuboCop::Cop::Rails::UnusedIgnoredColumns, :config do
         expect_offense(<<~RUBY)
           class User < ApplicationRecord
             self.ignored_columns = [:real_name]
-                                    ^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist.
+                                    ^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist in schema `db/schema.rb`.
           end
         RUBY
       end
@@ -48,7 +48,7 @@ RSpec.describe RuboCop::Cop::Rails::UnusedIgnoredColumns, :config do
         expect_offense(<<~RUBY)
           class User < ApplicationRecord
             self.ignored_columns = ['real_name']
-                                    ^^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist.
+                                    ^^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist in schema `db/schema.rb`.
           end
         RUBY
       end
@@ -79,7 +79,7 @@ RSpec.describe RuboCop::Cop::Rails::UnusedIgnoredColumns, :config do
         expect_offense(<<~RUBY)
           class User < ApplicationRecord
             self.ignored_columns = [:real_name, :account]
-                                    ^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist.
+                                    ^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist in schema `db/schema.rb`.
           end
         RUBY
       end
@@ -90,7 +90,7 @@ RSpec.describe RuboCop::Cop::Rails::UnusedIgnoredColumns, :config do
         expect_offense(<<~RUBY)
           class User < ApplicationRecord
             self.ignored_columns = ['real_name', 'account']
-                                    ^^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist.
+                                    ^^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist in schema `db/schema.rb`.
           end
         RUBY
       end
@@ -111,10 +111,38 @@ RSpec.describe RuboCop::Cop::Rails::UnusedIgnoredColumns, :config do
         expect_offense(<<~RUBY)
           class User < ApplicationRecord
             self.ignored_columns += ['real_name']
-                                     ^^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist.
+                                     ^^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist in schema `db/schema.rb`.
           end
         RUBY
       end
+    end
+  end
+
+  context 'when setting SchemaPath' do
+    include_context 'with SchemaLoader'
+
+    let(:cop_config) do
+      {
+        'SchemaPath' => 'db/other_schema.rb'
+      }
+    end
+    let(:schema) { <<~RUBY }
+      ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+        create_table "users", force: :cascade do |t|
+          t.string "account", null: false
+        end
+      end
+    RUBY
+
+    it 'registers an offense to the nonexistent column' do
+      allow(RuboCop::Rails::SchemaLoader).to receive(:load).and_call_original
+      expect_offense(<<~RUBY)
+        class User < ApplicationRecord
+          self.ignored_columns += ['real_name']
+                                   ^^^^^^^^^^^ Remove `real_name` from `ignored_columns` because the column does not exist in schema `db/other_schema.rb`.
+        end
+      RUBY
+      expect(RuboCop::Rails::SchemaLoader).to have_received(:load).with(anything, 'db/other_schema.rb').at_least(:once)
     end
   end
 
