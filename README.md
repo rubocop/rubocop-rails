@@ -12,7 +12,7 @@ Note: This repository manages rubocop-rails gem (>= 2.0.0). rubocop-rails gem (<
 Just install the `rubocop-rails` gem
 
 ```sh
-gem install rubocop-rails
+$ gem install rubocop-rails
 ```
 
 or if you use bundler put this in your `Gemfile`
@@ -48,7 +48,7 @@ cops together with the standard cops.
 ### Command line
 
 ```sh
-rubocop --require rubocop-rails
+$ rubocop --require rubocop-rails
 ```
 
 Note: `--rails` option is required while `rubocop` command supports `--rails` option.

@@ -19,7 +19,7 @@ cops together with the standard cops.
 
 [source,sh]
 ----
-rubocop --require rubocop-rails
+$ rubocop --require rubocop-rails
 ----
 
 == Rake task
