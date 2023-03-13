@@ -192,11 +192,12 @@ module RuboCop
         def database_yaml
           return nil unless File.exist?('config/database.yml')
 
-          yaml = if YAML.respond_to?(:unsafe_load_file)
-                   YAML.unsafe_load_file('config/database.yml')
+          yaml = if YAML.respond_to?(:safe_load_file)
+                   YAML.safe_load_file('config/database.yml', aliases: true)
                  else
                    YAML.load_file('config/database.yml')
                  end
+
           return nil unless yaml.is_a? Hash
 
           config = yaml['development']

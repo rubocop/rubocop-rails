@@ -444,8 +444,9 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
 
     before do
       allow(File).to receive(:exist?).with('config/database.yml').and_return(true)
-      if YAML.respond_to?(:unsafe_load_file)
-        allow(YAML).to receive(:unsafe_load_file).with('config/database.yml').and_return(yaml)
+      if YAML.respond_to?(:safe_load_file)
+        allow(YAML).to receive(:safe_load_file).with('config/database.yml',
+                                                     hash_including(aliases: true)).and_return(yaml)
       else
         allow(YAML).to receive(:load_file).with('config/database.yml').and_return(yaml)
       end
