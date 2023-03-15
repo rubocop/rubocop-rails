@@ -32,7 +32,7 @@ module RuboCop
 
         def on_send(node)
           where_not_call?(node) do |args|
-            next unless args[0].hash_type?
+            next unless args[0]&.hash_type?
             next unless multiple_arguments_hash? args[0]
 
             range = node.receiver.loc.selector.with(end_pos: node.source_range.end_pos)
