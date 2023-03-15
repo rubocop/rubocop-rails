@@ -50,4 +50,10 @@ RSpec.describe RuboCop::Cop::Rails::WhereNotWithMultipleConditions, :config do
       User.where.not(data: {})
     RUBY
   end
+
+  it 'does not register an offense when using `where.not.lt(condition)` as a Mongoid API' do
+    expect_no_offenses(<<~RUBY)
+      User.where.not.lt(condition)
+    RUBY
+  end
 end
