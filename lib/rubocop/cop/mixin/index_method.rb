@@ -153,11 +153,11 @@ module RuboCop
         end
 
         def set_new_arg_name(transformed_argname, corrector)
-          corrector.replace(block_node.arguments.source_range, "|#{transformed_argname}|")
+          corrector.replace(block_node.arguments, "|#{transformed_argname}|")
         end
 
         def set_new_body_expression(transforming_body_expr, corrector)
-          corrector.replace(block_node.body.source_range, transforming_body_expr.source)
+          corrector.replace(block_node.body, transforming_body_expr.source)
         end
       end
     end

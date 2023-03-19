@@ -93,7 +93,7 @@ module RuboCop
 
         def register_offense(node, receiver, other)
           add_offense(node, message: message(node, receiver, other)) do |corrector|
-            corrector.replace(node.source_range, replacement(receiver, other, node.left_sibling))
+            corrector.replace(node, replacement(receiver, other, node.left_sibling))
           end
         end
 

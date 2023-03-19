@@ -84,7 +84,7 @@ module RuboCop
         def autocorrect(corrector, node)
           replacement = build_predicate_method(node)
 
-          corrector.replace(node.source_range, replacement)
+          corrector.replace(node, replacement)
         end
 
         def build_predicate_method(node)

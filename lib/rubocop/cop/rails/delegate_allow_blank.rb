@@ -27,7 +27,7 @@ module RuboCop
           return unless (offending_node = allow_blank_option(node))
 
           add_offense(offending_node) do |corrector|
-            corrector.replace(offending_node.key.source_range, 'allow_nil')
+            corrector.replace(offending_node.key, 'allow_nil')
           end
         end
       end

@@ -102,7 +102,7 @@ module RuboCop
         end
 
         def correct_validate_type_for_hash(corrector, node, arguments)
-          corrector.replace(arguments.source_range, "#{validate_type(node)}: #{braced_options(arguments)}")
+          corrector.replace(arguments, "#{validate_type(node)}: #{braced_options(arguments)}")
         end
 
         def correct_validate_type_for_array(corrector, node, arguments, loc)

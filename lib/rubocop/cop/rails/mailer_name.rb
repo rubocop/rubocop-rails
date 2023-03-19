@@ -77,7 +77,7 @@ module RuboCop
             corrector.replace(node.loc.name, "#{name}Mailer")
           else
             name = node.children.last
-            corrector.replace(node.source_range, "#{name}Mailer")
+            corrector.replace(node, "#{name}Mailer")
           end
         end
 

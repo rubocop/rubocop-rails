@@ -78,7 +78,7 @@ module RuboCop
         def on_send(node)
           duration_arithmetic_argument?(node) do |*operation|
             add_offense(node) do |corrector|
-              corrector.replace(node.source_range, corrected_source(*operation))
+              corrector.replace(node, corrected_source(*operation))
             end
           end
         end

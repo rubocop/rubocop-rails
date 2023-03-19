@@ -77,7 +77,7 @@ module RuboCop
             delegation = ["delegate :#{node.body.method_name}", "to: :#{node.body.receiver.method_name}"]
             delegation << ['prefix: true'] if node.method?(prefixed_method_name(node.body))
 
-            corrector.replace(node.source_range, delegation.join(', '))
+            corrector.replace(node, delegation.join(', '))
           end
         end
 

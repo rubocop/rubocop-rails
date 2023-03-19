@@ -89,7 +89,7 @@ module RuboCop
         private
 
         def autocorrect(corrector, send_node, node)
-          corrector.remove(send_node.receiver.source_range)
+          corrector.remove(send_node.receiver)
           corrector.remove(send_node.loc.dot)
           corrector.remove(block_argument_range(send_node)) unless node.numblock_type?
         end

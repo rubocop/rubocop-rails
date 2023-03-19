@@ -32,7 +32,7 @@ module RuboCop
 
       def register_offense(offense_node)
         add_offense(offense_node) do |corrector|
-          corrector.replace(offense_node.source_range, self.class::SUPERCLASS)
+          corrector.replace(offense_node, self.class::SUPERCLASS)
         end
       end
     end

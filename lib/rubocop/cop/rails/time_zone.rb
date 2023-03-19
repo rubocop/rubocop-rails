@@ -70,7 +70,7 @@ module RuboCop
 
         def autocorrect(corrector, node)
           # add `.zone`: `Time.at` => `Time.zone.at`
-          corrector.insert_after(node.children[0].source_range, '.zone')
+          corrector.insert_after(node.children[0], '.zone')
 
           case node.method_name
           when :current
@@ -81,7 +81,7 @@ module RuboCop
           end
 
           # prefer `Time` over `DateTime` class
-          corrector.replace(node.children.first.source_range, 'Time') if strict?
+          corrector.replace(node.children.first, 'Time') if strict?
           remove_redundant_in_time_zone(corrector, node)
         end
 

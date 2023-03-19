@@ -52,7 +52,7 @@ module RuboCop
           return if within_shadowing_method?(node)
 
           add_offense(node, message: build_message(node)) do |corrector|
-            corrector.replace(node.source_range, node_replacement(node))
+            corrector.replace(node, node_replacement(node))
           end
         end
 

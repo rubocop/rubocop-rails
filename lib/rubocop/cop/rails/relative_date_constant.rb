@@ -78,7 +78,7 @@ module RuboCop
           indent = ' ' * node.loc.column
           new_code = ["def self.#{const_name.downcase}", "#{indent}#{value.source}", 'end'].join("\n#{indent}")
 
-          corrector.replace(node.source_range, new_code)
+          corrector.replace(node, new_code)
         end
 
         def message(method_name)

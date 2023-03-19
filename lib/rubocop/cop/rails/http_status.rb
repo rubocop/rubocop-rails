@@ -66,7 +66,7 @@ module RuboCop
             return unless checker.offensive?
 
             add_offense(checker.node, message: checker.message) do |corrector|
-              corrector.replace(checker.node.source_range, checker.preferred_style)
+              corrector.replace(checker.node, checker.preferred_style)
             end
           end
         end

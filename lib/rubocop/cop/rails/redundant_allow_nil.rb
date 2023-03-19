@@ -62,7 +62,7 @@ module RuboCop
             elsif prv_sib
               corrector.remove(range_between(node_end(prv_sib), node_end(allow_nil)))
             else
-              corrector.remove(allow_nil.source_range)
+              corrector.remove(allow_nil)
             end
           end
         end
