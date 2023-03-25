@@ -210,7 +210,7 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
       end
 
       let(:existing_cop_names) do
-        RuboCop::Cop::Cop.registry.without_department(:Test).without_department(:Test2).cops.map(&:cop_name).to_set
+        RuboCop::Cop::Cop.registry.without_department(:Test).without_department(:Test2).cops.to_set(&:cop_name)
       end
 
       let(:legacy_cop_names) do
