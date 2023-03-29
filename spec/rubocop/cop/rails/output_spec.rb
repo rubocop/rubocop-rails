@@ -119,13 +119,31 @@ RSpec.describe RuboCop::Cop::Rails::Output, :config do
     RUBY
   end
 
-  it 'does not record an offense for methods without arguments' do
-    expect_no_offenses(<<~RUBY)
+  it 'registers an offense for methods without arguments' do
+    expect_offense(<<~RUBY)
       print
+      ^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
       pp
+      ^^ Do not write to stdout. Use Rails's logger if you want to log.
       puts
+      ^^^^ Do not write to stdout. Use Rails's logger if you want to log.
       $stdout.write
+      ^^^^^^^^^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
       STDERR.write
+      ^^^^^^^^^^^^ Do not write to stdout. Use Rails's logger if you want to log.
+    RUBY
+  end
+
+  it 'does not register an offense when a method is called to a local variable with the same name as a print method' do
+    expect_no_offenses(<<~RUBY)
+      p.do_something
+    RUBY
+  end
+
+  it 'does not register an offense when a method is ' \
+     'safe navigation called to a local variable with the same name as a print method' do
+    expect_no_offenses(<<~RUBY)
+      p&.do_something
     RUBY
   end
 
