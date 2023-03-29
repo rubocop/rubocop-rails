@@ -43,7 +43,7 @@ module RuboCop
 
         def on_block(node)
           pluck_candidate?(node) do |argument, key|
-            next unless use_one_block_argument?(argument)
+            next if key.regexp_type? || !use_one_block_argument?(argument)
 
             match = if node.block_type?
                       block_argument = argument.children.first.source
