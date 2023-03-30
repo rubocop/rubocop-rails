@@ -75,6 +75,14 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
         end
       end
 
+      context "when `#{method}` with regexp literal key cannot be replaced with `pluck`" do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            x.#{method} { |a| a[/regexp/] }
+          RUBY
+        end
+      end
+
       context 'when using Ruby 2.7 or newer', :ruby27 do
         context 'when using numbered parameter' do
           context "when `#{method}` can be replaced with `pluck`" do
