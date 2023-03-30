@@ -66,11 +66,6 @@ Style/FormatStringToken:
   Exclude:
     - spec/**/*
 
-Style/InverseMethods:
-  # This rubocop-rails repository doesn't use Active Support, so it can't replace `include?` with `exclude?`.
-  InverseMethods:
-    :include?: ~
-
 Layout/HashAlignment:
   EnforcedHashRocketStyle:
     - key
