@@ -39,7 +39,8 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless (output?(node) || io_output?(node)) && node.arguments?
+          return if node.parent&.call_type?
+          return unless output?(node) || io_output?(node)
 
           range = offense_range(node)
 
