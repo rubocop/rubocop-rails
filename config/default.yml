@@ -995,6 +995,14 @@ Rails/TableNameAssignment:
   Include:
     - app/models/**/*.rb
 
+Rails/ThreeStateBooleanColumn:
+  Description: 'Add a default value and a `NOT NULL` constraint to boolean columns.'
+  StyleGuide: 'https://rails.rubystyle.guide/#three-state-boolean'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  Include:
+    - db/**/*.rb
+
 Rails/TimeZone:
   Description: 'Checks the correct usage of time zone aware methods.'
   StyleGuide: 'https://rails.rubystyle.guide#time'
