@@ -431,5 +431,25 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config do
         end
       RUBY
     end
+
+    context 'when using `include Rack::Test::Methods`' do
+      it 'does not register an offense for get method' do
+        expect_no_offenses(<<~RUBY)
+          include Rack::Test::Methods
+
+          get :create, user_id: @user.id
+        RUBY
+      end
+    end
+
+    context 'when using `include ::Rack::Test::Methods`' do
+      it 'does not register an offense for get method' do
+        expect_no_offenses(<<~RUBY)
+          include ::Rack::Test::Methods
+
+          get :create, user_id: @user.id
+        RUBY
+      end
+    end
   end
 end
