@@ -7,12 +7,20 @@ RSpec.describe RuboCop::Cop::Rails::ReflectionClassName, :config do
         has_many :accounts, class_name: Account, foreign_key: :account_id
                             ^^^^^^^^^^^^^^^^^^^ Use a string value for `class_name`.
       RUBY
+
+      expect_correction(<<~RUBY)
+        has_many :accounts, class_name: "Account", foreign_key: :account_id
+      RUBY
     end
 
     it '.name' do
       expect_offense(<<~RUBY)
         has_many :accounts, class_name: Account.name
                             ^^^^^^^^^^^^^^^^^^^^^^^^ Use a string value for `class_name`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        has_many :accounts, class_name: "Account"
       RUBY
     end
 
@@ -21,6 +29,10 @@ RSpec.describe RuboCop::Cop::Rails::ReflectionClassName, :config do
         has_many :accounts, class_name: Account.to_s
                             ^^^^^^^^^^^^^^^^^^^^^^^^ Use a string value for `class_name`.
       RUBY
+
+      expect_correction(<<~RUBY)
+        has_many :accounts, class_name: "Account"
+      RUBY
     end
 
     it 'has_one' do
@@ -28,12 +40,20 @@ RSpec.describe RuboCop::Cop::Rails::ReflectionClassName, :config do
         has_one :account, class_name: Account
                           ^^^^^^^^^^^^^^^^^^^ Use a string value for `class_name`.
       RUBY
+
+      expect_correction(<<~RUBY)
+        has_one :account, class_name: "Account"
+      RUBY
     end
 
     it 'belongs_to' do
       expect_offense(<<~RUBY)
         belongs_to :account, class_name: Account
                              ^^^^^^^^^^^^^^^^^^^ Use a string value for `class_name`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        belongs_to :account, class_name: "Account"
       RUBY
     end
   end
