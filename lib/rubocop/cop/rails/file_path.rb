@@ -106,6 +106,8 @@ module RuboCop
         def register_offense(node, require_to_s:)
           line_range = node.loc.column...node.loc.last_column
           source_range = source_range(processed_source.buffer, node.first_line, line_range)
+          require_to_s = false if node.dstr_type?
+
           message = build_message(require_to_s)
 
           add_offense(source_range, message: message)
