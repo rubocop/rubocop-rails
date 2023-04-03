@@ -6,9 +6,9 @@ module RuboCop
       # Prefer `response.parsed_body` to `JSON.parse(response.body)`.
       #
       # @safety
-      #   This cop's autocorrection is unsafe because Content-Type may not be `application/json`. For example, the
-      #   proprietary Content-Type provided by corporate entities such as `application/vnd.github+json` is not
-      #   supported at `response.parsed_body` by default, so you still have to use `JSON.parse(response.body)` there.
+      #   This cop is unsafe because Content-Type may not be `application/json`. For example, the proprietary
+      #   Content-Type provided by corporate entities such as `application/vnd.github+json` is not supported at
+      #   `response.parsed_body` by default, so you still have to use `JSON.parse(response.body)` there.
       #
       # @example
       #   # bad
