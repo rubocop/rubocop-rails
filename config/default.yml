@@ -460,8 +460,9 @@ Rails/FindEach:
   Description: 'Prefer all.find_each over all.each.'
   StyleGuide: 'https://rails.rubystyle.guide#find-each'
   Enabled: true
+  Safe: false
   VersionAdded: '0.30'
-  VersionChanged: '2.9'
+  VersionChanged: '<<next>>'
   Include:
     - app/models/**/*.rb
   AllowedMethods:

@@ -3,8 +3,12 @@
 module RuboCop
   module Cop
     module Rails
-      # Identifies usages of `all.each` and
-      # change them to use `all.find_each` instead.
+      # Identifies usages of `all.each` and change them to use `all.find_each` instead.
+      #
+      # @safety
+      #   This cop is unsafe if the receiver object is not an Active Record object.
+      #   Also, `all.each` returns an `Array` instance and `all.find_each` returns nil,
+      #   so the return values are different.
       #
       # @example
       #   # bad
