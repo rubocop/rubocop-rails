@@ -842,8 +842,9 @@ Rails/RequireDependency:
 Rails/ResponseParsedBody:
   Description: Prefer `response.parsed_body` to `JSON.parse(response.body)`.
   Enabled: pending
-  SafeAutoCorrect: false
+  Safe: false
   VersionAdded: '2.18'
+  VersionChanged: '<<next>>'
   Include:
     - spec/controllers/**/*.rb
     - spec/requests/**/*.rb
