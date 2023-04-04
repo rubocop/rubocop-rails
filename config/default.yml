@@ -1150,6 +1150,10 @@ Style/FormatStringToken:
   AllowedMethods:
     - redirect
 
+Style/InverseMethods:
+  InverseMethods:
+    :exists?: :none?
+
 Style/SymbolProc:
   AllowedMethods:
     - define_method
