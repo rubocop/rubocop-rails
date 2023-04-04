@@ -66,8 +66,12 @@ module RuboCop
         MSG = 'Tagging a string as html safe may be a security risk.'
         RESTRICT_ON_SEND = %i[html_safe raw safe_concat].freeze
 
+        def_node_search :i18n_method?, <<~PATTERN
+          (send {nil? (const {nil? cbase} :I18n)} {:t :translate :l :localize} ...)
+        PATTERN
+
         def on_send(node)
-          return if non_interpolated_string?(node)
+          return if non_interpolated_string?(node) || i18n_method?(node)
 
           return unless looks_like_rails_html_safe?(node) ||
                         looks_like_rails_raw?(node) ||

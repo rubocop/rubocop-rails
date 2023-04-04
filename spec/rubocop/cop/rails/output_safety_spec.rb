@@ -130,5 +130,57 @@ RSpec.describe RuboCop::Cop::Rails::OutputSafety, :config do
                        ^^^ Tagging a string as html safe may be a security risk.
       RUBY
     end
+
+    it 'does not register an offense when using `html_safe` for `I18n.t` method' do
+      expect_no_offenses(<<~RUBY)
+        I18n.t('foo.bar.baz', scope: [:x, :y, :z]).html_safe
+        ::I18n.t('foo.bar.baz', scope: [:x, :y, :z]).html_safe
+      RUBY
+    end
+
+    it 'does not register an offense when using `html_safe` for `I18n.translate` method' do
+      expect_no_offenses(<<~RUBY)
+        I18n.translate('foo.bar.baz', scope: [:x, :y, :z]).html_safe
+        ::I18n.translate('foo.bar.baz', scope: [:x, :y, :z]).html_safe
+      RUBY
+    end
+
+    it 'does not register an offense when using `html_safe` for `t` method' do
+      expect_no_offenses(<<~RUBY)
+        t('foo.bar.baz').html_safe
+      RUBY
+    end
+
+    it 'does not register an offense when using `html_safe` for `translate` method' do
+      expect_no_offenses(<<~RUBY)
+        translate('foo.bar.baz').html_safe
+      RUBY
+    end
+
+    it 'does not register an offense when using `html_safe` for `I18n.l` method' do
+      expect_no_offenses(<<~RUBY)
+        I18n.l(Time.now, locale: :de).html_safe
+        ::I18n.l(Time.now, locale: :de).html_safe
+      RUBY
+    end
+
+    it 'does not register an offense when using `html_safe` for `I18n.localize` method' do
+      expect_no_offenses(<<~RUBY)
+        I18n.localize(Time.now, locale: :de).html_safe
+        ::I18n.localize(Time.now, locale: :de).html_safe
+      RUBY
+    end
+
+    it 'does not register an offense when using `html_safe` for `l` method' do
+      expect_no_offenses(<<~RUBY)
+        l(Time.now).html_safe
+      RUBY
+    end
+
+    it 'does not register an offense when using `html_safe` for `localize` method' do
+      expect_no_offenses(<<~RUBY)
+        localize(Time.now).html_safe
+      RUBY
+    end
   end
 end
