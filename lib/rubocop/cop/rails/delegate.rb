@@ -24,6 +24,14 @@ module RuboCop
       #   # good
       #   delegate :bar, to: :foo
       #
+      #   # bad
+      #   def bar
+      #     self.bar
+      #   end
+      #
+      #   # good
+      #   delegate :bar, to: :self
+      #
       #   # good
       #   def bar
       #     foo&.bar
@@ -60,7 +68,7 @@ module RuboCop
 
         def_node_matcher :delegate?, <<~PATTERN
           (def _method_name _args
-            (send (send nil? _) _ ...))
+            (send {(send nil? _) (self)} _ ...))
         PATTERN
 
         def on_def(node)
@@ -74,7 +82,11 @@ module RuboCop
 
         def register_offense(node)
           add_offense(node.loc.keyword) do |corrector|
-            delegation = ["delegate :#{node.body.method_name}", "to: :#{node.body.receiver.method_name}"]
+            body = node.body
+
+            receiver = body.receiver.self_type? ? 'self' : ":#{body.receiver.method_name}"
+
+            delegation = ["delegate :#{body.method_name}", "to: #{receiver}"]
             delegation << ['prefix: true'] if node.method?(prefixed_method_name(node.body))
 
             corrector.replace(node, delegation.join(', '))
@@ -106,6 +118,8 @@ module RuboCop
         end
 
         def prefixed_method_name(body)
+          return '' if body.receiver.self_type?
+
           [body.receiver.method_name, body.method_name].join('_').to_sym
         end
 
