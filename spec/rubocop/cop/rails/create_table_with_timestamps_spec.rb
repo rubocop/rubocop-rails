@@ -108,4 +108,13 @@ RSpec.describe RuboCop::Cop::Rails::CreateTableWithTimestamps, :config do
       end
     RUBY
   end
+
+  it 'does not register an offense when using `id: false` option and not including `timestamps` in block' do
+    expect_no_offenses(<<~RUBY)
+      create_table :users, :articles, id: false do |t|
+        t.integer :user_id
+        t.integer :article_id
+      end
+    RUBY
+  end
 end
