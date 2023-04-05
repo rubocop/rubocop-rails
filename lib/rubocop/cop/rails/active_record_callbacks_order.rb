@@ -112,8 +112,7 @@ module RuboCop
           annotation_line = node.first_line - 1
           first_comment = nil
 
-          processed_source.comments_before_line(annotation_line)
-                          .reverse_each do |comment|
+          processed_source.each_comment_in_lines(0..annotation_line).reverse_each do |comment|
             if comment.location.line == annotation_line && !inline_comment?(comment)
               first_comment = comment
               annotation_line -= 1
