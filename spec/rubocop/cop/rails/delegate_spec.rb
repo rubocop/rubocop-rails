@@ -2,10 +2,6 @@
 
 RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
   let(:cop_config) { { 'EnforceForPrefixed' => true } }
-  let(:config) do
-    merged = RuboCop::ConfigLoader.default_configuration['Rails/Delegate'].merge(cop_config)
-    RuboCop::Config.new('Rails/Delegate' => merged)
-  end
 
   it 'finds trivial delegate' do
     expect_offense(<<~RUBY)
@@ -33,6 +29,19 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
     RUBY
   end
 
+  it 'finds trivial delegate to `self`' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        self.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: self
+    RUBY
+  end
+
   it 'finds trivial delegate with prefix' do
     expect_offense(<<~RUBY)
       def bar_foo
@@ -43,6 +52,19 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
 
     expect_correction(<<~RUBY)
       delegate :foo, to: :bar, prefix: true
+    RUBY
+  end
+
+  it 'finds trivial delegate to `self` when underscored method' do
+    expect_offense(<<~RUBY)
+      def bar_foo
+      ^^^ Use `delegate` to define delegations.
+        self.bar_foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :bar_foo, to: self
     RUBY
   end
 
