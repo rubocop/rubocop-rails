@@ -41,11 +41,6 @@ class HomeController < ApplicationController
 end
 ----
 
-=== References
-
-* https://rails.rubystyle.guide/#flash-before-render
-* https://api.rubyonrails.org/classes/ActionController/FlashBeforeRender.html
-
 == Rails/ActionControllerTestCase
 
 |===
@@ -1163,9 +1158,11 @@ tag(name, class: 'classname')
 | -
 |===
 
-Checks the migration for which timestamps are not included
-when creating a new table.
+Checks the migration for which timestamps are not included when creating a new table.
 In many cases, timestamps are useful information and should be added.
+
+NOTE: Allow `timestamps` not written when `id: false` because this emphasizes respecting
+user's editing intentions.
 
 === Examples
 
@@ -1202,6 +1199,12 @@ create_table :users do |t|
   t.string :email
 
   t.datetime :updated_at, default: -> { 'CURRENT_TIMESTAMP' }
+end
+
+# good
+create_table :users, articles, id: false do |t|
+  t.integer :user_id
+  t.integer :article_id
 end
 ----
 
@@ -1385,6 +1388,14 @@ end
 
 # good
 delegate :bar, to: :foo
+
+# bad
+def bar
+  self.bar
+end
+
+# good
+delegate :bar, to: :self
 
 # good
 def bar
@@ -2088,9 +2099,8 @@ date.all_year
 | 2.4
 |===
 
-Identifies usages of file path joining process
-to use `Rails.root.join` clause. It is used to add uniformity when
-joining paths.
+Identifies usages of file path joining process to use `Rails.root.join` clause.
+It is used to add uniformity when joining paths.
 
 === Examples
 
@@ -2100,11 +2110,16 @@ joining paths.
 ----
 # bad
 Rails.root.join('app', 'models', 'goober')
+
+# good
+Rails.root.join('app/models/goober')
+
+# bad
 File.join(Rails.root, 'app/models/goober')
 "#{Rails.root}/app/models/goober"
 
 # good
-Rails.root.join('app/models/goober')
+Rails.root.join('app/models/goober').to_s
 ----
 
 ==== EnforcedStyle: arguments
@@ -2113,11 +2128,16 @@ Rails.root.join('app/models/goober')
 ----
 # bad
 Rails.root.join('app/models/goober')
+
+# good
+Rails.root.join('app', 'models', 'goober')
+
+# bad
 File.join(Rails.root, 'app/models/goober')
 "#{Rails.root}/app/models/goober"
 
 # good
-Rails.root.join('app', 'models', 'goober')
+Rails.root.join('app', 'models', 'goober').to_s
 ----
 
 === Configurable attributes
@@ -2233,14 +2253,19 @@ User.find(id)
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
 | Enabled
-| Yes
-| Yes
+| No
+| Yes (Unsafe)
 | 0.30
-| 2.9
+| 2.19
 |===
 
-Identifies usages of `all.each` and
-change them to use `all.find_each` instead.
+Identifies usages of `all.each` and change them to use `all.find_each` instead.
+
+=== Safety
+
+This cop is unsafe if the receiver object is not an Active Record object.
+Also, `all.each` returns an `Array` instance and `all.find_each` returns nil,
+so the return values are different.
 
 === Examples
 
@@ -2505,6 +2530,9 @@ change them to use keyword args. This cop only applies to Rails >= 5.
 If you are running Rails < 5 you should disable the
 Rails/HttpPositionalArguments cop or set your TargetRailsVersion in your
 .rubocop.yml file to 4.2.
+
+NOTE: It does not detect any cases where `include Rack::Test::Methods` is used
+which makes the http methods incompatible behavior.
 
 === Examples
 
@@ -4450,7 +4478,7 @@ end
 
 | Enabled
 | No
-| No
+| Yes (Unsafe)
 | 0.64
 | 2.10
 |===
@@ -4770,19 +4798,19 @@ require_dependency 'some_lib'
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
 | Pending
-| Yes
+| No
 | Yes (Unsafe)
 | 2.18
-| -
+| 2.19
 |===
 
 Prefer `response.parsed_body` to `JSON.parse(response.body)`.
 
 === Safety
 
-This cop's autocorrection is unsafe because Content-Type may not be `application/json`. For example, the
-proprietary Content-Type provided by corporate entities such as `application/vnd.github+json` is not
-supported at `response.parsed_body` by default, so you still have to use `JSON.parse(response.body)` there.
+This cop is unsafe because Content-Type may not be `application/json`. For example, the proprietary
+Content-Type provided by corporate entities such as `application/vnd.github+json` is not supported at
+`response.parsed_body` by default, so you still have to use `JSON.parse(response.body)` there.
 
 === Examples
 
@@ -5801,6 +5829,50 @@ self.table_name = :some_other_name
 
 * https://rails.rubystyle.guide/#keep-ar-defaults
 
+== Rails/ThreeStateBooleanColumn
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| No
+| 2.19
+| -
+|===
+
+Enforces that boolean columns are created with default values (`false` or `true`) and
+`NOT NULL` constraint.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+add_column :users, :active, :boolean
+t.column :active, :boolean
+t.boolean :active
+
+# good
+add_column :users, :active, :boolean, default: true, null: false
+t.column :active, :boolean, default: true, null: false
+t.boolean :active, default: true, null: false
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `+db/**/*.rb+`
+| Array
+|===
+
+=== References
+
+* https://rails.rubystyle.guide/#three-state-boolean
+
 == Rails/TimeZone
 
 |===
@@ -6200,7 +6272,7 @@ customer.favourites.distinct.pluck(:color)
 |===
 
 When you define a uniqueness validation in Active Record model,
-you also should add a unique index for the column. There are two reasons
+you also should add a unique index for the column. There are two reasons.
 First, duplicated records may occur even if Active Record's validation
 is defined.
 Second, it will cause slow queries. The validation executes a `SELECT`

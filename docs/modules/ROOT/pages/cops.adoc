@@ -123,6 +123,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railssquishedsqlheredocs[Rails/SquishedSQLHeredocs]
 * xref:cops_rails.adoc#railsstripheredoc[Rails/StripHeredoc]
 * xref:cops_rails.adoc#railstablenameassignment[Rails/TableNameAssignment]
+* xref:cops_rails.adoc#railsthreestatebooleancolumn[Rails/ThreeStateBooleanColumn]
 * xref:cops_rails.adoc#railstimezone[Rails/TimeZone]
 * xref:cops_rails.adoc#railstimezoneassignment[Rails/TimeZoneAssignment]
 * xref:cops_rails.adoc#railstoformatteds[Rails/ToFormattedS]

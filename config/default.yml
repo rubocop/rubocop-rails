@@ -462,7 +462,7 @@ Rails/FindEach:
   Enabled: true
   Safe: false
   VersionAdded: '0.30'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.19'
   Include:
     - app/models/**/*.rb
   AllowedMethods:
@@ -845,7 +845,7 @@ Rails/ResponseParsedBody:
   Enabled: pending
   Safe: false
   VersionAdded: '2.18'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.19'
   Include:
     - spec/controllers/**/*.rb
     - spec/requests/**/*.rb
@@ -1001,7 +1001,7 @@ Rails/ThreeStateBooleanColumn:
   Description: 'Add a default value and a `NOT NULL` constraint to boolean columns.'
   StyleGuide: 'https://rails.rubystyle.guide/#three-state-boolean'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.19'
   Include:
     - db/**/*.rb
 

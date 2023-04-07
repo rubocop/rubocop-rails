@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.19.0 (2023-04-07)
+
 ### New features
 
 * [#337](https://github.com/rubocop/rubocop-rails/issues/337): Add new `Rails/ThreeStateBooleanColumn` cop. ([@fatkodima][])
