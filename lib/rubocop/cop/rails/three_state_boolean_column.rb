@@ -46,6 +46,9 @@ module RuboCop
 
             def_node = node.each_ancestor(:def, :defs).first
             table_node = table_node(node)
+
+            return unless table_node && column_node
+
             return if def_node && change_column_null?(def_node, table_node.value, column_node.value)
 
             add_offense(node)
@@ -60,7 +63,7 @@ module RuboCop
             node.first_argument
           when :column, :boolean
             ancestor = node.each_ancestor(:block).find do |n|
-              n.method?(:create_table) || n.method?(:change_table)
+              n.method?(:create_table) || n.method?(:change_table) || n.method?(:drop_table) || n.method?(:create_enum)
             end
             ancestor&.send_node&.first_argument
           end
