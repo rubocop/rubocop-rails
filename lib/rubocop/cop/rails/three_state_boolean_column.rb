@@ -63,7 +63,7 @@ module RuboCop
             node.first_argument
           when :column, :boolean
             ancestor = node.each_ancestor(:block).find do |n|
-              n.method?(:create_table) || n.method?(:change_table) || n.method?(:drop_table) || n.method?(:create_enum)
+              n.method?(:create_table) || n.method?(:change_table) || n.method?(:drop_table)
             end
             ancestor&.send_node&.first_argument
           end
