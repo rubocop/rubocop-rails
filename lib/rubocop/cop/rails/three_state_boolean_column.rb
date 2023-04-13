@@ -46,7 +46,9 @@ module RuboCop
 
             def_node = node.each_ancestor(:def, :defs).first
             table_node = table_node(node)
-            return if def_node && change_column_null?(def_node, table_node.value, column_node.value)
+            if def_node && (table_node.nil? || change_column_null?(def_node, table_node.value, column_node.value))
+              return
+            end
 
             add_offense(node)
           end

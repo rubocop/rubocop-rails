@@ -115,6 +115,16 @@ RSpec.describe RuboCop::Cop::Rails::ThreeStateBooleanColumn, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `t.boolean` in `drop_table`' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          drop_table(:users) do |t|
+            t.boolean :active
+          end
+        end
+      RUBY
+    end
+
     it 'does not register an offense when using `#change_column_null`' do
       expect_no_offenses(<<~RUBY)
         def change
