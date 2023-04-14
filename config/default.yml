@@ -1139,6 +1139,7 @@ Rails/WhereNot:
 
 Rails/WhereNotWithMultipleConditions:
   Description: 'Do not use `where.not(...)` with multiple conditions.'
+  StyleGuide: 'https://rails.rubystyle.guide/#where-not-with-multiple-attributes'
   Enabled: 'pending'
   Severity: warning
   VersionAdded: '2.17'
