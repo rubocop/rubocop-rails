@@ -18,6 +18,8 @@ module RuboCop
       #   t.boolean :active, default: true, null: false
       #
       class ThreeStateBooleanColumn < Base
+        include MigrationsHelper
+
         MSG = 'Boolean columns should always have a default value and a `NOT NULL` constraint.'
 
         RESTRICT_ON_SEND = %i[add_column column boolean].freeze
@@ -39,6 +41,8 @@ module RuboCop
         PATTERN
 
         def on_send(node)
+          return if in_migration?(node) && excluded_migration?(processed_source.file_path)
+
           three_state_boolean?(node) do |column_node, options_node|
             options_node = options_node.first
 
@@ -66,6 +70,13 @@ module RuboCop
             end
             ancestor&.send_node&.first_argument
           end
+        end
+
+        def excluded_migration?(file_path)
+          basename = File.basename(file_path)
+          version = basename.split('_').first.to_i
+
+          version < cop_config['StartAfter'].to_i
         end
       end
     end

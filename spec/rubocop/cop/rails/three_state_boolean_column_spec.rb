@@ -150,4 +150,31 @@ RSpec.describe RuboCop::Cop::Rails::ThreeStateBooleanColumn, :config do
       RUBY
     end
   end
+
+  context 'with StartAfter config' do
+    let(:cop_config) do
+      { 'StartAfter' => '20230415000000' }
+    end
+
+    it 'does not register an offense for old files' do
+      expect_no_offenses(<<~RUBY, 'db/migrate/20230414000000_create_users.rb')
+        class CreateUsers < ActiveRecord::Migration[7.0]
+          create_table(:users) do |t|
+            t.boolean :active
+          end
+        end
+      RUBY
+    end
+
+    it 'registers an offense for new files' do
+      expect_offense(<<~RUBY, 'db/migrate/20230415000000_create_users.rb')
+        class CreateUsers < ActiveRecord::Migration[7.0]
+          create_table(:users) do |t|
+            t.boolean :active
+            ^^^^^^^^^^^^^^^^^ Boolean columns should always have a default value and a `NOT NULL` constraint.
+          end
+        end
+      RUBY
+    end
+  end
 end
