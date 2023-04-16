@@ -6685,3 +6685,7 @@ User.where.not('trashed = ? OR role = ?', true, 'admin')
 | `warning`
 | String
 |===
+
+=== References
+
+* https://rails.rubystyle.guide/#where-not-with-multiple-attributes
