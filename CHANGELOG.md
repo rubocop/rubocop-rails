@@ -9,6 +9,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#979](https://github.com/rubocop/rubocop-rails/issues/979): Fix an error for `Rails/ThreeStateBooleanColumn` when using `t.boolean` in `drop_table`. ([@koic][])
+
 ## 2.19.0 (2023-04-07)
 
 ### New features
