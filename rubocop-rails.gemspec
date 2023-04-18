@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name = 'rubocop-rails'
   s.version = RuboCop::Rails::Version::STRING
   s.platform = Gem::Platform::RUBY
-  s.required_ruby_version = '>= 2.6.0'
+  s.required_ruby_version = '>= 2.7.0'
   s.authors = ['Bozhidar Batsov', 'Jonas Arvidsson', 'Yuji Nakayama']
   s.description = <<~DESCRIPTION
     Automatic Rails code style checking tool.

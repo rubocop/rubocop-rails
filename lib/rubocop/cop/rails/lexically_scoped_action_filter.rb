@@ -176,14 +176,14 @@ module RuboCop
           when :sym
             [node.value]
           when :array
-            node.values.map do |v|
+            node.values.filter_map do |v|
               case v.type
               when :str
                 v.str_content.to_sym
               when :sym
                 v.value
               end
-            end.compact
+            end
           else
             []
           end
