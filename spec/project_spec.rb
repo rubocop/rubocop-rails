@@ -138,9 +138,9 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
 
       describe 'link to related issue' do
         let(:issues) do
-          entries.map do |entry|
+          entries.filter_map do |entry|
             entry.match(/\[(?<number>[#\d]+)\]\((?<url>[^)]+)\)/)
-          end.compact
+          end
         end
 
         it 'has an issue number prefixed with #' do

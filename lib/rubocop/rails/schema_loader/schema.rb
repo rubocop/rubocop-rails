@@ -83,21 +83,21 @@ module RuboCop
         private
 
         def build_columns(node)
-          each_content(node).map do |child|
+          each_content(node).filter_map do |child|
             next unless child&.send_type?
             next if child.method?(:index)
 
             Column.new(child)
-          end.compact
+          end
         end
 
         def build_indices(node)
-          each_content(node).map do |child|
+          each_content(node).filter_map do |child|
             next unless child&.send_type?
             next unless child.method?(:index)
 
             Index.new(child)
-          end.compact
+          end
         end
 
         def each_content(node, &block)

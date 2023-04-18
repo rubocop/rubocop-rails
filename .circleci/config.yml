@@ -36,9 +36,6 @@ workflows:
     jobs:
       - documentation-checks
       - rake_default:
-          name: Ruby 2.6
-          image: cimg/ruby:2.6
-      - rake_default:
           name: Ruby 2.7
           image: cimg/ruby:2.7
       - rake_default:
@@ -53,6 +50,3 @@ workflows:
       - rake_default:
           name: Ruby HEAD
           image: rubocophq/circleci-ruby-snapshot:latest # Nightly snapshot build
-      - rake_default:
-          name: JRuby 9.3
-          image: circleci/jruby:9.3
