@@ -36,6 +36,10 @@ module RuboCop
       #       if: -> { trusted_origin? && action_name != "admin" }
       #   end
       class IgnoredSkipActionFilterOption < Base
+        extend AutoCorrector
+
+        include RangeHelp
+
         MSG = <<~MSG.chomp.freeze
           `%<ignore>s` option will be ignored when `%<prefer>s` and `%<ignore>s` are used together.
         MSG
@@ -60,9 +64,13 @@ module RuboCop
           options = options_hash(options)
 
           if if_and_only?(options)
-            add_offense(options[:if], message: format(MSG, prefer: :only, ignore: :if))
+            add_offense(options[:if], message: format(MSG, prefer: :only, ignore: :if)) do |corrector|
+              remove_node_with_left_space_and_comma(corrector, options[:if])
+            end
           elsif if_and_except?(options)
-            add_offense(options[:except], message: format(MSG, prefer: :if, ignore: :except))
+            add_offense(options[:except], message: format(MSG, prefer: :if, ignore: :except)) do |corrector|
+              remove_node_with_left_space_and_comma(corrector, options[:except])
+            end
           end
         end
 
@@ -80,6 +88,18 @@ module RuboCop
 
         def if_and_except?(options)
           options.key?(:if) && options.key?(:except)
+        end
+
+        def remove_node_with_left_space_and_comma(corrector, node)
+          corrector.remove(
+            range_with_surrounding_comma(
+              range_with_surrounding_space(
+                node.source_range,
+                side: :left
+              ),
+              :left
+            )
+          )
         end
       end
     end
