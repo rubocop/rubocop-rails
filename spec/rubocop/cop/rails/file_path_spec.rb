@@ -88,6 +88,15 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
+    context 'when using Rails.root called by double quoted string that ends with string interpolation' do
+      it 'registers an offense' do
+        expect_offense(<<~'RUBY')
+          "#{Rails.root}/a/#{b}"
+          ^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
+        RUBY
+      end
+    end
+
     context 'when concat Rails.root and file separator using string interpolation' do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
