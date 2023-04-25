@@ -6,6 +6,7 @@ inherit_mode:
 
 AllCops:
   Exclude:
+    - app/assets/**/*
     - bin/*
     # Exclude db/schema.rb and db/[CONFIGURATION_NAMESPACE]_schema.rb by default.
     # See: https://guides.rubyonrails.org/active_record_multiple_databases.html#setting-up-your-application
