@@ -56,11 +56,8 @@ module RuboCop
 
         def on_dstr(node)
           return unless rails_root_nodes?(node)
-          return unless node.children.last.str_type?
-
-          last_child_source = node.children.last.source
-          return unless last_child_source.start_with?('.') || last_child_source.include?(File::SEPARATOR)
-          return if last_child_source.start_with?(':')
+          return if dstr_separated_by_colon?(node)
+          return unless dstr_ending_with_file_extension?(node) || dstr_including_file_separator?(node)
 
           register_offense(node, require_to_s: false)
         end
@@ -117,6 +114,22 @@ module RuboCop
           to_s = require_to_s ? '.to_s' : ''
 
           format(message_template, to_s: to_s)
+        end
+
+        def dstr_ending_with_file_extension?(node)
+          node.children.last.str_type? && node.children.last.source.start_with?('.')
+        end
+
+        def dstr_including_file_separator?(node)
+          node.children.any? do |child|
+            child.str_type? && child.source.include?(File::SEPARATOR)
+          end
+        end
+
+        def dstr_separated_by_colon?(node)
+          node.children[1..].any? do |child|
+            child.str_type? && child.source.start_with?(':')
+          end
         end
       end
     end
