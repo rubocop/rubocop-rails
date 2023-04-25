@@ -11,10 +11,6 @@ module RuboCop
       # This cop works best when used together with
       # `Style/FileRead`, `Style/FileWrite` and `Rails/RootJoinChain`.
       #
-      # @safety
-      #   This cop is unsafe for autocorrection because `Dir`'s `children`, `each_child`, `entries`, and `glob`
-      #   methods return string element, but these methods of `Pathname` return `Pathname` element.
-      #
       # @example
       #   # bad
       #   File.open(Rails.root.join('db', 'schema.rb'))
@@ -32,17 +28,20 @@ module RuboCop
       #   Rails.root.join('db', 'schema.rb').write(content)
       #   Rails.root.join('db', 'schema.rb').binwrite(content)
       #
-      class RootPathnameMethods < Base
+      class RootPathnameMethods < Base # rubocop:disable Metrics/ClassLength
         extend AutoCorrector
         include RangeHelp
 
         MSG = '`%<rails_root>s` is a `Pathname` so you can just append `#%<method>s`.'
 
-        DIR_METHODS = %i[children delete each_child empty? entries exist? glob mkdir open rmdir unlink].to_set.freeze
+        DIR_NON_PATHNAMES_RETURNED_METHODS = %i[delete empty? exist? mkdir open rmdir unlink].to_set.freeze
 
-        FILE_METHODS = %i[
+        DIR_PATHNAMES_RETURNED_METHODS = %i[children each_child entries glob].to_set.freeze
+
+        DIR_METHODS = (DIR_PATHNAMES_RETURNED_METHODS + DIR_NON_PATHNAMES_RETURNED_METHODS).freeze
+
+        FILE_NON_PATHNAME_RETURNED_METHODS = %i[
           atime
-          basename
           binread
           binwrite
           birthtime
@@ -53,19 +52,16 @@ module RuboCop
           ctime
           delete
           directory?
-          dirname
           empty?
           executable?
           executable_real?
           exist?
-          expand_path
           extname
           file?
           fnmatch
           fnmatch?
           ftype
           grpowned?
-          join
           lchmod
           lchown
           lstat
@@ -77,9 +73,6 @@ module RuboCop
           readable?
           readable_real?
           readlines
-          readlink
-          realdirpath
-          realpath
           rename
           setgid?
           setuid?
@@ -101,6 +94,18 @@ module RuboCop
           write
           zero?
         ].to_set.freeze
+
+        FILE_PATHNAME_RETURNED_METHODS = %i[
+          basename
+          dirname
+          expand_path
+          join
+          readlink
+          realdirpath
+          realpath
+        ].to_set.freeze
+
+        FILE_METHODS = (FILE_PATHNAME_RETURNED_METHODS + FILE_NON_PATHNAME_RETURNED_METHODS).freeze
 
         FILE_TEST_METHODS = %i[
           blockdev?
@@ -160,13 +165,24 @@ module RuboCop
           (send (const {nil? cbase} :Rails) {:root :public_path})
         PATTERN
 
+        # @!method dir_pathnames_returned_method?(node)
+        def_node_matcher :dir_pathnames_returned_method?, <<~PATTERN
+          (send (const {nil? cbase} :Dir) DIR_PATHNAMES_RETURNED_METHODS ...)
+        PATTERN
+
+        # @!method file_pathname_returned_method?(node)
+        def_node_matcher :file_pathname_returned_method?, <<~PATTERN
+          (send (const {nil? cbase} {:IO :File}) FILE_PATHNAME_RETURNED_METHODS ...)
+        PATTERN
+
         def on_send(node)
           evidence(node) do |method, path, args, rails_root|
             add_offense(node, message: format(MSG, method: method, rails_root: rails_root.source)) do |corrector|
+              suffix = build_replacement_suffix(node)
               replacement = if dir_glob?(node)
-                              build_path_glob_replacement(path, method)
+                              build_path_glob_replacement(path, method, suffix)
                             else
-                              build_path_replacement(path, method, args)
+                              build_path_replacement(path, method, args, suffix)
                             end
 
               corrector.replace(node, replacement)
@@ -183,15 +199,15 @@ module RuboCop
           yield(method, path, args, rails_root)
         end
 
-        def build_path_glob_replacement(path, method)
+        def build_path_glob_replacement(path, method, suffix)
           receiver = range_between(path.source_range.begin_pos, path.children.first.loc.selector.end_pos).source
 
           argument = path.arguments.one? ? path.first_argument.source : join_arguments(path.arguments)
 
-          "#{receiver}.#{method}(#{argument})"
+          "#{receiver}.#{method}(#{argument})#{suffix}"
         end
 
-        def build_path_replacement(path, method, args)
+        def build_path_replacement(path, method, args, suffix)
           path_replacement = path.source
           if path.arguments? && !path.parenthesized_call?
             path_replacement[' '] = '('
@@ -200,7 +216,18 @@ module RuboCop
 
           replacement = "#{path_replacement}.#{method}"
           replacement += "(#{args.map(&:source).join(', ')})" unless args.empty?
+          replacement += suffix
           replacement
+        end
+
+        def build_replacement_suffix(node)
+          if dir_pathnames_returned_method?(node)
+            '.map(&:to_s)'
+          elsif file_pathname_returned_method?(node)
+            '.to_s'
+          else
+            ''
+          end
         end
 
         def include_interpolation?(arguments)
