@@ -95,15 +95,7 @@ module RuboCop
           zero?
         ].to_set.freeze
 
-        FILE_PATHNAME_RETURNED_METHODS = %i[
-          basename
-          dirname
-          expand_path
-          join
-          readlink
-          realdirpath
-          realpath
-        ].to_set.freeze
+        FILE_PATHNAME_RETURNED_METHODS = %i[basename dirname expand_path readlink realdirpath realpath].to_set.freeze
 
         FILE_METHODS = (FILE_PATHNAME_RETURNED_METHODS + FILE_NON_PATHNAME_RETURNED_METHODS).freeze
 
