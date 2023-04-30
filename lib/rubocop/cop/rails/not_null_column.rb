@@ -46,6 +46,7 @@ module RuboCop
         def check_add_column(node)
           add_not_null_column?(node) do |type, pairs|
             return if type.value == :virtual || type.value == 'virtual'
+            return if type.value == :json || type.value == 'json'
 
             check_pairs(pairs)
           end

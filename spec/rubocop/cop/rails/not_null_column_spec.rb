@@ -35,6 +35,12 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
           add_column :users, :height_in, 'virtual', as: "height_cm / 2.54", null: false, default: nil
         RUBY
       end
+
+      it 'does not register an offense for json columns' do
+        expect_no_offenses(<<~RUBY)
+          add_column :users, :metadata, :json, null: false
+        RUBY
+      end
     end
 
     context 'with null: true' do
