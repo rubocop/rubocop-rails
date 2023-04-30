@@ -28,6 +28,7 @@ RSpec.describe RuboCop::Cop::Rails::FindEach, :config do
   it_behaves_like('register_offense', 'joins(:association_name)')
   it_behaves_like('register_offense', 'left_joins(:association_name)')
   it_behaves_like('register_offense', 'left_outer_joins(:association_name)')
+  it_behaves_like('register_offense', 'where(name: name).or(User.where(age: age))')
   it_behaves_like('register_offense', 'preload(:association_name)')
   it_behaves_like('register_offense', 'references(:association_name)')
   it_behaves_like('register_offense', 'unscoped')
