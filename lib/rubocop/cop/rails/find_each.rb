@@ -34,7 +34,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[each].freeze
 
         SCOPE_METHODS = %i[
-          all eager_load includes joins left_joins left_outer_joins not preload
+          all eager_load includes joins left_joins left_outer_joins not or preload
           references unscoped where
         ].freeze
 
