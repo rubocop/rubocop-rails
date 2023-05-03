@@ -10,6 +10,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
           Rails.root.join('app', 'models', 'user.rb')
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join("app/models/user.rb")
+        RUBY
       end
     end
 
@@ -19,6 +23,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
           ::Rails.root.join('app', 'models', 'user.rb')
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
+
+        expect_correction(<<~RUBY)
+          ::Rails.root.join("app/models/user.rb")
+        RUBY
       end
     end
 
@@ -27,6 +35,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         expect_offense(<<~'RUBY')
           system "rm -rf #{Rails.root.join('a', 'b.png')}"
                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
+        RUBY
+
+        expect_correction(<<~'RUBY')
+          system "rm -rf #{Rails.root.join("a/b.png")}"
         RUBY
       end
     end
@@ -61,6 +73,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
           File.join(Rails.root, 'app', 'models')
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
         RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join("app/models").to_s
+        RUBY
       end
     end
 
@@ -69,6 +85,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         expect_offense(<<~RUBY)
           ::File.join(Rails.root, 'app', 'models')
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join("app/models").to_s
         RUBY
       end
     end
@@ -85,6 +105,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
           "#{Rails.root}/app/models/goober"
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
+
+        expect_correction(<<~'RUBY')
+          "#{Rails.root.join("app/models/goober")}"
+        RUBY
       end
     end
 
@@ -93,6 +117,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         expect_offense(<<~'RUBY')
           "#{Rails.root}/a/#{b}"
           ^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
+        RUBY
+
+        expect_correction(<<~'RUBY')
+          "#{Rails.root.join("a/#{b}")}"
         RUBY
       end
     end
@@ -103,6 +131,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
           system "rm -rf #{Rails.root}/foo/bar"
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
+
+        expect_correction(<<~'RUBY')
+          system "rm -rf #{Rails.root.join("foo/bar")}"
+        RUBY
       end
     end
 
@@ -112,6 +144,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
           "#{Rails.root.join('tmp', user.id, 'icon')}.png"
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
         RUBY
+
+        expect_correction(<<~'RUBY')
+          "#{Rails.root.join('tmp', user.id, 'icon.png')}"
+        RUBY
       end
     end
 
@@ -120,6 +156,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         expect_offense(<<~RUBY)
           foo(bar(File.join(Rails.root, "app", "models")))
                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          foo(bar(Rails.root.join("app/models").to_s))
         RUBY
       end
     end
@@ -204,6 +244,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
           File.join(Rails.root, 'app', 'models')
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
         RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app', 'models').to_s
+        RUBY
       end
     end
 
@@ -212,6 +256,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         expect_offense(<<~RUBY)
           Rails.root.join('app/models/goober')
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app', "models", "goober")
         RUBY
       end
     end
@@ -222,6 +270,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
           "#{Rails.root}/app/models/goober"
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
         RUBY
+
+        expect_correction(<<~'RUBY')
+          "#{Rails.root.join("app", "models", "goober")}"
+        RUBY
       end
     end
 
@@ -230,6 +282,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         expect_offense(<<~'RUBY')
           system "rm -rf #{Rails.root}/foo/bar"
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
+        RUBY
+
+        expect_correction(<<~'RUBY')
+          system "rm -rf #{Rails.root.join("foo", "bar")}"
         RUBY
       end
     end
@@ -240,6 +296,10 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
           "#{Rails.root.join('tmp', user.id, 'icon')}.png"
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
         RUBY
+
+        expect_correction(<<~'RUBY')
+          "#{Rails.root.join('tmp', user.id, 'icon.png')}"
+        RUBY
       end
     end
 
@@ -249,14 +309,22 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
           foo(bar(File.join(Rails.root, "app", "models")))
                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
         RUBY
+
+        expect_correction(<<~RUBY)
+          foo(bar(Rails.root.join("app", "models").to_s))
+        RUBY
       end
     end
 
     context 'Rails.root.join used as an argument' do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
-          foo(Rails.root.join('app/models'))
+          foo(Rails.root.join("app/models"))
               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          foo(Rails.root.join("app", "models"))
         RUBY
       end
     end

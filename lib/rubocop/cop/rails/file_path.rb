@@ -35,6 +35,8 @@ module RuboCop
       #   Rails.root.join('app', 'models', 'goober').to_s
       #
       class FilePath < Base
+        extend AutoCorrector
+
         include ConfigurableEnforcedStyle
         include RangeHelp
 
@@ -57,9 +59,9 @@ module RuboCop
         def on_dstr(node)
           return unless rails_root_nodes?(node)
           return if dstr_separated_by_colon?(node)
-          return unless dstr_ending_with_file_extension?(node) || dstr_including_file_separator?(node)
 
-          register_offense(node, require_to_s: false)
+          check_for_slash_after_rails_root_in_dstr(node)
+          check_for_extension_after_rails_root_join_in_dstr(node)
         end
 
         def on_send(node)
@@ -70,11 +72,33 @@ module RuboCop
 
         private
 
+        def check_for_slash_after_rails_root_in_dstr(node)
+          rails_root_index = find_rails_root_index(node)
+          slash_node = node.children[rails_root_index + 1]
+          return unless slash_node&.str_type? && slash_node.source.start_with?(File::SEPARATOR)
+
+          register_offense(node, require_to_s: false) do |corrector|
+            autocorrect_slash_after_rails_root_in_dstr(corrector, node, rails_root_index)
+          end
+        end
+
+        def check_for_extension_after_rails_root_join_in_dstr(node)
+          rails_root_index = find_rails_root_index(node)
+          extension_node = node.children[rails_root_index + 1]
+          return unless extension_node?(extension_node)
+
+          register_offense(node, require_to_s: false) do |corrector|
+            autocorrect_extension_after_rails_root_join_in_dstr(corrector, node, rails_root_index, extension_node)
+          end
+        end
+
         def check_for_file_join_with_rails_root(node)
           return unless file_join_nodes?(node)
           return unless node.arguments.any? { |e| rails_root_nodes?(e) }
 
-          register_offense(node, require_to_s: true)
+          register_offense(node, require_to_s: true) do |corrector|
+            autocorrect_file_join(corrector, node)
+          end
         end
 
         def check_for_rails_root_join_with_string_arguments(node)
@@ -84,7 +108,9 @@ module RuboCop
           return unless node.arguments.size > 1
           return unless node.arguments.all?(&:str_type?)
 
-          register_offense(node, require_to_s: false)
+          register_offense(node, require_to_s: false) do |corrector|
+            autocorrect_rails_root_join_with_string_arguments(corrector, node)
+          end
         end
 
         def check_for_rails_root_join_with_slash_separated_path(node)
@@ -93,20 +119,22 @@ module RuboCop
           return unless rails_root_join_nodes?(node)
           return unless node.arguments.any? { |arg| string_with_slash?(arg) }
 
-          register_offense(node, require_to_s: false)
+          register_offense(node, require_to_s: false) do |corrector|
+            autocorrect_rails_root_join_with_slash_separated_path(corrector, node)
+          end
         end
 
         def string_with_slash?(node)
-          node.str_type? && node.source.include?('/')
+          node.str_type? && node.source.include?(File::SEPARATOR)
         end
 
-        def register_offense(node, require_to_s:)
+        def register_offense(node, require_to_s:, &block)
           line_range = node.loc.column...node.loc.last_column
           source_range = source_range(processed_source.buffer, node.first_line, line_range)
 
           message = build_message(require_to_s)
 
-          add_offense(source_range, message: message)
+          add_offense(source_range, message: message, &block)
         end
 
         def build_message(require_to_s)
@@ -116,20 +144,93 @@ module RuboCop
           format(message_template, to_s: to_s)
         end
 
-        def dstr_ending_with_file_extension?(node)
-          node.children.last.str_type? && node.children.last.source.start_with?('.')
-        end
-
-        def dstr_including_file_separator?(node)
-          node.children.any? do |child|
-            child.str_type? && child.source.include?(File::SEPARATOR)
-          end
-        end
-
         def dstr_separated_by_colon?(node)
           node.children[1..].any? do |child|
             child.str_type? && child.source.start_with?(':')
           end
+        end
+
+        def autocorrect_slash_after_rails_root_in_dstr(corrector, node, rails_root_index)
+          rails_root_node = node.children[rails_root_index].children.first
+          argument_source = extract_rails_root_join_argument_source(node, rails_root_index)
+          if rails_root_node.method?(:join)
+            append_argument(corrector, rails_root_node, argument_source)
+          else
+            replace_with_rails_root_join(corrector, rails_root_node, argument_source)
+          end
+          node.children[rails_root_index + 1..].each { |child| corrector.remove(child) }
+        end
+
+        def autocorrect_extension_after_rails_root_join_in_dstr(corrector, node, rails_root_index, extension_node)
+          rails_root_node = node.children[rails_root_index].children.first
+          return unless rails_root_node.arguments.last.str_type?
+
+          corrector.insert_before(rails_root_node.arguments.last.location.end, extension_node.source)
+          corrector.remove(extension_node)
+        end
+
+        def autocorrect_file_join(corrector, node)
+          corrector.replace(node.receiver, 'Rails.root')
+          corrector.remove(
+            range_with_surrounding_space(
+              range_with_surrounding_comma(
+                node.arguments.first.source_range,
+                :right
+              ),
+              side: :right
+            )
+          )
+          corrector.insert_after(node, '.to_s')
+        end
+
+        def autocorrect_rails_root_join_with_string_arguments(corrector, node)
+          corrector.replace(node.arguments.first, %("#{node.arguments.map(&:value).join('/')}"))
+          node.arguments[1..].each do |argument|
+            corrector.remove(
+              range_with_surrounding_comma(
+                range_with_surrounding_space(
+                  argument.source_range,
+                  side: :left
+                ),
+                :left
+              )
+            )
+          end
+        end
+
+        def autocorrect_rails_root_join_with_slash_separated_path(corrector, node)
+          node.arguments.each do |argument|
+            next unless string_with_slash?(argument)
+
+            index = argument.source.index(File::SEPARATOR)
+            rest = inner_range_of(argument).adjust(begin_pos: index - 1)
+            corrector.remove(rest)
+            corrector.insert_after(argument, %(, "#{rest.source.delete_prefix(File::SEPARATOR)}"))
+          end
+        end
+
+        def inner_range_of(node)
+          node.location.end.with(begin_pos: node.location.begin.end_pos).adjust(end_pos: -1)
+        end
+
+        def find_rails_root_index(node)
+          node.children.index { |child| rails_root_nodes?(child) }
+        end
+
+        def append_argument(corrector, node, argument_source)
+          corrector.insert_after(node.arguments.last, %(, "#{argument_source}"))
+        end
+
+        def replace_with_rails_root_join(corrector, node, argument_source)
+          corrector.replace(node, %<Rails.root.join("#{argument_source}")>)
+        end
+
+        def extract_rails_root_join_argument_source(node, rails_root_index)
+          node.children[rails_root_index + 1..].map(&:source).join.delete_prefix(File::SEPARATOR)
+        end
+
+        def extension_node?(node)
+          node&.str_type? && node.source.start_with?('.')
         end
       end
     end
