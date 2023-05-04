@@ -21,6 +21,14 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
       end
     end
 
+    context 'with the type argument is a variable' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          add_column(:users, :name, type, default: 'default')
+        RUBY
+      end
+    end
+
     context 'with null: false and default: nil' do
       it 'reports an offense' do
         expect_offense(<<~RUBY)
