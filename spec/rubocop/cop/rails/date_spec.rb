@@ -54,6 +54,10 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
           date.to_time_in_current_zone
                ^^^^^^^^^^^^^^^^^^^^^^^ `to_time_in_current_zone` is deprecated. Use `in_time_zone` instead.
         RUBY
+
+        expect_correction(<<~RUBY)
+          date.in_time_zone
+        RUBY
       end
 
       context 'when using safe navigation operator' do
@@ -61,6 +65,10 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
           expect_offense(<<~RUBY)
             date&.to_time_in_current_zone
                   ^^^^^^^^^^^^^^^^^^^^^^^ `to_time_in_current_zone` is deprecated. Use `in_time_zone` instead.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            date&.in_time_zone
           RUBY
         end
       end
@@ -137,6 +145,8 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
             date.to_time
                  ^^^^^^^ Do not use `to_time` on Date objects, because they know nothing about the time zone in use.
           RUBY
+
+          expect_no_corrections
         end
 
         context 'when using safe navigation operator' do
@@ -145,6 +155,8 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
               date&.to_time
                     ^^^^^^^ Do not use `to_time` on Date objects, because they know nothing about the time zone in use.
             RUBY
+
+            expect_no_corrections
           end
         end
 
@@ -162,6 +174,8 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
               "2016-07-12 14:36:31".to_time(:utc)
                                     ^^^^^^^ Do not use `to_time` on Date objects, because they know nothing about the time zone in use.
             RUBY
+
+            expect_no_corrections
           end
         end
 
@@ -189,6 +203,10 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
         "2016-07-12 14:36:31".to_time_in_current_zone
                               ^^^^^^^^^^^^^^^^^^^^^^^ `to_time_in_current_zone` is deprecated. Use `in_time_zone` instead.
       RUBY
+
+      expect_correction(<<~RUBY)
+        "2016-07-12 14:36:31".in_time_zone
+      RUBY
     end
   end
 
@@ -206,6 +224,21 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
         Date.today
              ^^^^^ Do not use `Date.today` without zone. Use `Time.zone.today` instead.
       RUBY
+
+      expect_correction(<<~RUBY)
+        Time.zone.today
+      RUBY
+    end
+
+    it 'registers an offense for ::Date.today' do
+      expect_offense(<<~RUBY)
+        ::Date.today
+               ^^^^^ Do not use `Date.today` without zone. Use `Time.zone.today` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        ::Time.zone.today
+      RUBY
     end
 
     RuboCop::Cop::Rails::TimeZone::ACCEPTED_METHODS.each do |a_method|
@@ -218,6 +251,10 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
       expect_offense(<<~RUBY)
         "2016-07-12 14:36:31".to_time_in_current_zone
                               ^^^^^^^^^^^^^^^^^^^^^^^ `to_time_in_current_zone` is deprecated. Use `in_time_zone` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        "2016-07-12 14:36:31".in_time_zone
       RUBY
     end
   end

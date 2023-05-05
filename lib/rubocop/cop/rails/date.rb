@@ -22,6 +22,9 @@ module RuboCop
       # And you can set a warning for `to_time` with `AllowToTime: false`.
       # `AllowToTime` is `true` by default to prevent false positive on `DateTime` object.
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because it may change handling time.
+      #
       # @example EnforcedStyle: flexible (default)
       #   # bad
       #   Date.today
@@ -51,6 +54,8 @@ module RuboCop
       #   # bad
       #   date.to_time
       class Date < Base
+        extend AutoCorrector
+
         include ConfigurableEnforcedStyle
 
         MSG = 'Do not use `Date.%<method_called>s` without zone. Use `Time.zone.%<day>s` instead.'
@@ -92,7 +97,9 @@ module RuboCop
 
             message = format(DEPRECATED_MSG, deprecated: method[:deprecated], relevant: method[:relevant])
 
-            add_offense(node.loc.selector, message: message)
+            add_offense(node.loc.selector, message: message) do |corrector|
+              corrector.replace(node.loc.selector, method[:relevant].to_s)
+            end
           end
         end
 
@@ -108,7 +115,9 @@ module RuboCop
 
           message = format(MSG, method_called: method_name, day: day)
 
-          add_offense(node.loc.selector, message: message)
+          add_offense(node.loc.selector, message: message) do |corrector|
+            corrector.replace(node.receiver.loc.name, 'Time.zone')
+          end
         end
 
         def extract_method_chain(node)
