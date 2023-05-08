@@ -142,10 +142,6 @@ RSpec:
       - expect_offense
       - expect_offense_if_model_file
 
-# This disabling is a workaround for https://github.com/rubocop-hq/rubocop-rails/issues/374.
-RSpec/FactoryBot/CreateList:
-  Enabled: false
-
 RSpec/PredicateMatcher:
   EnforcedStyle: explicit
 
