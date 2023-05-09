@@ -191,4 +191,10 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
       file = Rails.root.join('docs', 'invoice.pdf').open
     RUBY
   end
+
+  it 'does not register an offense when using `File.join(Rails.root, ...)`' do
+    expect_no_offenses(<<~RUBY)
+      File.join(Rails.root, '/foo')
+    RUBY
+  end
 end
