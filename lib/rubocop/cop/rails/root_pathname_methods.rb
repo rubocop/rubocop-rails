@@ -32,13 +32,28 @@ module RuboCop
       #   Rails.root.join('db', 'schema.rb').write(content)
       #   Rails.root.join('db', 'schema.rb').binwrite(content)
       #
-      class RootPathnameMethods < Base
+      class RootPathnameMethods < Base # rubocop:disable Metrics/ClassLength
         extend AutoCorrector
         include RangeHelp
 
         MSG = '`%<rails_root>s` is a `Pathname` so you can just append `#%<method>s`.'
 
-        DIR_METHODS = %i[children delete each_child empty? entries exist? glob mkdir open rmdir unlink].to_set.freeze
+        DIR_GLOB_METHODS = %i[glob].to_set.freeze
+
+        DIR_NON_GLOB_METHODS = %i[
+          children
+          delete
+          each_child
+          empty?
+          entries
+          exist?
+          mkdir
+          open
+          rmdir
+          unlink
+        ].to_set.freeze
+
+        DIR_METHODS = (DIR_GLOB_METHODS + DIR_NON_GLOB_METHODS).freeze
 
         FILE_METHODS = %i[
           atime
@@ -134,9 +149,20 @@ module RuboCop
 
         RESTRICT_ON_SEND = (DIR_METHODS + FILE_METHODS + FILE_TEST_METHODS + FILE_UTILS_METHODS).to_set.freeze
 
-        def_node_matcher :pathname_method, <<~PATTERN
+        # @!method pathname_method_for_ruby_2_5_or_higher(node)
+        def_node_matcher :pathname_method_for_ruby_2_5_or_higher, <<~PATTERN
           {
             (send (const {nil? cbase} :Dir) $DIR_METHODS $_ $...)
+            (send (const {nil? cbase} {:IO :File}) $FILE_METHODS $_ $...)
+            (send (const {nil? cbase} :FileTest) $FILE_TEST_METHODS $_ $...)
+            (send (const {nil? cbase} :FileUtils) $FILE_UTILS_METHODS $_ $...)
+          }
+        PATTERN
+
+        # @!method pathname_method_for_ruby_2_4_or_lower(node)
+        def_node_matcher :pathname_method_for_ruby_2_4_or_lower, <<~PATTERN
+          {
+            (send (const {nil? cbase} :Dir) $DIR_NON_GLOB_METHODS $_ $...)
             (send (const {nil? cbase} {:IO :File}) $FILE_METHODS $_ $...)
             (send (const {nil? cbase} :FileTest) $FILE_TEST_METHODS $_ $...)
             (send (const {nil? cbase} :FileUtils) $FILE_UTILS_METHODS $_ $...)
@@ -181,6 +207,14 @@ module RuboCop
           return unless (method, path, args = pathname_method(node)) && (rails_root = rails_root_pathname?(path))
 
           yield(method, path, args, rails_root)
+        end
+
+        def pathname_method(node)
+          if target_ruby_version >= 2.5
+            pathname_method_for_ruby_2_5_or_higher(node)
+          else
+            pathname_method_for_ruby_2_4_or_lower(node)
+          end
         end
 
         def build_path_glob_replacement(path, method)

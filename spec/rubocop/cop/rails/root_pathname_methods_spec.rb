@@ -46,7 +46,15 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
     end
   end
 
-  context 'when using `Dir.glob`' do
+  context 'when using `Dir.glob` on Ruby 2.4 or lower', :ruby24 do
+    it 'does not registers an offense' do
+      expect_no_offenses(<<~RUBY)
+        Dir.glob(Rails.root.join('**/*.rb'))
+      RUBY
+    end
+  end
+
+  context 'when using `Dir.glob` on Ruby 2.5 or higher', :ruby25 do
     it "registers an offense when using `Dir.glob(Rails.root.join('**/*.rb'))`" do
       expect_offense(<<~RUBY)
         Dir.glob(Rails.root.join('**/*.rb'))
