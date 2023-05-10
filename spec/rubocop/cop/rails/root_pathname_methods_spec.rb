@@ -2,15 +2,13 @@
 
 RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
   {
-    Dir: described_class::DIR_METHODS,
+    Dir: described_class::DIR_NON_GLOB_METHODS,
     File: described_class::FILE_METHODS,
     FileTest: described_class::FILE_TEST_METHODS,
     FileUtils: described_class::FILE_UTILS_METHODS,
     IO: described_class::FILE_METHODS
   }.each do |receiver, methods|
     methods.each do |method|
-      next if method == :glob
-
       it "registers an offense when using `#{receiver}.#{method}(Rails.public_path)` (if arity exists)" do
         expect_offense(<<~RUBY, receiver: receiver, method: method)
           %{receiver}.%{method}(Rails.public_path)
@@ -43,6 +41,19 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
           ::Rails.root.join('db', 'schema.rb').#{method}(20, 5)
         RUBY
       end
+    end
+  end
+
+  context 'when using Dir.[]' do
+    it 'registers offense when using `Dir[Rails.root.join(...)]`' do
+      expect_offense(<<~RUBY)
+        Dir[Rails.root.join('spec/support/**/*.rb')]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#[]`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Rails.root.glob('spec/support/**/*.rb')
+      RUBY
     end
   end
 
