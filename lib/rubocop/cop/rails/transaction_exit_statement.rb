@@ -34,6 +34,11 @@ module RuboCop
       #     throw if user.active?
       #   end
       #
+      #   # bad, as `with_lock` implicitly opens a transaction too
+      #   ApplicationRecord.with_lock do
+      #     break if user.active?
+      #   end
+      #
       #   # good
       #   ApplicationRecord.transaction do
       #     # Rollback
@@ -91,7 +96,9 @@ module RuboCop
         end
 
         def nested_block?(statement_node)
-          !statement_node.ancestors.find(&:block_type?).method?(:transaction)
+          block_node = statement_node.ancestors.find(&:block_type?)
+
+          RESTRICT_ON_SEND.none? { |name| block_node.method?(name) }
         end
       end
     end
