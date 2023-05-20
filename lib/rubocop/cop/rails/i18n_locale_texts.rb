@@ -80,7 +80,11 @@ module RuboCop
         PATTERN
 
         def_node_matcher :flash_assignment?, <<~PATTERN
-          (send (send nil? :flash) :[]= _ $str)
+          (send
+            {
+              (send nil? :flash)
+              (send (send nil? :flash) :now)
+            } :[]= _ $str)
         PATTERN
 
         def_node_search :mail_subject, <<~PATTERN
