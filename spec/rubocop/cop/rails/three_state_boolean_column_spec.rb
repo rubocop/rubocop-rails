@@ -34,6 +34,15 @@ RSpec.describe RuboCop::Cop::Rails::ThreeStateBooleanColumn, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `#change_column_null` with dynamic table' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          add_column table, :active, :boolean
+          change_column_null table, :active, false
+        end
+      RUBY
+    end
+
     it 'registers an offense when using `#change_column_null` for other table or column' do
       expect_offense(<<~RUBY)
         def change
@@ -78,6 +87,17 @@ RSpec.describe RuboCop::Cop::Rails::ThreeStateBooleanColumn, :config do
             t.column :active, :boolean
           end
           change_column_null :users, :active, false
+        end
+      RUBY
+    end
+
+    it 'does not register an offense when using `#change_column_null` with dynamic table' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          create_table(table) do |t|
+            t.column :active, :boolean
+          end
+          change_column_null table, :active, false
         end
       RUBY
     end
@@ -132,6 +152,17 @@ RSpec.describe RuboCop::Cop::Rails::ThreeStateBooleanColumn, :config do
             t.boolean :active
           end
           change_column_null :users, :active, false
+        end
+      RUBY
+    end
+
+    it 'does not register an offense when using `#change_column_null` with dynamic table' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          create_table(table) do |t|
+            t.boolean :active
+          end
+          change_column_null table, :active, false
         end
       RUBY
     end

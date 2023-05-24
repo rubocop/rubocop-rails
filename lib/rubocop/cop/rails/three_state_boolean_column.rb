@@ -35,7 +35,7 @@ module RuboCop
         PATTERN
 
         def_node_search :change_column_null?, <<~PATTERN
-          (send nil? :change_column_null {(sym %1) (str %1)} {(sym %2) (str %2)} false)
+          (send nil? :change_column_null %1 %2 false)
         PATTERN
 
         def on_send(node)
@@ -46,9 +46,7 @@ module RuboCop
 
             def_node = node.each_ancestor(:def, :defs).first
             table_node = table_node(node)
-            if def_node && (table_node.nil? || change_column_null?(def_node, table_node.value, column_node.value))
-              return
-            end
+            return if def_node && (table_node.nil? || change_column_null?(def_node, table_node, column_node))
 
             add_offense(node)
           end
