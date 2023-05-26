@@ -52,6 +52,19 @@ RSpec.describe RuboCop::Cop::Rails::I18nLocaleTexts, :config do
     RUBY
   end
 
+  it 'registers an offense when assigning to `flash.now` text messages' do
+    expect_offense(<<~RUBY)
+      flash.now[:notice] = "Post created!"
+                           ^^^^^^^^^^^^^^^ Move locale texts to the locale files in the `config/locales` directory.
+    RUBY
+  end
+
+  it 'does not register an offense when assigning to `flash.now` localized messages' do
+    expect_no_offenses(<<~RUBY)
+      flash.now[:notice] = t(".success")
+    RUBY
+  end
+
   it 'registers an offense when using `mail` with text subject' do
     expect_offense(<<~RUBY)
       mail(to: user.email, subject: "Welcome to My Awesome Site")
