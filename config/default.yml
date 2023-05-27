@@ -48,6 +48,20 @@ Lint/NumberConversion:
     - in_milliseconds
   AllowedPatterns: []
 
+Lint/RedundantSafeNavigation:
+  # Add `blank?`, `presence`, and `present?` methods to the default of the RuboCop core.
+  # https://github.com/rubocop/rubocop/blob/v1.51.0/config/default.yml#L2148-L2159
+  AllowedMethods:
+    - instance_of?
+    - kind_of?
+    - is_a?
+    - eql?
+    - respond_to?
+    - equal?
+    - blank?
+    - presence
+    - present?
+
 Rails:
   Enabled: true
   DocumentationBaseURL: https://docs.rubocop.org/rubocop-rails
