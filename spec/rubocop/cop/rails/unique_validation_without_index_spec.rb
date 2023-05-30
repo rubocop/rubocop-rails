@@ -32,6 +32,14 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           end
         RUBY
       end
+
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates :account, uniqueness: false
+          end
+        RUBY
+      end
     end
 
     context 'when the table has an index but it is not unique' do
