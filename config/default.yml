@@ -1234,6 +1234,10 @@ Rails/WhereRange:
 Style/AndOr:
   EnforcedStyle: conditionals
 
+Style/CollectionCompact:
+  AllowedReceivers:
+    - params
+
 Style/FormatStringToken:
   AllowedMethods:
     - redirect
