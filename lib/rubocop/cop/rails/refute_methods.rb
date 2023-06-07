@@ -3,7 +3,6 @@
 module RuboCop
   module Cop
     module Rails
-      #
       # Use `assert_not` methods instead of `refute` methods.
       #
       # @example EnforcedStyle: assert_not (default)

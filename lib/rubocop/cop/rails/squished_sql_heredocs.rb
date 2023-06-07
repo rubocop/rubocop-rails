@@ -3,7 +3,6 @@
 module RuboCop
   module Cop
     module Rails
-      #
       # Checks SQL heredocs to use `.squish`.
       #
       # @safety

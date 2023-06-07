@@ -3,7 +3,6 @@
 module RuboCop
   module Cop
     module Rails
-      #
       # Use `assert_not` instead of `assert !`.
       #
       # @example
