@@ -22,7 +22,7 @@ end
 
 desc 'Syntax check for the documentation comments'
 task documentation_syntax_check: :yard_for_generate_documentation do
-  require 'parser/ruby31'
+  require 'parser/ruby32'
 
   ok = true
   YARD::Registry.load!
@@ -37,7 +37,7 @@ task documentation_syntax_check: :yard_for_generate_documentation do
     examples.to_a.each do |example|
       buffer = Parser::Source::Buffer.new('<code>', 1)
       buffer.source = example.text
-      parser = Parser::Ruby31.new(RuboCop::AST::Builder.new)
+      parser = Parser::Ruby32.new(RuboCop::AST::Builder.new)
       parser.diagnostics.all_errors_are_fatal = true
       parser.parse(buffer)
     rescue Parser::SyntaxError => e
