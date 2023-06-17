@@ -301,6 +301,7 @@ Rails/Date:
                   Checks the correct usage of date aware methods,
                   such as Date.today, Date.current etc.
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '0.30'
   VersionChanged: '2.11'
   # The value `strict` disallows usage of `Date.today`, `Date.current`,
