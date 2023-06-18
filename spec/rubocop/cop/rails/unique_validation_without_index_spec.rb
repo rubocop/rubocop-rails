@@ -2,12 +2,24 @@
 
 RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
   context 'without db/schema.rb' do
-    it 'does nothing' do
-      expect_no_offenses(<<~RUBY)
-        class User < ApplicationRecord
-          validates :account, uniqueness: true
-        end
-      RUBY
+    context 'when using `uniqueness: true`' do
+      it 'does nothing' do
+        expect_no_offenses(<<~RUBY)
+          class User < ApplicationRecord
+            validates :account, uniqueness: true
+          end
+        RUBY
+      end
+    end
+
+    context 'when using other validation helpers' do
+      it 'does nothing' do
+        expect_no_offenses(<<~RUBY)
+          class User < ApplicationRecord
+            validates :name, presence: true
+          end
+        RUBY
+      end
     end
   end
 
