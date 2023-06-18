@@ -9,6 +9,30 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#999](https://github.com/rubocop/rubocop-rails/pull/999): Add autocorrection for `Rails/Date`. ([@r7kamura][])
+* [#991](https://github.com/rubocop/rubocop-rails/pull/991): Add autocorrection for `Rails/FilePath`. ([@r7kamura][])
+* [#988](https://github.com/rubocop/rubocop-rails/pull/988): Add autocorrection for `Rails/IgnoredSkipActionFilterOption`. ([@r7kamura][])
+
+### Bug fixes
+
+* [#1005](https://github.com/rubocop/rubocop-rails/pull/1005): Flag `break` in `with_lock` for `Rails/TransactionExitStatement`. ([@splattael][])
+* [#997](https://github.com/rubocop/rubocop-rails/issues/997): Fix to Allow `NotNullColumn` to work with method calls and variables. ([@fidalgo][])
+* [#989](https://github.com/rubocop/rubocop-rails/pull/989): Fix `Rails/FilePath` to detect offenses from complex string interpolation. ([@r7kamura][])
+* [#1010](https://github.com/rubocop/rubocop-rails/issues/1010): Fix `Rails/ThreeStateBooleanColumn` for dynamic tables/columns. ([@fatkodima][])
+* [#1008](https://github.com/rubocop/rubocop-rails/pull/1008): Fix `UniqueValidationWithoutIndex` to not detect offenses when a validation specifies `uniqueness: false`. ([@samrjenkins][])
+
+### Changes
+
+* [#1011](https://github.com/rubocop/rubocop-rails/pull/1011): Add `*_create_active_storage_variant_records.active_storage.rb` to `Rails/CreateTableWithTimestamps` exclude file list. ([@tka5][])
+* [#995](https://github.com/rubocop/rubocop-rails/pull/995): Check for `or` method in `Rails/FindEach` cop. ([@masato-bkn][])
+* [#1019](https://github.com/rubocop/rubocop-rails/pull/1019): Change db migration file pattern so that it supports multiple db. ([@r7kamura][])
+* [#986](https://github.com/rubocop/rubocop-rails/pull/986): **(Breaking)** Drop Ruby 2.6 support. ([@koic][])
+* [#992](https://github.com/rubocop/rubocop-rails/pull/992): Exclude `app/assets/**/*` by default. ([@r7kamura][])
+* [#1014](https://github.com/rubocop/rubocop-rails/pull/1014): Make `Lint/RedundantSafeNavigation` aware of `presence` and `present?` methods. ([@koic][])
+* [#1007](https://github.com/rubocop/rubocop-rails/issues/1007): Support `flash.now` for `Rails/I18nLocaleTexts`. ([@fatkodima][])
+
 ## 2.19.1 (2023-04-16)
 
 ### Bug fixes
@@ -852,3 +876,7 @@
 [@john-h-k]: https://github.com/john-h-k
 [@DRBragg]: https://github.com/DRBragg
 [@lucthev]: https://github.com/lucthev
+[@tka5]: https://github.com/tka5
+[@masato-bkn]: https://github.com/masato-bkn
+[@splattael]: https://github.com/splattael
+[@samrjenkins]: https://github.com/samrjenkins
