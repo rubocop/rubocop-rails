@@ -418,7 +418,7 @@ ActiveSupport.on_load(:active_record) { include MyClass }
 | Yes
 | Yes
 | 2.11
-| -
+| 2.20
 |===
 
 Checks for migrations using `add_column` that have an `index`
@@ -444,7 +444,7 @@ add_index :table, :column
 | Name | Default value | Configurable values
 
 | Include
-| `+db/migrate/*.rb+`
+| `+db/**/*.rb+`
 | Array
 |===
 
@@ -960,7 +960,7 @@ end
 | Yes
 | No
 | 0.57
-| -
+| 2.20
 |===
 
 Checks whether alter queries are combinable.
@@ -1039,7 +1039,7 @@ end
 | `mysql`, `postgresql`
 
 | Include
-| `+db/migrate/*.rb+`
+| `+db/**/*.rb+`
 | Array
 |===
 
@@ -1155,7 +1155,7 @@ tag(name, class: 'classname')
 | Yes
 | No
 | 0.52
-| -
+| 2.20
 |===
 
 Checks the migration for which timestamps are not included when creating a new table.
@@ -1214,11 +1214,11 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+db/migrate/*.rb+`
+| `+db/**/*.rb+`
 | Array
 
 | Exclude
-| `+db/migrate/*_create_active_storage_tables.active_storage.rb+`
+| `+db/**/*_create_active_storage_tables.active_storage.rb+`, `+db/**/*_create_active_storage_variant_records.active_storage.rb+`
 | Array
 |===
 
@@ -1229,7 +1229,7 @@ end
 
 | Enabled
 | Yes
-| No
+| Yes (Unsafe)
 | 0.30
 | 2.11
 |===
@@ -1252,6 +1252,10 @@ When `EnforcedStyle` is `flexible` then only `Date.today` is prohibited.
 
 And you can set a warning for `to_time` with `AllowToTime: false`.
 `AllowToTime` is `true` by default to prevent false positive on `DateTime` object.
+
+=== Safety
+
+This cop's autocorrection is unsafe because it may change handling time.
 
 === Examples
 
@@ -2094,7 +2098,7 @@ date.all_year
 
 | Enabled
 | Yes
-| No
+| Yes
 | 0.47
 | 2.4
 |===
@@ -2856,7 +2860,7 @@ end
 
 | Enabled
 | Yes
-| No
+| Yes
 | 0.63
 | -
 |===
@@ -3466,7 +3470,7 @@ match 'photos/:id', to: 'photos#show', via: :all
 | Yes
 | Yes
 | 2.14
-| -
+| 2.20
 |===
 
 Makes sure that each migration file defines a migration class
@@ -3494,7 +3498,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+db/migrate/*.rb+`
+| `+db/**/*.rb+`
 | Array
 |===
 
@@ -3544,7 +3548,7 @@ hash.exclude?(:key)
 | Yes
 | No
 | 0.43
-| -
+| 2.20
 |===
 
 Checks for add_column call with NOT NULL constraint
@@ -3571,7 +3575,7 @@ add_reference :products, :category, null: false, default: 1
 | Name | Default value | Configurable values
 
 | Include
-| `+db/migrate/*.rb+`
+| `+db/**/*.rb+`
 | Array
 |===
 
@@ -6166,6 +6170,11 @@ end
 # bad, as `with_lock` implicitly opens a transaction too
 user.with_lock do
   throw if user.active?
+end
+
+# bad, as `with_lock` implicitly opens a transaction too
+ApplicationRecord.with_lock do
+  break if user.active?
 end
 
 # good

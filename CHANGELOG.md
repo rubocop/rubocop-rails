@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.20.0 (2023-06-18)
+
 ### New features
 
 * [#999](https://github.com/rubocop/rubocop-rails/pull/999): Add autocorrection for `Rails/Date`. ([@r7kamura][])

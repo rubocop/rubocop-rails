@@ -160,7 +160,7 @@ Rails/AddColumnIndex:
     index might be used.
   Enabled: pending
   VersionAdded: '2.11'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.20'
   Include:
     - db/**/*.rb
 
@@ -250,7 +250,7 @@ Rails/BulkChangeTable:
     - https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/Table.html
   Enabled: true
   VersionAdded: '0.57'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.20'
   Database: null
   SupportedDatabases:
     - mysql
@@ -286,7 +286,7 @@ Rails/CreateTableWithTimestamps:
                   when creating a new table.
   Enabled: true
   VersionAdded: '0.52'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.20'
   Include:
     - db/**/*.rb
   Exclude:
@@ -652,7 +652,7 @@ Rails/MigrationClassName:
   Description: 'The class name of the migration should match its file name.'
   Enabled: pending
   VersionAdded: '2.14'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.20'
   Include:
     - db/**/*.rb
 
@@ -668,7 +668,7 @@ Rails/NotNullColumn:
   Description: 'Do not add a NOT NULL column without a default value.'
   Enabled: true
   VersionAdded: '0.43'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.20'
   Include:
     - db/**/*.rb
 
