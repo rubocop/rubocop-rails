@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.20.2 (2023-06-20)
+
 ### Bug fixes
 
 * [#1028](https://github.com/rubocop/rubocop-rails/pull/1028): Fix an error for `Rails/UniqueValidationWithoutIndex` when the `presence: true` option is used alone for the `validates` method. ([@koic][])
