@@ -36,7 +36,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         end
       RUBY
 
-      it 'registers an offense' do
+      it 'registers an offense when `uniqueness: true`' do
         expect_offense(<<~RUBY)
           class User
             validates :account, uniqueness: true
@@ -45,10 +45,18 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         RUBY
       end
 
-      it 'does not register an offense' do
+      it 'does not register an offense when `uniqueness: false`' do
         expect_no_offenses(<<~RUBY)
           class User
             validates :account, uniqueness: false
+          end
+        RUBY
+      end
+
+      it 'does not register an offense when `uniqueness: nil`' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates :account, uniqueness: nil
           end
         RUBY
       end
@@ -64,11 +72,19 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         end
       RUBY
 
-      it 'registers an offense' do
+      it 'registers an offense when the `uniqueness: true` option is used alone' do
         expect_offense(<<~RUBY)
           class User
             validates :account, uniqueness: true
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
+          end
+        RUBY
+      end
+
+      it 'does not register an offense when the `presence: true` option is used alone' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates :account, presence: true
           end
         RUBY
       end
