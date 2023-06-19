@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.20.1 (2023-06-19)
+
 ### Bug fixes
 
 * [#1021](https://github.com/rubocop/rubocop-rails/pull/1021): Fix an error for `Rails/UniqueValidationWithoutIndex`. ([@ydah][])
