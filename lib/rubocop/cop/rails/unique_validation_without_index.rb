@@ -31,7 +31,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[validates].freeze
 
         def on_send(node)
-          return if uniqueness_part(node).falsey_literal?
+          return if uniqueness_part(node)&.falsey_literal?
           return if condition_part?(node)
           return unless schema
 
