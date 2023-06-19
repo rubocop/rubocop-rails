@@ -31,11 +31,11 @@ module RuboCop
         RESTRICT_ON_SEND = %i[validates].freeze
 
         def on_send(node)
-          return if uniqueness_part(node)&.falsey_literal?
-          return if condition_part?(node)
           return unless schema
+          return unless (uniqueness_part = uniqueness_part(node))
+          return if uniqueness_part.falsey_literal? || condition_part?(node, uniqueness_part)
 
-          klass, table, names = find_schema_information(node)
+          klass, table, names = find_schema_information(node, uniqueness_part)
           return unless names
           return if with_index?(klass, table, names)
 
@@ -44,12 +44,12 @@ module RuboCop
 
         private
 
-        def find_schema_information(node)
+        def find_schema_information(node, uniqueness_part)
           klass = class_node(node)
           return unless klass
 
           table = schema.table_by(name: table_name(klass))
-          names = column_names(node)
+          names = column_names(node, uniqueness_part)
 
           [klass, table, names]
         end
@@ -71,12 +71,12 @@ module RuboCop
           end
         end
 
-        def column_names(node)
+        def column_names(node, uniqueness_part)
           arg = node.first_argument
           return unless arg.str_type? || arg.sym_type?
 
           ret = [arg.value]
-          names_from_scope = column_names_from_scope(node)
+          names_from_scope = column_names_from_scope(uniqueness_part)
           ret.concat(names_from_scope) if names_from_scope
 
           ret = ret.flat_map do |name|
@@ -90,11 +90,10 @@ module RuboCop
           ret.include?(nil) ? nil : ret.to_set
         end
 
-        def column_names_from_scope(node)
-          uniq = uniqueness_part(node)
-          return unless uniq.hash_type?
+        def column_names_from_scope(uniqueness_part)
+          return unless uniqueness_part.hash_type?
 
-          scope = find_scope(uniq)
+          scope = find_scope(uniqueness_part)
           return unless scope
 
           scope = unfreeze_scope(scope)
@@ -135,14 +134,11 @@ module RuboCop
           end
         end
 
-        def condition_part?(node)
-          pairs = node.arguments.last
-          return unless pairs.hash_type?
-
+        def condition_part?(node, uniqueness_node)
+          pairs = node.last_argument
+          return false unless pairs.hash_type?
           return true if condition_hash_part?(pairs, keys: %i[if unless])
-
-          uniqueness_node = uniqueness_part(node)
-          return unless uniqueness_node&.hash_type?
+          return false unless uniqueness_node.hash_type?
 
           condition_hash_part?(uniqueness_node, keys: %i[if unless conditions])
         end
