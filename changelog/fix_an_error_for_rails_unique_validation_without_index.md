@@ -1,1 +1,0 @@
-* [#1021](https://github.com/rubocop/rubocop-rails/pull/1021): Fix an error for `Rails/UniqueValidationWithoutIndex`. ([@ydah][])
