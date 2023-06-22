@@ -16,6 +16,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 
 === Department xref:cops_rails.adoc[Rails]
 
+* xref:cops_rails.adoc#railsacceptsnestedattributesforupdateonly[Rails/AcceptsNestedAttributesForUpdateOnly]
 * xref:cops_rails.adoc#railsactioncontrollerflashbeforerender[Rails/ActionControllerFlashBeforeRender]
 * xref:cops_rails.adoc#railsactioncontrollertestcase[Rails/ActionControllerTestCase]
 * xref:cops_rails.adoc#railsactionfilter[Rails/ActionFilter]
