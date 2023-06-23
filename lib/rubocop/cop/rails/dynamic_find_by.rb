@@ -74,13 +74,13 @@ module RuboCop
         end
 
         def allowed_method?(node)
-          return unless cop_config['AllowedMethods']
+          return false unless cop_config['AllowedMethods']
 
           cop_config['AllowedMethods'].include?(node.method_name.to_s)
         end
 
         def allowed_receiver?(node)
-          return unless cop_config['AllowedReceivers'] && node.receiver
+          return false unless cop_config['AllowedReceivers'] && node.receiver
 
           cop_config['AllowedReceivers'].include?(node.receiver.source)
         end
@@ -88,7 +88,7 @@ module RuboCop
         # config option `WhiteList` will be deprecated soon
         def whitelisted?(node)
           whitelist_config = cop_config['Whitelist']
-          return unless whitelist_config
+          return false unless whitelist_config
 
           whitelist_config.include?(node.method_name.to_s)
         end

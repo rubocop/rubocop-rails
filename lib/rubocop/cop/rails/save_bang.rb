@@ -188,7 +188,7 @@ module RuboCop
         end
 
         def persisted_referenced?(assignment)
-          return unless assignment.referenced?
+          return false unless assignment.referenced?
 
           assignment.variable.references.any? do |reference|
             call_to_persisted?(reference.node.parent)
@@ -298,7 +298,7 @@ module RuboCop
 
           node = assignable_node(node)
           method, sibling_index = find_method_with_sibling_index(node.parent)
-          return unless method && (method.def_type? || method.block_type?)
+          return false unless method && (method.def_type? || method.block_type?)
 
           method.children.size == node.sibling_index + sibling_index
         end

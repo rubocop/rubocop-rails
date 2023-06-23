@@ -69,7 +69,7 @@ module RuboCop
           return false unless CONVERT_METHODS.include?(method_name)
 
           child_node, child_method_name, time_argument = *node.children
-          return if time_argument
+          return false if time_argument
 
           current_time?(child_node, child_method_name)
         end

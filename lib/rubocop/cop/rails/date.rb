@@ -139,7 +139,7 @@ module RuboCop
         end
 
         def safe_to_time?(node)
-          return unless node.method?(:to_time)
+          return false unless node.method?(:to_time)
 
           if node.receiver.str_type?
             zone_regexp = /([+-][\d:]+|\dZ)\z/

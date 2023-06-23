@@ -85,7 +85,7 @@ module RuboCop
 
         def inherit_action_controller_base?(node)
           class_node = find_ancestor(node, type: :class)
-          return unless class_node
+          return false unless class_node
 
           action_controller?(class_node)
         end
