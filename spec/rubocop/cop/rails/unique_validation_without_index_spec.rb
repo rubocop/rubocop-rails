@@ -690,5 +690,17 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
         RUBY
       end
     end
+
+    context 'when db/schema.rb file is empty' do
+      let(:schema) { '' }
+
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates :account, uniqueness: true
+          end
+        RUBY
+      end
+    end
   end
 end

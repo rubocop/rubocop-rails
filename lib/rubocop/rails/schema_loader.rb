@@ -43,7 +43,7 @@ module RuboCop
         return unless path
 
         ast = parse(path, target_ruby_version)
-        Schema.new(ast)
+        Schema.new(ast) if ast
       end
 
       def parse(path, target_ruby_version)
