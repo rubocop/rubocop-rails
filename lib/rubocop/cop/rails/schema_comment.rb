@@ -74,16 +74,24 @@ module RuboCop
         def on_send(node)
           if add_column_without_comment?(node)
             add_offense(node, message: COLUMN_MSG)
-          elsif create_table?(node)
-            if create_table_without_comment?(node)
-              add_offense(node, message: TABLE_MSG)
-            elsif create_table_column_call_without_comment?(node)
-              add_offense(node.parent.body, message: COLUMN_MSG)
-            end
+          elsif create_table_without_comment?(node)
+            add_offense(node, message: TABLE_MSG)
+          elsif create_table_with_block?(node.parent)
+            check_column_within_create_table_block(node.parent.body)
           end
         end
 
         private
+
+        def check_column_within_create_table_block(node)
+          if node.begin_type?
+            node.child_nodes.each do |child_node|
+              add_offense(child_node, message: COLUMN_MSG) if t_column_without_comment?(child_node)
+            end
+          elsif t_column_without_comment?(node)
+            add_offense(node, message: COLUMN_MSG)
+          end
+        end
 
         def add_column_without_comment?(node)
           add_column?(node) && !add_column_with_comment?(node)
@@ -93,10 +101,8 @@ module RuboCop
           create_table?(node) && !create_table_with_comment?(node)
         end
 
-        def create_table_column_call_without_comment?(node)
-          create_table_with_block?(node.parent) &&
-            t_column?(node.parent.body) &&
-            !t_column_with_comment?(node.parent.body)
+        def t_column_without_comment?(node)
+          t_column?(node) && !t_column_with_comment?(node)
         end
       end
     end
