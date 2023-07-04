@@ -682,6 +682,13 @@ Rails/MigrationClassName:
   Include:
     - db/**/*.rb
 
+Rails/MigrationTimestamp:
+  Description: 'Checks that migration filenames start with a valid timestamp in the past.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  Include:
+    - db/migrate/**/*.rb
+
 Rails/NegateInclude:
   Description: 'Prefer `collection.exclude?(obj)` over `!collection.include?(obj)`.'
   StyleGuide: 'https://rails.rubystyle.guide#exclude'
