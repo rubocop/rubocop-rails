@@ -227,4 +227,15 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
       RUBY
     end
   end
+
+  describe 'a class that does not descend from Active Record' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<-RUBY)
+        class Post < ActiveModel::Serializer
+          has_many :comments, key: :remarks, if: :formal_mode?
+          has_many :comments, key: :rejoinders, if: :debate_mode?
+        end
+      RUBY
+    end
+  end
 end

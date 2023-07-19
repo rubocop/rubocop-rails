@@ -24,6 +24,7 @@ module RuboCop
         include RangeHelp
         extend AutoCorrector
         include ClassSendNodeHelper
+        include ActiveRecordHelper
 
         MSG = "Association `%<name>s` is defined multiple times. Don't repeat associations."
 
@@ -32,6 +33,8 @@ module RuboCop
         PATTERN
 
         def on_class(class_node)
+          return unless active_record?(class_node.parent_class)
+
           offenses(class_node).each do |name, nodes|
             nodes.each do |node|
               add_offense(node, message: format(MSG, name: name)) do |corrector|
