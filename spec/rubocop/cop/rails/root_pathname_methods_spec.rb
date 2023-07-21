@@ -2,15 +2,13 @@
 
 RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
   {
-    Dir: described_class::DIR_METHODS,
-    File: described_class::FILE_METHODS,
+    Dir: described_class::DIR_NON_PATHNAMES_RETURNED_METHODS,
+    File: described_class::FILE_NON_PATHNAME_RETURNED_METHODS,
     FileTest: described_class::FILE_TEST_METHODS,
     FileUtils: described_class::FILE_UTILS_METHODS,
-    IO: described_class::FILE_METHODS
+    IO: described_class::FILE_NON_PATHNAME_RETURNED_METHODS
   }.each do |receiver, methods|
     methods.each do |method|
-      next if method == :glob
-
       it "registers an offense when using `#{receiver}.#{method}(Rails.public_path)` (if arity exists)" do
         expect_offense(<<~RUBY, receiver: receiver, method: method)
           %{receiver}.%{method}(Rails.public_path)
@@ -54,7 +52,7 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
       RUBY
 
       expect_correction(<<~RUBY)
-        Rails.root.glob('**/*.rb')
+        Rails.root.glob('**/*.rb').map(&:to_s)
       RUBY
     end
 
@@ -65,7 +63,7 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
       RUBY
 
       expect_correction(<<~RUBY)
-        Rails.root.glob('**/*.rb')
+        Rails.root.glob('**/*.rb').map(&:to_s)
       RUBY
     end
 
@@ -76,7 +74,7 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
       RUBY
 
       expect_correction(<<~'RUBY')
-        Rails.root.glob("**/#{path}/*.rb")
+        Rails.root.glob("**/#{path}/*.rb").map(&:to_s)
       RUBY
     end
 
@@ -87,7 +85,7 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
       RUBY
 
       expect_correction(<<~RUBY)
-        Rails.root.glob('**/*.rb')
+        Rails.root.glob('**/*.rb').map(&:to_s)
       RUBY
     end
 
@@ -103,7 +101,7 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.glob("**/*.rb")
+          Rails.root.glob("**/*.rb").map(&:to_s)
         RUBY
       end
     end
@@ -115,7 +113,7 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
       RUBY
 
       expect_correction(<<~'RUBY')
-        Rails.root.glob("**/#{path}/*.rb")
+        Rails.root.glob("**/#{path}/*.rb").map(&:to_s)
       RUBY
     end
 
@@ -128,10 +126,49 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
       RUBY
 
       expect_correction(<<~'RUBY')
-        Rails.root.glob("db/seeds/#{Rails.env}/*.rb").sort.each do |file|
+        Rails.root.glob("db/seeds/#{Rails.env}/*.rb").map(&:to_s).sort.each do |file|
           load file
         end
       RUBY
+    end
+  end
+
+  {
+    Dir: described_class::DIR_PATHNAMES_RETURNED_METHODS - %i[glob]
+  }.each do |receiver, methods|
+    methods.each do |method|
+      context "when `#{receiver}.#{method}(Rails.root)` is used" do
+        it 'registers an offense' do
+          expect_offense(<<~RUBY, receiver: receiver, method: method)
+            %{receiver}.%{method}(Rails.root)
+            ^{receiver}^^{method}^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#%{method}`.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            Rails.root.#{method}.map(&:to_s)
+          RUBY
+        end
+      end
+    end
+  end
+
+  {
+    File: described_class::FILE_PATHNAME_RETURNED_METHODS,
+    IO: described_class::FILE_PATHNAME_RETURNED_METHODS
+  }.each do |receiver, methods|
+    methods.each do |method|
+      context "when `#{receiver}.#{method}(Rails.root)` is used" do
+        it 'registers an offense' do
+          expect_offense(<<~RUBY, receiver: receiver, method: method)
+            %{receiver}.%{method}(Rails.root)
+            ^{receiver}^^{method}^^^^^^^^^^^^ `Rails.root` is a `Pathname` so you can just append `#%{method}`.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            Rails.root.#{method}.to_s
+          RUBY
+        end
+      end
     end
   end
 
