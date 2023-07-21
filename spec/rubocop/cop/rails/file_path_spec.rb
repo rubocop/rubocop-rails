@@ -17,6 +17,19 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
+    context 'when using File.join with Rails.root and path starting with `/`' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root, '/app/models', '/user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join("app/models/user.rb").to_s
+        RUBY
+      end
+    end
+
     context 'when using ::Rails.root.join with some path strings' do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
@@ -246,7 +259,20 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join('app', 'models').to_s
+          Rails.root.join("app", "models").to_s
+        RUBY
+      end
+    end
+
+    context 'when using File.join with Rails.root and path starting with `/`' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root, '/app/models', '/user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join("app", "models", "user.rb").to_s
         RUBY
       end
     end

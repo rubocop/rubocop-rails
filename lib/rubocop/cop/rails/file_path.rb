@@ -180,6 +180,9 @@ module RuboCop
               side: :right
             )
           )
+          node.arguments.filter(&:str_type?).each do |argument|
+            corrector.replace(argument, argument.value.delete_prefix('/').inspect)
+          end
           corrector.insert_after(node, '.to_s')
         end
 
