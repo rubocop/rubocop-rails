@@ -5,7 +5,13 @@ module RuboCop
     module Rails
       # Checks for places where I18n "lazy" lookup can be used.
       #
-      # @example
+      # This cop has two different enforcement modes. When the EnforcedStyle
+      # is `lazy` (the default), explicit lookups are added as offenses.
+      #
+      # When the EnforcedStyle is `explicit` then lazy lookups are added as
+      # offenses.
+      #
+      # @example EnforcedStyle: lazy (default)
       #   # en.yml
       #   # en:
       #   #   books:
@@ -28,11 +34,29 @@ module RuboCop
       #     end
       #   end
       #
+      # @example EnforcedStyle: explicit
+      #   # bad
+      #   class BooksController < ApplicationController
+      #     def create
+      #       # ...
+      #       redirect_to books_url, notice: t('.success')
+      #     end
+      #   end
+      #
+      #   # good
+      #   class BooksController < ApplicationController
+      #     def create
+      #       # ...
+      #       redirect_to books_url, notice: t('books.create.success')
+      #     end
+      #   end
+      #
       class I18nLazyLookup < Base
+        include ConfigurableEnforcedStyle
         include VisibilityHelp
         extend AutoCorrector
 
-        MSG = 'Use "lazy" lookup for the text used in controllers.'
+        MSG = 'Use %<style>s lookup for the text used in controllers.'
 
         RESTRICT_ON_SEND = %i[translate t].freeze
 
@@ -42,23 +66,45 @@ module RuboCop
 
         def on_send(node)
           translate_call?(node) do |key_node|
-            key = key_node.value
-            return if key.to_s.start_with?('.')
-
-            controller, action = controller_and_action(node)
-            return unless controller && action
-
-            scoped_key = get_scoped_key(key_node, controller, action)
-            return unless key == scoped_key
-
-            add_offense(key_node) do |corrector|
-              unscoped_key = key_node.value.to_s.split('.').last
-              corrector.replace(key_node, "'.#{unscoped_key}'")
+            case style
+            when :lazy
+              handle_lazy_style(node, key_node)
+            when :explicit
+              handle_explicit_style(node, key_node)
             end
           end
         end
 
         private
+
+        def handle_lazy_style(node, key_node)
+          key = key_node.value
+          return if key.to_s.start_with?('.')
+
+          controller, action = controller_and_action(node)
+          return unless controller && action
+
+          scoped_key = get_scoped_key(key_node, controller, action)
+          return unless key == scoped_key
+
+          add_offense(key_node) do |corrector|
+            unscoped_key = key_node.value.to_s.split('.').last
+            corrector.replace(key_node, "'.#{unscoped_key}'")
+          end
+        end
+
+        def handle_explicit_style(node, key_node)
+          key = key_node.value
+          return unless key.to_s.start_with?('.')
+
+          controller, action = controller_and_action(node)
+          return unless controller && action
+
+          scoped_key = get_scoped_key(key_node, controller, action)
+          add_offense(key_node) do |corrector|
+            corrector.replace(key_node, "'#{scoped_key}'")
+          end
+        end
 
         def controller_and_action(node)
           action_node = node.each_ancestor(:def).first
@@ -89,6 +135,10 @@ module RuboCop
                  end
 
           path.delete_suffix('Controller').underscore
+        end
+
+        def message(_range)
+          format(MSG, style: style)
         end
       end
     end
