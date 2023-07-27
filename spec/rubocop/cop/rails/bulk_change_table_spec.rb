@@ -452,32 +452,70 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
     end
 
     context 'mysql2' do
-      let(:yaml) do
-        {
-          'development' => {
-            'adapter' => 'mysql2'
+      context 'with top-level adapter configuration' do
+        let(:yaml) do
+          {
+            'development' => {
+              'adapter' => 'mysql2'
+            }
           }
-        }
+        end
+
+        it_behaves_like 'offense for mysql'
       end
 
-      it_behaves_like 'offense for mysql'
+      context 'with nested adapter configuration' do
+        let(:yaml) do
+          {
+            'development' => {
+              'primary' => {
+                'adapter' => 'mysql2'
+              }
+            }
+          }
+        end
+
+        it_behaves_like 'offense for mysql'
+      end
     end
 
     context 'postgresql' do
-      let(:yaml) do
-        {
-          'development' => {
-            'adapter' => 'postgresql'
+      context 'with top-level adapter configuration' do
+        let(:yaml) do
+          {
+            'development' => {
+              'adapter' => 'postgresql'
+            }
           }
-        }
+        end
+
+        context 'with Rails 5.2', :rails52 do
+          it_behaves_like 'offense for postgresql'
+        end
+
+        context 'with Rails 5.1', :rails51 do
+          it_behaves_like 'no offense for postgresql'
+        end
       end
 
-      context 'with Rails 5.2', :rails52 do
-        it_behaves_like 'offense for postgresql'
-      end
+      context 'with nested adapter configuration' do
+        let(:yaml) do
+          {
+            'development' => {
+              'primary' => {
+                'adapter' => 'postgresql'
+              }
+            }
+          }
+        end
 
-      context 'with Rails 5.1', :rails51 do
-        it_behaves_like 'no offense for postgresql'
+        context 'with Rails 5.2', :rails52 do
+          it_behaves_like 'offense for postgresql'
+        end
+
+        context 'with Rails 5.1', :rails51 do
+          it_behaves_like 'no offense for postgresql'
+        end
       end
     end
 
