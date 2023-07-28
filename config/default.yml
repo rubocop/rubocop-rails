@@ -547,6 +547,10 @@ Rails/I18nLazyLookup:
   Reference: 'https://guides.rubyonrails.org/i18n.html#lazy-lookup'
   Enabled: pending
   VersionAdded: '2.14'
+  EnforcedStyle: lazy
+  SupportedStyles:
+    - lazy
+    - explicit
   Include:
     - 'app/controllers/**/*.rb'
 
