@@ -87,6 +87,28 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
       RUBY
     end
 
+    it 'registers two offenses when two `t.column` have no `comment` option' do
+      expect_offense(<<~RUBY)
+        create_table :users, comment: 'Table' do |t|
+          t.column :column1, :integer
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^ New database column without `comment`.
+          t.column :column2, :integer
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^ New database column without `comment`.
+        end
+      RUBY
+    end
+
+    it 'registers two offenses when two `t.integer` have no `comment` option' do
+      expect_offense(<<~RUBY)
+        create_table :users, comment: 'Table' do |t|
+          t.integer :column1
+          ^^^^^^^^^^^^^^^^^^ New database column without `comment`.
+          t.integer :column2
+          ^^^^^^^^^^^^^^^^^^ New database column without `comment`.
+        end
+      RUBY
+    end
+
     it 'does not register an offense when `t.column` has `comment` option' do
       expect_no_offenses(<<~RUBY)
         create_table :users, comment: 'Table' do |t|
