@@ -336,6 +336,11 @@ Rails/DelegateAllowBlank:
   Enabled: true
   VersionAdded: '0.44'
 
+Rails/DelegatePrivate:
+  Description: 'Use delegate with `private: true` option in private scope.'
+  Enabled: true
+  VersionAdded: '2.20'
+
 Rails/DeprecatedActiveModelErrorsMethods:
   Description: 'Avoid manipulating ActiveModel errors hash directly.'
   Enabled: pending
