@@ -125,5 +125,11 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         render :foo, status: :redirect
       RUBY
     end
+
+    it 'does not register an offense when using symbolic value that have no numeric value mapping' do
+      expect_no_offenses(<<~RUBY)
+        render json: { foo: 'bar' }, status: :ng
+      RUBY
+    end
   end
 end
