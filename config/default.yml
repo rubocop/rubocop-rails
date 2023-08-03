@@ -463,10 +463,8 @@ Rails/FindBy:
   StyleGuide: 'https://rails.rubystyle.guide#find_by'
   Enabled: true
   VersionAdded: '0.30'
-  VersionChanged: '2.11'
+  VersionChanged: '<<next>>'
   IgnoreWhereFirst: true
-  Include:
-    - app/models/**/*.rb
 
 Rails/FindById:
   Description: >-
@@ -482,9 +480,7 @@ Rails/FindEach:
   Enabled: true
   Safe: false
   VersionAdded: '0.30'
-  VersionChanged: '2.19'
-  Include:
-    - app/models/**/*.rb
+  VersionChanged: '<<next>>'
   AllowedMethods:
     # Methods that don't work well with `find_each`.
     - order
