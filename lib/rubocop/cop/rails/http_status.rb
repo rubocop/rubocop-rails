@@ -133,7 +133,7 @@ module RuboCop
           end
 
           def offensive?
-            !node.int_type? && !permitted_symbol?
+            !node.int_type? && !permitted_symbol? && number
           end
 
           def message
