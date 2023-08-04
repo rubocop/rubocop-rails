@@ -7,27 +7,29 @@ module RuboCop
     module SchemaLoader
       extend self
 
-      # It parses `db/schema.rb` and return it.
-      # It returns `nil` if it can't find `db/schema.rb`.
+      # It parses schema file at  and return it.
+      # It returns `nil` if it can't find the schema file.
       # So a cop that uses the loader should handle `nil` properly.
+      # @param target_ruby_version [String] The target Ruby version
+      # @param schema_path [String] The path to the schema file, defaults to `db/schema.rb`
       #
       # @return [Schema, nil]
-      def load(target_ruby_version)
+      def load(target_ruby_version, schema_path = 'db/schema.rb')
         return @load if defined?(@load)
 
+        @schema_path = schema_path
         @load = load!(target_ruby_version)
       end
 
       def reset!
-        return unless instance_variable_defined?(:@load)
-
-        remove_instance_variable(:@load)
+        remove_instance_variable(:@schema_path) if instance_variable_defined?(:@schema_path)
+        remove_instance_variable(:@load) if instance_variable_defined?(:@load)
       end
 
       def db_schema_path
         path = Pathname.pwd
         until path.root?
-          schema_path = path.join('db/schema.rb')
+          schema_path = path.join(@schema_path || 'db/schema.rb')
           return schema_path if schema_path.exist?
 
           path = path.join('../').cleanpath

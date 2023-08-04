@@ -6399,6 +6399,10 @@ end
 | Include
 | `+app/models/**/*.rb+`
 | Array
+
+| SchemaPath
+| `db/schema.rb`
+| String
 |===
 
 == Rails/Validation
