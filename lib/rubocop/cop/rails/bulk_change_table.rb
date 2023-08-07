@@ -181,12 +181,16 @@ module RuboCop
         def database_from_yaml
           return nil unless database_yaml
 
-          case database_yaml['adapter']
+          case database_adapter
           when 'mysql2'
             MYSQL
           when 'postgresql'
             POSTGRESQL
           end
+        end
+
+        def database_adapter
+          database_yaml['adapter'] || database_yaml.first.last['adapter']
         end
 
         def database_yaml
