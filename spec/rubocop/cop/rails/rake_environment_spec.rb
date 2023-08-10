@@ -40,6 +40,19 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment, :config do
     RUBY
   end
 
+  it 'registers an offense for a task with arguments' do
+    expect_offense(<<~RUBY)
+      task :foo, [:arg] do
+      ^^^^^^^^^^^^^^^^^ Include `:environment` task as a dependency for all Rake tasks.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      task :foo, [:arg] => :environment do
+      end
+    RUBY
+  end
+
   it 'does not register an offense to task with :environment but it has other dependency before it' do
     expect_no_offenses(<<~RUBY)
       task foo: [:bar, `:environment`] do
