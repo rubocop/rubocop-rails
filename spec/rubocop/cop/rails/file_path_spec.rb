@@ -64,6 +64,14 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
+    context 'when string interpolated `Rails.root` is followed by a message starting with `.`' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root}. a message"
+        RUBY
+      end
+    end
+
     context 'when using string interpolation without Rails.root' do
       it 'does not register an offense' do
         expect_no_offenses(<<~'RUBY')
