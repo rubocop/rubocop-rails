@@ -61,6 +61,18 @@ Lint/RedundantSafeNavigation:
     - presence
     - present?
 
+Lint/SafeNavigationChain:
+  # Add `presence_in` method to the default of the RuboCop core:
+  # https://github.com/rubocop/rubocop/blob/v1.56.0/config/default.yml#L2265-L2271
+  AllowedMethods:
+    - present?
+    - blank?
+    - presence
+    - presence_in
+    - try
+    - try!
+    - in?
+
 Rails:
   Enabled: true
   DocumentationBaseURL: https://docs.rubocop.org/rubocop-rails
