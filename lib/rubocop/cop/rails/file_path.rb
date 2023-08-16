@@ -233,7 +233,7 @@ module RuboCop
         end
 
         def extension_node?(node)
-          node&.str_type? && node.source.start_with?('.')
+          node&.str_type? && node.source.match?(/\A\.[A-Za-z]+/)
         end
       end
     end
