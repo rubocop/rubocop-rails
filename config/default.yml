@@ -1083,6 +1083,8 @@ Rails/TransactionExitStatement:
     - https://github.com/rails/rails/commit/15aa4200e083
   Enabled: pending
   VersionAdded: '2.14'
+  AllowedMethods: []
+  AllowedPatterns: []
 
 Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'

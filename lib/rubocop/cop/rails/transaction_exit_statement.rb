@@ -50,12 +50,28 @@ module RuboCop
       #     # Commit
       #     next if user.active?
       #   end
+      #
+      # @example AllowedMethods: ["custom_transaction"]
+      #   # bad
+      #   CustomModel.custom_transaction do
+      #     return if user.active?
+      #   end
+      #
+      # @example AllowedPatterns: ["_transaction$"]
+      #   # bad
+      #   CustomModel.other_transaction do
+      #     return if user.active?
+      #   end
+      #
       class TransactionExitStatement < Base
+        include AllowedMethods
+        include AllowedPattern
+
         MSG = <<~MSG.chomp
           Exit statement `%<statement>s` is not allowed. Use `raise` (rollback) or `next` (commit).
         MSG
 
-        RESTRICT_ON_SEND = %i[transaction with_lock].freeze
+        TRANSACTION_METHODS = %i[transaction with_lock].freeze
 
         def_node_search :exit_statements, <<~PATTERN
           ({return | break | send nil? :throw} ...)
@@ -69,11 +85,14 @@ module RuboCop
           )
         PATTERN
 
-        def on_send(node)
-          return unless (parent = node.parent)
-          return unless parent.block_type? && parent.body
+        def_node_matcher :transaction_method?, <<~PATTERN
+          (send _ {#allowed_method_name?} ...)
+        PATTERN
 
-          exit_statements(parent.body).each do |statement_node|
+        def on_send(node)
+          return unless in_transaction_block?(node)
+
+          exit_statements(node.parent.body).each do |statement_node|
             next if statement_node.break_type? && nested_block?(statement_node)
 
             statement = statement(statement_node)
@@ -84,6 +103,13 @@ module RuboCop
         end
 
         private
+
+        def in_transaction_block?(node)
+          return false unless transaction_method?(node)
+          return false unless (parent = node.parent)
+
+          parent.block_type? && parent.body
+        end
 
         def statement(statement_node)
           if statement_node.return_type?
@@ -96,9 +122,12 @@ module RuboCop
         end
 
         def nested_block?(statement_node)
-          block_node = statement_node.ancestors.find(&:block_type?)
+          name = statement_node.ancestors.find(&:block_type?).children.first.method_name
+          !allowed_method_name?(name)
+        end
 
-          RESTRICT_ON_SEND.none? { |name| block_node.method?(name) }
+        def allowed_method_name?(name)
+          TRANSACTION_METHODS.include?(name) || allowed_method?(name) || matches_allowed_pattern?(name)
         end
       end
     end

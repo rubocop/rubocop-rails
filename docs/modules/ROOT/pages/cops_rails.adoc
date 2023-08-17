@@ -6190,6 +6190,20 @@ ApplicationRecord.transaction do
 end
 ----
 
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| AllowedMethods
+| `[]`
+| Array
+
+| AllowedPatterns
+| `[]`
+| Array
+|===
+
 === References
 
 * https://github.com/rails/rails/commit/15aa4200e083
