@@ -308,6 +308,11 @@ Rails/CreateTableWithTimestamps:
     - db/**/*_create_active_storage_tables.active_storage.rb
     - db/**/*_create_active_storage_variant_records.active_storage.rb
 
+Rails/CurrentAttributesInstanceVariable:
+  Description: 'Do not use instance variables in instances of CurrentAttributes.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/Date:
   Description: >-
                   Checks the correct usage of date aware methods,
