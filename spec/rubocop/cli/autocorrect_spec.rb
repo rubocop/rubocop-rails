@@ -25,6 +25,17 @@ RSpec.describe 'RuboCop::CLI --autocorrect', :isolated_environment do # rubocop:
     RUBY
   end
 
+  it 'corrects `Rails/NegateInclude,` with `Style/InverseMethods`' do
+    create_file('example.rb', <<~RUBY)
+      array.select { |item| !do_something.include?(item) }
+    RUBY
+
+    expect(cli.run(['-A', '--only', 'Rails/NegateInclude,Style/InverseMethods'])).to eq(0)
+    expect(File.read('example.rb')).to eq(<<~RUBY)
+      array.reject { |item| do_something.include?(item) }
+    RUBY
+  end
+
   it 'corrects `Rails/SafeNavigation` with `Style/RedundantSelf`' do
     create_file('.rubocop.yml', <<~YAML)
       Rails/SafeNavigation:
