@@ -1039,6 +1039,11 @@ Rails/ThreeStateBooleanColumn:
   Include:
     - db/**/*.rb
 
+Rails/TimeUnitNumberForm:
+  Description: 'Checks the usage of singular and plural method forms for time units.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/TimeZone:
   Description: 'Checks the correct usage of time zone aware methods.'
   StyleGuide: 'https://rails.rubystyle.guide#time'
