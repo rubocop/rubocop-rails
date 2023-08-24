@@ -308,6 +308,14 @@ Rails/CreateTableWithTimestamps:
     - db/**/*_create_active_storage_tables.active_storage.rb
     - db/**/*_create_active_storage_variant_records.active_storage.rb
 
+Rails/DangerousColumnNames:
+  Description: >-
+                  Avoid dangerous column names.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  Include:
+    - 'db/**/*.rb'
+
 Rails/Date:
   Description: >-
                   Checks the correct usage of date aware methods,
