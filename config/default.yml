@@ -312,6 +312,7 @@ Rails/DangerousColumnNames:
   Description: >-
                   Avoid dangerous column names.
   Enabled: pending
+  Severity: warning
   VersionAdded: '<<next>>'
   Include:
     - 'db/**/*.rb'
