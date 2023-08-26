@@ -13,6 +13,8 @@ module RuboCop
       # error when rollback is desired, and to use `next` when commit is
       # desired.
       #
+      # If you are defining custom transaction methods, you can configure it with `TransactionMethods`.
+      #
       # @example
       #   # bad
       #   ApplicationRecord.transaction do
@@ -51,27 +53,15 @@ module RuboCop
       #     next if user.active?
       #   end
       #
-      # @example AllowedMethods: ["custom_transaction"]
+      # @example TransactionMethods: ["custom_transaction"]
       #   # bad
       #   CustomModel.custom_transaction do
       #     return if user.active?
       #   end
       #
-      # @example AllowedPatterns: ["_transaction$"]
-      #   # bad
-      #   CustomModel.other_transaction do
-      #     return if user.active?
-      #   end
-      #
       class TransactionExitStatement < Base
-        include AllowedMethods
-        include AllowedPattern
-
-        MSG = <<~MSG.chomp
-          Exit statement `%<statement>s` is not allowed. Use `raise` (rollback) or `next` (commit).
-        MSG
-
-        TRANSACTION_METHODS = %i[transaction with_lock].freeze
+        MSG = 'Exit statement `%<statement>s` is not allowed. Use `raise` (rollback) or `next` (commit).'
+        BUILT_IN_TRANSACTION_METHODS = %i[transaction with_lock].freeze
 
         def_node_search :exit_statements, <<~PATTERN
           ({return | break | send nil? :throw} ...)
@@ -83,10 +73,6 @@ module RuboCop
             ({return | break | send nil? :throw} ...)
             ...
           )
-        PATTERN
-
-        def_node_matcher :transaction_method?, <<~PATTERN
-          (send _ {#allowed_method_name?} ...)
         PATTERN
 
         def on_send(node)
@@ -105,7 +91,7 @@ module RuboCop
         private
 
         def in_transaction_block?(node)
-          return false unless transaction_method?(node)
+          return false unless transaction_method_name?(node.method_name)
           return false unless (parent = node.parent)
 
           parent.block_type? && parent.body
@@ -123,11 +109,15 @@ module RuboCop
 
         def nested_block?(statement_node)
           name = statement_node.ancestors.find(&:block_type?).children.first.method_name
-          !allowed_method_name?(name)
+          !transaction_method_name?(name)
         end
 
-        def allowed_method_name?(name)
-          TRANSACTION_METHODS.include?(name) || allowed_method?(name) || matches_allowed_pattern?(name)
+        def transaction_method_name?(method_name)
+          BUILT_IN_TRANSACTION_METHODS.include?(method_name) || transaction_method?(method_name)
+        end
+
+        def transaction_method?(method_name)
+          cop_config.fetch('TransactionMethods', []).include?(method_name.to_s)
         end
       end
     end
