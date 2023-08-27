@@ -109,15 +109,9 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
   it_behaves_like 'flags transaction exit statements', :transaction
   it_behaves_like 'flags transaction exit statements', :with_lock
 
-  context 'when `AllowedMethods: [writable_transaction]`' do
-    let(:cop_config) { { 'AllowedMethods' => %w[writable_transaction] } }
+  context 'when `TransactionMethods: [writable_transaction]`' do
+    let(:cop_config) { { 'TransactionMethods' => %w[writable_transaction] } }
 
     it_behaves_like 'flags transaction exit statements', :writable_transaction
-  end
-
-  context 'when `AllowedPatterns: [transaction]`' do
-    let(:cop_config) { { 'AllowedPatterns' => %w[transaction] } }
-
-    it_behaves_like 'flags transaction exit statements', :foo_transaction
   end
 end
