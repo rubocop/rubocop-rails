@@ -12,7 +12,7 @@ module RuboCop
       # `Style/FileRead`, `Style/FileWrite` and `Rails/RootJoinChain`.
       #
       # @safety
-      #   This cop is unsafe for autocorrection because `Dir`'s `children`, `each_child`, `entries`, and `glob`
+      #   This cop is unsafe for autocorrection because ``Dir``'s `children`, `each_child`, `entries`, and `glob`
       #   methods return string element, but these methods of `Pathname` return `Pathname` element.
       #
       # @example
