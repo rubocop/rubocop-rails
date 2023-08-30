@@ -39,7 +39,6 @@ module RuboCop
       #   # bad
       #   User.exists?(name: 'john')
       #   User.exists?(['name = ?', 'john'])
-      #   User.exists?('name = ?', 'john')
       #   user.posts.exists?(published: true)
       #
       #   # good
