@@ -3,8 +3,8 @@
 module RuboCop
   module Cop
     module Rails
-      # Using `ActionController::TestCase`` is discouraged and should be replaced by
-      # `ActionDispatch::IntegrationTest``. Controller tests are too close to the
+      # Using `ActionController::TestCase` is discouraged and should be replaced by
+      # `ActionDispatch::IntegrationTest`. Controller tests are too close to the
       # internals of a controller whereas integration tests mimic the browser/user.
       #
       # @safety
