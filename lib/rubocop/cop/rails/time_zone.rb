@@ -21,6 +21,7 @@ module RuboCop
       #   # bad
       #   Time.now
       #   Time.parse('2015-03-02T19:05:37')
+      #   '2015-03-02T19:05:37'.to_time
       #
       #   # good
       #   Time.current
@@ -44,18 +45,16 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Do not use `%<current>s` without zone. Use `%<prefer>s` instead.'
-
         MSG_ACCEPTABLE = 'Do not use `%<current>s` without zone. Use one of %<prefer>s instead.'
-
         MSG_LOCALTIME = 'Do not use `Time.localtime` without offset or zone.'
+        MSG_STRING_TO_TIME = 'Do not use `String#to_time` without zone. Use `Time.zone.parse` instead.'
 
         GOOD_METHODS = %i[zone zone_default find_zone find_zone!].freeze
-
         DANGEROUS_METHODS = %i[now local new parse at].freeze
-
         ACCEPTED_METHODS = %i[in_time_zone utc getlocal xmlschema iso8601 jisx0301 rfc3339 httpdate to_i to_f].freeze
-
         TIMEZONE_SPECIFIER = /([A-Za-z]|[+-]\d{2}:?\d{2})\z/.freeze
+
+        RESTRICT_ON_SEND = %i[to_time].freeze
 
         def on_const(node)
           mod, klass = *node
@@ -64,6 +63,14 @@ module RuboCop
           return unless (mod.nil? || mod.cbase_type?) && method_send?(node)
 
           check_time_node(klass, node.parent) if klass == :Time
+        end
+
+        def on_send(node)
+          return if !node.receiver&.str_type? || !node.method?(:to_time)
+
+          add_offense(node.loc.selector, message: MSG_STRING_TO_TIME) do |corrector|
+            autocorrect(corrector, node)
+          end
         end
 
         private
