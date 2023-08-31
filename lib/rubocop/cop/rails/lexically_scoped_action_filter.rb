@@ -122,24 +122,23 @@ module RuboCop
           parent = node.each_ancestor(:class, :module).first
           return unless parent
 
+          # NOTE: a `:begin` node may not exist if the class/module consists of a single statement
           block = parent.each_child_node(:begin).first
-          return unless block
-
           defined_action_methods = defined_action_methods(block)
 
-          methods = array_values(methods_node).reject do |method|
-            defined_action_methods.include?(method)
-          end
+          unmatched_methods = array_values(methods_node) - defined_action_methods
+          return if unmatched_methods.empty?
 
-          message = message(methods, parent)
-          add_offense(node, message: message) unless methods.empty?
+          message = message(unmatched_methods, parent)
+          add_offense(node, message: message)
         end
 
         private
 
         def defined_action_methods(block)
-          defined_methods = block.each_child_node(:def).map(&:method_name)
+          return [] unless block
 
+          defined_methods = block.each_child_node(:def).map(&:method_name)
           defined_methods + aliased_action_methods(block, defined_methods)
         end
 
