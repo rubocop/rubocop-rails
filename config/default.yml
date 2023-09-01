@@ -983,6 +983,12 @@ Rails/ScopeArgs:
   Include:
     - app/models/**/*.rb
 
+Rails/SelectMap:
+  Description: 'Checks for uses of `select(:column_name)` with `map(&:column_name)`.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Rails/ShortI18n:
   Description: 'Use the short form of the I18n methods: `t` instead of `translate` and `l` instead of `localize`.'
   StyleGuide: 'https://rails.rubystyle.guide/#short-i18n'
