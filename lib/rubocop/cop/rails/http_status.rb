@@ -8,6 +8,7 @@ module RuboCop
       # @example EnforcedStyle: symbolic (default)
       #   # bad
       #   render :foo, status: 200
+      #   render :foo, status: '200'
       #   render json: { foo: 'bar' }, status: 200
       #   render plain: 'foo/bar', status: 304
       #   redirect_to root_url, status: 301
@@ -50,7 +51,7 @@ module RuboCop
         PATTERN
 
         def_node_matcher :status_code, <<~PATTERN
-          (hash <(pair (sym :status) ${int sym}) ...>)
+          (hash <(pair (sym :status) ${int sym str}) ...>)
         PATTERN
 
         def on_send(node)
@@ -108,7 +109,7 @@ module RuboCop
           private
 
           def symbol
-            ::Rack::Utils::SYMBOL_TO_STATUS_CODE.key(number)
+            ::Rack::Utils::SYMBOL_TO_STATUS_CODE.key(number.to_i)
           end
 
           def number
