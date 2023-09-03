@@ -61,20 +61,20 @@ RSpec.describe RuboCop::Config do
                   remote: https://rubygems.org/
                   specs:
                     actionmailer (4.1.0)
-                    actionpack (= 4.1.0)
-                    actionview (= 4.1.0)
-                    mail (~> 2.5.4)
-                  rails (4.1.0)
-                    actionmailer (= 4.1.0)
-                    actionpack (= 4.1.0)
-                    actionview (= 4.1.0)
-                    activemodel (= 4.1.0)
-                    activerecord (= 4.1.0)
-                    activesupport (= 4.1.0)
-                    bundler (>= 1.3.0, < 2.0)
-                    railties (= 4.1.0)
-                    sprockets-rails (~> 2.0)
-                  railties (4.1.0)
+                    actionpack (4.1.0)
+                    actionview (4.1.0)
+                    mail (2.5.4)
+                    rails (4.1.0)
+                      actionmailer (= 4.1.0)
+                      actionpack (= 4.1.0)
+                      actionview (= 4.1.0)
+                      activemodel (= 4.1.0)
+                      activerecord (= 4.1.0)
+                      activesupport (= 4.1.0)
+                      bundler (>= 1.3.0, < 2.0)
+                      railties (= 4.1.0)
+                      sprockets-rails (~> 2.0)
+                    railties (4.1.0)
 
                 PLATFORMS
                   ruby
@@ -96,20 +96,20 @@ RSpec.describe RuboCop::Config do
                   remote: https://rubygems.org/
                   specs:
                     actionmailer (4.1.0)
-                    actionpack (= 4.1.0)
-                    actionview (= 4.1.0)
-                    mail (~> 2.5.4)
-                  rails (400.33.22)
-                    actionmailer (= 4.1.0)
-                    actionpack (= 4.1.0)
-                    actionview (= 4.1.0)
-                    activemodel (= 4.1.0)
-                    activerecord (= 4.1.0)
-                    activesupport (= 4.1.0)
-                    bundler (>= 1.3.0, < 2.0)
-                    railties (= 4.1.0)
-                    sprockets-rails (~> 2.0)
-                  railties (400.33.22)
+                    actionpack (4.1.0)
+                    actionview (4.1.0)
+                    mail (2.5.4)
+                    rails (400.33.22)
+                      actionmailer (= 4.1.0)
+                      actionpack (= 4.1.0)
+                      actionview (= 4.1.0)
+                      activemodel (= 4.1.0)
+                      activerecord (= 4.1.0)
+                      activesupport (= 4.1.0)
+                      bundler (>= 1.3.0, < 2.0)
+                      railties (= 4.1.0)
+                      sprockets-rails (~> 2.0)
+                    railties (400.33.22)
 
                 PLATFORMS
                   ruby
@@ -131,9 +131,9 @@ RSpec.describe RuboCop::Config do
                   remote: https://rubygems.org/
                   specs:
                     actionmailer (4.1.0)
-                    actionpack (= 4.1.0)
-                    actionview (= 4.1.0)
-                    mail (~> 2.5.4)
+                    actionpack (4.1.0)
+                    actionview (4.1.0)
+                    mail (2.5.4)
 
                 PLATFORMS
                   ruby
