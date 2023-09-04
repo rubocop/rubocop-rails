@@ -1204,6 +1204,14 @@ Style/FormatStringToken:
   AllowedMethods:
     - redirect
 
+Style/InvertibleUnlessCondition:
+  InverseMethods:
+    # Active Support defines some common inverse methods. They are listed below:
+    :present?: :blank?
+    :blank?: :present?
+    :include?: :exclude?
+    :exclude?: :include?
+
 Style/SymbolProc:
   AllowedMethods:
     - define_method
