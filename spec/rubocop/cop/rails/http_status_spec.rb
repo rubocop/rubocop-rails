@@ -39,6 +39,17 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
       RUBY
     end
 
+    it 'registers an offense and corrects using numeric string value' do
+      expect_offense(<<~RUBY)
+        render :foo, status: '200'
+                             ^^^^^ Prefer `:ok` over `200` to define HTTP status code.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        render :foo, status: :ok
+      RUBY
+    end
+
     it 'does not register an offense when using symbolic value' do
       expect_no_offenses(<<~RUBY)
         render :foo, status: :ok
