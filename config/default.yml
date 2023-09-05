@@ -861,6 +861,12 @@ Rails/RelativeDateConstant:
   VersionAdded: '0.48'
   VersionChanged: '2.13'
 
+Rails/RelativeDateGrammar:
+  Description: 'Use ActiveSupport::Duration as a receiver for a relative date like `1.day.since(Time.current)`.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Rails/RenderInline:
   Description: 'Prefer using a template over inline rendering.'
   StyleGuide: 'https://rails.rubystyle.guide/#inline-rendering'
