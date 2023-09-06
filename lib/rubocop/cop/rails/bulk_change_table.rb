@@ -12,7 +12,8 @@ module RuboCop
       # The `bulk` option is only supported on the MySQL and
       # the PostgreSQL (5.2 later) adapter; thus it will
       # automatically detect an adapter from `development` environment
-      # in `config/database.yml` when the `Database` option is not set.
+      # in `config/database.yml` or the environment variable `DATABASE_URL`
+      # when the `Database` option is not set.
       # If the adapter is not `mysql2` or `postgresql`,
       # this Cop ignores offenses.
       #
@@ -175,7 +176,7 @@ module RuboCop
         end
 
         def database
-          cop_config['Database'] || database_from_yaml
+          cop_config['Database'] || database_from_yaml || database_from_env
         end
 
         def database_from_yaml
@@ -209,6 +210,18 @@ module RuboCop
           config
         rescue Psych::SyntaxError
           nil
+        end
+
+        def database_from_env
+          url = ENV['DATABASE_URL'].presence
+          return nil unless url
+
+          case url
+          when %r{\Amysql2://}
+            MYSQL
+          when %r{\Apostgres(ql)?://}
+            POSTGRESQL
+          end
         end
 
         def support_bulk_alter?
