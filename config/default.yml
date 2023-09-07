@@ -1155,6 +1155,12 @@ Rails/UnusedIgnoredColumns:
   Include:
     - app/models/**/*.rb
 
+Rails/UnusedRenderContent:
+  Description: 'Do not specify body content for a response with a non-content status code.'
+  Enabled: pending
+  Severity: warning
+  VersionAdded: '<<next>>'
+
 Rails/Validation:
   Description: 'Use validates :attribute, hash of validations.'
   Enabled: true
