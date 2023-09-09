@@ -313,7 +313,7 @@ Rails/DangerousColumnNames:
                   Avoid dangerous column names.
   Enabled: pending
   Severity: warning
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.21'
   Include:
     - 'db/**/*.rb'
 
@@ -484,7 +484,7 @@ Rails/FindBy:
   StyleGuide: 'https://rails.rubystyle.guide#find_by'
   Enabled: true
   VersionAdded: '0.30'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.21'
   IgnoreWhereFirst: true
 
 Rails/FindById:
@@ -501,7 +501,7 @@ Rails/FindEach:
   Enabled: true
   Safe: false
   VersionAdded: '0.30'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.21'
   AllowedMethods:
     # Methods that don't work well with `find_each`.
     - order
@@ -801,7 +801,7 @@ Rails/RedundantActiveRecordAllMethod:
   StyleGuide: 'https://rails.rubystyle.guide/#redundant-all'
   Enabled: pending
   Safe: false
-  VersionAdded: "<<next>>"
+  VersionAdded: '2.21'
 
 Rails/RedundantAllowNil:
   Description: >-
@@ -987,7 +987,7 @@ Rails/SelectMap:
   Description: 'Checks for uses of `select(:column_name)` with `map(&:column_name)`.'
   Enabled: pending
   Safe: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.21'
 
 Rails/ShortI18n:
   Description: 'Use the short form of the I18n methods: `t` instead of `translate` and `l` instead of `localize`.'
@@ -1159,7 +1159,7 @@ Rails/UnusedRenderContent:
   Description: 'Do not specify body content for a response with a non-content status code.'
   Enabled: pending
   Severity: warning
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.21'
 
 Rails/Validation:
   Description: 'Use validates :attribute, hash of validations.'

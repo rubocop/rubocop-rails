@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.21.0 (2023-09-09)
+
 ### New features
 
 * [#1075](https://github.com/rubocop/rubocop-rails/issues/1075): Add new `Rails/SelectMap` cop that checks for uses of `select(:column_name)` with `map(&:column_name)`. ([@koic][])

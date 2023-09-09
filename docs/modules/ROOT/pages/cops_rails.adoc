@@ -53,8 +53,8 @@ end
 | -
 |===
 
-Using `ActionController::TestCase`` is discouraged and should be replaced by
-`ActionDispatch::IntegrationTest``. Controller tests are too close to the
+Using `ActionController::TestCase` is discouraged and should be replaced by
+`ActionDispatch::IntegrationTest`. Controller tests are too close to the
 internals of a controller whereas integration tests mimic the browser/user.
 
 === Safety
@@ -972,7 +972,8 @@ ALTER TABLE statement combining multiple column alterations.
 The `bulk` option is only supported on the MySQL and
 the PostgreSQL (5.2 later) adapter; thus it will
 automatically detect an adapter from `development` environment
-in `config/database.yml` when the `Database` option is not set.
+in `config/database.yml` or the environment variable `DATABASE_URL`
+when the `Database` option is not set.
 If the adapter is not `mysql2` or `postgresql`,
 this Cop ignores offenses.
 
@@ -1219,6 +1220,47 @@ end
 
 | Exclude
 | `+db/**/*_create_active_storage_tables.active_storage.rb+`, `+db/**/*_create_active_storage_variant_records.active_storage.rb+`
+| Array
+|===
+
+== Rails/DangerousColumnNames
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| No
+| 2.21
+| -
+|===
+
+Avoid dangerous column names.
+
+Some column names are considered dangerous because they would overwrite methods already defined.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+add_column :users, :save
+
+# good
+add_column :users, :saved
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
+
+| Include
+| `+db/**/*.rb+`
 | Array
 |===
 
@@ -2163,7 +2205,7 @@ Rails.root.join('app', 'models', 'goober').to_s
 | Yes
 | Yes
 | 0.30
-| 2.11
+| 2.21
 |===
 
 Identifies usages of `where.take` and change them to use `find_by` instead.
@@ -2208,10 +2250,6 @@ User.where(name: 'Bruce').first
 | IgnoreWhereFirst
 | `true`
 | Boolean
-
-| Include
-| `+app/models/**/*.rb+`
-| Array
 |===
 
 === References
@@ -2260,7 +2298,7 @@ User.find(id)
 | No
 | Yes (Unsafe)
 | 0.30
-| 2.19
+| 2.21
 |===
 
 Identifies usages of `all.each` and change them to use `all.find_each` instead.
@@ -2302,10 +2340,6 @@ User.order(:foo).each
 
 |===
 | Name | Default value | Configurable values
-
-| Include
-| `+app/models/**/*.rb+`
-| Array
 
 | AllowedMethods
 | `order`, `limit`, `select`, `lock`
@@ -2582,6 +2616,7 @@ Enforces use of symbolic or numeric value to define HTTP status.
 ----
 # bad
 render :foo, status: 200
+render :foo, status: '200'
 render json: { foo: 'bar' }, status: 200
 render plain: 'foo/bar', status: 304
 redirect_to root_url, status: 301
@@ -2638,7 +2673,15 @@ head 200
 
 Checks for places where I18n "lazy" lookup can be used.
 
+This cop has two different enforcement modes. When the EnforcedStyle
+is `lazy` (the default), explicit lookups are added as offenses.
+
+When the EnforcedStyle is `explicit` then lazy lookups are added as
+offenses.
+
 === Examples
+
+==== EnforcedStyle: lazy (default)
 
 [source,ruby]
 ----
@@ -2665,10 +2708,35 @@ class BooksController < ApplicationController
 end
 ----
 
+==== EnforcedStyle: explicit
+
+[source,ruby]
+----
+# bad
+class BooksController < ApplicationController
+  def create
+    # ...
+    redirect_to books_url, notice: t('.success')
+  end
+end
+
+# good
+class BooksController < ApplicationController
+  def create
+    # ...
+    redirect_to books_url, notice: t('books.create.success')
+  end
+end
+----
+
 === Configurable attributes
 
 |===
 | Name | Default value | Configurable values
+
+| EnforcedStyle
+| `lazy`
+| `lazy`, `explicit`
 
 | Include
 | `+app/controllers/**/*.rb+`
@@ -4221,6 +4289,45 @@ end
 
 * https://rails.rubystyle.guide#read-attribute
 
+== Rails/RedundantActiveRecordAllMethod
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| Yes (Unsafe)
+| 2.21
+| -
+|===
+
+Detect redundant `all` used as a receiver for Active Record query methods.
+
+=== Safety
+
+This cop is unsafe for autocorrection if the receiver for `all` is not an Active Record object.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+User.all.find(id)
+User.all.order(:created_at)
+users.all.where(id: ids)
+user.articles.all.order(:created_at)
+
+# good
+User.find(id)
+User.order(:created_at)
+users.where(id: ids)
+user.articles.order(:created_at)
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#redundant-all
+
 == Rails/RedundantAllowNil
 
 |===
@@ -5149,7 +5256,7 @@ This cop works best when used together with
 
 === Safety
 
-This cop is unsafe for autocorrection because `Dir`'s `children`, `each_child`, `entries`, and `glob`
+This cop is unsafe for autocorrection because ``Dir``'s `children`, `each_child`, `entries`, and `glob`
 methods return string element, but these methods of `Pathname` return `Pathname` element.
 
 === Examples
@@ -5540,6 +5647,39 @@ scope :something, -> { where(something: true) }
 | Array
 |===
 
+== Rails/SelectMap
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| Yes (Unsafe)
+| 2.21
+| -
+|===
+
+Checks for uses of `select(:column_name)` with `map(&:column_name)`.
+These can be replaced with `pluck(:column_name)`.
+
+There also should be some performance improvement since it skips instantiating the model class for matches.
+
+=== Safety
+
+This cop is unsafe because the model might override the attribute getter.
+Additionally, the model's `after_initialize` hooks are skipped when using `pluck`.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+Model.select(:column_name).map(&:column_name)
+
+# good
+Model.pluck(:column_name)
+----
+
 == Rails/ShortI18n
 
 |===
@@ -5911,6 +6051,7 @@ This cop's autocorrection is unsafe because it may change handling time.
 # bad
 Time.now
 Time.parse('2015-03-02T19:05:37')
+'2015-03-02T19:05:37'.to_time
 
 # good
 Time.current
@@ -6148,6 +6289,8 @@ As alternatives, it would be more intuitive to explicitly raise an
 error when rollback is desired, and to use `next` when commit is
 desired.
 
+If you are defining custom transaction methods, you can configure it with `TransactionMethods`.
+
 === Examples
 
 [source,ruby]
@@ -6190,16 +6333,22 @@ ApplicationRecord.transaction do
 end
 ----
 
+==== TransactionMethods: ["custom_transaction"]
+
+[source,ruby]
+----
+# bad
+CustomModel.custom_transaction do
+  return if user.active?
+end
+----
+
 === Configurable attributes
 
 |===
 | Name | Default value | Configurable values
 
-| AllowedMethods
-| `[]`
-| Array
-
-| AllowedPatterns
+| TransactionMethods
 | `[]`
 | Array
 |===
@@ -6415,6 +6564,46 @@ end
 | Array
 |===
 
+== Rails/UnusedRenderContent
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.21
+| -
+|===
+
+If you try to render content along with a non-content status code (100-199, 204, 205, or 304),
+it will be dropped from the response.
+
+This cop checks for uses of `render` which specify both body content and a non-content status.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+render 'foo', status: :continue
+render status: 100, plain: 'Ruby!'
+
+# good
+render status: :continue
+render status: 100
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
+|===
+
 == Rails/Validation
 
 |===
@@ -6571,7 +6760,6 @@ user.posts.exists?(published: true)
 # bad
 User.exists?(name: 'john')
 User.exists?(['name = ?', 'john'])
-User.exists?('name = ?', 'john')
 user.posts.exists?(published: true)
 
 # good
