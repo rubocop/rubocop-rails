@@ -1,1 +1,0 @@
-* [#1094](https://github.com/rubocop/rubocop-rails/issues/1094): Make `Rails/TimeZone` aware of `String#to_time`. ([@koic][])

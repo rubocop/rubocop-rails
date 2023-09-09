@@ -9,6 +9,38 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#1075](https://github.com/rubocop/rubocop-rails/issues/1075): Add new `Rails/SelectMap` cop that checks for uses of `select(:column_name)` with `map(&:column_name)`. ([@koic][])
+* [#158](https://github.com/rubocop/rubocop-rails/issues/158): Add `Rails/DangerousColumnNames` cop. ([@r7kamura][])
+* [#1072](https://github.com/rubocop/rubocop-rails/pull/1072): Add `TransactionMethods` config for `Rails/TransactionExitStatement` to detect custom transaction methods. ([@marocchino][])
+* [#967](https://github.com/rubocop/rubocop-rails/issues/967): Add new `Rails/UnusedRenderContent` cop. ([@samrjenkins][])
+* [#1052](https://github.com/rubocop/rubocop-rails/pull/1052): Add explicit style to `Rails/I18nLazyLookup`. ([@sunny][])
+
+### Bug fixes
+
+* [#1078](https://github.com/rubocop/rubocop-rails/issues/1078): Fix a false negative for `Rails/LexicallyScopedActionFilter` when no methods are defined. ([@vlad-pisanov][])
+* [#1060](https://github.com/rubocop/rubocop-rails/issues/1060): Fix a false positive for `Rails/HttpStatus` when using symbolic value that have no numeric value mapping. ([@koic][])
+* [#1004](https://github.com/rubocop/rubocop-rails/pull/1004): Fix a false-positive for `Rails/RootPathnameMethods` on Ruby 2.4 or lower. ([@r7kamura][])
+* [#1016](https://github.com/rubocop/rubocop-rails/issues/1016): Add `Rails/RedundantActiveRecordAllMethod` cop. ([@masato-bkn][])
+* [#1066](https://github.com/rubocop/rubocop-rails/issues/1066): Fix an error for `Rails/FilePath` when string interpolated `Rails.root` is followed by a message starting with `.`. ([@koic][])
+* [#1049](https://github.com/rubocop/rubocop-rails/pull/1049): Fix an incorrect autocorrect for `Rails/FilePath` when File.join with Rails.root and path starting with `/`. ([@ydah][])
+* [#1045](https://github.com/rubocop/rubocop-rails/issues/1045): Fix an incorrect autocorrect for `Rails/NegateInclude` when using `Style/InverseMethods`'s autocorrection together. ([@koic][])
+* [#1062](https://github.com/rubocop/rubocop-rails/issues/1062): Fix autocorrection for `Rails/RakeEnvironment` when rake task accepts arguments. ([@fastjames][])
+* [#1036](https://github.com/rubocop/rubocop-rails/issues/1036): Fix an error for `UniqueValidationWithoutIndex` when `db/schema.rb` is empty. ([@fatkodima][])
+* [#1042](https://github.com/rubocop/rubocop-rails/pull/1042): Fix no offences for `Rails/SchemaComment` when create_table with multi t columns. ([@nipe0324][])
+
+### Changes
+
+* [#1056](https://github.com/rubocop/rubocop-rails/pull/1056): Fix database adapter detection for nested config. ([@mjankowski][])
+* [#1031](https://github.com/rubocop/rubocop-rails/pull/1031): Make `Lint/SafeNavigationChain` allow `presence_in`. ([@koic][])
+* [#1080](https://github.com/rubocop/rubocop-rails/issues/1080): Make `Rails/HttpStatus` aware of string number status. ([@r7kamura][])
+* [#1094](https://github.com/rubocop/rubocop-rails/issues/1094): Make `Rails/TimeZone` aware of `String#to_time`. ([@koic][])
+* [#1015](https://github.com/rubocop/rubocop-rails/issues/1015): Make `Style/InvertibleUnlessCondition` aware of Active Support methods. ([@koic][])
+* [#903](https://github.com/rubocop/rubocop-rails/pull/903): Read database config for `Rails/BulkChangeTable` from environment variable. ([@joergschiller][])
+* [#1058](https://github.com/rubocop/rubocop-rails/issues/1058): Relax `Include` path for `Rails/FindBy` and `Rails/FindEach`. ([@koic][])
+* [#994](https://github.com/rubocop/rubocop-rails/pull/994): Restrict DuplicateAssociation cop to ActiveRecord. ([@mjankowski][])
+
 ## 2.20.2 (2023-06-20)
 
 ### Bug fixes
@@ -894,3 +926,8 @@
 [@masato-bkn]: https://github.com/masato-bkn
 [@splattael]: https://github.com/splattael
 [@samrjenkins]: https://github.com/samrjenkins
+[@mjankowski]: https://github.com/mjankowski
+[@joergschiller]: https://github.com/joergschiller
+[@fastjames]: https://github.com/fastjames
+[@nipe0324]: https://github.com/nipe0324
+[@marocchino]: https://github.com/marocchino
