@@ -260,6 +260,26 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
         RUBY
       end
     end
+
+    context 'when `all` has any parameters, it indicates that it is not an Active Record `all`' do
+      it 'does not register an offense when no method follows `all`' do
+        expect_no_offenses(<<~RUBY)
+          page.all(:parameter)
+        RUBY
+      end
+
+      it 'does not register an offense when method follows `all`' do
+        expect_no_offenses(<<~RUBY)
+          page.all(:parameter).do_something
+        RUBY
+      end
+
+      it 'does not register an offense when method from `ActiveRecord::Querying::QUERYING_METHODS` follows `all`' do
+        expect_no_offenses(<<~RUBY)
+          page.all(:parameter).select(some_filter)
+        RUBY
+      end
+    end
   end
 
   context 'with no receiver' do
