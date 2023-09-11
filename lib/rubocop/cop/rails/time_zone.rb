@@ -69,7 +69,7 @@ module RuboCop
           return if !node.receiver&.str_type? || !node.method?(:to_time)
 
           add_offense(node.loc.selector, message: MSG_STRING_TO_TIME) do |corrector|
-            autocorrect(corrector, node)
+            corrector.replace(node, "Time.zone.parse(#{node.receiver.source})")
           end
         end
 
