@@ -124,19 +124,20 @@ module RuboCop
           update_all
           where
           without
-        ].freeze
+        ].to_set.freeze
+
+        def_node_matcher :followed_by_query_method?, <<~PATTERN
+          (send (send _ :all ...) QUERYING_METHODS ...)
+        PATTERN
 
         def on_send(node)
-          query_node = node.parent
-
-          return unless query_node&.send_type?
-          return unless QUERYING_METHODS.include?(query_node.method_name)
+          return unless followed_by_query_method?(node.parent)
           return if node.receiver.nil? && !inherit_active_record_base?(node)
 
           range_of_all_method = node.loc.selector
           add_offense(range_of_all_method) do |collector|
             collector.remove(range_of_all_method)
-            collector.remove(query_node.loc.dot)
+            collector.remove(node.parent.loc.dot)
           end
         end
       end

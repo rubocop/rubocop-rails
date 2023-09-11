@@ -99,7 +99,7 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
           update_all
           where
           without
-        ]
+        ].to_set
       )
     end
   end
@@ -234,6 +234,31 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
       expect_no_offenses(<<~RUBY)
         User.all.map(&:do_something)
       RUBY
+    end
+
+    context 'when `all` is used as a method parameter' do
+      it 'does not register an offense when no method follows `all`' do
+        expect_no_offenses(<<~RUBY)
+          do_something(User.all)
+        RUBY
+      end
+
+      it 'registers an offense and corrects when `ActiveRecord::Querying::QUERYING_METHODS` follows `all`' do
+        expect_offense(<<~RUBY)
+          do_something(User.all.order(:created_at))
+                            ^^^ Redundant `all` detected.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          do_something(User.order(:created_at))
+        RUBY
+      end
+
+      it 'does not register an offense when method matches `ActiveRecord::Querying::QUERYING_METHODS`' do
+        expect_no_offenses(<<~RUBY)
+          sum(User.all)
+        RUBY
+      end
     end
   end
 
