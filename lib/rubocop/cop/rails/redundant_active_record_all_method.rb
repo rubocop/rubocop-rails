@@ -127,7 +127,7 @@ module RuboCop
         ].to_set.freeze
 
         def_node_matcher :followed_by_query_method?, <<~PATTERN
-          (send (send _ :all ...) QUERYING_METHODS ...)
+          (send (send _ :all) QUERYING_METHODS ...)
         PATTERN
 
         def on_send(node)
