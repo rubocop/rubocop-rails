@@ -129,6 +129,10 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
         "2012-03-02 16:05:37".to_time
                               ^^^^^^^ Do not use `String#to_time` without zone. Use `Time.zone.parse` instead.
       RUBY
+
+      expect_correction(<<~RUBY)
+        Time.zone.parse("2012-03-02 16:05:37")
+      RUBY
     end
 
     it 'does not register an offense for `to_time` without receiver' do
