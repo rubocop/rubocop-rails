@@ -22,6 +22,7 @@ module RuboCop
       #   user.articles.order(:created_at)
       class RedundantActiveRecordAllMethod < Base
         include ActiveRecordHelper
+        include RangeHelp
         extend AutoCorrector
 
         MSG = 'Redundant `all` detected.'
@@ -134,11 +135,17 @@ module RuboCop
           return unless followed_by_query_method?(node.parent)
           return if node.receiver.nil? && !inherit_active_record_base?(node)
 
-          range_of_all_method = node.loc.selector
+          range_of_all_method = offense_range(node)
           add_offense(range_of_all_method) do |collector|
             collector.remove(range_of_all_method)
             collector.remove(node.parent.loc.dot)
           end
+        end
+
+        private
+
+        def offense_range(node)
+          range_between(node.loc.selector.begin_pos, node.source_range.end_pos)
         end
       end
     end

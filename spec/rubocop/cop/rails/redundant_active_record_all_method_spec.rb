@@ -280,6 +280,31 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
         RUBY
       end
     end
+
+    context 'when `all` has parentheses' do
+      it 'does not register an offense when no method follows `all`' do
+        expect_no_offenses(<<~RUBY)
+          User.all()
+        RUBY
+      end
+
+      it 'registers an offense and corrects when method in `ActiveRecord::Querying::QUERYING_METHODS` follows `all`' do
+        expect_offense(<<~RUBY)
+          User.all().order(:created_at)
+               ^^^^^ Redundant `all` detected.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          User.order(:created_at)
+        RUBY
+      end
+
+      it 'does not register an offense when method not in `ActiveRecord::Querying::QUERYING_METHODS` follows `all`' do
+        expect_no_offenses(<<~RUBY)
+          User.all().do_something
+        RUBY
+      end
+    end
   end
 
   context 'with no receiver' do
