@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.21.1 (2023-09-14)
+
 ### Bug fixes
 
 * [#1108](https://github.com/rubocop/rubocop-rails/issues/1108): Fix an incorrect autocorrect for `Rails/TimeZone` when using `String#to_time`. ([@koic][])
