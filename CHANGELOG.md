@@ -9,6 +9,12 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1108](https://github.com/rubocop/rubocop-rails/issues/1108): Fix an incorrect autocorrect for `Rails/TimeZone` when using `String#to_time`. ([@koic][])
+* [#1109](https://github.com/rubocop/rubocop-rails/issues/1109): Fix error for `Rails/RedundantActiveRecordAllMethod` when `all` is an argument for AR methods. ([@masato-bkn][])
+* [#1110](https://github.com/rubocop/rubocop-rails/issues/1110): Fix false positive for `Rails/RedundantActiveRecordAllMethod` when `all` has any parameters. ([@masato-bkn][])
+
 ## 2.21.0 (2023-09-09)
 
 ### New features
