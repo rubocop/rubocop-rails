@@ -173,6 +173,10 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
         expect(entries).to all(match(/^\* \S/))
       end
 
+      it 'has one space between the period and the parentheses enclosing contributor name' do
+        expect(entries).to all(match(/\. \(\[/))
+      end
+
       describe 'link to related issue' do
         let(:issues) do
           entries.filter_map do |entry|
