@@ -14,8 +14,8 @@ module RuboCop
       #   render status: 100, plain: 'Ruby!'
       #
       #   # good
-      #   render status: :continue
-      #   render status: 100
+      #   head :continue
+      #   head 100
       class UnusedRenderContent < Base
         extend AutoCorrector
         include RangeHelp
