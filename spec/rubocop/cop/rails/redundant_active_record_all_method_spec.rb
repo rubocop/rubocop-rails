@@ -388,4 +388,23 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
       RUBY
     end
   end
+
+  context 'with `AllowedReceivers` config' do
+    let(:cop_config) do
+      { 'AllowedReceivers' => %w[ActionMailer::Preview ActiveSupport::TimeZone] }
+    end
+
+    it 'registers an offense when not using allowed receiver' do
+      expect_offense(<<~RUBY)
+        User.all.first
+             ^^^ Redundant `all` detected.
+      RUBY
+    end
+
+    it 'does not register an offense when using allowed receiver' do
+      expect_no_offenses(<<~RUBY)
+        ActiveSupport::TimeZone.all.first
+      RUBY
+    end
+  end
 end

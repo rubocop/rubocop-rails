@@ -20,8 +20,14 @@ module RuboCop
       #   User.order(:created_at)
       #   users.where(id: ids)
       #   user.articles.order(:created_at)
+      #
+      # @example AllowedReceivers: ['ActionMailer::Preview', 'ActiveSupport::TimeZone'] (default)
+      #   # good
+      #   ActionMailer::Preview.all.first
+      #   ActiveSupport::TimeZone.all.first
       class RedundantActiveRecordAllMethod < Base
         include ActiveRecordHelper
+        include AllowedReceivers
         include RangeHelp
         extend AutoCorrector
 
@@ -133,7 +139,7 @@ module RuboCop
 
         def on_send(node)
           return unless followed_by_query_method?(node.parent)
-          return if node.receiver.nil? && !inherit_active_record_base?(node)
+          return if node.receiver ? allowed_receiver?(node.receiver) : !inherit_active_record_base?(node)
 
           range_of_all_method = offense_range(node)
           add_offense(range_of_all_method) do |collector|
