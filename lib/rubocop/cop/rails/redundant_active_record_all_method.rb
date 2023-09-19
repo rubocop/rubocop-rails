@@ -133,12 +133,14 @@ module RuboCop
           without
         ].to_set.freeze
 
+        POSSIBLE_ENUMERABLE_BLOCK_METHODS = %i[any? count find none? one? select sum].freeze
+
         def_node_matcher :followed_by_query_method?, <<~PATTERN
           (send (send _ :all) QUERYING_METHODS ...)
         PATTERN
 
         def on_send(node)
-          return unless followed_by_query_method?(node.parent)
+          return if !followed_by_query_method?(node.parent) || possible_enumerable_block_method?(node)
           return if node.receiver ? allowed_receiver?(node.receiver) : !inherit_active_record_base?(node)
 
           range_of_all_method = offense_range(node)
@@ -149,6 +151,13 @@ module RuboCop
         end
 
         private
+
+        def possible_enumerable_block_method?(node)
+          parent = node.parent
+          return false unless POSSIBLE_ENUMERABLE_BLOCK_METHODS.include?(parent.method_name)
+
+          parent.parent&.block_type? || parent.parent&.numblock_type? || parent.first_argument&.block_pass_type?
+        end
 
         def offense_range(node)
           range_between(node.loc.selector.begin_pos, node.source_range.end_pos)
