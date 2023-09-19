@@ -17,7 +17,6 @@ module RuboCop
       #   render status: :continue
       #   render status: 100
       class UnusedRenderContent < Base
-        extend AutoCorrector
         include RangeHelp
 
         MSG = 'Do not specify body content for a response with a non-content status code'
