@@ -60,6 +60,24 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
           end
         RUBY
       end
+
+      it 'ignores a bare validates directive by itself' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates
+          end
+        RUBY
+      end
+
+      it 'ignores a bare validates directive among others' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates
+            after_commit :foo
+            def foo; true; end
+          end
+        RUBY
+      end
     end
 
     context 'when the table has an index but it is not unique' do
