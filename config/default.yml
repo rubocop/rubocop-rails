@@ -801,6 +801,9 @@ Rails/RedundantActiveRecordAllMethod:
   StyleGuide: 'https://rails.rubystyle.guide/#redundant-all'
   Enabled: pending
   Safe: false
+  AllowedReceivers:
+    - ActionMailer::Preview
+    - ActiveSupport::TimeZone
   VersionAdded: '2.21'
 
 Rails/RedundantAllowNil:
