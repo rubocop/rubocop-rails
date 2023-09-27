@@ -1105,6 +1105,7 @@ Rails/ToSWithArgument:
   Enabled: pending
   Safe: false
   VersionAdded: '2.16'
+  CustomFormatTypes: []
 
 Rails/TopLevelHashWithIndifferentAccess:
   Description: 'Identifies top-level `HashWithIndifferentAccess`.'

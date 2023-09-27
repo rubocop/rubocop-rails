@@ -6227,6 +6227,16 @@ obj.to_s(:delimited)
 obj.to_formatted_s(:delimited)
 ----
 
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| CustomFormatTypes
+| `[]`
+| Array
+|===
+
 == Rails/TopLevelHashWithIndifferentAccess
 
 |===

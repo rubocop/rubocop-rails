@@ -17,6 +17,14 @@ module RuboCop
       #   # good
       #   obj.to_formatted_s(:delimited)
       #
+      # @example CustomFormatTypes: ["custom"]
+      #
+      #   # bad
+      #   obj.to_s(:custom)
+      #
+      #   # good
+      #   obj.to_formatted_s(:custom)
+      #
       class ToSWithArgument < Base
         extend AutoCorrector
         extend TargetRailsVersion
@@ -70,7 +78,15 @@ module RuboCop
         private
 
         def rails_extended_to_s?(node)
-          node.first_argument&.sym_type? && EXTENDED_FORMAT_TYPES.include?(node.first_argument.value)
+          node.first_argument&.sym_type? && extended_format_types.include?(node.first_argument.value)
+        end
+
+        def extended_format_types
+          EXTENDED_FORMAT_TYPES + custom_format_types
+        end
+
+        def custom_format_types
+          Set.new(cop_config.fetch('CustomFormatTypes', []).map(&:to_sym))
         end
       end
     end
