@@ -102,7 +102,7 @@ module RuboCop
       end
 
       # Internal helper class to hold match data
-      Captures = Struct.new(
+      Captures = ::Struct.new(
         :transformed_argname,
         :transforming_body_expr
       ) do
@@ -112,7 +112,7 @@ module RuboCop
       end
 
       # Internal helper class to hold autocorrect data
-      Autocorrection = Struct.new(:match, :block_node, :leading, :trailing) do
+      Autocorrection = ::Struct.new(:match, :block_node, :leading, :trailing) do
         def self.from_each_with_object(node, match)
           new(match, node, 0, 0)
         end
