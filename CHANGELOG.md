@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.21.2 (2023-09-30)
+
 ### Bug fixes
 
 * [#1126](https://github.com/rubocop/rubocop-rails/pull/1126): Fix a false positive for `Rails/RedundantActiveRecordAllMethod` when using some `Enumerable`'s methods with block argument. ([@koic][])

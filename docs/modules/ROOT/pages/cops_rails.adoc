@@ -4324,6 +4324,25 @@ users.where(id: ids)
 user.articles.order(:created_at)
 ----
 
+==== AllowedReceivers: ['ActionMailer::Preview', 'ActiveSupport::TimeZone'] (default)
+
+[source,ruby]
+----
+# good
+ActionMailer::Preview.all.first
+ActiveSupport::TimeZone.all.first
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| AllowedReceivers
+| `ActionMailer::Preview`, `ActiveSupport::TimeZone`
+| Array
+|===
+
 === References
 
 * https://rails.rubystyle.guide/#redundant-all
@@ -6571,7 +6590,7 @@ end
 
 | Pending
 | Yes
-| Yes
+| No
 | 2.21
 | -
 |===
@@ -6590,8 +6609,8 @@ render 'foo', status: :continue
 render status: 100, plain: 'Ruby!'
 
 # good
-render status: :continue
-render status: 100
+head :continue
+head 100
 ----
 
 === Configurable attributes
