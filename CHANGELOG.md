@@ -9,6 +9,14 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1126](https://github.com/rubocop/rubocop-rails/pull/1126): Fix a false positive for `Rails/RedundantActiveRecordAllMethod` when using some `Enumerable`'s methods with block argument. ([@koic][])
+* [#1121](https://github.com/rubocop/rubocop-rails/issues/1121): Fix an error for `Rails/SelectMap` when using `select(:column_name).map(&:column_name)` without receiver model. ([@koic][])
+* [#1119](https://github.com/rubocop/rubocop-rails/issues/1119): Fix an incorrect autocorrect for `Rails/RedundantActiveRecordAllMethod`  when `all` has parentheses. ([@masato-bkn][])
+* [#1130](https://github.com/rubocop/rubocop-rails/issues/1130): Fix crash for `Rails/UniqueValidationWithoutIndex` with bare validate. ([@jamiemccarthy][])
+* [#1124](https://github.com/rubocop/rubocop-rails/issues/1124): Fix false positives for `Rails/RedundantActiveRecordAllMethod` when receiver is not an Active Record model. ([@koic][])
+
 ## 2.21.1 (2023-09-14)
 
 ### Bug fixes
@@ -941,3 +949,4 @@
 [@fastjames]: https://github.com/fastjames
 [@nipe0324]: https://github.com/nipe0324
 [@marocchino]: https://github.com/marocchino
+[@jamiemccarthy]: https://github.com/jamiemccarthy
