@@ -430,6 +430,11 @@ Rails/EnumUniqueness:
   Include:
     - app/models/**/*.rb
 
+Rails/EnvLocal:
+  Description: 'Use `Rails.env.local?` instead of `Rails.env.development? || Rails.env.test?`.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/EnvironmentComparison:
   Description: "Favor `Rails.env.production?` over `Rails.env == 'production'`."
   Enabled: true
