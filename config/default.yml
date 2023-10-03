@@ -338,7 +338,6 @@ Rails/Date:
 
 Rails/DefaultScope:
   Description: 'Avoid use of `default_scope`.'
-  StyleGuide: 'https://rails.rubystyle.guide#avoid-default-scope'
   Enabled: false
   VersionAdded: '2.7'
 
