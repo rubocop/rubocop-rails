@@ -53,6 +53,12 @@ module RuboCop
         #   @example source that matches - by a foreign key
         #     validates :user_id, presence: true
         #
+        #   @example source that DOES NOT match - if condition
+        #     validates :user_id, presence: true, if: condition
+        #
+        #   @example source that DOES NOT match - unless condition
+        #     validates :user_id, presence: true, unless: condition
+        #
         #   @example source that DOES NOT match - strict validation
         #     validates :user_id, presence: true, strict: true
         #
@@ -65,6 +71,7 @@ module RuboCop
             $[
               (hash <$(pair (sym :presence) true) ...>)         # presence: true
               !(hash <$(pair (sym :strict) {true const}) ...>)  # strict: true
+              !(hash <$(pair (sym {:if :unless}) _) ...>)       # if: some_condition or unless: some_condition
             ]
           )
         PATTERN

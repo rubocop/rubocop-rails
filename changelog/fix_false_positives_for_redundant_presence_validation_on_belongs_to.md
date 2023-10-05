@@ -1,0 +1,1 @@
+* [#1105](https://github.com/rubocop/rubocop-rails/issues/1105): Fix false positives for `Rails/RedundantPresenceValidationOnBelongsTo` when using `validates` with `:if` or `:unless` options. ([@koic][])
