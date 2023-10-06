@@ -86,7 +86,11 @@ module RuboCop
         end
 
         def environments
-          cop_config['Environments']
+          @environments ||= begin
+            e = cop_config['Environments']
+            e += ['local'] if target_rails_version >= 7.1
+            e
+          end
         end
       end
     end
