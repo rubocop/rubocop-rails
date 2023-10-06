@@ -23,6 +23,7 @@ module RuboCop
 
         MSG = "Do not write to stdout. Use Rails's logger if you want to log."
         RESTRICT_ON_SEND = %i[ap p pp pretty_print print puts binwrite syswrite write write_nonblock].freeze
+        ALLOWED_TYPES = %i[send csend block numblock].freeze
 
         def_node_matcher :output?, <<~PATTERN
           (send nil? {:ap :p :pp :pretty_print :print :puts} ...)
@@ -39,8 +40,8 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return if node.parent&.call_type?
-          return unless output?(node) || io_output?(node)
+          return if ALLOWED_TYPES.include?(node.parent&.type)
+          return if !output?(node) && !io_output?(node)
 
           range = offense_range(node)
 

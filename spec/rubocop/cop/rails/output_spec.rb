@@ -140,6 +140,27 @@ RSpec.describe RuboCop::Cop::Rails::Output, :config do
     RUBY
   end
 
+  it 'does not register an offense when the `p` method is called with block argument' do
+    expect_no_offenses(<<~RUBY)
+      # phlex-rails gem.
+      div do
+        p { 'Some text' }
+      end
+    RUBY
+  end
+
+  it 'does not register an offense when io method is called with block argument' do
+    expect_no_offenses(<<~RUBY)
+      obj.write { do_somethig }
+    RUBY
+  end
+
+  it 'does not register an offense when io method is called with numbered block argument' do
+    expect_no_offenses(<<~RUBY)
+      obj.write { do_something(_1) }
+    RUBY
+  end
+
   it 'does not register an offense when a method is ' \
      'safe navigation called to a local variable with the same name as a print method' do
     expect_no_offenses(<<~RUBY)
