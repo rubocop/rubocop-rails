@@ -7,7 +7,7 @@ module RuboCop
     # This module automatically detect an adapter from `development` environment
     # in `config/database.yml` or the environment variable `DATABASE_URL`
     # when the `Database` option is not set.
-    module DatabaseTypeResolver
+    module DatabaseTypeResolvable
       MYSQL = 'mysql'
       POSTGRESQL = 'postgresql'
 
