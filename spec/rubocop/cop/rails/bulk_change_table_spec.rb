@@ -479,6 +479,34 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       end
     end
 
+    context 'trilogy' do
+      context 'with top-level adapter configuration' do
+        let(:yaml) do
+          {
+            'development' => {
+              'adapter' => 'trilogy'
+            }
+          }
+        end
+
+        it_behaves_like 'offense for mysql'
+      end
+
+      context 'with nested adapter configuration' do
+        let(:yaml) do
+          {
+            'development' => {
+              'primary' => {
+                'adapter' => 'trilogy'
+              }
+            }
+          }
+        end
+
+        it_behaves_like 'offense for mysql'
+      end
+    end
+
     context 'postgresql' do
       context 'with top-level adapter configuration' do
         let(:yaml) do
@@ -537,6 +565,12 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
 
     context 'mysql2' do
       let(:database_url) { 'mysql2://localhost/my_database' }
+
+      it_behaves_like 'offense for mysql'
+    end
+
+    context 'trilogy' do
+      let(:database_url) { 'trilogy://localhost/my_database' }
 
       it_behaves_like 'offense for mysql'
     end
