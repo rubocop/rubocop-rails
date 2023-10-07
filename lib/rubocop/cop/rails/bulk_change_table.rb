@@ -64,15 +64,14 @@ module RuboCop
       #     end
       #   end
       class BulkChangeTable < Base
+        include DatabaseTypeResolver
+
         MSG_FOR_CHANGE_TABLE = <<~MSG.chomp
           You can combine alter queries using `bulk: true` options.
         MSG
         MSG_FOR_ALTER_METHODS = <<~MSG.chomp
           You can use `change_table :%<table>s, bulk: true` to combine alter queries.
         MSG
-
-        MYSQL = 'mysql'
-        POSTGRESQL = 'postgresql'
 
         MIGRATION_METHODS = %i[change up down].freeze
 
@@ -173,55 +172,6 @@ module RuboCop
           return false unless options
 
           options.hash_type? && options.keys.any? { |key| key.sym_type? && key.value == :bulk }
-        end
-
-        def database
-          cop_config['Database'] || database_from_yaml || database_from_env
-        end
-
-        def database_from_yaml
-          return nil unless database_yaml
-
-          case database_adapter
-          when 'mysql2'
-            MYSQL
-          when 'postgresql'
-            POSTGRESQL
-          end
-        end
-
-        def database_adapter
-          database_yaml['adapter'] || database_yaml.first.last['adapter']
-        end
-
-        def database_yaml
-          return nil unless File.exist?('config/database.yml')
-
-          yaml = if YAML.respond_to?(:unsafe_load_file)
-                   YAML.unsafe_load_file('config/database.yml')
-                 else
-                   YAML.load_file('config/database.yml')
-                 end
-          return nil unless yaml.is_a? Hash
-
-          config = yaml['development']
-          return nil unless config.is_a?(Hash)
-
-          config
-        rescue Psych::SyntaxError
-          nil
-        end
-
-        def database_from_env
-          url = ENV['DATABASE_URL'].presence
-          return nil unless url
-
-          case url
-          when %r{\Amysql2://}
-            MYSQL
-          when %r{\Apostgres(ql)?://}
-            POSTGRESQL
-          end
         end
 
         def support_bulk_alter?

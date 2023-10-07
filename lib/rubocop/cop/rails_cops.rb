@@ -3,6 +3,7 @@
 require_relative 'mixin/active_record_helper'
 require_relative 'mixin/active_record_migrations_helper'
 require_relative 'mixin/class_send_node_helper'
+require_relative 'mixin/database_type_resolver'
 require_relative 'mixin/enforce_superclass'
 require_relative 'mixin/index_method'
 require_relative 'mixin/migrations_helper'
