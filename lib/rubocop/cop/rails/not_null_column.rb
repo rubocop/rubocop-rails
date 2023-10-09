@@ -3,8 +3,13 @@
 module RuboCop
   module Cop
     module Rails
-      # Checks for add_column call with NOT NULL constraint
-      # in migration file.
+      # Checks for add_column call with NOT NULL constraint in migration file.
+      #
+      # `TEXT` can have default values in PostgreSQL, but not in MySQL.
+      # It will automatically detect an adapter from `development` environment
+      # in `config/database.yml` or the environment variable `DATABASE_URL`
+      # when the `Database` option is not set. If the database is MySQL,
+      # this cop ignores offenses for the `TEXT`.
       #
       # @example
       #   # bad
@@ -17,6 +22,8 @@ module RuboCop
       #   add_reference :products, :category
       #   add_reference :products, :category, null: false, default: 1
       class NotNullColumn < Base
+        include DatabaseTypeResolvable
+
         MSG = 'Do not add a NOT NULL column without a default value.'
         RESTRICT_ON_SEND = %i[add_column add_reference].freeze
 
@@ -45,7 +52,10 @@ module RuboCop
 
         def check_add_column(node)
           add_not_null_column?(node) do |type, pairs|
-            return if type.respond_to?(:value) && (type.value == :virtual || type.value == 'virtual')
+            if type.respond_to?(:value)
+              return if type.value == :virtual || type.value == 'virtual'
+              return if (type.value == :text || type.value == 'text') && database == MYSQL
+            end
 
             check_pairs(pairs)
           end

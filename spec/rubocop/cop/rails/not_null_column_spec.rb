@@ -113,4 +113,41 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
       end
     end
   end
+
+  context 'when database is MySQL' do
+    let(:cop_config) do
+      { 'Database' => 'mysql' }
+    end
+
+    it 'does not register an offense when using `null: false` for `:text` type' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          add_column :articles, :content, :text, null: false
+        end
+      RUBY
+    end
+
+    it "does not register an offense when using `null: false` for `'text'` type" do
+      expect_no_offenses(<<~RUBY)
+        def change
+          add_column :articles, :content, 'text', null: false
+        end
+      RUBY
+    end
+  end
+
+  context 'when database is PostgreSQL' do
+    let(:cop_config) do
+      { 'Database' => 'postgresql' }
+    end
+
+    it 'registers an offense when using `null: false` for `:text` type' do
+      expect_offense(<<~RUBY)
+        def change
+          add_column :articles, :content, :text, null: false
+                                                 ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.
+        end
+      RUBY
+    end
+  end
 end

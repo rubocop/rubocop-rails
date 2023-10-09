@@ -694,6 +694,9 @@ Rails/NotNullColumn:
   Enabled: true
   VersionAdded: '0.43'
   VersionChanged: '2.20'
+  Database: null
+  SupportedDatabases:
+    - mysql
   Include:
     - db/**/*.rb
 
