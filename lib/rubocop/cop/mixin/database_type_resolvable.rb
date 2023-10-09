@@ -21,7 +21,7 @@ module RuboCop
         return unless database_yaml
 
         case database_adapter
-        when 'mysql2'
+        when 'mysql2', 'trilogy'
           MYSQL
         when 'postgresql'
           POSTGRESQL
@@ -33,7 +33,7 @@ module RuboCop
         return unless url
 
         case url
-        when %r{\Amysql2://}
+        when %r{\A(mysql2|trilogy)://}
           MYSQL
         when %r{\Apostgres(ql)?://}
           POSTGRESQL
