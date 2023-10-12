@@ -388,26 +388,6 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
       RUBY
     end
 
-    context 'using `any?`' do
-      it 'does not register an offense when using `any?` with block' do
-        expect_no_offenses(<<~RUBY)
-          User.all.any? { |item| item.do_something }
-        RUBY
-      end
-
-      it 'does not register an offense when using `any?` with numbered block' do
-        expect_no_offenses(<<~RUBY)
-          User.all.any? { _1.do_something }
-        RUBY
-      end
-
-      it 'does not register an offense when using `any?` with symbol block' do
-        expect_no_offenses(<<~RUBY)
-          User.all.any?(&:do_something)
-        RUBY
-      end
-    end
-
     described_class::POSSIBLE_ENUMERABLE_BLOCK_METHODS.each do |method|
       context "using `#{method}`" do
         it "does not register an offense when using `#{method}` with block" do
