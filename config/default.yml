@@ -95,8 +95,9 @@ Rails/ActionControllerTestCase:
 
 Rails/ActionFilter:
   Description: 'Enforces consistent use of action filter methods.'
-  Enabled: true
+  Enabled: false
   VersionAdded: '0.19'
+  VersionChanged: '<<next>>'
   EnforcedStyle: action
   SupportedStyles:
     - action
