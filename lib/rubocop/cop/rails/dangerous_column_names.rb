@@ -31,10 +31,11 @@ module RuboCop
           time
         ].to_set.freeze
 
-        # Generated from `ActiveRecord::AttributeMethods.dangerous_attribute_methods` on activerecord 7.0.5.
+        # Generated from `ActiveRecord::AttributeMethods.dangerous_attribute_methods` on activerecord 7.1.0.
         # rubocop:disable Metrics/CollectionLiteralLength
         DANGEROUS_COLUMN_NAMES = %w[
           __callbacks
+          __id__
           _assign_attribute
           _assign_attributes
           _before_commit_callbacks
@@ -195,11 +196,13 @@ module RuboCop
           changes_to_save
           check_record_limit
           ciphertext_for
+          class
           clear_attribute_change
           clear_attribute_changes
           clear_changes_information
           clear_timestamp_attributes
           clear_transaction_record_state
+          clone
           collection_cache_versioning
           column_for_attribute
           committed
@@ -227,6 +230,7 @@ module RuboCop
           destroyed
           destroyed_by_association
           destroyed_by_association=
+          dup
           each_counter_cached_associations
           encode_with
           encrypt
@@ -243,7 +247,9 @@ module RuboCop
           find_parameter_position
           forget_attribute_assignments
           format_for_inspect
+          freeze
           from_json
+          frozen?
           halted_callback_hook
           has_attribute
           has_changes_to_save
@@ -252,6 +258,7 @@ module RuboCop
           has_encrypted_attributes
           has_encrypted_rich_texts
           has_transactional_callbacks
+          hash
           id
           id_before_type_cast
           id_for_database
@@ -283,6 +290,7 @@ module RuboCop
           new_record
           no_touching
           normalize_reflection_attribute
+          object_id
           partial_inserts
           partial_updates
           perform_validations
