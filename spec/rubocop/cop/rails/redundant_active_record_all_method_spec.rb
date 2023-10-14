@@ -8,6 +8,14 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
           and
           annotate
           any?
+          async_average
+          async_count
+          async_ids
+          async_maximum
+          async_minimum
+          async_pick
+          async_pluck
+          async_sum
           average
           calculate
           count
@@ -77,6 +85,7 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
           preload
           readonly
           references
+          regroup
           reorder
           reselect
           rewhere
@@ -98,6 +107,7 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
           unscope
           update_all
           where
+          with
           without
         ].to_set
       )
