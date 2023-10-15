@@ -1,1 +1,1 @@
-* [#1158](https://github.com/rubocop/rubocop-rails/pull/1158): Support some Rails 7.1's new querying methods for `Rails/RedundantActiveRecordAllMethod`. ([@koic][])
+* [#1157](https://github.com/rubocop/rubocop-rails/pull/1157): Support some Rails 7.1's new querying methods for `Rails/RedundantActiveRecordAllMethod`. ([@koic][])
