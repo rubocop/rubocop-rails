@@ -35,11 +35,19 @@ module RuboCop
 
         RESTRICT_ON_SEND = [:all].freeze
 
-        # Defined methods in `ActiveRecord::Querying::QUERYING_METHODS` on activerecord 7.0.5.
+        # Defined methods in `ActiveRecord::Querying::QUERYING_METHODS` on activerecord 7.1.0.
         QUERYING_METHODS = %i[
           and
           annotate
           any?
+          async_average
+          async_count
+          async_ids
+          async_maximum
+          async_minimum
+          async_pick
+          async_pluck
+          async_sum
           average
           calculate
           count
@@ -109,6 +117,7 @@ module RuboCop
           preload
           readonly
           references
+          regroup
           reorder
           reselect
           rewhere
@@ -130,6 +139,7 @@ module RuboCop
           unscope
           update_all
           where
+          with
           without
         ].to_set.freeze
 
