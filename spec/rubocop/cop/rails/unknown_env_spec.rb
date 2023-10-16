@@ -84,25 +84,8 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
     RUBY
   end
 
-  context 'Rails 7.1' do
-    let(:config) do
-      RuboCop::Config.new(
-        {
-          'AllCops' => {
-            'TargetRailsVersion' => '7.1'
-          },
-          'Rails/UnknownEnv' => {
-            'Environments' => %w[
-              development
-              production
-              test
-            ]
-          }
-        }
-      )
-    end
-
-    it 'accepts local as an environment name on Rails 7.1' do
+  context 'when Rails 7.1 or newer', :rails71 do
+    it 'accepts local as an environment name' do
       expect_no_offenses(<<~RUBY)
         Rails.env.local?
         Rails.env == 'local'
