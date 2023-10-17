@@ -60,7 +60,7 @@ module RuboCop
           (block
             (send nil? :with_options
               (hash $...))
-            (args) ...)
+            (args _?) ...)
         PATTERN
 
         def_node_matcher :association_extension_block?, <<~PATTERN
