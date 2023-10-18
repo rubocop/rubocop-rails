@@ -92,6 +92,16 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
           end
         RUBY
       end
+
+      it 'does not register an offense when has_one called on explicit receiver' do
+        expect_no_offenses(<<~RUBY)
+          class Person < ApplicationRecord
+            with_options dependent: :destroy do |model|
+              model.has_one :foo
+            end
+          end
+        RUBY
+      end
     end
   end
 
@@ -183,6 +193,16 @@ RSpec.describe RuboCop::Cop::Rails::HasManyOrHasOneDependent, :config do
           class Person < ApplicationRecord
             with_options dependent: :destroy do
               has_many :foo
+            end
+          end
+        RUBY
+      end
+
+      it 'does not register an offense when has_many called on explicit receiver' do
+        expect_no_offenses(<<~RUBY)
+          class Person < ApplicationRecord
+            with_options dependent: :destroy do |model|
+              model.has_many :foo
             end
           end
         RUBY
