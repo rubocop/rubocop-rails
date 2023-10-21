@@ -5,6 +5,13 @@ module RuboCop
     module Rails
       # Detect redundant `all` used as a receiver for Active Record query methods.
       #
+      # NOTE: For the methods `delete_all` and `destroy_all`,
+      # this cop will only check cases where the receiver is a model.
+      # It will ignore cases where the receiver is an association (e.g., `user.articles.all.delete_all`).
+      # This is because omitting `all` from an association changes the methods
+      # from `ActiveRecord::Relation` to `ActiveRecord::Associations::CollectionProxy`,
+      # which can affect their behavior.
+      #
       # @safety
       #   This cop is unsafe for autocorrection if the receiver for `all` is not an Active Record object.
       #
@@ -144,13 +151,15 @@ module RuboCop
         ].to_set.freeze
 
         POSSIBLE_ENUMERABLE_BLOCK_METHODS = %i[any? count find none? one? select sum].freeze
+        SENSITIVE_METHODS_ON_ASSOCIATION = %i[delete_all destroy_all].freeze
 
         def_node_matcher :followed_by_query_method?, <<~PATTERN
           (send (send _ :all) QUERYING_METHODS ...)
         PATTERN
 
         def on_send(node)
-          return if !followed_by_query_method?(node.parent) || possible_enumerable_block_method?(node)
+          return unless followed_by_query_method?(node.parent)
+          return if possible_enumerable_block_method?(node) || sensitive_association_method?(node)
           return if node.receiver ? allowed_receiver?(node.receiver) : !inherit_active_record_base?(node)
 
           range_of_all_method = offense_range(node)
@@ -167,6 +176,10 @@ module RuboCop
           return false unless POSSIBLE_ENUMERABLE_BLOCK_METHODS.include?(parent.method_name)
 
           parent.parent&.block_type? || parent.parent&.numblock_type? || parent.first_argument&.block_pass_type?
+        end
+
+        def sensitive_association_method?(node)
+          !node.receiver&.const_type? && SENSITIVE_METHODS_ON_ASSOCIATION.include?(node.parent.method_name)
         end
 
         def offense_range(node)
