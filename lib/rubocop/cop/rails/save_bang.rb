@@ -235,10 +235,10 @@ module RuboCop
 
         def in_condition_or_compound_boolean?(node)
           node = node.block_node || node
-          parent = node.parent
+          parent = node.each_ancestor.find { |ancestor| !ancestor.begin_type? }
           return false unless parent
 
-          operator_or_single_negative?(parent) || (conditional?(parent) && node == parent.condition)
+          operator_or_single_negative?(parent) || (conditional?(parent) && node == deparenthesize(parent.condition))
         end
 
         def operator_or_single_negative?(node)
@@ -247,6 +247,11 @@ module RuboCop
 
         def conditional?(parent)
           parent.if_type? || parent.case_type?
+        end
+
+        def deparenthesize(node)
+          node = node.children.last while node.begin_type?
+          node
         end
 
         def checked_immediately?(node)
