@@ -56,6 +56,8 @@ Note: `--rails` option is required while `rubocop` command supports `--rails` op
 ### Rake task
 
 ```ruby
+require 'rubocop/rake_task'
+
 RuboCop::RakeTask.new do |task|
   task.requires << 'rubocop-rails'
 end
