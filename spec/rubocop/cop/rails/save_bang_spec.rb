@@ -170,6 +170,19 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       end
     end
 
+    it "when using #{method} wrapped within parenthesis with if" do
+      if update
+        expect_no_offenses(<<~RUBY, method: method)
+          if (object.#{method}); something; end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          if (object.#{method}); something; end
+                     ^{method} `#{method}` returns a model which is always truthy.
+        RUBY
+      end
+    end
+
     it "when using #{method} with if with block" do
       if update
         expect_no_offenses(<<~RUBY)
