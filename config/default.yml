@@ -77,6 +77,14 @@ Rails:
   Enabled: true
   DocumentationBaseURL: https://docs.rubocop.org/rubocop-rails
 
+Rails/AcceptsNestedAttributesForUpdateOnly:
+  Description: 'Define the update_only option to the accepts_nested_attributes_for attributes writers.'
+  StyleGuide: 'https://rails.rubystyle.guide#accepts_nested_attributes_for-update_only-option'
+  Enabled: false
+  VersionAdded: '2.21'
+  Include:
+    - app/models/**/*.rb
+
 Rails/ActionControllerFlashBeforeRender:
   Description: 'Use `flash.now` instead of `flash` before `render`.'
   Enabled: 'pending'

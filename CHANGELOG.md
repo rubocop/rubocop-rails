@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+* [#1035](https://github.com/rubocop/rubocop-rails/pull/1035): Add cop Rails/AcceptsNestedAttributesForUpdateOnly. ([@olivier-thatch][])
+
 ## 2.21.2 (2023-09-30)
 
 ### Bug fixes
@@ -952,3 +954,4 @@
 [@nipe0324]: https://github.com/nipe0324
 [@marocchino]: https://github.com/marocchino
 [@jamiemccarthy]: https://github.com/jamiemccarthy
+[@olivier-thatch]: https://github.com/olivier-thatch

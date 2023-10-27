@@ -1,5 +1,51 @@
 = Rails
 
+== Rails/AcceptsNestedAttributesForUpdateOnly
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Disabled
+| Yes
+| No
+| 2.21
+| -
+|===
+
+Looks for `accepts_nested_attributes_for` attributes writers that don't
+specify an `:update_only` option.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+class Member < ActiveRecord::Base
+  has_one :avatar
+  accepts_nested_attributes_for :avatar
+end
+
+# good
+class Member < ActiveRecord::Base
+  has_one :avatar
+  accepts_nested_attributes_for :avatar, update_only: true
+end
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `+app/models/**/*.rb+`
+| Array
+|===
+
+=== References
+
+* https://rails.rubystyle.guide#accepts_nested_attributes_for-update_only-option
+
 == Rails/ActionControllerFlashBeforeRender
 
 |===
