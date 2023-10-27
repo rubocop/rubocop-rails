@@ -54,6 +54,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railseagerevaluationlogmessage[Rails/EagerEvaluationLogMessage]
 * xref:cops_rails.adoc#railsenumhash[Rails/EnumHash]
 * xref:cops_rails.adoc#railsenumuniqueness[Rails/EnumUniqueness]
+* xref:cops_rails.adoc#railsenvlocal[Rails/EnvLocal]
 * xref:cops_rails.adoc#railsenvironmentcomparison[Rails/EnvironmentComparison]
 * xref:cops_rails.adoc#railsenvironmentvariableaccess[Rails/EnvironmentVariableAccess]
 * xref:cops_rails.adoc#railsexit[Rails/Exit]

@@ -97,7 +97,7 @@ Rails/ActionFilter:
   Description: 'Enforces consistent use of action filter methods.'
   Enabled: false
   VersionAdded: '0.19'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.22'
   EnforcedStyle: action
   SupportedStyles:
     - action
@@ -433,7 +433,7 @@ Rails/EnumUniqueness:
 Rails/EnvLocal:
   Description: 'Use `Rails.env.local?` instead of `Rails.env.development? || Rails.env.test?`.'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.22'
 
 Rails/EnvironmentComparison:
   Description: "Favor `Rails.env.production?` over `Rails.env == 'production'`."

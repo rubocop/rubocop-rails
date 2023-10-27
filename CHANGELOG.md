@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.22.0 (2023-10-27)
+
 ### New features
 
 * [#906](https://github.com/rubocop/rubocop-rails/pull/906): Add `Rails/EnvLocal` cop. ([@sambostock][])

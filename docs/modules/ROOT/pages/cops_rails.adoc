@@ -95,17 +95,20 @@ end
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
-| Enabled
+| Disabled
 | Yes
 | Yes
 | 0.19
-| -
+| 2.22
 |===
 
 Enforces the consistent use of action filter methods.
 
 The cop is configurable and can enforce the use of the older
 something_filter methods or the newer something_action methods.
+
+IMPORTANT: This cop is deprecated. Because the `*_filter` methods were removed in Rails 4.2,
+and that Rals version is no longer supported by RuboCop Rails. This cop will be removed in RuboCop Rails 3.0.
 
 === Examples
 
@@ -974,7 +977,7 @@ the PostgreSQL (5.2 later) adapter; thus it will
 automatically detect an adapter from `development` environment
 in `config/database.yml` or the environment variable `DATABASE_URL`
 when the `Database` option is not set.
-If the adapter is not `mysql2` or `postgresql`,
+If the adapter is not `mysql2`, `trilogy`, or `postgresql`,
 this Cop ignores offenses.
 
 === Examples
@@ -1395,10 +1398,6 @@ def self.published
 end
 ----
 
-=== References
-
-* https://rails.rubystyle.guide#avoid-default-scope
-
 == Rails/Delegate
 
 |===
@@ -1636,6 +1635,15 @@ has_one :foo
 
 # good
 belongs_to :bar
+has_one :foo
+
+# bad
+belongs_to :foo, class_name: 'Foo'
+belongs_to :bar, class_name: 'Foo'
+has_one :baz
+
+# good
+belongs_to :bar, class_name: 'Foo'
 has_one :foo
 ----
 
@@ -1928,6 +1936,32 @@ enum status: [:active, :archived]
 | `+app/models/**/*.rb+`
 | Array
 |===
+
+== Rails/EnvLocal
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Yes
+| 2.22
+| -
+|===
+
+Checks for usage of `Rails.env.development? || Rails.env.test?` which
+can be replaced with `Rails.env.local?`, introduced in Rails 7.1.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+Rails.env.development? || Rails.env.test?
+
+# good
+Rails.env.local?
+----
 
 == Rails/EnvironmentComparison
 
@@ -3619,8 +3653,13 @@ hash.exclude?(:key)
 | 2.20
 |===
 
-Checks for add_column call with NOT NULL constraint
-in migration file.
+Checks for add_column call with NOT NULL constraint in migration file.
+
+`TEXT` can have default values in PostgreSQL, but not in MySQL.
+It will automatically detect an adapter from `development` environment
+in `config/database.yml` or the environment variable `DATABASE_URL`
+when the `Database` option is not set. If the database is MySQL,
+this cop ignores offenses for the `TEXT`.
 
 === Examples
 
@@ -3641,6 +3680,10 @@ add_reference :products, :category, null: false, default: 1
 
 |===
 | Name | Default value | Configurable values
+
+| Database
+| `<none>`
+| `mysql`
 
 | Include
 | `+db/**/*.rb+`
