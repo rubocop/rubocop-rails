@@ -9,6 +9,28 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#906](https://github.com/rubocop/rubocop-rails/pull/906): Add `Rails/EnvLocal` cop. ([@sambostock][])
+* [#1128](https://github.com/rubocop/rubocop-rails/issues/1128): Make `Rails/DuplicateAssociation` aware of duplicate `class_name`. ([@koic][])
+* [#1157](https://github.com/rubocop/rubocop-rails/pull/1157): Support some Rails 7.1's new querying methods for `Rails/RedundantActiveRecordAllMethod`. ([@koic][])
+* [#1147](https://github.com/rubocop/rubocop-rails/issues/1147): Support the Trilogy adapter for MySQL. ([@koic][])
+
+### Bug fixes
+
+* [#952](https://github.com/rubocop/rubocop-rails/issues/952): Fix a false positive for `Rails/NotNullColumn` when using `null: false` for MySQL's TEXT type. ([@koic][])
+* [#1041](https://github.com/rubocop/rubocop-rails/issues/1041): Fix a false positive for `Rails/Output` when output method is called with block argument. ([@koic][])
+* [#1143](https://github.com/rubocop/rubocop-rails/issues/1143): Fix an error for `Rails/RedundantActiveRecordAllMethod` when using RuboCop 1.51 or lower. ([@koic][])
+* [#1105](https://github.com/rubocop/rubocop-rails/issues/1105): Fix false positives for `Rails/RedundantPresenceValidationOnBelongsTo` when using `validates` with `:if` or `:unless` options. ([@koic][])
+* [#1158](https://github.com/rubocop/rubocop-rails/issues/1158): `Rails/HasManyOrHasOneDependent` does not add offence when has_many or has_one is called on an explicit receiver. ([@samrjenkins][])
+* [#1160](https://github.com/rubocop/rubocop-rails/issues/1160): Fix `Rails/SaveBang` to ignore parenthesis. ([@fatkodima][])
+
+### Changes
+
+* [#1152](https://github.com/rubocop/rubocop-rails/pull/1152): Add more dangerous column names to `Rails/DangerousColumnNames`. ([@r7kamura][])
+* [#1039](https://github.com/rubocop/rubocop-rails/issues/1039): Deprecate `Rails/ActionFilter` cop; it will be disabled by default. ([@koic][])
+* [#893](https://github.com/rubocop/rubocop-rails/issues/893): Support `local` as an environment for `Rails/UnknownEnv` from Rails 7.1 onward. ([@ghiculescu][])
+
 ## 2.21.2 (2023-09-30)
 
 ### Bug fixes
@@ -952,3 +974,4 @@
 [@nipe0324]: https://github.com/nipe0324
 [@marocchino]: https://github.com/marocchino
 [@jamiemccarthy]: https://github.com/jamiemccarthy
+[@sambostock]: https://github.com/sambostock
