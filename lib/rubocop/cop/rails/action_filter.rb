@@ -9,7 +9,7 @@ module RuboCop
       # something_filter methods or the newer something_action methods.
       #
       # IMPORTANT: This cop is deprecated. Because the `*_filter` methods were removed in Rails 4.2,
-      # and that Rals version is no longer supported by RuboCop Rails. This cop will be removed in RuboCop Rails 3.0.
+      # and that Rails version is no longer supported by RuboCop Rails. This cop will be removed in RuboCop Rails 3.0.
       #
       # @example EnforcedStyle: action (default)
       #   # bad
