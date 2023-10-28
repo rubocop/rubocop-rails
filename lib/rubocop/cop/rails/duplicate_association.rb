@@ -21,12 +21,12 @@ module RuboCop
       #   has_one :foo
       #
       #   # bad
-      #   belongs_to :foo, class_name: 'Foo'
-      #   belongs_to :bar, class_name: 'Foo'
+      #   has_many :foo, class_name: 'Foo'
+      #   has_many :bar, class_name: 'Foo'
       #   has_one :baz
       #
       #   # good
-      #   belongs_to :bar, class_name: 'Foo'
+      #   has_many :bar, class_name: 'Foo'
       #   has_one :foo
       #
       class DuplicateAssociation < Base
@@ -87,7 +87,8 @@ module RuboCop
         end
 
         def duplicated_class_name_nodes(association_nodes)
-          grouped_associations = association_nodes.group_by do |node|
+          filtered_nodes = association_nodes.reject { |node| node.method?(:belongs_to) }
+          grouped_associations = filtered_nodes.group_by do |node|
             arguments = association(node).last
             next unless arguments.count == 1
 

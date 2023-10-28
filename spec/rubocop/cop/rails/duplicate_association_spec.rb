@@ -210,7 +210,7 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
       RUBY
     end
 
-    it 'registers offenses when using duplicate associations of same class without other arguments' do
+    it 'registers offenses when using duplicate `has_*` associations of same class without other arguments' do
       expect_offense(<<~RUBY)
         class Post < ApplicationRecord
           has_many :foos, class_name: 'Foo'
@@ -230,6 +230,15 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
           has_many :bars, class_name: 'Foo'
 
           has_one :qux, class_name: 'Bar'
+        end
+      RUBY
+    end
+
+    it 'does not register an offenses when using duplicate `belongs_to` assocs of same class without other args' do
+      expect_no_offenses(<<~RUBY)
+        class Post < ApplicationRecord
+          belongs_to :foos, class_name: 'Foo'
+          belongs_to :bars, class_name: 'Foo'
         end
       RUBY
     end
