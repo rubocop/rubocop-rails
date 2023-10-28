@@ -1638,12 +1638,12 @@ belongs_to :bar
 has_one :foo
 
 # bad
-belongs_to :foo, class_name: 'Foo'
-belongs_to :bar, class_name: 'Foo'
+has_many :foo, class_name: 'Foo'
+has_many :bar, class_name: 'Foo'
 has_one :baz
 
 # good
-belongs_to :bar, class_name: 'Foo'
+has_many :bar, class_name: 'Foo'
 has_one :foo
 ----
 
