@@ -9,6 +9,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1145](https://github.com/rubocop/rubocop-rails/issues/1145): Fix a false positive for `Rails/DuplicateAssociation` when using duplicate `belongs_to` associations of same class without other arguments. ([@koic][])
+
 ## 2.22.0 (2023-10-27)
 
 ### New features
