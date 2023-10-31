@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  oldest_supported_rubocop:
+    runs-on: ubuntu-latest
+    name: The oldest supported RuboCop version
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use the oldest supported RuboCop
+        run: |
+          sed -e "/gem 'rubocop', github: 'rubocop\/rubocop'/d" \
+              -e "/gem 'rubocop-performance',/d" \
+              -e "/gem 'rubocop-rspec',/d" -i Gemfile
+          cat << EOF > Gemfile.local
+            gem 'rubocop', '1.33.0' # Specify the oldest supported RuboCop version
+          EOF
+      - name: set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - name: spec
+        run: bundle exec rake spec
