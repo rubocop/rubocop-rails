@@ -91,5 +91,20 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
         Rails.env == 'local'
       RUBY
     end
+
+    context 'when `Environments` is nil' do
+      let(:cop_config) do
+        {
+          'Environments' => nil
+        }
+      end
+
+      it 'accepts local as an environment name' do
+        expect_no_offenses(<<~RUBY)
+          Rails.env.local?
+          Rails.env == 'local'
+        RUBY
+      end
+    end
   end
 end
