@@ -315,6 +315,28 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
         RUBY
       end
     end
+
+    described_class::POSSIBLE_ENUMERABLE_BLOCK_METHODS.each do |method|
+      context "using `#{method}`" do
+        it "does not register an offense when using `#{method}` with block" do
+          expect_no_offenses(<<~RUBY)
+            User.all.#{method} { |item| item.do_something }
+          RUBY
+        end
+
+        it "does not register an offense when using `#{method}` with numbered block" do
+          expect_no_offenses(<<~RUBY)
+            User.all.#{method} { _1.do_something }
+          RUBY
+        end
+
+        it "does not register an offense when using `#{method}` with symbol block" do
+          expect_no_offenses(<<~RUBY)
+            User.all.#{method}(&:do_something)
+          RUBY
+        end
+      end
+    end
   end
 
   context 'with no receiver' do
@@ -396,28 +418,6 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
           scope :admins, -> { where(admin: true) }
         end
       RUBY
-    end
-
-    described_class::POSSIBLE_ENUMERABLE_BLOCK_METHODS.each do |method|
-      context "using `#{method}`" do
-        it "does not register an offense when using `#{method}` with block" do
-          expect_no_offenses(<<~RUBY)
-            User.all.#{method} { |item| item.do_something }
-          RUBY
-        end
-
-        it "does not register an offense when using `#{method}` with numbered block" do
-          expect_no_offenses(<<~RUBY)
-            User.all.#{method} { _1.do_something }
-          RUBY
-        end
-
-        it "does not register an offense when using `#{method}` with symbol block" do
-          expect_no_offenses(<<~RUBY)
-            User.all.#{method}(&:do_something)
-          RUBY
-        end
-      end
     end
   end
 
