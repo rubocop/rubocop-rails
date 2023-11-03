@@ -336,10 +336,10 @@ module RuboCop
 
         # Check argument signature as no arguments or one hash
         def expected_signature?(node)
-          !node.arguments? ||
-            (node.arguments.one? &&
-              node.method_name != :destroy &&
-              (node.first_argument.hash_type? || !node.first_argument.literal?))
+          return true unless node.arguments?
+          return false if !node.arguments.one? || node.method?(:destroy)
+
+          node.first_argument.hash_type? || !node.first_argument.literal?
         end
       end
     end
