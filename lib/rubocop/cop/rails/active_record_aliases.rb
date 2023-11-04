@@ -11,10 +11,10 @@ module RuboCop
       #   `update` but the method name remained same in the method definition.
       #
       # @example
-      #   #bad
+      #   # bad
       #   book.update_attributes!(author: 'Alice')
       #
-      #   #good
+      #   # good
       #   book.update!(author: 'Alice')
       class ActiveRecordAliases < Base
         extend AutoCorrector
