@@ -428,7 +428,7 @@ module RuboCop
           when :rename_column
             node.arguments[2]
           when *COLUMN_TYPE_METHOD_NAMES
-            node.arguments[0]
+            node.first_argument
           end
         end
 

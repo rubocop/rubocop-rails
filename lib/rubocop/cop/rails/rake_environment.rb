@@ -72,7 +72,7 @@ module RuboCop
         end
 
         def task_name(node)
-          first_arg = node.arguments[0]
+          first_arg = node.first_argument
           case first_arg&.type
           when :sym, :str
             first_arg.value.to_sym
@@ -97,7 +97,7 @@ module RuboCop
         end
 
         def with_dependencies?(node)
-          first_arg = node.arguments[0]
+          first_arg = node.first_argument
           return false unless first_arg
 
           if first_arg.hash_type?

@@ -222,7 +222,7 @@ module RuboCop
 
         def with_options_arguments(recv, node)
           blocks = node.each_ancestor(:block).select do |block|
-            block.send_node.command?(:with_options) && same_context_in_with_options?(block.arguments.first, recv)
+            block.send_node.command?(:with_options) && same_context_in_with_options?(block.first_argument, recv)
           end
           blocks.flat_map { |n| n.send_node.arguments }
         end

@@ -124,7 +124,7 @@ module RuboCop
         end
 
         def uniqueness_part(node)
-          pairs = node.arguments.last
+          pairs = node.last_argument
           return unless pairs&.hash_type?
 
           pairs.each_pair.find do |pair|

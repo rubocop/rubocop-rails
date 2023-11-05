@@ -100,7 +100,7 @@ module RuboCop
                  else
                    return false if node.arguments.empty?
 
-                   arg = node.arguments.first
+                   arg = node.first_argument
                    ->(n) { same_value?(arg, n.receiver) }
                  end
 
