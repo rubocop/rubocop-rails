@@ -48,7 +48,7 @@ module RuboCop
           seen_callback_names = {}
 
           each_after_commit_callback(class_node) do |node|
-            callback_name = node.arguments[0].value
+            callback_name = node.first_argument.value
             if seen_callback_names.key?(callback_name)
               add_offense(node, message: format(MSG, name: callback_name))
             else

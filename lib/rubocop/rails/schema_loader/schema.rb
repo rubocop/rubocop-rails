@@ -127,7 +127,7 @@ module RuboCop
         private
 
         def analyze_keywords!(node)
-          pairs = node.arguments.last
+          pairs = node.last_argument
           return unless pairs.hash_type?
 
           pairs.each_pair do |k, v|
@@ -158,7 +158,7 @@ module RuboCop
         end
 
         def analyze_keywords!(node)
-          pairs = node.arguments.last
+          pairs = node.last_argument
           return unless pairs.hash_type?
 
           pairs.each_pair do |k, v|

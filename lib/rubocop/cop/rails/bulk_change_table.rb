@@ -212,7 +212,7 @@ module RuboCop
         # @param node [RuboCop::AST::SendNode]
         def add_offense_for_alter_methods(node)
           # arguments: [{(sym :table)(str "table")} ...]
-          table_node = node.arguments[0]
+          table_node = node.first_argument
           return unless table_node.is_a? RuboCop::AST::BasicLiteralNode
 
           message = format(MSG_FOR_ALTER_METHODS, table: table_node.value)
@@ -234,10 +234,10 @@ module RuboCop
           # @param new_node [RuboCop::AST::SendNode]
           def process(new_node)
             # arguments: [{(sym :table)(str "table")} ...]
-            table_node = new_node.arguments[0]
+            table_node = new_node.first_argument
             if table_node.is_a? RuboCop::AST::BasicLiteralNode
               flush unless @nodes.all? do |node|
-                node.arguments[0].value.to_s == table_node.value.to_s
+                node.first_argument.value.to_s == table_node.value.to_s
               end
               @nodes << new_node
             else

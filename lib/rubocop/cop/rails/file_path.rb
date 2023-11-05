@@ -163,9 +163,9 @@ module RuboCop
 
         def autocorrect_extension_after_rails_root_join_in_dstr(corrector, node, rails_root_index, extension_node)
           rails_root_node = node.children[rails_root_index].children.first
-          return unless rails_root_node.arguments.last.str_type?
+          return unless rails_root_node.last_argument.str_type?
 
-          corrector.insert_before(rails_root_node.arguments.last.location.end, extension_node.source)
+          corrector.insert_before(rails_root_node.last_argument.location.end, extension_node.source)
           corrector.remove(extension_node)
         end
 
@@ -174,7 +174,7 @@ module RuboCop
           corrector.remove(
             range_with_surrounding_space(
               range_with_surrounding_comma(
-                node.arguments.first.source_range,
+                node.first_argument.source_range,
                 :right
               ),
               side: :right
@@ -187,7 +187,7 @@ module RuboCop
         end
 
         def autocorrect_rails_root_join_with_string_arguments(corrector, node)
-          corrector.replace(node.arguments.first, %("#{node.arguments.map(&:value).join('/')}"))
+          corrector.replace(node.first_argument, %("#{node.arguments.map(&:value).join('/')}"))
           node.arguments[1..].each do |argument|
             corrector.remove(
               range_with_surrounding_comma(
@@ -221,7 +221,7 @@ module RuboCop
         end
 
         def append_argument(corrector, node, argument_source)
-          corrector.insert_after(node.arguments.last, %(, "#{argument_source}"))
+          corrector.insert_after(node.last_argument, %(, "#{argument_source}"))
         end
 
         def replace_with_rails_root_join(corrector, node, argument_source)

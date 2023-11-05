@@ -290,10 +290,10 @@ module RuboCop
           when :change
             false
           when :remove
-            target_rails_version >= 6.1 && all_hash_key?(node.arguments.last, :type)
+            target_rails_version >= 6.1 && all_hash_key?(node.last_argument, :type)
           when :change_default, :change_column_default, :change_table_comment,
                :change_column_comment
-            all_hash_key?(node.arguments.last, :from, :to)
+            all_hash_key?(node.last_argument, :from, :to)
           else
             true
           end
