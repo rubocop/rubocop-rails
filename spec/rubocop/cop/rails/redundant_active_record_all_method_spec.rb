@@ -421,6 +421,36 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
     end
   end
 
+  described_class::SENSITIVE_METHODS_ON_ASSOCIATION.each do |method|
+    context "using `#{method}`" do
+      it "registers an offense when using `#{method}` and the receiver for `all` is a model" do
+        expect_offense(<<~RUBY)
+          User.all.#{method}
+               ^^^ Redundant `all` detected.
+        RUBY
+      end
+
+      it "does not register an offense when using `#{method}` and the receiver for `all` is an association" do
+        expect_no_offenses(<<~RUBY)
+          user.articles.all.#{method}
+        RUBY
+      end
+
+      it "does not register an offense when using `#{method}` and the receiver for `all` is a relation" do
+        expect_no_offenses(<<~RUBY)
+          users = User.all
+          users.all.#{method}
+        RUBY
+      end
+
+      it "does not register an offense when using `#{method}` and `all` has no receiver" do
+        expect_no_offenses(<<~RUBY)
+          all.#{method}
+        RUBY
+      end
+    end
+  end
+
   context 'with `AllowedReceivers` config' do
     let(:cop_config) do
       { 'AllowedReceivers' => %w[ActionMailer::Preview ActiveSupport::TimeZone] }
