@@ -14,7 +14,7 @@ module RuboCop
       # automatically detect an adapter from `development` environment
       # in `config/database.yml` or the environment variable `DATABASE_URL`
       # when the `Database` option is not set.
-      # If the adapter is not `mysql2`, `trilogy`, or `postgresql`,
+      # If the adapter is not `mysql2`, `trilogy`, `postgresql`, or `postgis`,
       # this Cop ignores offenses.
       #
       # @example

@@ -23,7 +23,7 @@ module RuboCop
         case database_adapter
         when 'mysql2', 'trilogy'
           MYSQL
-        when 'postgresql'
+        when 'postgresql', 'postgis'
           POSTGRESQL
         end
       end
