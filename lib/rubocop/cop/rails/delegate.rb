@@ -82,15 +82,19 @@ module RuboCop
 
         def register_offense(node)
           add_offense(node.loc.keyword) do |corrector|
-            body = node.body
-
-            receiver = body.receiver.self_type? ? 'self' : ":#{body.receiver.method_name}"
-
-            delegation = ["delegate :#{body.method_name}", "to: #{receiver}"]
-            delegation << ['prefix: true'] if node.method?(prefixed_method_name(node.body))
-
-            corrector.replace(node, delegation.join(', '))
+            corrector.replace(node, build_delegation(node))
           end
+        end
+
+        def build_delegation(node)
+          body = node.body
+
+          receiver = body.receiver.self_type? ? 'self' : ":#{body.receiver.method_name}"
+
+          delegation = ["delegate :#{body.method_name}", "to: #{receiver}"]
+          delegation << ['prefix: true'] if node.method?(prefixed_method_name(node.body))
+
+          delegation.join(', ')
         end
 
         def trivial_delegate?(def_node)
