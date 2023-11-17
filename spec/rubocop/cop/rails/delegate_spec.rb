@@ -55,6 +55,80 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
     RUBY
   end
 
+  it 'finds trivial delegate with single line comment' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        # comment
+        bar.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      # comment
+      delegate :foo, to: :bar
+    RUBY
+  end
+
+  it 'finds trivial delegate with multiline comments' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        # comment 1
+        # comment 2
+        bar.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      # comment 1
+      # comment 2
+      delegate :foo, to: :bar
+    RUBY
+  end
+
+  it 'finds trivial delegate with multiline comments including blank lines' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        # comment 1
+
+        # comment 2
+
+
+        # comment 3
+        bar.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      # comment 1
+
+      # comment 2
+
+
+      # comment 3
+      delegate :foo, to: :bar
+    RUBY
+  end
+
+  it 'finds trivial delegate with preceding comments' do
+    expect_offense(<<~RUBY)
+      # comment 1
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        # comment 2
+        bar.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      # comment 1
+      # comment 2
+      delegate :foo, to: :bar
+    RUBY
+  end
+
   it 'finds trivial delegate to `self` when underscored method' do
     expect_offense(<<~RUBY)
       def bar_foo

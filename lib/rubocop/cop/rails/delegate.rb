@@ -82,7 +82,11 @@ module RuboCop
 
         def register_offense(node)
           add_offense(node.loc.keyword) do |corrector|
-            corrector.replace(node, build_delegation(node))
+            comments = processed_source.ast_with_comments[node.body]
+            preferred = build_comment(comments)
+            preferred += build_delegation(node)
+
+            corrector.replace(node, preferred)
           end
         end
 
@@ -95,6 +99,20 @@ module RuboCop
           delegation << ['prefix: true'] if node.method?(prefixed_method_name(node.body))
 
           delegation.join(', ')
+        end
+
+        def build_comment(comments)
+          return '' if comments.empty?
+
+          comments.map.with_index do |comment, i|
+            comment.text + ("\n" * newline_count_between_comments(comments, i))
+          end.join << "\n"
+        end
+
+        def newline_count_between_comments(comments, index)
+          return 0 if index >= comments.size - 1
+
+          comments[index + 1].loc.line - comments[index].loc.line
         end
 
         def trivial_delegate?(def_node)
