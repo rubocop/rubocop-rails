@@ -240,10 +240,10 @@ This cop is unsafe because custom `update_attributes` method call was changed to
 
 [source,ruby]
 ----
-#bad
+# bad
 book.update_attributes!(author: 'Alice')
 
-#good
+# good
 book.update!(author: 'Alice')
 ----
 
@@ -1841,10 +1841,10 @@ when no output would be produced anyway.
 
 [source,ruby]
 ----
-#bad
+# bad
 Rails.logger.debug "The time is #{Time.zone.now}."
 
-#good
+# good
 Rails.logger.debug { "The time is #{Time.zone.now}." }
 ----
 
@@ -4345,6 +4345,13 @@ end
 |===
 
 Detect redundant `all` used as a receiver for Active Record query methods.
+
+NOTE: For the methods `delete_all` and `destroy_all`,
+this cop will only check cases where the receiver is a model.
+It will ignore cases where the receiver is an association (e.g., `user.articles.all.delete_all`).
+This is because omitting `all` from an association changes the methods
+from `ActiveRecord::Relation` to `ActiveRecord::Associations::CollectionProxy`,
+which can affect their behavior.
 
 === Safety
 
