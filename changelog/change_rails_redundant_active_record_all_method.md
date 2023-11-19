@@ -1,1 +1,0 @@
-* [#1171](https://github.com/rubocop/rubocop-rails/pull/1171): Change `Rails/RedundantActiveRecordAllMethod` to ignore `delete_all` and `destroy_all` when receiver is an association. ([@masato-bkn][])

@@ -9,6 +9,16 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1172](https://github.com/rubocop/rubocop-rails/issues/1172): Fix an error for `Rails/UnknownEnv` when using Rails 7.1. ([@koic][])
+* [#1173](https://github.com/rubocop/rubocop-rails/issues/1173): Fix an error for `Rails/RedundantActiveRecordAllMethod` cop when used with RuboCop 1.51 or lower. ([@koic][])
+
+### Changes
+
+* [#1171](https://github.com/rubocop/rubocop-rails/pull/1171): Change `Rails/RedundantActiveRecordAllMethod` to ignore `delete_all` and `destroy_all` when receiver is an association. ([@masato-bkn][])
+* [#1178](https://github.com/rubocop/rubocop-rails/pull/1178): Require RuboCop AST 1.30.0+. ([@koic][])
+
 ## 2.22.1 (2023-10-28)
 
 ### Bug fixes
