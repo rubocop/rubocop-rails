@@ -34,8 +34,7 @@ module RuboCop
 
       # Detect redundant `all` used as a receiver for Active Record query methods.
       #
-      # NOTE: For the methods `delete_all` and `destroy_all`,
-      # this cop will only check cases where the receiver is a model.
+      # For the methods `delete_all` and `destroy_all`, this cop will only check cases where the receiver is a model.
       # It will ignore cases where the receiver is an association (e.g., `user.articles.all.delete_all`).
       # This is because omitting `all` from an association changes the methods
       # from `ActiveRecord::Relation` to `ActiveRecord::Associations::CollectionProxy`,
