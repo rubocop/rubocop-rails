@@ -51,7 +51,7 @@ module RuboCop
           uniqueness
         ].freeze
 
-        RESTRICT_ON_SEND = TYPES.map { |p| "validates_#{p}_of".to_sym }.freeze
+        RESTRICT_ON_SEND = TYPES.map { |p| :"validates_#{p}_of" }.freeze
         ALLOWLIST = TYPES.map { |p| "validates :column, #{p}: value" }.freeze
 
         def on_send(node)
