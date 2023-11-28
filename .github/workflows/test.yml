@@ -12,9 +12,63 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  main:
+    name: Ruby ${{ matrix.ruby }}
+    runs-on: ubuntu-latest
+    env:
+      # See https://github.com/tmm1/test-queue#environment-variables
+      TEST_QUEUE_WORKERS: 2
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu]
+        ruby: ['2.7', '3.0', '3.1', '3.2', 'head']
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: spec
+        run: bundle exec rake spec
+      - name: internal_investigation
+        run: bundle exec rake internal_investigation
+
+  jruby:
+    name: JRuby 9.4
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: jruby-9.4
+          bundler-cache: true
+      - name: spec
+        run: bundle exec rake spec
+      - name: internal_investigation
+        run: bundle exec rake internal_investigation
+
+  documentation_checks:
+    runs-on: ubuntu-latest
+    name: Check documentation syntax
+    steps:
+      - uses: actions/checkout@v4
+      - name: set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+          bundler-cache: true
+      - name: test
+        run: bundle exec rake documentation_syntax_check
+
   oldest_supported_rubocop:
     runs-on: ubuntu-latest
-    name: The oldest supported RuboCop version
+    name: Check the oldest supported RuboCop version
     steps:
       - uses: actions/checkout@v4
       - name: Use the oldest supported RuboCop
