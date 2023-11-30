@@ -16,6 +16,19 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
         end
       end
 
+      context "when safe navigation `#{method}` with symbol literal key can be replaced with `pluck`" do
+        it 'registers an offense' do
+          expect_offense(<<~RUBY, method: method)
+            x&.%{method} { |a| a[:foo] }
+               ^{method}^^^^^^^^^^^^^^^^ Prefer `pluck(:foo)` over `%{method} { |a| a[:foo] }`.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            x&.pluck(:foo)
+          RUBY
+        end
+      end
+
       context "when `#{method}` with string literal key can be replaced with `pluck`" do
         it 'registers an offense' do
           expect_offense(<<~RUBY, method: method)
