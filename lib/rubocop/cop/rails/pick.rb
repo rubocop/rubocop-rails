@@ -28,13 +28,13 @@ module RuboCop
         extend AutoCorrector
         extend TargetRailsVersion
 
-        MSG = 'Prefer `pick(%<args>s)` over `pluck(%<args>s).first`.'
+        MSG = 'Prefer `pick(%<args>s)` over `%<current>s`.'
         RESTRICT_ON_SEND = %i[first].freeze
 
         minimum_target_rails_version 6.0
 
         def_node_matcher :pick_candidate?, <<~PATTERN
-          (send (send _ :pluck ...) :first)
+          (call (call _ :pluck ...) :first)
         PATTERN
 
         def on_send(node)
@@ -44,7 +44,7 @@ module RuboCop
             node_selector = node.loc.selector
             range = receiver_selector.join(node_selector)
 
-            add_offense(range, message: message(receiver)) do |corrector|
+            add_offense(range, message: message(receiver, range)) do |corrector|
               first_range = receiver.source_range.end.join(node_selector)
 
               corrector.remove(first_range)
@@ -52,11 +52,12 @@ module RuboCop
             end
           end
         end
+        alias on_csend on_send
 
         private
 
-        def message(receiver)
-          format(MSG, args: receiver.arguments.map(&:source).join(', '))
+        def message(receiver, current)
+          format(MSG, args: receiver.arguments.map(&:source).join(', '), current: current.source)
         end
       end
     end

@@ -65,13 +65,14 @@ module RuboCop
             corrector.replace(range, replacement)
           end
         end
+        alias on_csend on_send
 
         private
 
         def root_receiver(node)
           receiver = node.receiver
 
-          if receiver&.send_type?
+          if receiver&.call_type?
             root_receiver(receiver)
           else
             receiver

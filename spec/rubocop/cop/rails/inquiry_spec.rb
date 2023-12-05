@@ -8,6 +8,13 @@ RSpec.describe RuboCop::Cop::Rails::Inquiry, :config do
     RUBY
   end
 
+  it 'registers an offense when using `String&.inquiry`' do
+    expect_offense(<<~RUBY)
+      'two'&.inquiry
+             ^^^^^^^ Prefer Ruby's comparison operators over Active Support's `inquiry`.
+    RUBY
+  end
+
   it 'registers an offense when using `Array#inquiry`' do
     expect_offense(<<~RUBY)
       [foo, bar].inquiry

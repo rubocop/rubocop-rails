@@ -28,7 +28,7 @@ module RuboCop
         include RangeHelp
         extend AutoCorrector
 
-        MSG = 'Use `find_by` instead of `where.%<method>s`.'
+        MSG = 'Use `find_by` instead of `where%<dot>s%<method>s`.'
         RESTRICT_ON_SEND = %i[first take].freeze
 
         def on_send(node)
@@ -37,7 +37,7 @@ module RuboCop
 
           range = offense_range(node)
 
-          add_offense(range, message: format(MSG, method: node.method_name)) do |corrector|
+          add_offense(range, message: format(MSG, dot: node.loc.dot.source, method: node.method_name)) do |corrector|
             autocorrect(corrector, node)
           end
         end

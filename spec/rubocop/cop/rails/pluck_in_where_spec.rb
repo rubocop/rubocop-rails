@@ -50,6 +50,17 @@ RSpec.describe RuboCop::Cop::Rails::PluckInWhere, :config do
       RUBY
     end
 
+    it 'registers an offense and corrects when using `pluck` in `where` for constant with safe navigation' do
+      expect_offense(<<~RUBY)
+        Post&.where(user_id: User&.active&.pluck(:id))
+                                           ^^^^^ Use `select` instead of `pluck` within `where` query method.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Post&.where(user_id: User&.active&.select(:id))
+      RUBY
+    end
+
     it 'registers an offense and corrects when using `pluck` in `rewhere` for constant' do
       expect_offense(<<~RUBY)
         Post.rewhere('user_id IN (?)', User.active.pluck(:id))

@@ -12,6 +12,17 @@ RSpec.describe RuboCop::Cop::Rails::WhereEquals, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when using `=` and anonymous placeholder with safe navigation' do
+    expect_offense(<<~RUBY)
+      User&.where('name = ?', 'Gabe')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(name: 'Gabe')` instead of manually constructing SQL.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      User&.where(name: 'Gabe')
+    RUBY
+  end
+
   it 'registers an offense and corrects when using `=` and named placeholder' do
     expect_offense(<<~RUBY)
       User.where('name = :name', name: 'Gabe')
@@ -76,6 +87,17 @@ RSpec.describe RuboCop::Cop::Rails::WhereEquals, :config do
 
       expect_correction(<<~RUBY)
         User.where(name: 'Gabe')
+      RUBY
+    end
+
+    it 'registers an offense and corrects when using `=` and anonymous placeholder with safe navigation' do
+      expect_offense(<<~RUBY)
+        User&.where(['name = ?', 'Gabe'])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(name: 'Gabe')` instead of manually constructing SQL.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        User&.where(name: 'Gabe')
       RUBY
     end
 
