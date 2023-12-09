@@ -99,7 +99,14 @@ module RuboCop
 
       def in_where?(node)
         send_node = node.each_ancestor(:send).first
-        send_node && WHERE_METHODS.include?(send_node.method_name)
+        return false unless send_node
+
+        return true if WHERE_METHODS.include?(send_node.method_name)
+
+        receiver = send_node.receiver
+        return false unless receiver&.send_type?
+
+        send_node.method?(:not) && WHERE_METHODS.include?(receiver.method_name)
       end
     end
   end
