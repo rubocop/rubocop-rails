@@ -315,6 +315,12 @@ RSpec.describe RuboCop::Cop::Rails::WhereMissing, :config do
         Foo.left_joins(bar: :foo).where(bars: { id: nil })
       RUBY
     end
+
+    it 'does not register an offense when using `left_joins` without arguments' do
+      expect_no_offenses(<<~RUBY)
+        Foo.left_joins(left_joins).where(bars: { id: nil })
+      RUBY
+    end
   end
 
   context 'Rails 6.0', :rails60 do

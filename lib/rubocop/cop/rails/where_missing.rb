@@ -36,7 +36,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return unless node.first_argument.sym_type?
+          return unless node.first_argument&.sym_type?
 
           root_receiver = root_receiver(node)
           where_node_and_argument(root_receiver) do |where_node, where_argument|
