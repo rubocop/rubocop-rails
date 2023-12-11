@@ -902,7 +902,7 @@ Rails/RequireDependency:
   VersionAdded: '2.10'
 
 Rails/ResponseParsedBody:
-  Description: Prefer `response.parsed_body` to `JSON.parse(response.body)`.
+  Description: Prefer `response.parsed_body` to custom parsing logic for `response.body`.
   Enabled: pending
   Safe: false
   VersionAdded: '2.18'
