@@ -22,10 +22,12 @@ module RuboCop
       # @example
       #   # bad
       #   Post.where(user_id: User.active.pluck(:id))
+      #   Post.where.not(user_id: User.active.pluck(:id))
       #
       #   # good
       #   Post.where(user_id: User.active.select(:id))
       #   Post.where(user_id: active_users.select(:id))
+      #   Post.where.not(user_id: active_users.select(:id))
       #
       # @example EnforcedStyle: conservative (default)
       #   # good
