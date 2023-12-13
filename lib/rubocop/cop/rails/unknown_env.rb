@@ -11,8 +11,8 @@ module RuboCop
       #
       # @example
       #   # bad
-      #   Rails.env.proudction?
-      #   Rails.env == 'proudction'
+      #   Rails.env.production?
+      #   Rails.env == 'production'
       #
       #   # good
       #   Rails.env.production?

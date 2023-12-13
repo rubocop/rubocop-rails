@@ -18,8 +18,8 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
     context 'when DidYouMean is available' do
       it 'registers an offense for typo of environment name' do
         expect_offense(<<~RUBY)
-          Rails.env.proudction?
-                    ^^^^^^^^^^^ Unknown environment `proudction`. Did you mean `production`?
+          Rails.env.production?
+                    ^^^^^^^^^^^ Unknown environment `production`. Did you mean `production`?
           Rails.env.developpment?
                     ^^^^^^^^^^^^^ Unknown environment `developpment`. Did you mean `development`?
           Rails.env.something?
@@ -31,8 +31,8 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
 
       it 'registers an offense for typo of environment name with `==` operator' do
         expect_offense(<<~RUBY)
-          Rails.env == 'proudction'
-                       ^^^^^^^^^^^^ Unknown environment `proudction`. Did you mean `production`?
+          Rails.env == 'production'
+                       ^^^^^^^^^^^^ Unknown environment `production`. Did you mean `production`?
           'developpment' == Rails.env
           ^^^^^^^^^^^^^^ Unknown environment `developpment`. Did you mean `development`?
 
@@ -48,8 +48,8 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
     context 'when DidYouMean is not available' do
       it 'registers an offense for typo of environment name' do
         expect_offense(<<~RUBY)
-          Rails.env.proudction?
-                    ^^^^^^^^^^^ Unknown environment `proudction`.
+          Rails.env.production?
+                    ^^^^^^^^^^^ Unknown environment `production`.
           Rails.env.developpment?
                     ^^^^^^^^^^^^^ Unknown environment `developpment`.
           Rails.env.something?
@@ -62,8 +62,8 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
 
       it 'registers an offense for typo of environment name with `==` operator' do
         expect_offense(<<~RUBY)
-          Rails.env == 'proudction'
-                       ^^^^^^^^^^^^ Unknown environment `proudction`.
+          Rails.env == 'production'
+                       ^^^^^^^^^^^^ Unknown environment `production`.
           'developpment' == Rails.env
           ^^^^^^^^^^^^^^ Unknown environment `developpment`.
 

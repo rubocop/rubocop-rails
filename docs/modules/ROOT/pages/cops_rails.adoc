@@ -6570,8 +6570,8 @@ More can be added to the `Environments` config parameter.
 [source,ruby]
 ----
 # bad
-Rails.env.proudction?
-Rails.env == 'proudction'
+Rails.env.production?
+Rails.env == 'production'
 
 # good
 Rails.env.production?
