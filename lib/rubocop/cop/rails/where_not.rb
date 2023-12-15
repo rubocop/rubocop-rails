@@ -32,8 +32,8 @@ module RuboCop
 
         def_node_matcher :where_method_call?, <<~PATTERN
           {
-            (send _ :where (array $str_type? $_ ?))
-            (send _ :where $str_type? $_ ?)
+            (call _ :where (array $str_type? $_ ?))
+            (call _ :where $str_type? $_ ?)
           }
         PATTERN
 
@@ -46,7 +46,7 @@ module RuboCop
             column_and_value = extract_column_and_value(template_node, value_node)
             return unless column_and_value
 
-            good_method = build_good_method(*column_and_value)
+            good_method = build_good_method(node.loc.dot.source, *column_and_value)
             message = format(MSG, good_method: good_method)
 
             add_offense(range, message: message) do |corrector|
@@ -54,6 +54,7 @@ module RuboCop
             end
           end
         end
+        alias on_csend on_send
 
         NOT_EQ_ANONYMOUS_RE = /\A([\w.]+)\s+(?:!=|<>)\s+\?\z/.freeze           # column != ?, column <> ?
         NOT_IN_ANONYMOUS_RE = /\A([\w.]+)\s+NOT\s+IN\s+\(\?\)\z/i.freeze       # column NOT IN (?)
@@ -86,13 +87,13 @@ module RuboCop
           [Regexp.last_match(1), value]
         end
 
-        def build_good_method(column, value)
+        def build_good_method(dot, column, value)
           if column.include?('.')
             table, column = column.split('.')
 
-            "where.not(#{table}: { #{column}: #{value} })"
+            "where#{dot}not(#{table}: { #{column}: #{value} })"
           else
-            "where.not(#{column}: #{value})"
+            "where#{dot}not(#{column}: #{value})"
           end
         end
       end

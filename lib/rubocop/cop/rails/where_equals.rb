@@ -33,8 +33,8 @@ module RuboCop
 
         def_node_matcher :where_method_call?, <<~PATTERN
           {
-            (send _ :where (array $str_type? $_ ?))
-            (send _ :where $str_type? $_ ?)
+            (call _ :where (array $str_type? $_ ?))
+            (call _ :where $str_type? $_ ?)
           }
         PATTERN
 
@@ -55,6 +55,7 @@ module RuboCop
             end
           end
         end
+        alias on_csend on_send
 
         EQ_ANONYMOUS_RE = /\A([\w.]+)\s+=\s+\?\z/.freeze             # column = ?
         IN_ANONYMOUS_RE = /\A([\w.]+)\s+IN\s+\(\?\)\z/i.freeze       # column IN (?)

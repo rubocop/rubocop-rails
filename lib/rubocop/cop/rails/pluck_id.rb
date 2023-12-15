@@ -34,7 +34,7 @@ module RuboCop
         RESTRICT_ON_SEND = %i[pluck].freeze
 
         def_node_matcher :pluck_id_call?, <<~PATTERN
-          (send _ :pluck {(sym :id) (send nil? :primary_key)})
+          (call _ :pluck {(sym :id) (send nil? :primary_key)})
         PATTERN
 
         def on_send(node)
@@ -47,6 +47,7 @@ module RuboCop
             corrector.replace(offense_range(node), 'ids')
           end
         end
+        alias on_csend on_send
 
         private
 

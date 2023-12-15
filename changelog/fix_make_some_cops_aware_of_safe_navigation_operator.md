@@ -1,0 +1,1 @@
+* [#1204](https://github.com/rubocop/rubocop-rails/pull/1204): Make `Rails/ActiveSupportAliases`, `Rails/FindBy`, `Rails/FindById`, `Rails/Inquiry`, `Rails/Pick` `Rails/PluckId`, `Rails/PluckInWhere`, `Rails/WhereEquals`, `Rails/WhereExists`, and `Rails/WhereNot` cops aware of safe navigation operator. ([@koic][])

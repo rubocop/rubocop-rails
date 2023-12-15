@@ -55,11 +55,11 @@ module RuboCop
         RESTRICT_ON_SEND = %i[exists?].freeze
 
         def_node_matcher :where_exists_call?, <<~PATTERN
-          (send (send _ :where $...) :exists?)
+          (call (call _ :where $...) :exists?)
         PATTERN
 
         def_node_matcher :exists_with_args?, <<~PATTERN
-          (send _ :exists? $...)
+          (call _ :exists? $...)
         PATTERN
 
         def on_send(node)
@@ -67,7 +67,7 @@ module RuboCop
             return unless convertable_args?(args)
 
             range = correction_range(node)
-            good_method = build_good_method(args)
+            good_method = build_good_method(args, dot_source: node.loc.dot.source)
             message = format(MSG, good_method: good_method, bad_method: range.source)
 
             add_offense(range, message: message) do |corrector|
@@ -75,6 +75,7 @@ module RuboCop
             end
           end
         end
+        alias on_csend on_send
 
         private
 
@@ -108,11 +109,11 @@ module RuboCop
           end
         end
 
-        def build_good_method(args)
+        def build_good_method(args, dot_source: '.')
           if exists_style?
             build_good_method_exists(args)
           elsif where_style?
-            build_good_method_where(args)
+            build_good_method_where(args, dot_source)
           end
         end
 
@@ -124,11 +125,11 @@ module RuboCop
           end
         end
 
-        def build_good_method_where(args)
+        def build_good_method_where(args, dot_source)
           if args.size > 1
-            "where(#{args.map(&:source).join(', ')}).exists?"
+            "where(#{args.map(&:source).join(', ')})#{dot_source}exists?"
           else
-            "where(#{args[0].source}).exists?"
+            "where(#{args[0].source})#{dot_source}exists?"
           end
         end
       end
