@@ -22,6 +22,7 @@ module RuboCop
       # @example
       #   # bad
       #   Post.where(user_id: User.active.pluck(:id))
+      #   Post.where(user_id: User.active.ids)
       #   Post.where.not(user_id: User.active.pluck(:id))
       #
       #   # good
@@ -42,8 +43,9 @@ module RuboCop
         include ConfigurableEnforcedStyle
         extend AutoCorrector
 
-        MSG = 'Use `select` instead of `pluck` within `where` query method.'
-        RESTRICT_ON_SEND = %i[pluck].freeze
+        MSG_SELECT = 'Use `select` instead of `pluck` within `where` query method.'
+        MSG_IDS = 'Use `select(:id)` instead of `ids` within `where` query method.'
+        RESTRICT_ON_SEND = %i[pluck ids].freeze
 
         def on_send(node)
           return unless in_where?(node)
@@ -51,8 +53,16 @@ module RuboCop
 
           range = node.loc.selector
 
-          add_offense(range) do |corrector|
-            corrector.replace(range, 'select')
+          if node.method?(:ids)
+            replacement = 'select(:id)'
+            message = MSG_IDS
+          else
+            replacement = 'select'
+            message = MSG_SELECT
+          end
+
+          add_offense(range, message: message) do |corrector|
+            corrector.replace(range, replacement)
           end
         end
 
