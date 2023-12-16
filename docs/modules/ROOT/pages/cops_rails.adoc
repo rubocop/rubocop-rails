@@ -4014,10 +4014,13 @@ as the cop cannot replace to `select` between calls to `pluck` on an
 ----
 # bad
 Post.where(user_id: User.active.pluck(:id))
+Post.where(user_id: User.active.ids)
+Post.where.not(user_id: User.active.pluck(:id))
 
 # good
 Post.where(user_id: User.active.select(:id))
 Post.where(user_id: active_users.select(:id))
+Post.where.not(user_id: active_users.select(:id))
 ----
 
 ==== EnforcedStyle: conservative (default)
@@ -4346,8 +4349,7 @@ end
 
 Detect redundant `all` used as a receiver for Active Record query methods.
 
-NOTE: For the methods `delete_all` and `destroy_all`,
-this cop will only check cases where the receiver is a model.
+For the methods `delete_all` and `destroy_all`, this cop will only check cases where the receiver is a model.
 It will ignore cases where the receiver is an association (e.g., `user.articles.all.delete_all`).
 This is because omitting `all` from an association changes the methods
 from `ActiveRecord::Relation` to `ActiveRecord::Associations::CollectionProxy`,
@@ -4984,13 +4986,14 @@ require_dependency 'some_lib'
 | 2.19
 |===
 
-Prefer `response.parsed_body` to `JSON.parse(response.body)`.
+Prefer `response.parsed_body` to custom parsing logic for `response.body`.
 
 === Safety
 
-This cop is unsafe because Content-Type may not be `application/json`. For example, the proprietary
-Content-Type provided by corporate entities such as `application/vnd.github+json` is not supported at
-`response.parsed_body` by default, so you still have to use `JSON.parse(response.body)` there.
+This cop is unsafe because Content-Type may not be `application/json` or `text/html`.
+For example, the proprietary Content-Type provided by corporate entities such as
+`application/vnd.github+json` is not supported at `response.parsed_body` by default,
+so you still have to use `JSON.parse(response.body)` there.
 
 === Examples
 
@@ -4998,6 +5001,12 @@ Content-Type provided by corporate entities such as `application/vnd.github+json
 ----
 # bad
 JSON.parse(response.body)
+
+# bad
+Nokogiri::HTML.parse(response.body)
+
+# bad
+Nokogiri::HTML5.parse(response.body)
 
 # good
 response.parsed_body

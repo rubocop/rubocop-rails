@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.23.0 (2023-12-16)
+
 ### New features
 
 * [#1183](https://github.com/rubocop/rubocop-rails/pull/1183): Support PostGIS adapter for PostgreSQL. ([@Dania02525][])
