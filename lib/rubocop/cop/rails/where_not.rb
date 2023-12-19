@@ -46,7 +46,7 @@ module RuboCop
             column_and_value = extract_column_and_value(template_node, value_node)
             return unless column_and_value
 
-            good_method = build_good_method(node.loc.dot.source, *column_and_value)
+            good_method = build_good_method(node.loc.dot&.source, *column_and_value)
             message = format(MSG, good_method: good_method)
 
             add_offense(range, message: message) do |corrector|
@@ -88,6 +88,7 @@ module RuboCop
         end
 
         def build_good_method(dot, column, value)
+          dot ||= '.'
           if column.include?('.')
             table, column = column.split('.')
 

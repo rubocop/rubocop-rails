@@ -111,6 +111,17 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when using implicit receiver' do
+    expect_offense(<<~RUBY)
+      where('name != ?', 'Gabe')
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where.not(name: 'Gabe')` instead of manually constructing negated SQL in `where`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      where.not(name: 'Gabe')
+    RUBY
+  end
+
   context 'with array arguments' do
     it 'registers an offense and corrects when using `!=` and anonymous placeholder' do
       expect_offense(<<~RUBY)
