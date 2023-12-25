@@ -9,6 +9,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1221](https://github.com/rubocop/rubocop-rails/issues/1221): Fix an exception in `Rails/WhereNot` when calling `.where` on an implicit receiver (e.g. inside model code). ([@bquorning][])
+
 ## 2.23.0 (2023-12-16)
 
 ### New features
@@ -1014,3 +1018,4 @@
 [@jamiemccarthy]: https://github.com/jamiemccarthy
 [@sambostock]: https://github.com/sambostock
 [@Dania02525]: https://github.com/Dania02525
+[@bquorning]: https://github.com/bquorning
