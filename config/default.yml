@@ -445,9 +445,10 @@ Rails/EnvironmentVariableAccess:
   # TODO: Set to `pending` status in RuboCop Rails 2 series when migration doc will be written.
   Enabled: false
   VersionAdded: '2.10'
-  VersionChanged: '2.11'
+  VersionChanged: '<<next>>'
   Include:
     - app/**/*.rb
+    - config/initializers/**/*.rb
     - lib/**/*.rb
   Exclude:
     - lib/**/*.rake
