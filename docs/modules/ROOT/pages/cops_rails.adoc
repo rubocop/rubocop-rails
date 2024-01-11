@@ -2068,7 +2068,7 @@ ENV["FOO"] = "bar"
 | Name | Default value | Configurable values
 
 | Include
-| `+app/**/*.rb+`, `+lib/**/*.rb+`
+| `+app/**/*.rb+`, `+config/initializers/**/*.rb+`, `+lib/**/*.rb+`
 | Array
 
 | Exclude

@@ -28,6 +28,23 @@ RSpec.describe RuboCop::Cop::Rails::EnvironmentVariableAccess, :config do
         Foo::ENV.fetch("BAR")
       RUBY
     end
+
+    it 'registers an offense when reading from an `ENV` key in the config/initializers folder' do
+      file_path = 'config/initializers/foo.rb'
+
+      expect_offense(<<~RUBY, file_path)
+        ACCESS_TOKEN = ENV["ACCESS_TOKEN"]
+                       ^^^ Do not read from `ENV` directly post initialization.
+      RUBY
+    end
+
+    it 'does not register an offense when reading from an `ENV` key in the config folder' do
+      file_path = '/config/foo.rb'
+
+      expect_no_offenses(<<~RUBY, file_path)
+        ACCESS_TOKEN = ENV["ACCESS_TOKEN"]
+      RUBY
+    end
   end
 
   context 'when allowing reads' do
