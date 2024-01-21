@@ -31,7 +31,7 @@ module RuboCop
           time
         ].to_set.freeze
 
-        # Generated from `ActiveRecord::AttributeMethods.dangerous_attribute_methods` on activerecord 7.1.0.
+        # Generated from `ActiveRecord::AttributeMethods.dangerous_attribute_methods` on activerecord 7.1.3.
         # rubocop:disable Metrics/CollectionLiteralLength
         DANGEROUS_COLUMN_NAMES = %w[
           __callbacks
@@ -290,7 +290,6 @@ module RuboCop
           new_record
           no_touching
           normalize_reflection_attribute
-          object_id
           partial_inserts
           partial_updates
           perform_validations
