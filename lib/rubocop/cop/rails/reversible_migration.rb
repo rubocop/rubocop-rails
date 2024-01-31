@@ -17,7 +17,7 @@ module RuboCop
       #   # good
       #   def change
       #     change_table :users do |t|
-      #       t.remove :name, :string
+      #       t.remove :name, type: :string
       #     end
       #   end
       #
