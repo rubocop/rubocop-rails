@@ -34,6 +34,34 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
     RUBY
   end
 
+  it 'registers and corrects an offense when using multi-line leading dot method calls' do
+    expect_offense(<<~RUBY)
+      User
+        .where(id: x)
+         ^^^^^^^^^^^^ Use `find_by` instead of `where.take`.
+        .take
+    RUBY
+
+    expect_correction(<<~RUBY)
+      User
+        .find_by(id: x)
+    RUBY
+  end
+
+  it 'registers and corrects an offense when using multi-line trailing dot method calls' do
+    expect_offense(<<~RUBY)
+      User.
+        where(id: x).
+        ^^^^^^^^^^^^^ Use `find_by` instead of `where.take`.
+        take
+    RUBY
+
+    expect_correction(<<~RUBY)
+      User.
+        find_by(id: x)
+    RUBY
+  end
+
   context 'when using safe navigation operator' do
     it 'registers an offense when using `#take`' do
       expect_offense(<<~RUBY)
