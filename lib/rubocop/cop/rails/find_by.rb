@@ -59,7 +59,7 @@ module RuboCop
           return if node.method?(:first)
 
           where_loc = node.receiver.loc.selector
-          first_loc = range_between(node.loc.dot.begin_pos, node.loc.selector.end_pos)
+          first_loc = range_between(node.receiver.source_range.end_pos, node.loc.selector.end_pos)
 
           corrector.replace(where_loc, 'find_by')
           corrector.replace(first_loc, '')
