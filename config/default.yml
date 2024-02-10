@@ -782,6 +782,12 @@ Rails/Present:
   # Convert usages of `unless blank?` to `if present?`
   UnlessBlank: true
 
+Rails/PrivateTransactionOption:
+  Description: 'Avoid use of `ActiveRecord::Base.transaction(joinable: _)`.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Rails/RakeEnvironment:
   Description: 'Include `:environment` as a dependency for all Rake tasks.'
   Enabled: true
