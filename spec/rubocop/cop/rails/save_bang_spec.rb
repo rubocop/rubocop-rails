@@ -172,7 +172,7 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
 
     it "when using #{method} wrapped within parenthesis with if" do
       if update
-        expect_no_offenses(<<~RUBY, method: method)
+        expect_no_offenses(<<~RUBY)
           if (object.#{method}); something; end
         RUBY
       else
@@ -288,7 +288,7 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
     end
 
     it "when using #{method} with a bunch of hashes & arrays" do
-      expect_no_offenses(<<~RUBY, method: method)
+      expect_no_offenses(<<~RUBY)
         return [{ success: object.#{method} }, true]
       RUBY
     end
