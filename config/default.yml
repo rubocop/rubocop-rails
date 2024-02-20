@@ -1218,7 +1218,13 @@ Rails/WhereNotWithMultipleConditions:
   Enabled: 'pending'
   Severity: warning
   VersionAdded: '2.17'
-  VersionChanged: '2.18'
+
+Rails/ZeitwerkFriendlyConstant:
+  Description: 'Ensure all constants defined in each file are independently loadable by Zeitwerk.'
+  Enabled: 'pending'
+  VersionAdded: '<<next>>'
+  Include:
+    - app/**/*.rb
 
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
