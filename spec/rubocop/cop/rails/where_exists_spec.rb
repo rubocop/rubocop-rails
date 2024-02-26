@@ -59,6 +59,17 @@ RSpec.describe RuboCop::Cop::Rails::WhereExists, :config do
       RUBY
     end
 
+    it 'registers an offense when using implicit receiver and arg' do
+      expect_offense(<<~RUBY)
+        where('name = ?', 'john').exists?
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `exists?(['name = ?', 'john'])` over `where('name = ?', 'john').exists?`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        exists?(['name = ?', 'john'])
+      RUBY
+    end
+
     it 'registers an offense when using `where(...).exists?` with an association' do
       expect_offense(<<~RUBY)
         user.posts.where(published: true).exists?
@@ -139,6 +150,17 @@ RSpec.describe RuboCop::Cop::Rails::WhereExists, :config do
 
       expect_correction(<<~RUBY)
         User.where('name = ?', 'john').exists?
+      RUBY
+    end
+
+    it 'registers an offense when using implicit receiver and arg' do
+      expect_offense(<<~RUBY)
+        exists?('name = ?', 'john')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `where('name = ?', 'john').exists?` over `exists?('name = ?', 'john')`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        where('name = ?', 'john').exists?
       RUBY
     end
 
