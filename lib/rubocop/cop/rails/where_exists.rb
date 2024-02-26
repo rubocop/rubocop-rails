@@ -67,7 +67,7 @@ module RuboCop
             return unless convertable_args?(args)
 
             range = correction_range(node)
-            good_method = build_good_method(args, dot_source: node.loc.dot.source)
+            good_method = build_good_method(args, dot: node.loc.dot)
             message = format(MSG, good_method: good_method, bad_method: range.source)
 
             add_offense(range, message: message) do |corrector|
@@ -109,11 +109,11 @@ module RuboCop
           end
         end
 
-        def build_good_method(args, dot_source: '.')
+        def build_good_method(args, dot:)
           if exists_style?
             build_good_method_exists(args)
           elsif where_style?
-            build_good_method_where(args, dot_source)
+            build_good_method_where(args, dot&.source || '.')
           end
         end
 
