@@ -600,7 +600,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
 
   context 'when `DATABASE_URL` is set' do
     before do
-      allow(ENV).to receive(:[]).with('DATABASE_URL').and_return(database_url)
+      stub_const('ENV', 'DATABASE_URL' => database_url)
     end
 
     context 'mysql2' do
