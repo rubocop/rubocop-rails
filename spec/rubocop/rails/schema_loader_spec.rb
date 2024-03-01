@@ -50,7 +50,7 @@ RSpec.describe RuboCop::Rails::SchemaLoader do
 
       shared_examples 'returns a schema' do
         it 'returns a schema' do
-          klass = RuboCop::Rails::SchemaLoader::Schema
+          klass = described_class::Schema
           expect(loaded_schema.is_a?(klass)).to be(true)
           expect(loaded_schema.tables.size).to eq 2
         end

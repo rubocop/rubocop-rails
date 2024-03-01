@@ -44,7 +44,7 @@ RSpec.describe RuboCop::Config do
 
       context 'and lock files do not exist' do
         it 'uses the default rails version' do
-          default = RuboCop::Config::DEFAULT_RAILS_VERSION
+          default = described_class::DEFAULT_RAILS_VERSION
           expect(configuration.target_rails_version).to eq default
         end
       end
@@ -170,7 +170,7 @@ RSpec.describe RuboCop::Config do
                   1.16.1
               LOCKFILE
             create_file(lock_file_path, content)
-            default = RuboCop::Config::DEFAULT_RAILS_VERSION
+            default = described_class::DEFAULT_RAILS_VERSION
             expect(configuration.target_rails_version).to eq default
           end
         end
