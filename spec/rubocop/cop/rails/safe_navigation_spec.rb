@@ -28,7 +28,7 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
 
     it_behaves_like 'accepts', 'non try! method calls', 'join'
 
-    context 'target_ruby_version < 2.3', :ruby22 do
+    context 'target_ruby_version < 2.3', :ruby22, unsupported_on: :prism do
       it_behaves_like 'accepts', 'try! with a single parameter', 'try!(:join)'
       it_behaves_like 'accepts', 'try! with a multiple parameters', 'try!(:join, ",")'
       it_behaves_like 'accepts', 'try! with a block', 'try!(:map) { |e| e.some_method }'
@@ -93,7 +93,7 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
   context 'convert try and try!' do
     let(:cop_config) { { 'ConvertTry' => true } }
 
-    context 'target_ruby_version < 2.3', :ruby22 do
+    context 'target_ruby_version < 2.3', :ruby22, unsupported_on: :prism do
       it_behaves_like 'accepts', 'try! with a single parameter', 'try!(:join)'
       it_behaves_like 'accepts', 'try! with a multiple parameters', 'try!(:join, ",")'
       it_behaves_like 'accepts', 'try! with a block', 'try!(:map) { |e| e.some_method }'
@@ -119,7 +119,12 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
         it_behaves_like 'autocorrect', 'try! with 2 parameters', '[1, 2].try!(:join, ",")', '[1, 2]&.join(",")'
         it_behaves_like 'autocorrect', 'try! with multiple parameters',
                         '[1, 2].try!(:join, bar, baz)', '[1, 2]&.join(bar, baz)'
-        it_behaves_like 'autocorrect', 'try! without receiver', 'try!(:join)', 'self&.join'
+        # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
+        # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
+        context 'skip test when parser engine is prism', broken_on: :prism do
+          it_behaves_like 'autocorrect', 'try! without receiver', 'try!(:join)', 'self&.join'
+        end
+
         it_behaves_like 'autocorrect', 'try! with a block',
                         ['[foo, bar].try!(:map) do |e|',
                          '  e.some_method',

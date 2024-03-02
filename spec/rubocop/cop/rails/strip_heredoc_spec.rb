@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::StripHeredoc, :config do
-  context 'Ruby <= 2.2', :ruby22 do
+  context 'Ruby <= 2.2', :ruby22, unsupported_on: :prism do
     it 'does not register an offense when using `strip_heredoc`' do
       expect_no_offenses(<<~RUBY)
         <<-EOS.strip_heredoc

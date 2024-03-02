@@ -2,7 +2,9 @@
 
 RSpec.describe RuboCop::Cop::Rails::Blank, :config do
   shared_examples 'offense' do |source, correction, message|
-    it 'registers an offense and corrects' do
+    # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
+    # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
+    it 'registers an offense and corrects', broken_on: :prism do
       expect_offense(<<~RUBY, source: source, message: message)
         #{source}
         ^{source} #{message}

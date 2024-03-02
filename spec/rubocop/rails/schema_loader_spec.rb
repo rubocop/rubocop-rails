@@ -2,8 +2,11 @@
 
 RSpec.describe RuboCop::Rails::SchemaLoader do
   describe '.load' do
-    require 'parser/ruby27'
-    let(:target_ruby_version) { 2.7 }
+    let(:target_ruby_version) do
+      # The minimum version Prism can parse is 3.3.
+      ENV['PARSER_ENGINE'] == 'parser_prism' ? 3.3 : RuboCop::TargetRuby::DEFAULT_VERSION
+    end
+    let(:parser_engine) { ENV.fetch('PARSER_ENGINE', :parser_whitequark).to_sym }
 
     around do |example|
       described_class.reset!
@@ -13,13 +16,13 @@ RSpec.describe RuboCop::Rails::SchemaLoader do
 
     context 'without schema.rb' do
       it do
-        expect(described_class.load(target_ruby_version).nil?).to be(true)
+        expect(described_class.load(target_ruby_version, parser_engine).nil?).to be(true)
       end
     end
 
     context 'with schema.rb' do
       subject(:loaded_schema) do
-        described_class.load(target_ruby_version)
+        described_class.load(target_ruby_version, parser_engine)
       end
 
       let(:rails_root) { Pathname(Dir.mktmpdir) }

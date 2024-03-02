@@ -148,7 +148,7 @@ RSpec.describe RuboCop::Cop::Rails::IndexWith, :config do
       end
     end
 
-    context 'when using Ruby 2.5 or older', :ruby25 do
+    context 'when using Ruby 2.5 or older', :ruby25, unsupported_on: :prism do
       it 'does not register an offense for `to_h { ... }`' do
         expect_no_offenses(<<~RUBY)
           x.to_h { |el| [el, el.to_sym] }

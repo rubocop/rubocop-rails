@@ -27,6 +27,11 @@ task :spec do
   end
 end
 
+desc 'Run RSpec with Prism'
+task :prism_spec do
+  sh('PARSER_ENGINE=parser_prism bundle exec rake spec')
+end
+
 desc 'Run RSpec with code coverage'
 task :coverage do
   ENV['COVERAGE'] = 'true'
@@ -36,7 +41,7 @@ end
 desc 'Run RuboCop over itself'
 RuboCop::RakeTask.new(:internal_investigation)
 
-task default: %i[documentation_syntax_check spec internal_investigation]
+task default: %i[documentation_syntax_check spec prism_spec internal_investigation]
 
 desc 'Generate a new cop template'
 task :new_cop, [:cop] do |_task, args|
