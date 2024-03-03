@@ -13,7 +13,7 @@
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.16
 | -
 |===
@@ -54,7 +54,7 @@ end
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.14
 | -
 |===
@@ -103,7 +103,7 @@ end
 
 | Disabled
 | Yes
-| Yes
+| Always
 | 0.19
 | 2.22
 |===
@@ -169,7 +169,7 @@ skip_after_filter :do_stuff
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.17
 | -
 |===
@@ -229,7 +229,7 @@ def destroy; end
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.53
 | -
 |===
@@ -260,7 +260,7 @@ book.update!(author: 'Alice')
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.7
 | -
 |===
@@ -357,7 +357,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.48
 | -
 |===
@@ -389,7 +389,7 @@ are not used.
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.16
 | -
 |===
@@ -425,7 +425,7 @@ ActiveSupport.on_load(:active_record) { include MyClass }
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.11
 | 2.20
 |===
@@ -508,7 +508,7 @@ after_update_commit :log_update_action
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.4
 | 2.5
 |===
@@ -542,7 +542,7 @@ end
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.49
 | 2.5
 |===
@@ -576,7 +576,7 @@ end
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.4
 | 2.5
 |===
@@ -610,7 +610,7 @@ end
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.49
 | 2.5
 |===
@@ -645,7 +645,7 @@ end
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.9
 | -
 |===
@@ -682,7 +682,7 @@ MyTable.arel_table[Arel.star]
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.56
 | -
 |===
@@ -717,7 +717,7 @@ assert_not x
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.9
 | -
 |===
@@ -800,7 +800,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.62
 | -
 |===
@@ -866,7 +866,7 @@ end
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.48
 | 2.10
 |===
@@ -1065,7 +1065,7 @@ end
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.13
 | -
 |===
@@ -1115,7 +1115,7 @@ collection.compact_blank!
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 2.6
 | 2.12
 |===
@@ -1280,7 +1280,7 @@ add_column :users, :saved
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.30
 | 2.11
 |===
@@ -1411,7 +1411,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.21
 | 0.50
 |===
@@ -1503,7 +1503,7 @@ delegate :bar, to: :foo, prefix: true
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.44
 | -
 |===
@@ -1530,7 +1530,7 @@ delegate :foo, to: :bar, allow_nil: true
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.14
 | 2.18
 |===
@@ -1586,7 +1586,7 @@ user.errors.attribute_names.include?(:attr)
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.15
 | -
 |===
@@ -1619,7 +1619,7 @@ I18n.t :record_invalid, scope: 'activerecord.errors.messages'
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.14
 | 2.18
 |===
@@ -1708,7 +1708,7 @@ scope :hidden, -> { where(visible: false) }
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.13
 | -
 |===
@@ -1744,7 +1744,7 @@ created_at - 1.minute
 
 | Enabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.44
 | 2.10
 |===
@@ -1828,7 +1828,7 @@ page.find_by_id('a_dom_id').click
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.11
 | -
 |===
@@ -1865,7 +1865,7 @@ Rails.logger.debug { "The time is #{Time.zone.now}." }
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 2.3
 | -
 |===
@@ -1950,7 +1950,7 @@ enum status: [:active, :archived]
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.22
 | -
 |===
@@ -1976,7 +1976,7 @@ Rails.env.local?
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.52
 | -
 |===
@@ -2007,7 +2007,7 @@ Rails.env.production?
 | Yes
 | No
 | 2.10
-| 2.11
+| 2.24
 |===
 
 Looks for direct access to environment variables through the
@@ -2142,7 +2142,7 @@ raise 'a bad error has happened'
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.11
 | -
 |===
@@ -2180,7 +2180,7 @@ date.all_year
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.47
 | 2.4
 |===
@@ -2243,7 +2243,7 @@ Rails.root.join('app', 'models', 'goober').to_s
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.30
 | 2.21
 |===
@@ -2303,7 +2303,7 @@ User.where(name: 'Bruce').first
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.7
 | -
 |===
@@ -2336,7 +2336,7 @@ User.find(id)
 
 | Enabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.30
 | 2.21
 |===
@@ -2401,7 +2401,7 @@ User.order(:foo).each
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.16
 | -
 |===
@@ -2597,7 +2597,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.44
 | -
 |===
@@ -2641,7 +2641,7 @@ get :new, **options
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.54
 | 2.11
 |===
@@ -2706,7 +2706,7 @@ head 200
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.14
 | -
 |===
@@ -2919,7 +2919,7 @@ end
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.17
 | -
 |===
@@ -2968,7 +2968,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.63
 | -
 |===
@@ -3033,7 +3033,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 2.5
 | 2.8
 |===
@@ -3064,7 +3064,7 @@ Hash[[1, 2, 3].collect { |el| [foo(el), el] }]
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 2.5
 | 2.8
 |===
@@ -3434,7 +3434,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.62
 | -
 |===
@@ -3474,7 +3474,7 @@ link_to 'Click here', url, target: '_blank', rel: 'noreferrer'
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.7
 | -
 |===
@@ -3529,7 +3529,7 @@ end
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.7
 | -
 |===
@@ -3576,7 +3576,7 @@ match 'photos/:id', to: 'photos#show', via: :all
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.14
 | 2.20
 |===
@@ -3617,7 +3617,7 @@ end
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.7
 | 2.9
 |===
@@ -3740,7 +3740,7 @@ scope :chronological, -> { order(created_at: :asc) }
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.15
 | 0.19
 |===
@@ -3858,7 +3858,7 @@ safe_join([user_content, " ", content_tag(:span, user_content)])
 
 | Enabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.6
 | -
 |===
@@ -3901,7 +3901,7 @@ Model.pick(:a)
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.7
 | 2.18
 |===
@@ -3949,7 +3949,7 @@ Post.published.pluck(:title)
 
 | Disabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.7
 | -
 |===
@@ -3992,7 +3992,7 @@ end
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.7
 | 2.8
 |===
@@ -4062,7 +4062,7 @@ Post.where(user_id: active_users.pluck(:id))
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.35
 | -
 |===
@@ -4090,7 +4090,7 @@ core extensions to the numeric classes.
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.52
 | -
 |===
@@ -4143,7 +4143,7 @@ a.presence || b
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.48
 | 0.67
 |===
@@ -4228,7 +4228,7 @@ something if foo.present?
 
 | Enabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.4
 | 2.6
 |===
@@ -4286,7 +4286,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.20
 | 0.29
 |===
@@ -4348,7 +4348,7 @@ end
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.21
 | -
 |===
@@ -4412,7 +4412,7 @@ ActiveSupport::TimeZone.all.first
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.67
 | -
 |===
@@ -4461,7 +4461,7 @@ validates :x, length: { is: 5 }, allow_nil: true, allow_blank: false
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 2.6
 | -
 |===
@@ -4499,7 +4499,7 @@ end
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.13
 | -
 |===
@@ -4544,7 +4544,7 @@ belongs_to :author, foreign_key: :user_id
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.52
 | -
 |===
@@ -4614,7 +4614,7 @@ end
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.12
 | -
 |===
@@ -4666,7 +4666,7 @@ end
 
 | Enabled
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.64
 | 2.10
 |===
@@ -4698,7 +4698,7 @@ has_many :accounts, class_name: 'Account'
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.56
 | -
 |===
@@ -4758,7 +4758,7 @@ refute_equal true, false
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.48
 | 2.13
 |===
@@ -4844,7 +4844,7 @@ end
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.7
 | -
 |===
@@ -4903,7 +4903,7 @@ render text: 'Ruby!'
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.41
 | -
 |===
@@ -4987,7 +4987,7 @@ require_dependency 'some_lib'
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.18
 | 2.19
 |===
@@ -5057,7 +5057,7 @@ end
 # good
 def change
   change_table :users do |t|
-    t.remove :name, :string
+    t.remove :name, type: :string
   end
 end
 
@@ -5294,7 +5294,7 @@ end
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.13
 | -
 |===
@@ -5325,7 +5325,7 @@ Rails.public_path.join('path', to, 'file.pdf')
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.16
 | -
 |===
@@ -5371,7 +5371,7 @@ Rails.root.join('db', 'schema.rb').binwrite(content)
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.15
 | -
 |===
@@ -5402,7 +5402,7 @@ NOTE: Required Ruby version: 2.3
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.43
 | -
 |===
@@ -5469,7 +5469,7 @@ foo&.bar { |e| e.baz }
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.4
 | -
 |===
@@ -5511,7 +5511,7 @@ do_something unless foo.blank?
 
 | Disabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.42
 | 0.59
 |===
@@ -5702,7 +5702,7 @@ end
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.19
 | 2.12
 |===
@@ -5738,7 +5738,7 @@ scope :something, -> { where(something: true) }
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.21
 | -
 |===
@@ -5771,7 +5771,7 @@ Model.pluck(:column_name)
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.7
 | -
 |===
@@ -5914,7 +5914,7 @@ user.touch
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.8
 | 2.9
 |===
@@ -5974,7 +5974,7 @@ NOTE: Required Ruby version: 2.3
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.15
 | -
 |===
@@ -6108,7 +6108,7 @@ t.boolean :active, default: true, null: false
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.30
 | 2.13
 |===
@@ -6235,7 +6235,7 @@ end
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.15
 | -
 |===
@@ -6288,7 +6288,7 @@ time.to_formatted_s(:db)
 
 | Pending
 | No
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.16
 | -
 |===
@@ -6318,7 +6318,7 @@ obj.to_formatted_s(:delimited)
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.16
 | 2.18
 |===
@@ -6448,7 +6448,7 @@ end
 
 | Enabled
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 0.40
 | 2.13
 |===
@@ -6695,7 +6695,7 @@ head 100
 
 | Enabled
 | Yes
-| Yes
+| Always
 | 0.9
 | 0.41
 |===
@@ -6750,7 +6750,7 @@ validates :foo, uniqueness: true
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.9
 | 2.10
 |===
@@ -6793,7 +6793,7 @@ User.where(users: { name: 'Gabe' })
 
 | Pending
 | Yes
-| Yes (Unsafe)
+| Always (Unsafe)
 | 2.7
 | 2.10
 |===
@@ -6871,7 +6871,7 @@ User.where('length(name) > 10').exists?
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.16
 | -
 |===
@@ -6902,7 +6902,7 @@ Post.where.missing(:author)
 
 | Pending
 | Yes
-| Yes
+| Always
 | 2.8
 | -
 |===

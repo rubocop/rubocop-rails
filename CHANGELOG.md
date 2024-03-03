@@ -9,9 +9,11 @@
 
 ## master (unreleased)
 
+## 2.24.0 (2024-03-03)
+
 ### New features
 
-* [#1245](https://github.com/rubocop/rubocop-rails/pull/1245): Support Prism as a Ruby parser. ([@koic][])
+* [#1245](https://github.com/rubocop/rubocop-rails/pull/1245): Support Prism as a Ruby parser (experimental). ([@koic][])
 
 ### Bug fixes
 
