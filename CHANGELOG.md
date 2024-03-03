@@ -9,6 +9,20 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#1245](https://github.com/rubocop/rubocop-rails/pull/1245): Support Prism as a Ruby parser. ([@koic][])
+
+### Bug fixes
+
+* [#1234](https://github.com/rubocop/rubocop-rails/issues/1234): Fix an incorrect autocorrect for `Rails/FindBy` when using multi-line leading dot method calls. ([@ymap][])
+* [#1241](https://github.com/rubocop/rubocop-rails/pull/1241): Fix an error for `Rails/WhereExists` with `EnforcedStyle: where` and implicit receivers. ([@earlopain][])
+
+### Changes
+
+* [#1229](https://github.com/rubocop/rubocop-rails/pull/1229): Make `Rails/EnvironmentVariableAccess` aware of initializers. ([@markokajzer][])
+* [#1231](https://github.com/rubocop/rubocop-rails/pull/1231): Remove `object_id` from `Rails/DangerousColumnNames` targets. ([@r7kamura][])
+
 ## 2.23.1 (2023-12-25)
 
 ### Bug fixes
@@ -1021,3 +1035,6 @@
 [@sambostock]: https://github.com/sambostock
 [@Dania02525]: https://github.com/Dania02525
 [@bquorning]: https://github.com/bquorning
+[@markokajzer]: https://github.com/markokajzer
+[@ymap]: https://github.com/ymap
+[@earlopain]: https://github.com/earlopain
