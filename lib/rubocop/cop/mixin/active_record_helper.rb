@@ -39,7 +39,12 @@ module RuboCop
       end
 
       def schema
-        RuboCop::Rails::SchemaLoader.load(target_ruby_version)
+        # For compatibility with RuboCop 1.61.0 or lower.
+        if respond_to?(:parser_engine)
+          RuboCop::Rails::SchemaLoader.load(target_ruby_version, parser_engine)
+        else
+          RuboCop::Rails::SchemaLoader.load(target_ruby_version, :parser_whitequark)
+        end
       end
 
       def table_name(class_node)

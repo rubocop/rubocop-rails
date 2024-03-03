@@ -12,10 +12,10 @@ module RuboCop
       # So a cop that uses the loader should handle `nil` properly.
       #
       # @return [Schema, nil]
-      def load(target_ruby_version)
+      def load(target_ruby_version, parser_engine)
         return @load if defined?(@load)
 
-        @load = load!(target_ruby_version)
+        @load = load!(target_ruby_version, parser_engine)
       end
 
       def reset!
@@ -38,23 +38,13 @@ module RuboCop
 
       private
 
-      def load!(target_ruby_version)
+      def load!(target_ruby_version, parser_engine)
         path = db_schema_path
         return unless path
 
-        ast = parse(path, target_ruby_version)
+        ast = RuboCop::ProcessedSource.new(File.read(path), target_ruby_version, path, parser_engine: parser_engine).ast
+
         Schema.new(ast) if ast
-      end
-
-      def parse(path, target_ruby_version)
-        klass_name = :"Ruby#{target_ruby_version.to_s.sub('.', '')}"
-        klass = ::Parser.const_get(klass_name)
-        parser = klass.new(RuboCop::AST::Builder.new)
-
-        buffer = Parser::Source::Buffer.new(path, 1)
-        buffer.source = path.read
-
-        parser.parse(buffer)
       end
     end
   end

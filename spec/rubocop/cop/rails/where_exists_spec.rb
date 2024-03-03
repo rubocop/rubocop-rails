@@ -59,7 +59,9 @@ RSpec.describe RuboCop::Cop::Rails::WhereExists, :config do
       RUBY
     end
 
-    it 'registers an offense when using implicit receiver and arg' do
+    # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
+    # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
+    it 'registers an offense when using implicit receiver and arg', broken_on: :prism do
       expect_offense(<<~RUBY)
         where('name = ?', 'john').exists?
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `exists?(['name = ?', 'john'])` over `where('name = ?', 'john').exists?`.
@@ -153,7 +155,9 @@ RSpec.describe RuboCop::Cop::Rails::WhereExists, :config do
       RUBY
     end
 
-    it 'registers an offense when using implicit receiver and arg' do
+    # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
+    # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
+    it 'registers an offense when using implicit receiver and arg', broken_on: :prism do
       expect_offense(<<~RUBY)
         exists?('name = ?', 'john')
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `where('name = ?', 'john').exists?` over `exists?('name = ?', 'john')`.

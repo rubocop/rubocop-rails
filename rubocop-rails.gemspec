@@ -36,5 +36,5 @@ Gem::Specification.new do |s|
   # introduced in rack 1.1
   s.add_runtime_dependency 'rack', '>= 1.1'
   s.add_runtime_dependency 'rubocop', '>= 1.33.0', '< 2.0'
-  s.add_runtime_dependency 'rubocop-ast', '>= 1.30.0', '< 2.0'
+  s.add_runtime_dependency 'rubocop-ast', '>= 1.31.1', '< 2.0'
 end
