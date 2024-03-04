@@ -312,4 +312,20 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
       RUBY
     end
   end
+
+  context 'when using `flash` after `render` and returning `redirect_to` in condition block' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class HomeController < ApplicationController
+          def create
+            if condition
+              flash[:alert] = "msg"
+              return redirect_to "https://www.example.com/"
+            end
+            render :index
+          end
+        end
+      RUBY
+    end
+  end
 end
