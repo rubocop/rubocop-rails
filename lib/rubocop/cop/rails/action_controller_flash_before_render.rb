@@ -99,6 +99,8 @@ module RuboCop
 
         def use_redirect_to?(context)
           context.right_siblings.compact.any? do |sibling|
+            # Unwrap `return redirect_to :index`
+            sibling = sibling.children.first if sibling.return_type? && sibling.children.one?
             sibling.send_type? && sibling.method?(:redirect_to)
           end
         end
