@@ -30,6 +30,7 @@ module RuboCop
 
         def build!(ast)
           raise "Unexpected type: #{ast.type}" unless ast.block_type?
+          return unless ast.body
 
           each_table(ast) do |table_def|
             next unless table_def.method?(:create_table)
