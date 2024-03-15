@@ -113,5 +113,16 @@ RSpec.describe RuboCop::Cop::Rails::UniqBeforePluck, :config do
         instance.assoc.distinct.pluck(:name)
       RUBY
     end
+
+    it 'corrects uniq when used without a receiver' do
+      expect_offense(<<~RUBY)
+        pluck(:name).uniq
+                     ^^^^ Use `distinct` before `pluck`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        distinct.pluck(:name)
+      RUBY
+    end
   end
 end
