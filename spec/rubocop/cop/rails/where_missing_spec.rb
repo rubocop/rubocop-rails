@@ -24,6 +24,17 @@ RSpec.describe RuboCop::Cop::Rails::WhereMissing, :config do
       RUBY
     end
 
+    it 'registers an offense when using `left_joins(:foo).where(foo: {id: nil})` without receiver' do
+      expect_offense(<<~RUBY)
+        left_joins(:foo).where(foo: { id: nil }).where(bar: "bar")
+        ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foo: { id: nil })`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        where.missing(:foo).where(bar: "bar")
+      RUBY
+    end
+
     it 'registers an offense when using `left_outer_joins(:foo).where(foos: {id: nil})`' do
       expect_offense(<<~RUBY)
         Foo.left_outer_joins(:foo).where(foos: { id: nil }).where(bar: "bar")
@@ -46,6 +57,17 @@ RSpec.describe RuboCop::Cop::Rails::WhereMissing, :config do
       RUBY
     end
 
+    it 'registers an offense when using `where(foos: {id: nil}).left_joins(:foo)` without receiver' do
+      expect_offense(<<~RUBY)
+        where(foos: { id: nil }).left_joins(:foo).where(bar: "bar")
+                                 ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        where.missing(:foo).where(bar: "bar")
+      RUBY
+    end
+
     it 'registers an offense when using `where(foos: {id: nil}, bar: "bar").left_joins(:foo)`' do
       expect_offense(<<~RUBY)
         Foo.where(foos: { id: nil }, bar: "bar").left_joins(:foo)
@@ -54,6 +76,17 @@ RSpec.describe RuboCop::Cop::Rails::WhereMissing, :config do
 
       expect_correction(<<~RUBY)
         Foo.where(bar: "bar").where.missing(:foo)
+      RUBY
+    end
+
+    it 'registers an offense when using `where(foos: {id: nil}, bar: "bar").left_joins(:foo)` without receiver' do
+      expect_offense(<<~RUBY)
+        where(foos: { id: nil }, bar: "bar").left_joins(:foo)
+                                             ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        where(bar: "bar").where.missing(:foo)
       RUBY
     end
 
