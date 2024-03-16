@@ -57,7 +57,7 @@ module RuboCop
 
         def on_send(node)
           receiver, method, arguments = *node # rubocop:disable InternalAffairs/NodeDestructuring
-          return unless receiver && (hook = LOAD_HOOKS[receiver.const_name])
+          return unless arguments && (hook = LOAD_HOOKS[receiver&.const_name])
 
           preferred = "ActiveSupport.on_load(:#{hook}) { #{method} #{arguments.source} }"
           add_offense(node, message: format(MSG, prefer: preferred, current: node.source)) do |corrector|
