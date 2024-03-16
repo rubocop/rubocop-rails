@@ -57,6 +57,12 @@ RSpec.describe RuboCop::Cop::Rails::ExpandedDateRange, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `date.beginning_of_week(:sunday)..date.end_of_week`' do
+      expect_no_offenses(<<~RUBY)
+        date.beginning_of_week(:sunday)..date.end_of_week
+      RUBY
+    end
+
     it 'registers and corrects an offense when using `date.beginning_of_year..date.end_of_year`' do
       expect_offense(<<~RUBY)
         date.beginning_of_year..date.end_of_year

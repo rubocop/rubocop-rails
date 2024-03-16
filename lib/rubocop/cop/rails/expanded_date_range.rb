@@ -51,7 +51,7 @@ module RuboCop
           return if allow?(begin_node, end_node)
 
           preferred_method = preferred_method(begin_node)
-          if begin_node.method?(:beginning_of_week) && begin_node.arguments.one?
+          if begin_node.method?(:beginning_of_week) && begin_node.arguments.one? && end_node.arguments.one?
             return unless same_argument?(begin_node, end_node)
 
             preferred_method << "(#{begin_node.first_argument.source})"
