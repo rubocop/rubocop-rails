@@ -12,6 +12,12 @@ RSpec.describe(RuboCop::Cop::Rails::ActiveSupportOnLoad, :config) do
     RUBY
   end
 
+  it 'does not add offense for include without arguments' do
+    expect_no_offenses(<<~RUBY)
+      ActiveRecord::Base.include
+    RUBY
+  end
+
   it 'adds offense and corrects when trying to extend a framework class with prepend' do
     expect_offense(<<~RUBY)
       ActiveRecord::Base.prepend(MyClass)
