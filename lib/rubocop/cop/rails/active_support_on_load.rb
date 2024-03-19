@@ -55,14 +55,34 @@ module RuboCop
           'ActiveSupport::TestCase' => 'active_support_test_case'
         }.freeze
 
+        RAILS_5_2_LOAD_HOOKS = {
+          'ActiveRecord::ConnectionAdapters::SQLite3Adapter' => 'active_record_sqlite3adapter'
+        }.freeze
+
+        RAILS_7_1_LOAD_HOOKS = {
+          'ActiveRecord::TestFixtures' => 'active_record_fixtures',
+          'ActiveModel::Model' => 'active_model',
+          'ActionText::EncryptedRichText' => 'action_text_encrypted_rich_text',
+          'ActiveRecord::ConnectionAdapters::PostgreSQLAdapter' => 'active_record_postgresqladapter',
+          'ActiveRecord::ConnectionAdapters::Mysql2Adapter' => 'active_record_mysql2adapter',
+          'ActiveRecord::ConnectionAdapters::TrilogyAdapter' => 'active_record_trilogyadapter'
+        }.freeze
+
         def on_send(node)
           receiver, method, arguments = *node # rubocop:disable InternalAffairs/NodeDestructuring
-          return unless arguments && (hook = LOAD_HOOKS[receiver&.const_name])
+          return unless arguments && (hook = hook_for_const(receiver&.const_name))
 
           preferred = "ActiveSupport.on_load(:#{hook}) { #{method} #{arguments.source} }"
           add_offense(node, message: format(MSG, prefer: preferred, current: node.source)) do |corrector|
             corrector.replace(node, preferred)
           end
+        end
+
+        def hook_for_const(const_name)
+          hook = LOAD_HOOKS[const_name]
+          hook ||= RAILS_5_2_LOAD_HOOKS[const_name] if target_rails_version >= 5.2
+          hook ||= RAILS_7_1_LOAD_HOOKS[const_name] if target_rails_version >= 7.1
+          hook
         end
       end
     end

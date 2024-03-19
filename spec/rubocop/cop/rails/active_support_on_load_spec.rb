@@ -99,4 +99,47 @@ RSpec.describe(RuboCop::Cop::Rails::ActiveSupportOnLoad, :config) do
       MyClass1.prepend(MyClass)
     RUBY
   end
+
+  context 'Rails 5.2', :rails52 do
+    it 'registers an offense for a Rails 5.2 load hook' do
+      expect_offense(<<~RUBY)
+        ActiveRecord::ConnectionAdapters::SQLite3Adapter.include(MyClass)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `ActiveSupport.on_load(:active_record_sqlite3adapter) { include MyClass }` [...]
+      RUBY
+
+      expect_correction(<<~RUBY)
+        ActiveSupport.on_load(:active_record_sqlite3adapter) { include MyClass }
+      RUBY
+    end
+
+    it 'registers no offense for a Rails 7.1 load hook' do
+      expect_no_offenses(<<~RUBY)
+        ActiveRecord::TestFixtures.include(MyClass)
+      RUBY
+    end
+  end
+
+  context 'Rails 7.1', :rails71 do
+    it 'registers an offense for a Rails 5.2 load hook' do
+      expect_offense(<<~RUBY)
+        ActiveRecord::ConnectionAdapters::SQLite3Adapter.include(MyClass)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `ActiveSupport.on_load(:active_record_sqlite3adapter) { include MyClass }` [...]
+      RUBY
+
+      expect_correction(<<~RUBY)
+        ActiveSupport.on_load(:active_record_sqlite3adapter) { include MyClass }
+      RUBY
+    end
+
+    it 'registers an offense for a Rails 7.1 load hook' do
+      expect_offense(<<~RUBY)
+        ActiveRecord::TestFixtures.include(MyClass)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `ActiveSupport.on_load(:active_record_fixtures) { include MyClass }` [...]
+      RUBY
+
+      expect_correction(<<~RUBY)
+        ActiveSupport.on_load(:active_record_fixtures) { include MyClass }
+      RUBY
+    end
+  end
 end
