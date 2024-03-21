@@ -196,6 +196,8 @@ module RuboCop
         end
 
         def call_to_persisted?(node)
+          node = node.parent.condition if node.parenthesized_call? && node.parent.if_type?
+
           node.send_type? && node.method?(:persisted?)
         end
 
