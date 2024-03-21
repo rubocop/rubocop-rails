@@ -135,6 +135,15 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
       RUBY
     end
 
+    it 'registers an offense for `to_time` with safe navigation' do
+      expect_offense(<<~RUBY)
+        "2012-03-02 16:05:37"&.to_time
+                               ^^^^^^^ Do not use `String#to_time` without zone. Use `Time.zone.parse` instead.
+      RUBY
+
+      expect_no_corrections
+    end
+
     it 'does not register an offense for `to_time` without receiver' do
       expect_no_offenses(<<~RUBY)
         to_time
