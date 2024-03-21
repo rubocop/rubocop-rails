@@ -17,7 +17,7 @@ module RuboCop
       #   scope :hidden, -> { where(visible: false) }
       #
       class DuplicateScope < Base
-        include ClassSendNodeHelper
+        include ClassElementsHelper
 
         MSG = 'Multiple scopes share this same where clause.'
 

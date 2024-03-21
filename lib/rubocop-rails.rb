@@ -8,6 +8,7 @@ require 'active_support/core_ext/object/blank'
 require_relative 'rubocop/rails'
 require_relative 'rubocop/rails/version'
 require_relative 'rubocop/rails/inject'
+require_relative 'rubocop/cop/mixin/parsing_helper'
 require_relative 'rubocop/rails/schema_loader'
 require_relative 'rubocop/rails/schema_loader/schema'
 
