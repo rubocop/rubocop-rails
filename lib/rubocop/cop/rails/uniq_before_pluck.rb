@@ -68,14 +68,22 @@ module RuboCop
           return unless uniq
 
           add_offense(node.loc.selector) do |corrector|
-            method = node.method_name
-
-            corrector.remove(dot_method_with_whitespace(method, node))
-            corrector.insert_before(node.receiver.loc.dot.begin, '.distinct')
+            autocorrect(corrector, node)
           end
         end
 
         private
+
+        def autocorrect(corrector, node)
+          method = node.method_name
+
+          corrector.remove(dot_method_with_whitespace(method, node))
+          if (dot = node.receiver.loc.dot)
+            corrector.insert_before(dot.begin, '.distinct')
+          else
+            corrector.insert_before(node.receiver, 'distinct.')
+          end
+        end
 
         def dot_method_with_whitespace(method, node)
           range_between(dot_method_begin_pos(method, node), node.loc.selector.end_pos)
