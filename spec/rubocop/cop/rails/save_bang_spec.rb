@@ -638,6 +638,38 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       RUBY
     end
 
+    it "when using persisted? on the result of #{method} in if assignment" do
+      expect_no_offenses(<<~RUBY)
+        if (user = User.#{method}).persisted?
+          foo(user)
+        else
+          bar(user)
+        end
+      RUBY
+    end
+
+    it "when not using persisted? on the result of #{method} in if assignment" do
+      expect_offense(<<~RUBY, method: method)
+        if (user = User.#{method})
+                        ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked. Or check `persisted?` on model returned from `#{method}`.
+          foo(user)
+        else
+          bar(user)
+        end
+      RUBY
+    end
+
+    it "when using persisted? on the result of #{method} in elsif assignment" do
+      expect_no_offenses(<<~RUBY)
+        if something
+        elsif (user = User.#{method}).persisted?
+          foo(user)
+        else
+          bar(user)
+        end
+      RUBY
+    end
+
     it "when using #{method} with `||`" do
       expect_no_offenses(<<~RUBY)
         def find_or_create(**opts)
