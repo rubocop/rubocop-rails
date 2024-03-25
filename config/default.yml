@@ -165,7 +165,7 @@ Rails/ActiveSupportOnLoad:
     - 'https://guides.rubyonrails.org/engines.html#available-load-hooks'
   SafeAutoCorrect: false
   VersionAdded: '2.16'
-  VersionChanged: <<next>>
+  VersionChanged: '2.24'
 
 Rails/AddColumnIndex:
   Description: >-

@@ -391,7 +391,7 @@ are not used.
 | Yes
 | Always (Unsafe)
 | 2.16
-| -
+| 2.24
 |===
 
 Checks for Rails framework classes that are patched directly instead of using Active Support load hooks. Direct

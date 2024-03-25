@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.24.1 (2024-03-25)
+
 ### Bug fixes
 
 * [#1244](https://github.com/rubocop/rubocop-rails/issues/1244): Fix a false positive for `Rails/ActionControllerFlashBeforeRender` when returning `redirect_to`. ([@earlopain][])
