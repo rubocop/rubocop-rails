@@ -92,6 +92,15 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
       RUBY
     end
 
+    it 'does not mutate the cop config' do
+      expect_no_offenses(<<~RUBY)
+        Rails.env.local?
+        Rails.env == 'local'
+      RUBY
+
+      expect(cop_config['Environments'].include?('local')).to be(false)
+    end
+
     context 'when `Environments` is nil' do
       let(:cop_config) do
         {
