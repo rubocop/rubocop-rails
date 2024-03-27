@@ -1071,6 +1071,7 @@ Rails/ThreeStateBooleanColumn:
   StyleGuide: 'https://rails.rubystyle.guide/#three-state-boolean'
   Enabled: pending
   VersionAdded: '2.19'
+  StartAfter: 0
   Include:
     - db/**/*.rb
 
