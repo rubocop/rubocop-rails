@@ -45,6 +45,17 @@ require:
 Now you can run `rubocop` and it will automatically load the RuboCop Rails
 cops together with the standard cops.
 
+#### Usage with Docker
+
+When you use Docker make sure that the RuboCop [cache path](https://docs.rubocop.org/rubocop/usage/caching.html#cache-path) is mounted as a volume in order to reliably persist the cache.
+
+If developing a Rails application there already exists a temporary directory you should be persisting anyways: `tmp` in the application root folder. You can point the RuboCop cache there:
+
+```yml
+AllCops:
+  CacheRootDirectory: tmp/cache
+```
+
 ### Command line
 
 ```sh
