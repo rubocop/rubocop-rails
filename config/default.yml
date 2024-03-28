@@ -1163,8 +1163,9 @@ Rails/UnknownEnv:
 
 Rails/UnusedIgnoredColumns:
   Description: 'Remove a column that does not exist from `ignored_columns`.'
-  Enabled: pending
+  Enabled: false
   VersionAdded: '2.11'
+  VersionChanged: <<next>>
   Include:
     - app/models/**/*.rb
 
