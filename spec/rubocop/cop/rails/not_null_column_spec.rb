@@ -87,6 +87,126 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
     end
   end
 
+  context 'with change_table call' do
+    context 'with shortcut column call' do
+      context 'with null: false' do
+        it 'reports an offense' do
+          expect_offense(<<~RUBY)
+            def change
+              change_table :users do |t|
+                t.string :name, null: false
+                                ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.
+              end
+            end
+          RUBY
+        end
+
+        it 'reports multiple offenses' do
+          expect_offense(<<~RUBY)
+            def change
+              change_table :users do |t|
+                t.string :name, null: false
+                                ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.
+                t.string :address, null: false
+                                   ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.
+              end
+            end
+          RUBY
+        end
+      end
+
+      context 'with default option' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            def change
+              change_table :users do |t|
+                t.string :name, null: false, default: ""
+              end
+            end
+          RUBY
+        end
+      end
+
+      context 'without any options' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            def change
+              change_table :users do |t|
+                t.string :name
+              end
+            end
+          RUBY
+        end
+      end
+    end
+
+    context 'with column call' do
+      context 'with null: false' do
+        it 'reports an offense' do
+          expect_offense(<<~RUBY)
+            def change
+              change_table :users do |t|
+                t.column :name, :string, null: false
+                                         ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.
+              end
+            end
+          RUBY
+        end
+      end
+
+      context 'with default option' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            def change
+              change_table :users do |t|
+                t.column :name, :string, null: false, default: ""
+              end
+            end
+          RUBY
+        end
+      end
+
+      context 'without any options' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            def change
+              change_table :users do |t|
+                t.column :name, :string
+              end
+            end
+          RUBY
+        end
+      end
+    end
+
+    context 'with reference call' do
+      context 'with null: false' do
+        it 'reports an offense' do
+          expect_offense(<<~RUBY)
+            def change
+              change_table :users do |t|
+                t.references :address, null: false
+                                       ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.
+              end
+            end
+          RUBY
+        end
+      end
+
+      context 'without any options' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            def change
+              change_table :users do |t|
+                t.references :address
+              end
+            end
+          RUBY
+        end
+      end
+    end
+  end
+
   context 'with add_reference call' do
     context 'with null: false' do
       it 'reports an offense' do

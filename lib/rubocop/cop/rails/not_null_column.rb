@@ -15,10 +15,16 @@ module RuboCop
       #   # bad
       #   add_column :users, :name, :string, null: false
       #   add_reference :products, :category, null: false
+      #   change_table :users do |t|
+      #     t.string :name, null: false
+      #   end
       #
       #   # good
       #   add_column :users, :name, :string, null: true
       #   add_column :users, :name, :string, null: false, default: ''
+      #   change_table :users do |t|
+      #     t.string :name, null: false, default: ''
+      #   end
       #   add_reference :products, :category
       #   add_reference :products, :category, null: false, default: 1
       class NotNullColumn < Base
@@ -35,6 +41,22 @@ module RuboCop
           (send nil? :add_reference _ _ (hash $...))
         PATTERN
 
+        def_node_matcher :change_table?, <<~PATTERN
+          (block (send nil? :change_table ...) (args (arg $_)) _)
+        PATTERN
+
+        def_node_matcher :add_not_null_column_in_change_table?, <<~PATTERN
+          (send (lvar $_) :column _ $_ (hash $...))
+        PATTERN
+
+        def_node_matcher :add_not_null_column_via_shortcut_in_change_table?, <<~PATTERN
+          (send (lvar $_) $_ _ (hash $...))
+        PATTERN
+
+        def_node_matcher :add_not_null_reference_in_change_table?, <<~PATTERN
+          (send (lvar $_) :add_reference _ _ (hash $...))
+        PATTERN
+
         def_node_matcher :null_false?, <<~PATTERN
           (pair (sym :null) (false))
         PATTERN
@@ -48,22 +70,66 @@ module RuboCop
           check_add_reference(node)
         end
 
+        def on_block(node)
+          check_change_table(node)
+        end
+        alias on_numblock on_block
+
         private
+
+        def check_column(type, pairs)
+          if type.respond_to?(:value)
+            return if type.value == :virtual || type.value == 'virtual'
+            return if (type.value == :text || type.value == 'text') && database == MYSQL
+          end
+
+          check_pairs(pairs)
+        end
 
         def check_add_column(node)
           add_not_null_column?(node) do |type, pairs|
-            if type.respond_to?(:value)
-              return if type.value == :virtual || type.value == 'virtual'
-              return if (type.value == :text || type.value == 'text') && database == MYSQL
-            end
-
-            check_pairs(pairs)
+            check_column(type, pairs)
           end
         end
 
         def check_add_reference(node)
           add_not_null_reference?(node) do |pairs|
             check_pairs(pairs)
+          end
+        end
+
+        def check_add_column_in_change_table(node, table)
+          add_not_null_column_in_change_table?(node) do |receiver, type, pairs|
+            next unless receiver == table
+
+            check_column(type, pairs)
+          end
+        end
+
+        def check_add_column_via_shortcut_in_change_table(node, table)
+          add_not_null_column_via_shortcut_in_change_table?(node) do |receiver, type, pairs|
+            next unless receiver == table
+
+            check_column(type, pairs)
+          end
+        end
+
+        def check_add_reference_in_change_table(node, table)
+          add_not_null_reference_in_change_table?(node) do |receiver, pairs|
+            next unless receiver == table
+
+            check_pairs(pairs)
+          end
+        end
+
+        def check_change_table(node)
+          change_table?(node) do |table|
+            children = node.body.begin_type? ? node.body.children : [node.body]
+            children.each do |child|
+              check_add_column_in_change_table(child, table)
+              check_add_column_via_shortcut_in_change_table(child, table)
+              check_add_reference_in_change_table(child, table)
+            end
           end
         end
 
