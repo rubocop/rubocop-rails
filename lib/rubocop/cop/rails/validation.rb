@@ -29,7 +29,7 @@ module RuboCop
       #   validates :foo, numericality: true
       #   validates :foo, presence: true
       #   validates :foo, absence: true
-      #   validates :foo, size: true
+      #   validates :foo, length: true
       #   validates :foo, uniqueness: true
       #
       class Validation < Base
@@ -120,7 +120,9 @@ module RuboCop
         end
 
         def validate_type(node)
-          node.method_name.to_s.split('_')[1]
+          type = node.method_name.to_s.split('_')[1]
+
+          type == 'size' ? 'length' : type
         end
 
         def frozen_array_argument?(argument)
