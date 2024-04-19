@@ -28,6 +28,8 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
     described_class::TYPES.each do |type|
       context "with validates_#{type}_of" do
         let(:autocorrected_source) do
+          type = 'length' if type == 'size'
+
           "validates :full_name, :birth_date, #{type}: true"
         end
 
@@ -40,6 +42,8 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
 
       context "with validates_#{type}_of when method arguments are enclosed in parentheses" do
         let(:autocorrected_source) do
+          type = 'length' if type == 'size'
+
           "validates(:full_name, :birth_date, #{type}: true)"
         end
 
@@ -52,6 +56,8 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
 
       context "with validates_#{type}_of when attributes are specified with array literal" do
         let(:autocorrected_source) do
+          type = 'length' if type == 'size'
+
           "validates :full_name, :birth_date, #{type}: true"
         end
 
@@ -64,6 +70,8 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
 
       context "with validates_#{type}_of when attributes are specified with frozen array literal" do
         let(:autocorrected_source) do
+          type = 'length' if type == 'size'
+
           "validates :full_name, :birth_date, #{type}: true"
         end
 
@@ -76,6 +84,8 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
 
       context "with validates_#{type}_of when attributes are specified with symbol array literal" do
         let(:autocorrected_source) do
+          type = 'length' if type == 'size'
+
           "validates :full_name, :birth_date, #{type}: true"
         end
 
@@ -88,6 +98,8 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
 
       context "with validates_#{type}_of when attributes are specified with frozen symbol array literal" do
         let(:autocorrected_source) do
+          type = 'length' if type == 'size'
+
           "validates :full_name, :birth_date, #{type}: true"
         end
 
