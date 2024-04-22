@@ -58,7 +58,7 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter, :config do
     RUBY
   end
 
-  it 'register an offense when using action filter in module' do
+  it 'registers an offense when using action filter in module' do
     expect_offense <<~RUBY
       module FooMixin
         extend ActiveSupport::Concern

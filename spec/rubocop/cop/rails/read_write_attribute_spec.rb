@@ -13,7 +13,7 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
       RUBY
     end
 
-    it 'register an offense and corrects a string' do
+    it 'registers an offense and corrects a string' do
       expect_offense(<<~RUBY)
         res = read_attribute('test')
               ^^^^^^^^^^^^^^^^^^^^^^ Prefer `self['test']`.

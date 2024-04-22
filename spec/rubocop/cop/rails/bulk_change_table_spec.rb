@@ -345,7 +345,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'register an offense when using string as table name' do
+    it 'registers an offense when using string as table name' do
       expect_offense(<<~RUBY)
         def change
           remove_index "users", :name
@@ -355,7 +355,7 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       RUBY
     end
 
-    it 'register an offense when using mixed style table name' do
+    it 'registers an offense when using mixed style table name' do
       expect_offense(<<~RUBY)
         def change
           remove_index "users", :name
