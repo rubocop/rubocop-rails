@@ -1222,6 +1222,12 @@ Rails/WhereNotWithMultipleConditions:
   VersionAdded: '2.17'
   VersionChanged: '2.18'
 
+Rails/WhereRange:
+  Description: 'Use ranges in `where` instead of manually constructing SQL.'
+  StyleGuide: 'https://rails.rubystyle.guide/#where-ranges'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
   EnforcedStyle: conditionals
