@@ -13,6 +13,8 @@ module RuboCop
       #   render plain: 'foo/bar', status: 304
       #   redirect_to root_url, status: 301
       #   head 200
+      #   assert_response 200
+      #   assert_redirected_to '/some/path', status: 301
       #
       #   # good
       #   render :foo, status: :ok
@@ -20,6 +22,8 @@ module RuboCop
       #   render plain: 'foo/bar', status: :not_modified
       #   redirect_to root_url, status: :moved_permanently
       #   head :ok
+      #   assert_response :ok
+      #   assert_redirected_to '/some/path', status: :moved_permanently
       #
       # @example EnforcedStyle: numeric
       #   # bad
@@ -28,6 +32,8 @@ module RuboCop
       #   render plain: 'foo/bar', status: :not_modified
       #   redirect_to root_url, status: :moved_permanently
       #   head :ok
+      #   assert_response :ok
+      #   assert_redirected_to '/some/path', status: :moved_permanently
       #
       #   # good
       #   render :foo, status: 200
@@ -35,18 +41,22 @@ module RuboCop
       #   render plain: 'foo/bar', status: 304
       #   redirect_to root_url, status: 301
       #   head 200
+      #   assert_response 200
+      #   assert_redirected_to '/some/path', status: 301
       #
       class HttpStatus < Base
         include ConfigurableEnforcedStyle
         extend AutoCorrector
 
-        RESTRICT_ON_SEND = %i[render redirect_to head].freeze
+        RESTRICT_ON_SEND = %i[render redirect_to head assert_response assert_redirected_to].freeze
 
         def_node_matcher :http_status, <<~PATTERN
           {
             (send nil? {:render :redirect_to} _ $hash)
             (send nil? {:render :redirect_to} $hash)
-            (send nil? :head ${int sym} ...)
+            (send nil? {:head :assert_response} ${int sym} ...)
+            (send nil? :assert_redirected_to _ $hash ...)
+            (send nil? :assert_redirected_to $hash ...)
           }
         PATTERN
 

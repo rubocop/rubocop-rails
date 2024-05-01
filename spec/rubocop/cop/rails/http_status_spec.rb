@@ -24,6 +24,16 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
              ^^^ Prefer `:ok` over `200` to define HTTP status code.
         head 200, location: 'accounts'
              ^^^ Prefer `:ok` over `200` to define HTTP status code.
+        assert_response 200
+                        ^^^ Prefer `:ok` over `200` to define HTTP status code.
+        assert_response 404, 'message'
+                        ^^^ Prefer `:not_found` over `404` to define HTTP status code.
+        assert_redirected_to '/some/path', status: 301
+                                                   ^^^ Prefer `:moved_permanently` over `301` to define HTTP status code.
+        assert_redirected_to action: 'index', status: 301
+                                                      ^^^ Prefer `:moved_permanently` over `301` to define HTTP status code.
+        assert_redirected_to '/some/path', { status: 301 }, 'message'
+                                                     ^^^ Prefer `:moved_permanently` over `301` to define HTTP status code.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -36,6 +46,11 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_path(utm_source: :pr, utm_medium: :web), status: :moved_permanently
         head :ok
         head :ok, location: 'accounts'
+        assert_response :ok
+        assert_response :not_found, 'message'
+        assert_redirected_to '/some/path', status: :moved_permanently
+        assert_redirected_to action: 'index', status: :moved_permanently
+        assert_redirected_to '/some/path', { status: :moved_permanently }, 'message'
       RUBY
     end
 
@@ -58,6 +73,10 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_url, status: :moved_permanently
         redirect_to root_path(utm_source: :pr, utm_medium: :web), status: :moved_permanently
         head :ok
+        assert_response :ok
+        assert_response :not_found, 'message'
+        assert_redirected_to '/some/path', status: :moved_permanently
+        assert_redirected_to action: 'index', status: :moved_permanently
       RUBY
     end
 
@@ -69,6 +88,10 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_url, status: 550
         redirect_to root_path(utm_source: :pr, utm_medium: :web), status: 550
         head 550
+        assert_response 550
+        assert_response 550, 'message'
+        assert_redirected_to '/some/path', status: 550
+        assert_redirected_to action: 'index', status: 550
       RUBY
     end
 
@@ -102,6 +125,16 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
              ^^^ Prefer `200` over `:ok` to define HTTP status code.
         head :ok, location: 'accounts'
              ^^^ Prefer `200` over `:ok` to define HTTP status code.
+        assert_response :ok
+                        ^^^ Prefer `200` over `:ok` to define HTTP status code.
+        assert_response :not_found, 'message'
+                        ^^^^^^^^^^ Prefer `404` over `:not_found` to define HTTP status code.
+        assert_redirected_to '/some/path', status: :moved_permanently
+                                                   ^^^^^^^^^^^^^^^^^^ Prefer `301` over `:moved_permanently` to define HTTP status code.
+        assert_redirected_to action: 'index', status: :moved_permanently
+                                                      ^^^^^^^^^^^^^^^^^^ Prefer `301` over `:moved_permanently` to define HTTP status code.
+        assert_redirected_to '/some/path', { status: :moved_permanently }, 'message'
+                                                     ^^^^^^^^^^^^^^^^^^ Prefer `301` over `:moved_permanently` to define HTTP status code.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -114,6 +147,11 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_path(utm_source: :pr, utm_medium: :web), status: 301
         head 200
         head 200, location: 'accounts'
+        assert_response 200
+        assert_response 404, 'message'
+        assert_redirected_to '/some/path', status: 301
+        assert_redirected_to action: 'index', status: 301
+        assert_redirected_to '/some/path', { status: 301 }, 'message'
       RUBY
     end
 
@@ -125,6 +163,10 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         redirect_to root_url, status: 301
         redirect_to root_path(utm_source: :pr, utm_medium: :web), status: 301
         head 200
+        assert_response 200
+        assert_response 404, 'message'
+        assert_redirected_to '/some/path', status: 301
+        assert_redirected_to action: 'index', status: 301
       RUBY
     end
 
@@ -134,6 +176,10 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatus, :config do
         render :foo, status: :success
         render :foo, status: :missing
         render :foo, status: :redirect
+        assert_response :error
+        assert_response :success
+        assert_response :missing
+        assert_response :redirect
       RUBY
     end
 
