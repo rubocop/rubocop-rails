@@ -119,12 +119,7 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
         it_behaves_like 'autocorrect', 'try! with 2 parameters', '[1, 2].try!(:join, ",")', '[1, 2]&.join(",")'
         it_behaves_like 'autocorrect', 'try! with multiple parameters',
                         '[1, 2].try!(:join, bar, baz)', '[1, 2]&.join(bar, baz)'
-        # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
-        # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
-        context 'skip test when parser engine is prism', broken_on: :prism do
-          it_behaves_like 'autocorrect', 'try! without receiver', 'try!(:join)', 'self&.join'
-        end
-
+        it_behaves_like 'autocorrect', 'try! without receiver', 'try!(:join)', 'self&.join'
         it_behaves_like 'autocorrect', 'try! with a block',
                         ['[foo, bar].try!(:map) do |e|',
                          '  e.some_method',

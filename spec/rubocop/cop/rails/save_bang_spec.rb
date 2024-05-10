@@ -74,9 +74,7 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       end
     end
 
-    # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
-    # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
-    it "when using #{method} without arguments", broken_on: :prism do
+    it "when using #{method} without arguments" do
       expect_offense(<<~RUBY, method: method)
         #{method}
         ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
