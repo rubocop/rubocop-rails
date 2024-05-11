@@ -3,13 +3,25 @@
 module RuboCop
   module Cop
     module Rails
-      # Checks for add_column call with NOT NULL constraint in migration file.
+      # Checks for add_column calls with a NOT NULL constraint without a default
+      # value.
       #
-      # `TEXT` can have default values in PostgreSQL, but not in MySQL.
-      # It will automatically detect an adapter from `development` environment
-      # in `config/database.yml` or the environment variable `DATABASE_URL`
-      # when the `Database` option is not set. If the database is MySQL,
-      # this cop ignores offenses for the `TEXT`.
+      # This cop only applies when adding a column to an existing table, since
+      # existing records will not have a value for the new column. New tables
+      # can freely use NOT NULL columns without defaults, since there are no
+      # records that could violate the constraint.
+      #
+      # If you need to add a NOT NULL column to an existing table, you must add
+      # it as nullable first, back-fill the data, and then use
+      # `change_column_null`. Alternatively, you could add the column with a
+      # default first to have the database automatically backfill existing rows,
+      # and then use `change_column_default` to remove the default.
+      #
+      # `TEXT` cannot have a default value in MySQL.
+      # The cop will automatically detect an adapter from `development`
+      # environment in `config/database.yml` or the environment variable
+      # `DATABASE_URL` when the `Database` option is not set. If the database
+      # is MySQL, this cop ignores offenses for `TEXT` columns.
       #
       # @example
       #   # bad
@@ -26,7 +38,7 @@ module RuboCop
       #     t.string :name, null: false, default: ''
       #   end
       #   add_reference :products, :category
-      #   add_reference :products, :category, null: false, default: 1
+      #   change_column_null :products, :category_id, false
       class NotNullColumn < Base
         include DatabaseTypeResolvable
 

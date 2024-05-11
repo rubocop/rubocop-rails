@@ -693,7 +693,7 @@ Rails/NegateInclude:
   VersionChanged: '2.9'
 
 Rails/NotNullColumn:
-  Description: 'Do not add a NOT NULL column without a default value.'
+  Description: 'Do not add a NOT NULL column without a default value to existing tables.'
   Enabled: true
   VersionAdded: '0.43'
   VersionChanged: '2.20'
