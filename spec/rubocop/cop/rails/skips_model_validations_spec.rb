@@ -66,27 +66,21 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
         RUBY
       end
 
-      # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
-      # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
-      it "registers an offense for #{method} with `:returning` keyword argument", broken_on: :prism do
+      it "registers an offense for #{method} with `:returning` keyword argument" do
         expect_offense(<<~RUBY, method: method)
           %{method}(attributes, returning: false)
           ^{method} Avoid using `#{method}` because it skips validations.
         RUBY
       end
 
-      # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
-      # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
-      it "registers an offense for #{method} with `:unique_by` keyword argument", broken_on: :prism do
+      it "registers an offense for #{method} with `:unique_by` keyword argument" do
         expect_offense(<<~RUBY, method: method)
           %{method}(attributes, unique_by: :username)
           ^{method} Avoid using `#{method}` because it skips validations.
         RUBY
       end
 
-      # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
-      # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
-      it "registers an offense for #{method} with both `:returning` and `:unique_by` keyword arguments", broken_on: :prism do # rubocop:disable Layout/LineLength
+      it "registers an offense for #{method} with both `:returning` and `:unique_by` keyword arguments" do
         expect_offense(<<~RUBY, method: method)
           %{method}(attributes, returning: false, unique_by: :username)
           ^{method} Avoid using `#{method}` because it skips validations.

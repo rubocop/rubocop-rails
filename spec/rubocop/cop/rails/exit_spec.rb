@@ -8,9 +8,7 @@ RSpec.describe RuboCop::Cop::Rails::Exit, :config do
     RUBY
   end
 
-  # FIXME: `undefined method `[]' for nil` occurs Prism 0.24.0. It has been resolved in
-  # the development line. This will be resolved in Prism > 0.24.0 and higher releases.
-  it 'registers an offense for an exit! call with no receiver', broken_on: :prism do
+  it 'registers an offense for an exit! call with no receiver' do
     expect_offense(<<~RUBY)
       exit!
       ^^^^^ Do not use `exit` in Rails applications.
