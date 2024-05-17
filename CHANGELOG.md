@@ -9,6 +9,23 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#1272](https://github.com/rubocop/rubocop-rails/pull/1272): Add new `Rails/WhereRange` cop. ([@fatkodima][])
+
+### Bug fixes
+
+* [#1270](https://github.com/rubocop/rubocop-rails/issues/1270): Fix an incorrect autocorrect for `Rails/Validation` when using `validates_size_of`. ([@koic][])
+* [#1278](https://github.com/rubocop/rubocop-rails/issues/1278): Fix a false positive for `Rails/SkipsModelValidations` when using `insert` or `insert!` with a safe navigator. ([@tldn0718][])
+* [#1260](https://github.com/rubocop/rubocop-rails/issues/1260): Fix a performance regression caused by `Rails/UnknownEnv` when using Rails 7.1. ([@lukasfroehlich1][])
+
+### Changes
+
+* [#1249](https://github.com/rubocop/rubocop-rails/issues/1249): Disable `Rails/UnusedIgnoredColumns` by default. ([@earlopain][])
+* [#1266](https://github.com/rubocop/rubocop-rails/pull/1266): Check `change_table` calls for offenses. ([@ccutrer][])
+* [#1267](https://github.com/rubocop/rubocop-rails/pull/1267): Make `Rails/HttpStatus` aware of Rails-specific response assertions. ([@tldn0718][])
+* [#1137](https://github.com/rubocop/rubocop-rails/pull/1137): Migrate to `TargetRailsVersion` the new [`requires_gem` API](https://github.com/rubocop/rubocop/pull/12186). ([@amomchilov][])
+
 ## 2.24.1 (2024-03-25)
 
 ### Bug fixes
@@ -1057,3 +1074,7 @@
 [@markokajzer]: https://github.com/markokajzer
 [@ymap]: https://github.com/ymap
 [@earlopain]: https://github.com/earlopain
+[@ccutrer]: https://github.com/ccutrer
+[@tldn0718]: https://github.com/tldn0718
+[@amomchilov]: https://github.com/amomchilov
+[@lukasfroehlich1]: https://github.com/lukasfroehlich1
