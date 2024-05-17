@@ -57,12 +57,14 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
       it "does not register an offense for #{method} that looks like String#insert" do
         expect_no_offenses(<<~RUBY)
           string.#{method}(0, 'b')
+          string&.#{method}(0, 'b')
         RUBY
       end
 
       it "does not register an offense for #{method} that looks like Array#insert" do
         expect_no_offenses(<<~RUBY)
           array.#{method}(1, :a, :b)
+          array&.#{method}(1, :a, :b)
         RUBY
       end
 
