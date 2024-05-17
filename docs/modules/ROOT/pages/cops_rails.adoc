@@ -2661,6 +2661,8 @@ render json: { foo: 'bar' }, status: 200
 render plain: 'foo/bar', status: 304
 redirect_to root_url, status: 301
 head 200
+assert_response 200
+assert_redirected_to '/some/path', status: 301
 
 # good
 render :foo, status: :ok
@@ -2668,6 +2670,8 @@ render json: { foo: 'bar' }, status: :ok
 render plain: 'foo/bar', status: :not_modified
 redirect_to root_url, status: :moved_permanently
 head :ok
+assert_response :ok
+assert_redirected_to '/some/path', status: :moved_permanently
 ----
 
 ==== EnforcedStyle: numeric
@@ -2680,6 +2684,8 @@ render json: { foo: 'bar' }, status: :not_found
 render plain: 'foo/bar', status: :not_modified
 redirect_to root_url, status: :moved_permanently
 head :ok
+assert_response :ok
+assert_redirected_to '/some/path', status: :moved_permanently
 
 # good
 render :foo, status: 200
@@ -2687,6 +2693,8 @@ render json: { foo: 'bar' }, status: 404
 render plain: 'foo/bar', status: 304
 redirect_to root_url, status: 301
 head 200
+assert_response 200
+assert_redirected_to '/some/path', status: 301
 ----
 
 === Configurable attributes
@@ -3659,13 +3667,25 @@ hash.exclude?(:key)
 | 2.20
 |===
 
-Checks for add_column call with NOT NULL constraint in migration file.
+Checks for add_column calls with a NOT NULL constraint without a default
+value.
 
-`TEXT` can have default values in PostgreSQL, but not in MySQL.
-It will automatically detect an adapter from `development` environment
-in `config/database.yml` or the environment variable `DATABASE_URL`
-when the `Database` option is not set. If the database is MySQL,
-this cop ignores offenses for the `TEXT`.
+This cop only applies when adding a column to an existing table, since
+existing records will not have a value for the new column. New tables
+can freely use NOT NULL columns without defaults, since there are no
+records that could violate the constraint.
+
+If you need to add a NOT NULL column to an existing table, you must add
+it as nullable first, back-fill the data, and then use
+`change_column_null`. Alternatively, you could add the column with a
+default first to have the database automatically backfill existing rows,
+and then use `change_column_default` to remove the default.
+
+`TEXT` cannot have a default value in MySQL.
+The cop will automatically detect an adapter from `development`
+environment in `config/database.yml` or the environment variable
+`DATABASE_URL` when the `Database` option is not set. If the database
+is MySQL, this cop ignores offenses for `TEXT` columns.
 
 === Examples
 
@@ -3674,12 +3694,18 @@ this cop ignores offenses for the `TEXT`.
 # bad
 add_column :users, :name, :string, null: false
 add_reference :products, :category, null: false
+change_table :users do |t|
+  t.string :name, null: false
+end
 
 # good
 add_column :users, :name, :string, null: true
 add_column :users, :name, :string, null: false, default: ''
+change_table :users do |t|
+  t.string :name, null: false, default: ''
+end
 add_reference :products, :category
-add_reference :products, :category, null: false, default: 1
+change_column_null :products, :category_id, false
 ----
 
 === Configurable attributes
@@ -3868,6 +3894,10 @@ Enforces the use of `pick` over `pluck(...).first`.
 Using `pluck` followed by `first` creates an intermediate array, which
 `pick` avoids. When called on an Active Record relation, `pick` adds a
 limit to the query so that only one value is fetched from the database.
+
+Note that when `pick` is added to a relation with an existing limit, it
+causes a subquery to be added. In most cases this is undesirable, and
+care should be taken while resolving this violation.
 
 === Safety
 
@@ -6612,16 +6642,22 @@ Rails.env == 'production'
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
-| Pending
+| Disabled
 | Yes
 | No
 | 2.11
-| -
+| 2.25
 |===
 
 Suggests you remove a column that does not exist in the schema from `ignored_columns`.
 `ignored_columns` is necessary to drop a column from RDBMS, but you don't need it after the migration
 to drop the column. You avoid forgetting to remove `ignored_columns` by this cop.
+
+IMPORTANT: This cop can't be used to effectively check for unused columns because the development
+and production schema can be out of sync until the migration has been run on production. As such,
+this cop can cause `ignored_columns` to be removed even though the production schema still contains
+the column, which can lead to downtime when the migration is actually executed. Only enable this cop
+if you know your migrations will be run before any of your Rails applications boot with the modified code.
 
 === Examples
 
@@ -6729,7 +6765,7 @@ validates :foo, length: true
 validates :foo, numericality: true
 validates :foo, presence: true
 validates :foo, absence: true
-validates :foo, size: true
+validates :foo, length: true
 validates :foo, uniqueness: true
 ----
 
@@ -6984,3 +7020,48 @@ User.where.not('trashed = ? OR role = ?', true, 'admin')
 === References
 
 * https://rails.rubystyle.guide/#where-not-with-multiple-attributes
+
+== Rails/WhereRange
+
+NOTE: Required Ruby version: 2.6
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Always
+| 2.25
+| -
+|===
+
+Identifies places where manually constructed SQL
+in `where` can be replaced with ranges.
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+User.where('age >= ?', 18)
+User.where.not('age >= ?', 18)
+User.where('age < ?', 18)
+User.where('age >= ? AND age < ?', 18, 21)
+User.where('age >= :start', start: 18)
+User.where('users.age >= ?', 18)
+
+# good
+User.where(age: 18..)
+User.where.not(age: 18..)
+User.where(age: ...18)
+User.where(age: 18...21)
+User.where(users: { age: 18.. })
+
+# good
+# There are no beginless ranges in ruby.
+User.where('age > ?', 18)
+----
+
+=== References
+
+* https://rails.rubystyle.guide/#where-ranges

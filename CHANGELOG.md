@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.25.0 (2024-05-17)
+
 ### New features
 
 * [#1272](https://github.com/rubocop/rubocop-rails/pull/1272): Add new `Rails/WhereRange` cop. ([@fatkodima][])

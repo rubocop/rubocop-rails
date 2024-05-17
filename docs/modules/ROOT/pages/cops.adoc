@@ -145,5 +145,6 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railswheremissing[Rails/WhereMissing]
 * xref:cops_rails.adoc#railswherenot[Rails/WhereNot]
 * xref:cops_rails.adoc#railswherenotwithmultipleconditions[Rails/WhereNotWithMultipleConditions]
+* xref:cops_rails.adoc#railswhererange[Rails/WhereRange]
 
 // END_COP_LIST

@@ -1165,7 +1165,7 @@ Rails/UnusedIgnoredColumns:
   Description: 'Remove a column that does not exist from `ignored_columns`.'
   Enabled: false
   VersionAdded: '2.11'
-  VersionChanged: <<next>>
+  VersionChanged: '2.25'
   Include:
     - app/models/**/*.rb
 
@@ -1226,7 +1226,7 @@ Rails/WhereRange:
   Description: 'Use ranges in `where` instead of manually constructing SQL.'
   StyleGuide: 'https://rails.rubystyle.guide/#where-ranges'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.25'
 
 # Accept `redirect_to(...) and return` and similar cases.
 Style/AndOr:
