@@ -416,6 +416,26 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
         end
       RUBY
     end
+
+    it 'does not register an offense for multiple `change_column_null`' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          change_column_null :users, :name, false
+          change_column_null :users, :address, false
+        end
+      RUBY
+    end
+
+    it 'does not register an offense for multiple `t.change_null`' do
+      expect_no_offenses(<<~RUBY)
+        def change
+          change_table :users do |t|
+            t.change_null :name, false
+            t.change_null :address, false
+          end
+        end
+      RUBY
+    end
   end
 
   context 'when database is PostgreSQL' do
@@ -430,12 +450,67 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       it_behaves_like 'offense'
       it_behaves_like 'no offense for mysql'
       it_behaves_like 'offense for postgresql'
+
+      it 'does not register an offense for multiple `change_column_null`' do
+        expect_no_offenses(<<~RUBY)
+          def change
+            change_column_null :users, :name, false
+            change_column_null :users, :address, false
+          end
+        RUBY
+      end
+
+      it 'does not register an offense for multiple `t.change_null`' do
+        expect_no_offenses(<<~RUBY)
+          def change
+            change_table :users do |t|
+              t.change_null :name, false
+              t.change_null :address, false
+            end
+          end
+        RUBY
+      end
     end
 
     context 'with Rails 5.1', :rails51 do
       it_behaves_like 'no offense'
       it_behaves_like 'no offense for mysql'
       it_behaves_like 'no offense for postgresql'
+    end
+
+    context 'with Rails 6.1', :rails61 do
+      it 'registers an offense for multiple `change_column_null`' do
+        expect_offense(<<~RUBY)
+          def change
+            change_column_null :users, :name, false
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+            change_column_null :users, :address, false
+          end
+        RUBY
+      end
+
+      it 'registers an offense for multiple `t.change_null`' do
+        expect_offense(<<~RUBY)
+          def change
+            change_table :users do |t|
+            ^^^^^^^^^^^^^^^^^^^ You can combine alter queries using `bulk: true` options.
+              t.change_null :name, false
+              t.change_null :address, false
+            end
+          end
+        RUBY
+      end
+
+      it 'does not register an offense for multiple `t.change_null` with `bulk: true`' do
+        expect_no_offenses(<<~RUBY)
+          def change
+            change_table :users, bulk: true do |t|
+              t.change_null :name, false
+              t.change_null :address, false
+            end
+          end
+        RUBY
+      end
     end
   end
 
