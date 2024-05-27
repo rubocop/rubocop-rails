@@ -178,7 +178,7 @@ module RuboCop
         attr_reader :table_name
 
         def initialize(node)
-          super(node)
+          super
 
           @table_name = node.first_argument.value
           @columns, @expression = build_columns_or_expr(node.arguments[1])
