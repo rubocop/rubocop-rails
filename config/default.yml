@@ -1018,8 +1018,9 @@ Rails/SkipsModelValidations:
                  See reference for more information.
   Reference: 'https://guides.rubyonrails.org/active_record_validations.html#skipping-validations'
   Enabled: true
+  Safe: false
   VersionAdded: '0.47'
-  VersionChanged: '2.7'
+  VersionChanged: '<<next>>'
   ForbiddenMethods:
     - decrement!
     - decrement_counter
