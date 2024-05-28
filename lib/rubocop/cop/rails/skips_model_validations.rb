@@ -9,6 +9,9 @@ module RuboCop
       #
       # Methods may be ignored from this rule by configuring a `AllowedMethods`.
       #
+      # @safety
+      #   This cop is unsafe if the receiver object is not an Active Record object.
+      #
       # @example
       #   # bad
       #   Article.first.decrement!(:view_count)
