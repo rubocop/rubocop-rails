@@ -113,8 +113,10 @@ module RuboCop
         MYSQL_COMBINABLE_ALTER_METHODS = %i[rename_column add_index remove_index].freeze
 
         POSTGRESQL_COMBINABLE_TRANSFORMATIONS = %i[change_default].freeze
+        POSTGRESQL_COMBINABLE_TRANSFORMATIONS_SINCE_6_1 = %i[change_null].freeze
 
         POSTGRESQL_COMBINABLE_ALTER_METHODS = %i[change_column_default].freeze
+        POSTGRESQL_COMBINABLE_ALTER_METHODS_SINCE_6_1 = %i[change_column_null].freeze
 
         def on_def(node)
           return unless support_bulk_alter?
@@ -196,7 +198,9 @@ module RuboCop
           when MYSQL
             COMBINABLE_ALTER_METHODS + MYSQL_COMBINABLE_ALTER_METHODS
           when POSTGRESQL
-            COMBINABLE_ALTER_METHODS + POSTGRESQL_COMBINABLE_ALTER_METHODS
+            result = COMBINABLE_ALTER_METHODS + POSTGRESQL_COMBINABLE_ALTER_METHODS
+            result += POSTGRESQL_COMBINABLE_ALTER_METHODS_SINCE_6_1 if target_rails_version >= 6.1
+            result
           end
         end
 
@@ -205,7 +209,9 @@ module RuboCop
           when MYSQL
             COMBINABLE_TRANSFORMATIONS + MYSQL_COMBINABLE_TRANSFORMATIONS
           when POSTGRESQL
-            COMBINABLE_TRANSFORMATIONS + POSTGRESQL_COMBINABLE_TRANSFORMATIONS
+            result = COMBINABLE_TRANSFORMATIONS + POSTGRESQL_COMBINABLE_TRANSFORMATIONS
+            result += POSTGRESQL_COMBINABLE_TRANSFORMATIONS_SINCE_6_1 if target_rails_version >= 6.1
+            result
           end
         end
 
