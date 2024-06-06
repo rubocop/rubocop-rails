@@ -37,17 +37,17 @@ module RuboCop
         RESTRICT_ON_SEND = %i[where not].freeze
 
         # column >= ?
-        GTEQ_ANONYMOUS_RE   = /\A([\w.]+)\s+>=\s+\?\z/.freeze
+        GTEQ_ANONYMOUS_RE   = /\A\s*([\w.]+)\s+>=\s+\?\s*\z/.freeze
         # column <[=] ?
-        LTEQ_ANONYMOUS_RE   = /\A([\w.]+)\s+(<=?)\s+\?\z/.freeze
+        LTEQ_ANONYMOUS_RE   = /\A\s*([\w.]+)\s+(<=?)\s+\?\s*\z/.freeze
         # column >= ? AND column <[=] ?
-        RANGE_ANONYMOUS_RE  = /\A([\w.]+)\s+>=\s+\?\s+AND\s+\1\s+(<=?)\s+\?\z/i.freeze
+        RANGE_ANONYMOUS_RE  = /\A\s*([\w.]+)\s+>=\s+\?\s+AND\s+\1\s+(<=?)\s+\?\s*\z/i.freeze
         # column >= :value
-        GTEQ_NAMED_RE       = /\A([\w.]+)\s+>=\s+:(\w+)\z/.freeze
+        GTEQ_NAMED_RE       = /\A\s*([\w.]+)\s+>=\s+:(\w+)\s*\z/.freeze
         # column <[=] :value
-        LTEQ_NAMED_RE       = /\A([\w.]+)\s+(<=?)\s+:(\w+)\z/.freeze
+        LTEQ_NAMED_RE       = /\A\s*([\w.]+)\s+(<=?)\s+:(\w+)\s*\z/.freeze
         # column >= :value1 AND column <[=] :value2
-        RANGE_NAMED_RE      = /\A([\w.]+)\s+>=\s+:(\w+)\s+AND\s+\1\s+(<=?)\s+:(\w+)\z/i.freeze
+        RANGE_NAMED_RE      = /\A\s*([\w.]+)\s+>=\s+:(\w+)\s+AND\s+\1\s+(<=?)\s+:(\w+)\s*\z/i.freeze
 
         minimum_target_ruby_version 2.6
         minimum_target_rails_version 6.0

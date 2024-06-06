@@ -142,6 +142,19 @@ RSpec.describe RuboCop::Cop::Rails::WhereRange, :config do
         RUBY
       end
 
+      it 'correctly handles spaces in the template string' do
+        expect_offense(<<~RUBY)
+          Model.where('  column  >= ?   ', value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(column: value..)` instead of manually constructing SQL.
+          Model.where(' column >=     :min    ', min: value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(column: value..)` instead of manually constructing SQL.
+          Model.where(' column   >=    ?   AND   column  <   ? ', value1, value2)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(column: value1...value2)` instead of manually constructing SQL.
+          Model.where(' column   >=  :min  AND column   <   :max    ', min: value1, max: value2)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(column: value1...value2)` instead of manually constructing SQL.
+        RUBY
+      end
+
       it 'does not register an offense when using ranges' do
         expect_no_offenses(<<~RUBY)
           Model.where(column: value..)
