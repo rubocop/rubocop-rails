@@ -1227,6 +1227,7 @@ Rails/WhereRange:
   Description: 'Use ranges in `where` instead of manually constructing SQL.'
   StyleGuide: 'https://rails.rubystyle.guide/#where-ranges'
   Enabled: pending
+  SafeAutoCorrect: false
   VersionAdded: '2.25'
 
 # Accept `redirect_to(...) and return` and similar cases.
