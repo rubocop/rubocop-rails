@@ -86,47 +86,63 @@ module RuboCop
 
         # rubocop:disable Metrics
         def extract_column_and_value(template_node, values_node)
-          value =
-            case template_node.value
-            when GTEQ_ANONYMOUS_RE
-              "#{values_node[0].source}.."
-            when LTEQ_ANONYMOUS_RE
-              range_operator = range_operator(Regexp.last_match(2))
-              "#{range_operator}#{values_node[0].source}" if target_ruby_version >= 2.7
-            when RANGE_ANONYMOUS_RE
-              if values_node.size >= 2
-                range_operator = range_operator(Regexp.last_match(2))
-                "#{values_node[0].source}#{range_operator}#{values_node[1].source}"
-              end
-            when GTEQ_NAMED_RE
-              value_node = values_node[0]
+          case template_node.value
+          when GTEQ_ANONYMOUS_RE
+            lhs = values_node[0]
+            operator = '..'
+          when LTEQ_ANONYMOUS_RE
+            if target_ruby_version >= 2.7
+              operator = range_operator(Regexp.last_match(2))
+              rhs = values_node[0]
+            end
+          when RANGE_ANONYMOUS_RE
+            if values_node.size >= 2
+              lhs = values_node[0]
+              operator = range_operator(Regexp.last_match(2))
+              rhs = values_node[1]
+            end
+          when GTEQ_NAMED_RE
+            value_node = values_node[0]
 
-              if value_node.hash_type?
-                pair = find_pair(value_node, Regexp.last_match(2))
-                "#{pair.value.source}.." if pair
-              end
-            when LTEQ_NAMED_RE
-              value_node = values_node[0]
+            if value_node.hash_type?
+              pair = find_pair(value_node, Regexp.last_match(2))
+              lhs = pair.value
+              operator = '..'
+            end
+          when LTEQ_NAMED_RE
+            value_node = values_node[0]
 
-              if value_node.hash_type?
-                pair = find_pair(value_node, Regexp.last_match(2))
-                if pair && target_ruby_version >= 2.7
-                  range_operator = range_operator(Regexp.last_match(2))
-                  "#{range_operator}#{pair.value.source}"
-                end
-              end
-            when RANGE_NAMED_RE
-              value_node = values_node[0]
-
-              if value_node.hash_type?
-                range_operator = range_operator(Regexp.last_match(3))
-                pair1 = find_pair(value_node, Regexp.last_match(2))
-                pair2 = find_pair(value_node, Regexp.last_match(4))
-                "#{pair1.value.source}#{range_operator}#{pair2.value.source}" if pair1 && pair2
+            if value_node.hash_type?
+              pair = find_pair(value_node, Regexp.last_match(2))
+              if pair && target_ruby_version >= 2.7
+                operator = range_operator(Regexp.last_match(2))
+                rhs = pair.value
               end
             end
+          when RANGE_NAMED_RE
+            value_node = values_node[0]
 
-          [Regexp.last_match(1), value] if value
+            if value_node.hash_type?
+              pair1 = find_pair(value_node, Regexp.last_match(2))
+              pair2 = find_pair(value_node, Regexp.last_match(4))
+
+              if pair1 && pair2
+                lhs = pair1.value
+                operator = range_operator(Regexp.last_match(3))
+                rhs = pair2.value
+              end
+            end
+          end
+
+          if lhs
+            lhs_source = parentheses_needed?(lhs) ? "(#{lhs.source})" : lhs.source
+          end
+
+          if rhs
+            rhs_source = parentheses_needed?(rhs) ? "(#{rhs.source})" : rhs.source
+          end
+
+          [Regexp.last_match(1), "#{lhs_source}#{operator}#{rhs_source}"] if operator
         end
         # rubocop:enable Metrics
 
@@ -150,6 +166,23 @@ module RuboCop
           else
             "#{method_name}(#{column}: #{value})"
           end
+        end
+
+        def parentheses_needed?(node)
+          !parentheses_not_needed?(node)
+        end
+
+        def parentheses_not_needed?(node)
+          node.variable? ||
+            node.literal? ||
+            node.reference? ||
+            node.const_type? ||
+            node.begin_type? ||
+            parenthesized_call_node?(node)
+        end
+
+        def parenthesized_call_node?(node)
+          node.call_type? && (node.arguments.empty? || node.parenthesized_call?)
         end
       end
     end

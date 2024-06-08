@@ -172,6 +172,17 @@ RSpec.describe RuboCop::Cop::Rails::WhereRange, :config do
           foo.not('column >= ?', value)
         RUBY
       end
+
+      it 'wraps complex expressions by parentheses' do
+        expect_offense(<<~RUBY)
+          Model.where('column >= ?', true ? 1 : 2)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(column: (true ? 1 : 2)..)` instead of manually constructing SQL.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Model.where(column: (true ? 1 : 2)..)
+        RUBY
+      end
     end
 
     context 'Ruby >= 2.6', :ruby26, unsupported_on: :prism do
