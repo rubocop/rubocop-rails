@@ -6,6 +6,14 @@ module RuboCop
       # Identifies places where manually constructed SQL
       # in `where` can be replaced with ranges.
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because it can change the query
+      #   by explicitly attaching the column to the wrong table.
+      #   For example, `Booking.joins(:events).where('end_at < ?', Time.current)` will correctly
+      #   implicitly attach the `end_at` column to the `events` table. But when autocorrected to
+      #   `Booking.joins(:events).where(end_at: ...Time.current)`, it will now be incorrectly
+      #   explicitly attached to the `bookings` table.
+      #
       # @example
       #   # bad
       #   User.where('age >= ?', 18)
