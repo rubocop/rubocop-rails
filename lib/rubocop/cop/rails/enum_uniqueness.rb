@@ -7,6 +7,18 @@ module RuboCop
       #
       # @example
       #   # bad
+      #   enum :status, { active: 0, archived: 0 }
+      #
+      #   # good
+      #   enum :status, { active: 0, archived: 1 }
+      #
+      #   # bad
+      #   enum :status, [:active, :archived, :active]
+      #
+      #   # good
+      #   enum :status, [:active, :archived]
+      #
+      #   # bad
       #   enum status: { active: 0, archived: 0 }
       #
       #   # good
@@ -24,6 +36,10 @@ module RuboCop
         RESTRICT_ON_SEND = %i[enum].freeze
 
         def_node_matcher :enum?, <<~PATTERN
+          (send nil? :enum $_ ${array hash} ...)
+        PATTERN
+
+        def_node_matcher :enum_with_old_syntax?, <<~PATTERN
           (send nil? :enum (hash $...))
         PATTERN
 
@@ -32,15 +48,17 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          enum?(node) do |pairs|
+          enum?(node) do |key, args|
+            consecutive_duplicates(args.values).each do |item|
+              add_offense(item, message: message(key, item))
+            end
+          end
+
+          enum_with_old_syntax?(node) do |pairs|
             pairs.each do |pair|
               enum_values(pair) do |key, args|
-                items = args.values
-
-                next unless duplicates?(items)
-
-                consecutive_duplicates(items).each do |item|
-                  add_offense(item, message: format(MSG, value: item.source, enum: enum_name(key)))
+                consecutive_duplicates(args.values).each do |item|
+                  add_offense(item, message: message(key, item))
                 end
               end
             end
@@ -56,6 +74,10 @@ module RuboCop
           else
             key.source
           end
+        end
+
+        def message(key, item)
+          format(MSG, value: item.source, enum: enum_name(key))
         end
       end
     end
