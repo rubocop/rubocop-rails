@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # Checks for calls to `link_to` that contain a
+      # Checks for calls to `link_to`, `link_to_if`, and `link_to_unless` methods that contain a
       # `target: '_blank'` but no `rel: 'noopener'`. This can be a security
       # risk as the loaded page will have control over the previous page
       # and could change its location for phishing purposes.
@@ -24,7 +24,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Specify a `:rel` option containing noopener.'
-        RESTRICT_ON_SEND = %i[link_to].freeze
+        RESTRICT_ON_SEND = %i[link_to link_to_if link_to_unless].freeze
 
         def_node_matcher :blank_target?, <<~PATTERN
           (pair {(sym :target) (str "target")} {(str "_blank") (sym :_blank)})
