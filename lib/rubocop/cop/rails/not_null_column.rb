@@ -136,6 +136,8 @@ module RuboCop
 
         def check_change_table(node)
           change_table?(node) do |table|
+            next unless node.body
+
             children = node.body.begin_type? ? node.body.children : [node.body]
             children.each do |child|
               check_add_column_in_change_table(child, table)

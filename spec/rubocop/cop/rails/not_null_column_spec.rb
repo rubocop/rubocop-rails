@@ -85,6 +85,17 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
         end
       RUBY
     end
+
+    it 'does not register an offense when the block is empty' do
+      expect_no_offenses(<<~RUBY)
+        class ExampleMigration < ActiveRecord::Migration[7.0]
+          def change
+            change_table :invoices do |t|
+            end
+          end
+        end
+      RUBY
+    end
   end
 
   context 'with change_table call' do
