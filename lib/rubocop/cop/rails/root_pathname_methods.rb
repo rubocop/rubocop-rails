@@ -80,7 +80,6 @@ module RuboCop
           fnmatch?
           ftype
           grpowned?
-          join
           lchmod
           lchown
           lstat
