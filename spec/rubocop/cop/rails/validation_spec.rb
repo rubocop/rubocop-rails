@@ -159,6 +159,18 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
       include_examples 'autocorrects'
     end
 
+    context 'with a proc' do
+      let(:autocorrected_source) do
+        'validates :a, :b, comparison: { greater_than: -> { Time.zone.today } }'
+      end
+
+      let(:source) do
+        'validates_comparison_of :a, :b, greater_than: -> { Time.zone.today }'
+      end
+
+      include_examples 'autocorrects'
+    end
+
     context 'with splat' do
       let(:autocorrected_source) do
         'validates :a, *b, numericality: true'

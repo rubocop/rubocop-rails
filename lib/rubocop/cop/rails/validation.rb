@@ -8,6 +8,7 @@ module RuboCop
       # @example
       #   # bad
       #   validates_acceptance_of :foo
+      #   validates_comparison_of :foo
       #   validates_confirmation_of :foo
       #   validates_exclusion_of :foo
       #   validates_format_of :foo
@@ -22,6 +23,7 @@ module RuboCop
       #   # good
       #   validates :foo, acceptance: true
       #   validates :foo, confirmation: true
+      #   validates :foo, comparison: true
       #   validates :foo, exclusion: true
       #   validates :foo, format: true
       #   validates :foo, inclusion: true
@@ -39,6 +41,7 @@ module RuboCop
 
         TYPES = %w[
           acceptance
+          comparison
           confirmation
           exclusion
           format
