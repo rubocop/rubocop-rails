@@ -66,3 +66,11 @@ Here are a few examples:
 [4]: https://help.github.com/articles/about-pull-requests
 [5]: http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html
 [6]: https://daringfireball.net/projects/markdown/syntax
+
+## Dev Environment Setup
+
+1. Ensure you have Ruby installed
+   - Add a .ruby-version file with the ruby version you'd like to test
+   - Install Ruby - `rbenv install`
+1. Install dependencies - `bundle install`
+1. Run the test cases to ensure your env is working - `bundle exec rake`
