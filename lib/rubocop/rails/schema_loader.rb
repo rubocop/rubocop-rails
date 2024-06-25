@@ -5,6 +5,7 @@ module RuboCop
     # It loads db/schema.rb and return Schema object.
     # Cops refers database schema information with this module.
     module SchemaLoader
+      include Cop::ParsingHelper
       extend self
 
       # It parses `db/schema.rb` and return it.
