@@ -38,7 +38,7 @@ module RuboCop
 
         MSG = '`%<rails_root>s` is a `Pathname` so you can just append `#%<method>s`.'
 
-        DIR_GLOB_METHODS = %i[glob].to_set.freeze
+        DIR_GLOB_METHODS = %i[[] glob].to_set.freeze
 
         DIR_NON_GLOB_METHODS = %i[
           children
@@ -171,7 +171,7 @@ module RuboCop
 
         def_node_matcher :dir_glob?, <<~PATTERN
           (send
-            (const {cbase nil?} :Dir) :glob ...)
+            (const {cbase nil?} :Dir) DIR_GLOB_METHODS ...)
         PATTERN
 
         def_node_matcher :rails_root_pathname?, <<~PATTERN
@@ -190,7 +190,7 @@ module RuboCop
           evidence(node) do |method, path, args, rails_root|
             add_offense(node, message: format(MSG, method: method, rails_root: rails_root.source)) do |corrector|
               replacement = if dir_glob?(node)
-                              build_path_glob_replacement(path, method)
+                              build_path_glob_replacement(path)
                             else
                               build_path_replacement(path, method, args)
                             end
@@ -217,12 +217,12 @@ module RuboCop
           end
         end
 
-        def build_path_glob_replacement(path, method)
+        def build_path_glob_replacement(path)
           receiver = range_between(path.source_range.begin_pos, path.children.first.loc.selector.end_pos).source
 
           argument = path.arguments.one? ? path.first_argument.source : join_arguments(path.arguments)
 
-          "#{receiver}.#{method}(#{argument})"
+          "#{receiver}.glob(#{argument})"
         end
 
         def build_path_replacement(path, method, args)
