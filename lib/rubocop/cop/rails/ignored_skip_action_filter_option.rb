@@ -52,7 +52,7 @@ module RuboCop
           (send
             nil?
             {#{FILTERS.join(' ')}}
-            _
+            ...
             $_)
         PATTERN
 
