@@ -9,6 +9,20 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1280](https://github.com/rubocop/rubocop-rails/issues/1280): Look for change_column_null for `Rails/BulkChangeTable`. ([@ccutrer][])
+* [#1299](https://github.com/rubocop/rubocop-rails/pull/1299): Fix an error for `Rails/NotNullColumn` when the block for `change_table` is empty. ([@earlopain][])
+* [#1281](https://github.com/rubocop/rubocop-rails/issues/1281): Fix `Rails/WhereRange` autocorrect for complex expressions. ([@fatkodima][])
+* [#1282](https://github.com/rubocop/rubocop-rails/issues/1282): Fix `Rails/WhereRange` to correctly handle template strings with extra spaces. ([@fatkodima][])
+
+### Changes
+
+* [#1295](https://github.com/rubocop/rubocop-rails/issues/1295): Cover validates_comparison_of in `Rails/Validation`. ([@ChaelCodes][])
+* [#1288](https://github.com/rubocop/rubocop-rails/issues/1288): Let `Rails/LinkToBlank` look into `link_to_if` and `link_to_unless`, too. ([@fwolfst][])
+* [#1286](https://github.com/rubocop/rubocop-rails/issues/1286): Mark `Rails/SkipsModelValidations` as unsafe. ([@koic][])
+* [#1283](https://github.com/rubocop/rubocop-rails/issues/1283): Mark `Rails/WhereRange` as unsafe autocorrect. ([@fatkodima][])
+
 ## 2.25.0 (2024-05-17)
 
 ### New features
@@ -1080,3 +1094,5 @@
 [@tldn0718]: https://github.com/tldn0718
 [@amomchilov]: https://github.com/amomchilov
 [@lukasfroehlich1]: https://github.com/lukasfroehlich1
+[@ChaelCodes]: https://github.com/ChaelCodes
+[@fwolfst]: https://github.com/fwolfst
