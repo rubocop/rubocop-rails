@@ -3447,7 +3447,7 @@ end
 | -
 |===
 
-Checks for calls to `link_to` that contain a
+Checks for calls to `link_to`, `link_to_if`, and `link_to_unless` methods that contain a
 `target: '_blank'` but no `rel: 'noopener'`. This can be a security
 risk as the loaded page will have control over the previous page
 and could change its location for phishing purposes.
@@ -5873,10 +5873,10 @@ l Time.now
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
 
 | Enabled
-| Yes
+| No
 | No
 | 0.47
-| 2.7
+| 2.25
 |===
 
 Checks for the use of methods which skip
@@ -5884,6 +5884,10 @@ validations which are listed in
 https://guides.rubyonrails.org/active_record_validations.html#skipping-validations
 
 Methods may be ignored from this rule by configuring a `AllowedMethods`.
+
+=== Safety
+
+This cop is unsafe if the receiver object is not an Active Record object.
 
 === Examples
 
@@ -6744,6 +6748,7 @@ Checks for the use of old-style attribute validation macros.
 ----
 # bad
 validates_acceptance_of :foo
+validates_comparison_of :foo
 validates_confirmation_of :foo
 validates_exclusion_of :foo
 validates_format_of :foo
@@ -6758,6 +6763,7 @@ validates_uniqueness_of :foo
 # good
 validates :foo, acceptance: true
 validates :foo, confirmation: true
+validates :foo, comparison: true
 validates :foo, exclusion: true
 validates :foo, format: true
 validates :foo, inclusion: true
@@ -7030,13 +7036,22 @@ NOTE: Required Ruby version: 2.6
 
 | Pending
 | Yes
-| Always
+| Always (Unsafe)
 | 2.25
 | -
 |===
 
 Identifies places where manually constructed SQL
 in `where` can be replaced with ranges.
+
+=== Safety
+
+This cop's autocorrection is unsafe because it can change the query
+by explicitly attaching the column to the wrong table.
+For example, `Booking.joins(:events).where('end_at < ?', Time.current)` will correctly
+implicitly attach the `end_at` column to the `events` table. But when autocorrected to
+`Booking.joins(:events).where(end_at: ...Time.current)`, it will now be incorrectly
+explicitly attached to the `bookings` table.
 
 === Examples
 

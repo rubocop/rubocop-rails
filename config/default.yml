@@ -1020,7 +1020,7 @@ Rails/SkipsModelValidations:
   Enabled: true
   Safe: false
   VersionAdded: '0.47'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.25'
   ForbiddenMethods:
     - decrement!
     - decrement_counter
