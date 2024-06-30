@@ -227,6 +227,13 @@ Rails/AssertNot:
   Include:
     - '**/test/**/*'
 
+Rails/AssertNotPredicate:
+  Description: 'Prefer `assert_not_predicate` instead of `assert_not` with predicate method.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  Include:
+    - '**/test/**/*'
+
 Rails/AttributeDefaultBlockValue:
   Description: 'Pass method call in block for attribute option `default`.'
   Enabled: pending
