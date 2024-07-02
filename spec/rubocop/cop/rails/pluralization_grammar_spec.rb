@@ -83,4 +83,12 @@ RSpec.describe RuboCop::Cop::Rails::PluralizationGrammar, :config do
   it_behaves_like 'enforces pluralization grammar', 'fortnight'
   it_behaves_like 'enforces pluralization grammar', 'month'
   it_behaves_like 'enforces pluralization grammar', 'year'
+  it_behaves_like 'enforces pluralization grammar', 'byte'
+  it_behaves_like 'enforces pluralization grammar', 'kilobyte'
+  it_behaves_like 'enforces pluralization grammar', 'megabyte'
+  it_behaves_like 'enforces pluralization grammar', 'gigabyte'
+  it_behaves_like 'enforces pluralization grammar', 'terabyte'
+  it_behaves_like 'enforces pluralization grammar', 'petabyte'
+  it_behaves_like 'enforces pluralization grammar', 'exabyte'
+  it_behaves_like 'enforces pluralization grammar', 'zettabyte'
 end
