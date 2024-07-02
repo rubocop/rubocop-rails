@@ -10,25 +10,39 @@ module RuboCop
       #   # bad
       #   3.day.ago
       #   1.months.ago
+      #   5.megabyte
+      #   1.gigabyte
       #
       #   # good
       #   3.days.ago
       #   1.month.ago
+      #   5.megabytes
+      #   1.gigabyte
       class PluralizationGrammar < Base
         extend AutoCorrector
 
-        SINGULAR_DURATION_METHODS = { second: :seconds,
-                                      minute: :minutes,
-                                      hour: :hours,
-                                      day: :days,
-                                      week: :weeks,
-                                      fortnight: :fortnights,
-                                      month: :months,
-                                      year: :years }.freeze
+        SINGULAR_METHODS = {
+          second: :seconds,
+          minute: :minutes,
+          hour: :hours,
+          day: :days,
+          week: :weeks,
+          fortnight: :fortnights,
+          month: :months,
+          year: :years,
+          byte: :bytes,
+          kilobyte: :kilobytes,
+          megabyte: :megabytes,
+          gigabyte: :gigabytes,
+          terabyte: :terabytes,
+          petabyte: :petabytes,
+          exabyte: :exabytes,
+          zettabyte: :zettabytes
+        }.freeze
 
-        RESTRICT_ON_SEND = SINGULAR_DURATION_METHODS.keys + SINGULAR_DURATION_METHODS.values
+        RESTRICT_ON_SEND = SINGULAR_METHODS.keys + SINGULAR_METHODS.values
 
-        PLURAL_DURATION_METHODS = SINGULAR_DURATION_METHODS.invert.freeze
+        PLURAL_METHODS = SINGULAR_METHODS.invert.freeze
 
         MSG = 'Prefer `%<number>s.%<correct>s`.'
 
@@ -86,15 +100,15 @@ module RuboCop
         end
 
         def pluralize(method_name)
-          SINGULAR_DURATION_METHODS.fetch(method_name.to_sym).to_s
+          SINGULAR_METHODS.fetch(method_name.to_sym).to_s
         end
 
         def singularize(method_name)
-          PLURAL_DURATION_METHODS.fetch(method_name.to_sym).to_s
+          PLURAL_METHODS.fetch(method_name.to_sym).to_s
         end
 
         def duration_method?(method_name)
-          SINGULAR_DURATION_METHODS.key?(method_name) || PLURAL_DURATION_METHODS.key?(method_name)
+          SINGULAR_METHODS.key?(method_name) || PLURAL_METHODS.key?(method_name)
         end
       end
     end
