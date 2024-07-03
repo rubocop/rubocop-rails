@@ -24,8 +24,8 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
         start_with_subject = description.match(/\AThis cop (?<verb>.+?) .*/)
         suggestion = start_with_subject[:verb]&.capitalize if start_with_subject
         suggestion ||= 'a verb'
-        expect(start_with_subject).to(
-          be_nil, "`Description` for `#{name}` should be started with `#{suggestion}` instead of `This cop ...`."
+        expect(start_with_subject.nil?).to(
+          be(true), "`Description` for `#{name}` should be started with `#{suggestion}` instead of `This cop ...`."
         )
       end
     end
