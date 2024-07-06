@@ -24,6 +24,8 @@ module RuboCop
       #   # bad
       #   collection.reject(&:blank?)
       #   collection.reject { |_k, v| v.blank? }
+      #   collection.select(&:present?)
+      #   collection.select { |_k, v| v.present? }
       #
       #   # good
       #   collection.compact_blank
@@ -33,6 +35,8 @@ module RuboCop
       #   collection.delete_if { |_k, v| v.blank? } # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
       #   collection.reject!(&:blank?)              # Same behavior as `ActionController::Parameters#compact_blank!`
       #   collection.reject! { |_k, v| v.blank? }   # Same behavior as `ActionController::Parameters#compact_blank!`
+      #   collection.keep_if(&:present?)            # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
+      #   collection.keep_if { |_k, v| v.present? } # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
       #
       #   # good
       #   collection.compact_blank!
@@ -43,7 +47,7 @@ module RuboCop
         extend TargetRailsVersion
 
         MSG = 'Use `%<preferred_method>s` instead.'
-        RESTRICT_ON_SEND = %i[reject delete_if reject!].freeze
+        RESTRICT_ON_SEND = %i[reject delete_if reject! select keep_if].freeze
 
         minimum_target_rails_version 6.1
 
@@ -61,6 +65,20 @@ module RuboCop
               (sym :blank?)))
         PATTERN
 
+        def_node_matcher :select_with_block?, <<~PATTERN
+          (block
+            (send _ {:select :keep_if})
+            $(args ...)
+            (send
+              $(lvar _) :present?))
+        PATTERN
+
+        def_node_matcher :select_with_block_pass?, <<~PATTERN
+          (send _ {:select :keep_if}
+            (block-pass
+              (sym :present?)))
+        PATTERN
+
         def on_send(node)
           return unless bad_method?(node)
 
@@ -75,8 +93,10 @@ module RuboCop
 
         def bad_method?(node)
           return true if reject_with_block_pass?(node)
+          return true if select_with_block_pass?(node)
 
-          if (arguments, receiver_in_block = reject_with_block?(node.parent))
+          arguments, receiver_in_block = reject_with_block?(node.parent) || select_with_block?(node.parent)
+          if arguments
             return use_single_value_block_argument?(arguments, receiver_in_block) ||
                    use_hash_value_block_argument?(arguments, receiver_in_block)
           end
@@ -103,7 +123,7 @@ module RuboCop
         end
 
         def preferred_method(node)
-          node.method?(:reject) ? 'compact_blank' : 'compact_blank!'
+          node.method?(:reject) || node.method?(:select) ? 'compact_blank' : 'compact_blank!'
         end
       end
     end
