@@ -7,17 +7,26 @@ module RuboCop
       # and can be replaced with `select`.
       #
       # Since `pluck` is an eager method and hits the database immediately,
-      # using `select` helps to avoid additional database queries.
+      # using `select` helps to avoid additional database queries by running as
+      # a subquery.
       #
-      # This cop has two different enforcement modes. When the `EnforcedStyle`
-      # is `conservative` (the default) then only calls to `pluck` on a constant
-      # (i.e. a model class) in the `where` is used as offenses.
+      # This cop has two modes of enforcement. When the `EnforcedStyle` is set
+      # to `conservative` (the default), only calls to `pluck` on a constant
+      # (e.g. a model class) within `where` are considered offenses.
       #
       # @safety
-      #   When the `EnforcedStyle` is `aggressive` then all calls to `pluck` in the
-      #   `where` is used as offenses. This may lead to false positives
-      #   as the cop cannot replace to `select` between calls to `pluck` on an
-      #   `ActiveRecord::Relation` instance vs a call to `pluck` on an `Array` instance.
+      #   When `EnforcedStyle` is set to `aggressive`, all calls to `pluck`
+      #   within `where` are considered offenses. This might lead to false
+      #   positives because the check cannot distinguish between calls to
+      #   `pluck` on an `ActiveRecord::Relation` instance and calls to `pluck`
+      #   on an `Array` instance.
+      #
+      #   Additionally, when using a subquery with the SQL `IN` operator,
+      #   databases like PostgreSQL and MySQL can't optimize complex queries as
+      #   well. They need to scan all records of the outer table against the
+      #   subquery result sequentially, rather than using an index. This can
+      #   cause significant performance issues compared to writing the query
+      #   differently or using `pluck`.
       #
       # @example
       #   # bad
