@@ -72,13 +72,13 @@ module RuboCop
           if (node = context.each_ancestor(:if, :rescue).first)
             return false if use_redirect_to?(context)
 
-            context = node
-          elsif context.right_siblings.empty?
-            return true
+            context = node.rescue_type? ? node.parent : node
           end
-          context = context.right_siblings
 
-          context.compact.any? do |render_candidate|
+          siblings = context.right_siblings
+          return true if siblings.empty?
+
+          siblings.compact.any? do |render_candidate|
             render?(render_candidate)
           end
         end
