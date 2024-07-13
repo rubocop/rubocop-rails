@@ -79,6 +79,62 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
       RUBY
     end
 
+    it 'registers and corrects an offense when using `select { |e| e.present? }`' do
+      expect_offense(<<~RUBY)
+        collection.select { |e| e.present? }
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `compact_blank` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.compact_blank
+      RUBY
+    end
+
+    it 'registers and corrects an offense when using `select(&:present?)`' do
+      expect_offense(<<~RUBY)
+        collection.select(&:present?)
+                   ^^^^^^^^^^^^^^^^^^ Use `compact_blank` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.compact_blank
+      RUBY
+    end
+
+    it 'registers and corrects an offense when using `keep_if { |e| e.present? }`' do
+      expect_offense(<<~RUBY)
+        collection.keep_if { |e| e.present? }
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `compact_blank!` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.compact_blank!
+      RUBY
+    end
+
+    it 'registers and corrects an offense when using `keep_if(&:present?)`' do
+      expect_offense(<<~RUBY)
+        collection.keep_if(&:present?)
+                   ^^^^^^^^^^^^^^^^^^^ Use `compact_blank!` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.compact_blank!
+      RUBY
+    end
+
+    it 'does not register an offense when using `select! { |e| e.present? }`' do
+      expect_no_offenses(<<~RUBY)
+        collection.select! { |e| e.present? }
+      RUBY
+    end
+
+    it 'does not register an offense when using `select!(&:present?)`' do
+      expect_no_offenses(<<~RUBY)
+        collection.select!(&:present?)
+      RUBY
+    end
+
     it 'does not register an offense when using `compact_blank`' do
       expect_no_offenses(<<~RUBY)
         collection.compact_blank
@@ -110,6 +166,12 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
         collection.reject { |e| e.empty? }
       RUBY
     end
+
+    it 'does not register an offense when using `select { |e| e.blank? }`' do
+      expect_no_offenses(<<~RUBY)
+        collection.select { |e| e.blank? }
+      RUBY
+    end
   end
 
   context 'Rails <= 6.0', :rails60 do
@@ -122,6 +184,12 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
     it 'does not register an offense when using `reject { |e| e.empty? }`' do
       expect_no_offenses(<<~RUBY)
         collection.reject { |e| e.empty? }
+      RUBY
+    end
+
+    it 'does not register an offense when using `select { |e| e.present? }`' do
+      expect_no_offenses(<<~RUBY)
+        collection.select { |e| e.present? }
       RUBY
     end
   end
