@@ -16,7 +16,6 @@ module RuboCop
       #   And `compact_blank!` has different implementations for `Array`, `Hash`, and
       #   `ActionController::Parameters`.
       #   `Array#compact_blank!`, `Hash#compact_blank!` are equivalent to `delete_if(&:blank?)`.
-      #   `ActionController::Parameters#compact_blank!` is equivalent to `reject!(&:blank?)`.
       #   If the cop makes a mistake, autocorrected code may get unexpected behavior.
       #
       # @example
@@ -33,8 +32,6 @@ module RuboCop
       #   # bad
       #   collection.delete_if(&:blank?)            # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
       #   collection.delete_if { |_k, v| v.blank? } # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
-      #   collection.reject!(&:blank?)              # Same behavior as `ActionController::Parameters#compact_blank!`
-      #   collection.reject! { |_k, v| v.blank? }   # Same behavior as `ActionController::Parameters#compact_blank!`
       #   collection.keep_if(&:present?)            # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
       #   collection.keep_if { |_k, v| v.present? } # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
       #
@@ -47,20 +44,20 @@ module RuboCop
         extend TargetRailsVersion
 
         MSG = 'Use `%<preferred_method>s` instead.'
-        RESTRICT_ON_SEND = %i[reject delete_if reject! select keep_if].freeze
+        RESTRICT_ON_SEND = %i[reject delete_if select keep_if].freeze
 
         minimum_target_rails_version 6.1
 
         def_node_matcher :reject_with_block?, <<~PATTERN
           (block
-            (send _ {:reject :delete_if :reject!})
+            (send _ {:reject :delete_if})
             $(args ...)
             (send
               $(lvar _) :blank?))
         PATTERN
 
         def_node_matcher :reject_with_block_pass?, <<~PATTERN
-          (send _ {:reject :delete_if :reject!}
+          (send _ {:reject :delete_if}
             (block_pass
               (sym :blank?)))
         PATTERN
