@@ -12,10 +12,10 @@ module RuboCop
       # The cop also reports warnings when you are using `to_time` method,
       # because it doesn't know about Rails time zone either.
       #
-      # Two styles are supported for this cop. When `EnforcedStyle` is 'strict'
+      # Two styles are supported for this cop. When `EnforcedStyle` is `strict`
       # then the Date methods `today`, `current`, `yesterday`, and `tomorrow`
       # are prohibited and the usage of both `to_time`
-      # and 'to_time_in_current_zone' are reported as warning.
+      # and `to_time_in_current_zone` are reported as warning.
       #
       # When `EnforcedStyle` is `flexible` then only `Date.today` is prohibited.
       #
