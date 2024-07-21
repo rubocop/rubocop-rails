@@ -93,7 +93,7 @@ jobs:
               -e "/gem 'rubocop-performance',/d" \
               -e "/gem 'rubocop-rspec',/d" -i Gemfile
           cat << EOF > Gemfile.local
-            gem 'rubocop', '1.33.0' # Specify the oldest supported RuboCop version
+            gem 'rubocop', '1.52.0' # Specify the oldest supported RuboCop version
           EOF
       - name: set up Ruby
         uses: ruby/setup-ruby@v1
