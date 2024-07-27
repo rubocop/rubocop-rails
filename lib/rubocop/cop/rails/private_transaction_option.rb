@@ -25,7 +25,7 @@ module RuboCop
       #   ActiveRecord::Base.transaction(requires_new: true)
       #
       class PrivateTransactionOption < Base
-        MSG = 'Do not use `ActiveRecord::Base.transaction(joinable: _)`.'
+        MSG = 'Use a negated `requires_new` option instead of the internal `joinable`.'
         RESTRICT_ON_SEND = %i[transaction].freeze
 
         # @!method match_transaction_with_joinable(node)
