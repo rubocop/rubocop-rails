@@ -783,7 +783,7 @@ Rails/Present:
   UnlessBlank: true
 
 Rails/PrivateTransactionOption:
-  Description: 'Avoid use of `ActiveRecord::Base.transaction(joinable: _)`.'
+  Description: 'Avoid use of the private `ActiveRecord::Base.transaction(joinable: _)` option.'
   Enabled: pending
   Safe: false
   VersionAdded: '<<next>>'
