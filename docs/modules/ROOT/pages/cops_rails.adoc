@@ -6802,7 +6802,7 @@ in `where` can be replaced with `where(attribute: value)`.
 
 === Safety
 
-This cop's autocorrection is unsafe because is may change SQL.
+This cop's autocorrection is unsafe because it may change SQL.
 See: https://github.com/rubocop/rubocop-rails/issues/403
 
 === Examples
