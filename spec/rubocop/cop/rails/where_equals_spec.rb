@@ -188,4 +188,16 @@ RSpec.describe RuboCop::Cop::Rails::WhereEquals, :config do
       User.where("id IN (#{sql})", name: 'Lastname').first
     RUBY
   end
+
+  it 'does not register an offense when using `=` and the second argument has no content' do
+    expect_no_offenses(<<~RUBY)
+      User.where('name = ?', )
+    RUBY
+  end
+
+  it 'does not register an offense when using `IN` and the second argument has no content' do
+    expect_no_offenses(<<~RUBY)
+      User.where("name IN (:names)", )
+    RUBY
+  end
 end
