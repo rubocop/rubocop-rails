@@ -502,6 +502,13 @@ Rails/FindById:
   Enabled: 'pending'
   VersionAdded: '2.7'
 
+Rails/FindByOrAssignmentMemoization:
+  Description: 'Avoid memoizing `find_by` results with `||=`.'
+  StyleGuide: 'https://rails.rubystyle.guide/#find-by-memoization'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Rails/FindEach:
   Description: 'Prefer all.find_each over all.each.'
   StyleGuide: 'https://rails.rubystyle.guide#find-each'
