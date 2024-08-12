@@ -53,9 +53,12 @@ module RuboCop
           node.pairs.find { |p| p.key.value.to_sym == :content_type }
         end
 
-        def compatible_content_type?(node)
-          (node && node.value.value == 'text/plain') ||
-            (!node && !cop_config['ContentTypeCompatibility'])
+        def compatible_content_type?(pair_node)
+          if pair_node.nil?
+            !cop_config['ContentTypeCompatibility']
+          elsif pair_node.value.respond_to?(:value)
+            pair_node.value.value == 'text/plain'
+          end
         end
 
         def replacement(rest_options, option_value)
