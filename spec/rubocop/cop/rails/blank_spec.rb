@@ -186,6 +186,38 @@ RSpec.describe RuboCop::Cop::Rails::Blank, :config do
           RUBY
         end
       end
+
+      context 'in a guard clause' do
+        context 'with a receiver' do
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              return unless foo.present?
+                     ^^^^^^^^^^^^^^^^^^^ Use `if foo.blank?` instead of `unless foo.present?`.
+              return unless bar.blank?
+            RUBY
+
+            expect_correction(<<~RUBY)
+              return if foo.blank?
+              return unless bar.blank?
+            RUBY
+          end
+        end
+
+        context 'without a receiver' do
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              return unless present?
+                     ^^^^^^^^^^^^^^^ Use `if blank?` instead of `unless present?`.
+              return if blank?
+            RUBY
+
+            expect_correction(<<~RUBY)
+              return if blank?
+              return if blank?
+            RUBY
+          end
+        end
+      end
     end
 
     context 'normal unless present?' do
@@ -258,6 +290,186 @@ RSpec.describe RuboCop::Cop::Rails::Blank, :config do
               something_else
             end
           RUBY
+        end
+      end
+    end
+
+    context 'AllowMultipleUnlessPresentGuardClauses set to true' do
+      let(:cop_config) do
+        { 'UnlessPresent' => true, 'AllowMultipleUnlessPresentGuardClauses' => true }
+      end
+
+      it 'accepts modifier if present?' do
+        expect_no_offenses('something if foo.present?')
+      end
+
+      it 'accepts modifier unless blank?' do
+        expect_no_offenses('something unless foo.blank?')
+      end
+
+      it 'accepts normal if present?' do
+        expect_no_offenses(<<~RUBY)
+          if foo.present?
+            something
+          end
+        RUBY
+      end
+
+      it 'accepts normal unless blank?' do
+        expect_no_offenses(<<~RUBY)
+          unless foo.blank?
+            something
+          end
+        RUBY
+      end
+
+      it 'accepts elsif present?' do
+        expect_no_offenses(<<~RUBY)
+          if bar.present?
+            something
+          elsif bar.present?
+            something_else
+          end
+        RUBY
+      end
+
+      context 'modifier unless' do
+        context 'with a receiver' do
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              something unless foo.present?
+                        ^^^^^^^^^^^^^^^^^^^ Use `if foo.blank?` instead of `unless foo.present?`.
+              something_else unless bar.blank?
+            RUBY
+
+            expect_correction(<<~RUBY)
+              something if foo.blank?
+              something_else unless bar.blank?
+            RUBY
+          end
+        end
+
+        context 'without a receiver' do
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              something unless present?
+                        ^^^^^^^^^^^^^^^ Use `if blank?` instead of `unless present?`.
+              something_else if blank?
+            RUBY
+
+            expect_correction(<<~RUBY)
+              something if blank?
+              something_else if blank?
+            RUBY
+          end
+        end
+
+        context 'in a guard clause' do
+          context 'with multiple `unless` guard clauses' do
+            it 'accepts unless present? in a serie of `unless` guard clauses' do
+              expect_no_offenses(<<~RUBY)
+                return unless foo.present?
+                return unless bar.blank?
+              RUBY
+            end
+          end
+
+          context 'without multiple `unless` guard clauses' do
+            it 'registers an offense and corrects' do
+              expect_offense(<<~RUBY)
+                return unless foo.present?
+                       ^^^^^^^^^^^^^^^^^^^ Use `if foo.blank?` instead of `unless foo.present?`.
+                return if bar.blank?
+              RUBY
+
+              expect_correction(<<~RUBY)
+                return if foo.blank?
+                return if bar.blank?
+              RUBY
+            end
+          end
+        end
+      end
+
+      context 'normal unless present?' do
+        it 'registers an offense and corrects' do
+          expect_offense(<<~RUBY)
+            unless foo.present?
+            ^^^^^^^^^^^^^^^^^^^ Use `if foo.blank?` instead of `unless foo.present?`.
+              something
+            end
+
+            if bar.blank?
+              something_else
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            if foo.blank?
+              something
+            end
+
+            if bar.blank?
+              something_else
+            end
+          RUBY
+        end
+      end
+
+      context 'unless present? with an else' do
+        context 'Style/UnlessElse disabled' do
+          let(:config) do
+            RuboCop::Config.new(
+              'Rails/Blank' => {
+                'UnlessPresent' => true
+              },
+              'Style/UnlessElse' => {
+                'Enabled' => false
+              }
+            )
+          end
+
+          it 'registers an offense and corrects' do
+            expect_offense(<<~RUBY)
+              unless foo.present?
+              ^^^^^^^^^^^^^^^^^^^ Use `if foo.blank?` instead of `unless foo.present?`.
+                something
+              else
+                something_else
+              end
+            RUBY
+
+            expect_correction(<<~RUBY)
+              if foo.blank?
+                something
+              else
+                something_else
+              end
+            RUBY
+          end
+        end
+
+        context 'Style/UnlessElse enabled' do
+          let(:config) do
+            RuboCop::Config.new(
+              'Rails/Blank' => {
+                'UnlessPresent' => true
+              },
+              'Style/UnlessElse' => {
+                'Enabled' => true
+              }
+            )
+          end
+
+          it 'does not register an offense' do
+            expect_no_offenses(<<~RUBY)
+              unless foo.present?
+                something
+              else
+                something_else
+              end
+            RUBY
+          end
         end
       end
     end

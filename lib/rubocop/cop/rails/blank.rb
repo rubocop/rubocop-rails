@@ -58,6 +58,39 @@ module RuboCop
       #   def blank?
       #     !present?
       #   end
+      #
+      # @example AllowMultipleUnlessPresentGuardClauses: false (default)
+      #
+      #   # bad
+      #   return unless foo.present?
+      #
+      #   # good
+      #   return if foo.present?
+      #
+      #   # bad
+      #   return unless foo.present?
+      #   return if bar.blank?
+      #
+      #   # bad
+      #   return unless foo.present?
+      #   return unless bar.blank?
+      #
+      # @example AllowMultipleUnlessPresentGuardClauses: true
+      #   # Allow usages of `unless present?` in multiple `unless` guard clauses
+      #
+      #   # bad
+      #   return unless foo.present?
+      #
+      #   # good
+      #   return if foo.present?
+      #
+      #   # bad
+      #   return unless foo.present?
+      #   return if bar.blank?
+      #
+      #   # good
+      #   return unless foo.present?
+      #   return unless bar.blank?
       class Blank < Base
         extend AutoCorrector
 
@@ -123,6 +156,7 @@ module RuboCop
         def on_if(node)
           return unless cop_config['UnlessPresent']
           return unless node.unless?
+          return if allowed_multiple_unless_guard_clauses?(node)
           return if node.else? && config.for_cop('Style/UnlessElse')['Enabled']
 
           unless_present?(node) do |method_call, receiver|
@@ -149,6 +183,18 @@ module RuboCop
           end
 
           corrector.replace(range, replacement(variable1))
+        end
+
+        def allowed_multiple_unless_guard_clauses?(node)
+          cop_config['AllowMultipleUnlessPresentGuardClauses'] && (
+            in_an_unless_guard_clause?(node) &&
+              (in_an_unless_guard_clause?(node.right_sibling) || in_an_unless_guard_clause?(node.left_sibling))
+          )
+        end
+
+        def in_an_unless_guard_clause?(node)
+          node.respond_to?(:unless?) && node.unless? &&
+            node.children.any? { _1.respond_to?(:guard_clause?) && _1.guard_clause? }
         end
 
         def unless_condition(node, method_call)
