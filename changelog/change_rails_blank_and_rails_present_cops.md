@@ -1,0 +1,1 @@
+* [#1327](https://github.com/rubocop/rubocop-rails/pull/1327): [`Rails/Blank` & `Rails/Present` cops] add AllowUnlessPresentAmongMultipleGuardClauses & AllowUnlessBlankAmongMultipleGuardClauses rules. ([@RDeckard][])
