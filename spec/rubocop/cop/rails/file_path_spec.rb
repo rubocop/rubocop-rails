@@ -114,6 +114,26 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
+    context 'when using File.join with an array' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          File.join([Rails.root, 'foo'])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_no_corrections
+      end
+
+      it 'registers an offense for nested arrays' do
+        expect_offense(<<~RUBY)
+          File.join([Rails.root, 'foo', ['bar']])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_no_corrections
+      end
+    end
+
     context 'when using Rails.root.join with slash separated path string' do
       it 'does not register an offense' do
         expect_no_offenses("Rails.root.join('app/models/goober')")
