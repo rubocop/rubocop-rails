@@ -19,6 +19,12 @@ RSpec.describe RuboCop::Cop::Rails::RenderPlainText, :config do
       RUBY
     end
 
+    it 'does not register an offense when `content_type` is a constant' do
+      expect_no_offenses(<<~RUBY)
+        render text: 'Ruby!', content_type: Foo
+      RUBY
+    end
+
     it 'does not register an offense when using `render plain:`' do
       expect_no_offenses(<<~RUBY)
         render plain: 'Ruby!'
