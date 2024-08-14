@@ -540,6 +540,15 @@ Rails/HasManyOrHasOneDependent:
   Include:
     - app/models/**/*.rb
 
+Rails/HashKeyValueRoute:
+  Description: 'Avoid Hash key-value routing.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+  Include:
+    - config/routes.rb
+    - config/routes/**/*.rb
+
 Rails/HelperInstanceVariable:
   Description: 'Do not use instance variables in helpers.'
   Enabled: true
