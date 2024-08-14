@@ -43,10 +43,10 @@ module RuboCop
 
             range = offense_range(node)
 
-            column_and_value = extract_column_and_value(template_node, value_node)
-            return unless column_and_value
+            column, value = extract_column_and_value(template_node, value_node)
+            return unless value
 
-            good_method = build_good_method(node.loc.dot&.source, *column_and_value)
+            good_method = build_good_method(node.loc.dot&.source, column, value)
             message = format(MSG, good_method: good_method)
 
             add_offense(range, message: message) do |corrector|
@@ -72,9 +72,9 @@ module RuboCop
           value =
             case template_node.value
             when NOT_EQ_ANONYMOUS_RE, NOT_IN_ANONYMOUS_RE
-              value_node.source
+              value_node&.source
             when NOT_EQ_NAMED_RE, NOT_IN_NAMED_RE
-              return unless value_node.hash_type?
+              return unless value_node&.hash_type?
 
               pair = value_node.pairs.find { |p| p.key.value.to_sym == Regexp.last_match(2).to_sym }
               pair.value.source

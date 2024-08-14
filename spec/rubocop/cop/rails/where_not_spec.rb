@@ -12,6 +12,12 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot, :config do
     RUBY
   end
 
+  it 'registers no offense when using `!=` and anonymous placeholder without second argument' do
+    expect_no_offenses(<<~RUBY)
+      User.where('name != ?')
+    RUBY
+  end
+
   it 'registers an offense and corrects when using `!=` and anonymous placeholder with safe navigation' do
     expect_offense(<<~RUBY)
       User&.where('name != ?', 'Gabe')
@@ -86,6 +92,12 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot, :config do
 
     expect_correction(<<~RUBY)
       User.where.not(name: ['john', 'jane'])
+    RUBY
+  end
+
+  it 'registers no offense when using `NOT IN` and named placeholder without second argument' do
+    expect_no_offenses(<<~RUBY)
+      User.where("name NOT IN (:names)")
     RUBY
   end
 
