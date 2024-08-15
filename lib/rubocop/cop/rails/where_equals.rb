@@ -4,7 +4,8 @@ module RuboCop
   module Cop
     module Rails
       # Identifies places where manually constructed SQL
-      # in `where` can be replaced with `where(attribute: value)`.
+      # in `where` and `where.not` can be replaced with
+      # `where(attribute: value)` and `where.not(attribute: value)`.
       #
       # @safety
       #   This cop's autocorrection is unsafe because is may change SQL.
@@ -13,6 +14,7 @@ module RuboCop
       # @example
       #   # bad
       #   User.where('name = ?', 'Gabe')
+      #   User.where.not('name = ?', 'Gabe')
       #   User.where('name = :name', name: 'Gabe')
       #   User.where('name IS NULL')
       #   User.where('name IN (?)', ['john', 'jane'])
@@ -21,6 +23,7 @@ module RuboCop
       #
       #   # good
       #   User.where(name: 'Gabe')
+      #   User.where.not(name: 'Gabe')
       #   User.where(name: nil)
       #   User.where(name: ['john', 'jane'])
       #   User.where(users: { name: 'Gabe' })
@@ -29,16 +32,18 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<good_method>s` instead of manually constructing SQL.'
-        RESTRICT_ON_SEND = %i[where].freeze
+        RESTRICT_ON_SEND = %i[where not].freeze
 
         def_node_matcher :where_method_call?, <<~PATTERN
           {
-            (call _ :where (array $str_type? $_ ?))
-            (call _ :where $str_type? $_ ?)
+            (call _ {:where :not} (array $str_type? $_ ?))
+            (call _ {:where :not} $str_type? $_ ?)
           }
         PATTERN
 
         def on_send(node)
+          return if node.method?(:not) && !where_not?(node)
+
           where_method_call?(node) do |template_node, value_node|
             value_node = value_node.first
 
@@ -47,7 +52,7 @@ module RuboCop
             column, value = extract_column_and_value(template_node, value_node)
             return unless value
 
-            good_method = build_good_method(column, value)
+            good_method = build_good_method(node.method_name, column, value)
             message = format(MSG, good_method: good_method)
 
             add_offense(range, message: message) do |corrector|
@@ -88,14 +93,20 @@ module RuboCop
           [Regexp.last_match(1), value]
         end
 
-        def build_good_method(column, value)
+        def build_good_method(method_name, column, value)
           if column.include?('.')
             table, column = column.split('.')
 
-            "where(#{table}: { #{column}: #{value} })"
+            "#{method_name}(#{table}: { #{column}: #{value} })"
           else
-            "where(#{column}: #{value})"
+            "#{method_name}(#{column}: #{value})"
           end
+        end
+
+        def where_not?(node)
+          return false unless (receiver = node.receiver)
+
+          receiver.send_type? && receiver.method?(:where)
         end
       end
     end
