@@ -1185,12 +1185,12 @@ Rails/Validation:
     - app/models/**/*.rb
 
 Rails/WhereEquals:
-  Description: 'Pass conditions to `where` as a hash instead of manually constructing SQL.'
+  Description: 'Pass conditions to `where` and `where.not` as a hash instead of manually constructing SQL.'
   StyleGuide: 'https://rails.rubystyle.guide/#hash-conditions'
   Enabled: 'pending'
   SafeAutoCorrect: false
   VersionAdded: '2.9'
-  VersionChanged: '2.10'
+  VersionChanged: <<next>>
 
 Rails/WhereExists:
   Description: 'Prefer `exists?(...)` over `where(...).exists?`.'

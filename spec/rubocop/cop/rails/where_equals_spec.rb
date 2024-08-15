@@ -12,6 +12,17 @@ RSpec.describe RuboCop::Cop::Rails::WhereEquals, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when using `=` and anonymous placeholder with not' do
+    expect_offense(<<~RUBY)
+      User.where.not('name = ?', 'Gabe')
+                 ^^^^^^^^^^^^^^^^^^^^^^^ Use `not(name: 'Gabe')` instead of manually constructing SQL.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      User.where.not(name: 'Gabe')
+    RUBY
+  end
+
   it 'registers an offense and corrects when using `=` and anonymous placeholder with safe navigation' do
     expect_offense(<<~RUBY)
       User&.where('name = ?', 'Gabe')
@@ -198,6 +209,12 @@ RSpec.describe RuboCop::Cop::Rails::WhereEquals, :config do
   it 'does not register an offense when using `IN` and the second argument has no content' do
     expect_no_offenses(<<~RUBY)
       User.where("name IN (:names)", )
+    RUBY
+  end
+
+  it 'does not register an offense when using `not` not preceded by `where`' do
+    expect_no_offenses(<<~RUBY)
+      users.not('name = ?', 'Gabe')
     RUBY
   end
 end
