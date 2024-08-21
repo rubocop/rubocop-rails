@@ -25,6 +25,25 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
     end
   end
 
+  shared_examples 'wrong arguments' do
+    it 'does not register an offense for `change_table` with no block' do
+      expect_no_offenses(<<~RUBY)
+        def up
+          change_table(:users)
+        end
+      RUBY
+    end
+
+    it 'does not register an offense for `change_table` with empty block' do
+      expect_no_offenses(<<~RUBY)
+        def up
+          change_table(:users) do
+          end
+        end
+      RUBY
+    end
+  end
+
   shared_examples 'no offense' do
     it 'does not register an offense when including combinable transformations' do
       expect_no_offenses(<<~RUBY)
@@ -45,6 +64,8 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
         end
       RUBY
     end
+
+    it_behaves_like 'wrong arguments'
   end
 
   shared_examples 'offense for mysql' do
@@ -91,6 +112,8 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
         end
       RUBY
     end
+
+    it_behaves_like 'wrong arguments'
   end
 
   shared_examples 'offense for postgresql' do
@@ -153,6 +176,8 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
         end
       RUBY
     end
+
+    it_behaves_like 'wrong arguments'
   end
 
   it_behaves_like 'no offense'

@@ -140,9 +140,9 @@ module RuboCop
           return unless support_bulk_alter?
           return unless node.command?(:change_table)
           return if include_bulk_options?(node)
-          return unless node.block_node
+          return unless (body = node.block_node&.body)
 
-          send_nodes = send_nodes_from_change_table_block(node.block_node.body)
+          send_nodes = send_nodes_from_change_table_block(body)
 
           add_offense_for_change_table(node) if count_transformations(send_nodes) > 1
         end
