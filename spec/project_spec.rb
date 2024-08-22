@@ -251,7 +251,7 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
       end
 
       let(:existing_cop_names) do
-        RuboCop::Cop::Cop.registry.without_department(:Test).without_department(:Test2).cops.to_set(&:cop_name)
+        RuboCop::Cop::Registry.global.reject { |cop| cop.cop_name.start_with?('Test/') }.to_set(&:cop_name)
       end
 
       let(:legacy_cop_names) do
