@@ -59,11 +59,11 @@ module RuboCop
 
         def on_send(node)
           return if node.receiver
+          return unless (last_argument = node.last_argument)
 
           range = node.loc.selector
 
           add_offense(range, message: message(node)) do |corrector|
-            last_argument = node.last_argument
             return if !last_argument.literal? && !last_argument.splat_type? && !frozen_array_argument?(last_argument)
 
             corrector.replace(range, 'validates')

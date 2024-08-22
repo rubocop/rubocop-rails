@@ -171,4 +171,10 @@ RSpec.describe RuboCop::Cop::Rails::Validation, :config do
       validates_numericality_of :a, b
     RUBY
   end
+
+  it 'registers no offense when no arguments are passed' do
+    expect_no_offenses(<<~RUBY)
+      validates_numericality_of
+    RUBY
+  end
 end
