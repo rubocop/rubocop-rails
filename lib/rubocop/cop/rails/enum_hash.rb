@@ -12,6 +12,12 @@ module RuboCop
       #
       # @example
       #   # bad
+      #   enum :status, [:active, :archived]
+      #
+      #   # good
+      #   enum :status, { active: 0, archived: 1 }
+      #
+      #   # bad
       #   enum status: [:active, :archived]
       #
       #   # good
@@ -23,7 +29,11 @@ module RuboCop
         MSG = 'Enum defined as an array found in `%<enum>s` enum declaration. Use hash syntax instead.'
         RESTRICT_ON_SEND = %i[enum].freeze
 
-        def_node_matcher :enum?, <<~PATTERN
+        def_node_matcher :enum_with_array?, <<~PATTERN
+          (send nil? :enum $_ ${array} ...)
+        PATTERN
+
+        def_node_matcher :enum_with_old_syntax?, <<~PATTERN
           (send nil? :enum (hash $...))
         PATTERN
 
@@ -32,23 +42,29 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          enum?(node) do |pairs|
+          target_rails_version >= 7.0 && enum_with_array?(node) do |key, array|
+            add_offense(array, message: message(key)) do |corrector|
+              corrector.replace(array, build_hash(array))
+            end
+          end
+
+          enum_with_old_syntax?(node) do |pairs|
             pairs.each do |pair|
               key, array = array_pair?(pair)
               next unless key
 
-              add_offense(array, message: format(MSG, enum: enum_name(key))) do |corrector|
-                hash = array.children.each_with_index.map do |elem, index|
-                  "#{source(elem)} => #{index}"
-                end.join(', ')
-
-                corrector.replace(array, "{#{hash}}")
+              add_offense(array, message: message(key)) do |corrector|
+                corrector.replace(array, build_hash(array))
               end
             end
           end
         end
 
         private
+
+        def message(key)
+          format(MSG, enum: enum_name(key))
+        end
 
         def enum_name(key)
           case key.type
@@ -68,6 +84,13 @@ module RuboCop
           else
             elem.source
           end
+        end
+
+        def build_hash(array)
+          hash = array.children.each_with_index.map do |elem, index|
+            "#{source(elem)} => #{index}"
+          end.join(', ')
+          "{#{hash}}"
         end
       end
     end
