@@ -1,1 +1,0 @@
-* [#1319](https://github.com/rubocop/rubocop-rails/issues/1319): Fix a false positive for `Rails/RedundantPresenceValidationOnBelongsTo` when removing `presence` would leave other non-validation options like `allow_blank` without validations. ([@earlopain][])
