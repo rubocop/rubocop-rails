@@ -428,7 +428,7 @@ Rails/EnumSyntax:
   Description: 'Use positional arguments over keyword arguments when defining enums.'
   Enabled: pending
   Severity: warning
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.26'
   Include:
     - app/models/**/*.rb
 
@@ -1198,7 +1198,7 @@ Rails/WhereEquals:
   Enabled: 'pending'
   SafeAutoCorrect: false
   VersionAdded: '2.9'
-  VersionChanged: <<next>>
+  VersionChanged: '2.26'
 
 Rails/WhereExists:
   Description: 'Prefer `exists?(...)` over `where(...).exists?`.'

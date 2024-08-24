@@ -1084,7 +1084,6 @@ This will work fine when the receiver is a hash object.
 And `compact_blank!` has different implementations for `Array`, `Hash`, and
 `ActionController::Parameters`.
 `Array#compact_blank!`, `Hash#compact_blank!` are equivalent to `delete_if(&:blank?)`.
-`ActionController::Parameters#compact_blank!` is equivalent to `reject!(&:blank?)`.
 If the cop makes a mistake, autocorrected code may get unexpected behavior.
 
 === Examples
@@ -1094,6 +1093,8 @@ If the cop makes a mistake, autocorrected code may get unexpected behavior.
 # bad
 collection.reject(&:blank?)
 collection.reject { |_k, v| v.blank? }
+collection.select(&:present?)
+collection.select { |_k, v| v.present? }
 
 # good
 collection.compact_blank
@@ -1101,8 +1102,8 @@ collection.compact_blank
 # bad
 collection.delete_if(&:blank?)            # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
 collection.delete_if { |_k, v| v.blank? } # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
-collection.reject!(&:blank?)              # Same behavior as `ActionController::Parameters#compact_blank!`
-collection.reject! { |_k, v| v.blank? }   # Same behavior as `ActionController::Parameters#compact_blank!`
+collection.keep_if(&:present?)            # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
+collection.keep_if { |_k, v| v.present? } # Same behavior as `Array#compact_blank!` and `Hash#compact_blank!`
 
 # good
 collection.compact_blank!
@@ -1294,10 +1295,10 @@ Rails time zone. You must use `Time.zone.today` instead.
 The cop also reports warnings when you are using `to_time` method,
 because it doesn't know about Rails time zone either.
 
-Two styles are supported for this cop. When `EnforcedStyle` is 'strict'
+Two styles are supported for this cop. When `EnforcedStyle` is `strict`
 then the Date methods `today`, `current`, `yesterday`, and `tomorrow`
 are prohibited and the usage of both `to_time`
-and 'to_time_in_current_zone' are reported as warning.
+and `to_time_in_current_zone` are reported as warning.
 
 When `EnforcedStyle` is `flexible` then only `Date.today` is prohibited.
 
@@ -1882,6 +1883,12 @@ value for each key prevents this from happening.
 [source,ruby]
 ----
 # bad
+enum :status, [:active, :archived]
+
+# good
+enum :status, { active: 0, archived: 1 }
+
+# bad
 enum status: [:active, :archived]
 
 # good
@@ -1902,6 +1909,48 @@ enum status: { active: 0, archived: 1 }
 
 * https://rails.rubystyle.guide#enums
 
+== Rails/EnumSyntax
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Always
+| 2.26
+| -
+|===
+
+Looks for enums written with keyword arguments syntax.
+
+Defining enums with keyword arguments syntax is deprecated and will be removed in Rails 8.0.
+Positional arguments should be used instead:
+
+=== Examples
+
+[source,ruby]
+----
+# bad
+enum status: { active: 0, archived: 1 }, _prefix: true
+
+# good
+enum :status, { active: 0, archived: 1 }, prefix: true
+----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
+
+| Include
+| `+app/models/**/*.rb+`
+| Array
+|===
+
 == Rails/EnumUniqueness
 
 |===
@@ -1920,6 +1969,18 @@ Looks for duplicate values in enum declarations.
 
 [source,ruby]
 ----
+# bad
+enum :status, { active: 0, archived: 0 }
+
+# good
+enum :status, { active: 0, archived: 1 }
+
+# bad
+enum :status, [:active, :archived, :active]
+
+# good
+enum :status, [:active, :archived]
+
 # bad
 enum status: { active: 0, archived: 0 }
 
@@ -4031,18 +4092,27 @@ Identifies places where `pluck` is used in `where` query methods
 and can be replaced with `select`.
 
 Since `pluck` is an eager method and hits the database immediately,
-using `select` helps to avoid additional database queries.
+using `select` helps to avoid additional database queries by running as
+a subquery.
 
-This cop has two different enforcement modes. When the `EnforcedStyle`
-is `conservative` (the default) then only calls to `pluck` on a constant
-(i.e. a model class) in the `where` is used as offenses.
+This cop has two modes of enforcement. When the `EnforcedStyle` is set
+to `conservative` (the default), only calls to `pluck` on a constant
+(e.g. a model class) within `where` are considered offenses.
 
 === Safety
 
-When the `EnforcedStyle` is `aggressive` then all calls to `pluck` in the
-`where` is used as offenses. This may lead to false positives
-as the cop cannot replace to `select` between calls to `pluck` on an
-`ActiveRecord::Relation` instance vs a call to `pluck` on an `Array` instance.
+When `EnforcedStyle` is set to `aggressive`, all calls to `pluck`
+within `where` are considered offenses. This might lead to false
+positives because the check cannot distinguish between calls to
+`pluck` on an `ActiveRecord::Relation` instance and calls to `pluck`
+on an `Array` instance.
+
+Additionally, when using a subquery with the SQL `IN` operator,
+databases like PostgreSQL and MySQL can't optimize complex queries as
+well. They need to scan all records of the outer table against the
+subquery result sequentially, rather than using an index. This can
+cause significant performance issues compared to writing the query
+differently or using `pluck`.
 
 === Examples
 
@@ -4107,10 +4177,14 @@ core extensions to the numeric classes.
 # bad
 3.day.ago
 1.months.ago
+5.megabyte
+1.gigabyte
 
 # good
 3.days.ago
 1.month.ago
+5.megabytes
+1.gigabyte
 ----
 
 == Rails/Presence
@@ -6794,15 +6868,16 @@ validates :foo, uniqueness: true
 | Yes
 | Always (Unsafe)
 | 2.9
-| 2.10
+| 2.26
 |===
 
 Identifies places where manually constructed SQL
-in `where` can be replaced with `where(attribute: value)`.
+in `where` and `where.not` can be replaced with
+`where(attribute: value)` and `where.not(attribute: value)`.
 
 === Safety
 
-This cop's autocorrection is unsafe because it may change SQL.
+This cop's autocorrection is unsafe because is may change SQL.
 See: https://github.com/rubocop/rubocop-rails/issues/403
 
 === Examples
@@ -6811,6 +6886,7 @@ See: https://github.com/rubocop/rubocop-rails/issues/403
 ----
 # bad
 User.where('name = ?', 'Gabe')
+User.where.not('name = ?', 'Gabe')
 User.where('name = :name', name: 'Gabe')
 User.where('name IS NULL')
 User.where('name IN (?)', ['john', 'jane'])
@@ -6819,6 +6895,7 @@ User.where('users.name = :name', name: 'Gabe')
 
 # good
 User.where(name: 'Gabe')
+User.where.not(name: 'Gabe')
 User.where(name: nil)
 User.where(name: ['john', 'jane'])
 User.where(users: { name: 'Gabe' })

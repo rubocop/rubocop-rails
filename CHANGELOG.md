@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.26.0 (2024-08-24)
+
 ### New features
 
 * [#1238](https://github.com/rubocop/rubocop-rails/issues/1238): Add new `Rails/EnumSyntax` cop. ([@maxprokopiev][], [@koic][])
