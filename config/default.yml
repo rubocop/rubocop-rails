@@ -424,6 +424,14 @@ Rails/EnumHash:
   Include:
     - app/models/**/*.rb
 
+Rails/EnumSyntax:
+  Description: 'Use positional arguments over keyword arguments when defining enums.'
+  Enabled: pending
+  Severity: warning
+  VersionAdded: '<<next>>'
+  Include:
+    - app/models/**/*.rb
+
 Rails/EnumUniqueness:
   Description: 'Avoid duplicate integers in hash-syntax `enum` declaration.'
   Enabled: true
