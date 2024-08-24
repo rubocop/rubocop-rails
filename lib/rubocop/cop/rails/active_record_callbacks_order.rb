@@ -123,11 +123,7 @@ module RuboCop
         end
 
         def inline_comment?(comment)
-          # rubocop:todo InternalAffairs/LocationExpression
-          # Using `RuboCop::Ext::Comment#source_range` requires RuboCop > 1.46,
-          # which introduces https://github.com/rubocop/rubocop/pull/11630.
-          !comment_line?(comment.loc.expression.source_line)
-          # rubocop:enable InternalAffairs/LocationExpression
+          !comment_line?(comment.source_range.source_line)
         end
 
         def start_line_position(node)
