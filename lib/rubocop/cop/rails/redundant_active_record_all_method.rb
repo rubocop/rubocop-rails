@@ -3,35 +3,6 @@
 module RuboCop
   module Cop
     module Rails
-      # TODO: In the future, please support only RuboCop 1.52+ and use `RuboCop::Cop::AllowedReceivers`:
-      #       https://github.com/rubocop/rubocop/blob/v1.52.0/lib/rubocop/cop/mixin/allowed_receivers.rb
-      #       At that time, this duplicated module implementation can be removed.
-      module AllowedReceivers
-        def allowed_receiver?(receiver)
-          receiver_name = receiver_name(receiver)
-
-          allowed_receivers.include?(receiver_name)
-        end
-
-        def receiver_name(receiver)
-          return receiver_name(receiver.receiver) if receiver.receiver && !receiver.receiver.const_type?
-
-          if receiver.send_type?
-            if receiver.receiver
-              "#{receiver_name(receiver.receiver)}.#{receiver.method_name}"
-            else
-              receiver.method_name.to_s
-            end
-          else
-            receiver.source
-          end
-        end
-
-        def allowed_receivers
-          cop_config.fetch('AllowedReceivers', [])
-        end
-      end
-
       # Detect redundant `all` used as a receiver for Active Record query methods.
       #
       # For the methods `delete_all` and `destroy_all`, this cop will only check cases where the receiver is a model.
