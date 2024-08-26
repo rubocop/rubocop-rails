@@ -221,6 +221,12 @@ RSpec.describe RuboCop::Cop::Rails::WhereRange, :config do
           Model.where(column: ...value)
         RUBY
       end
+
+      it 'does not register an offense when qualifying the database' do
+        expect_no_offenses(<<~RUBY)
+          Model.where('database.table.column >= ?', value)
+        RUBY
+      end
     end
   end
 end

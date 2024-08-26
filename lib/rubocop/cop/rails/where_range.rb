@@ -140,6 +140,8 @@ module RuboCop
                 rhs = pair2.value
               end
             end
+          else
+            return
           end
 
           if lhs
@@ -150,7 +152,10 @@ module RuboCop
             rhs_source = parentheses_needed?(rhs) ? "(#{rhs.source})" : rhs.source
           end
 
-          [Regexp.last_match(1), "#{lhs_source}#{operator}#{rhs_source}"] if operator
+          column_qualifier = Regexp.last_match(1)
+          return if column_qualifier.count('.') > 1
+
+          [column_qualifier, "#{lhs_source}#{operator}#{rhs_source}"] if operator
         end
         # rubocop:enable Metrics
 

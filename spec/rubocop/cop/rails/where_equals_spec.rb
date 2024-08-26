@@ -217,4 +217,10 @@ RSpec.describe RuboCop::Cop::Rails::WhereEquals, :config do
       users.not('name = ?', 'Gabe')
     RUBY
   end
+
+  it 'does not register an offense when qualifying the database' do
+    expect_no_offenses(<<~RUBY)
+      User.where('database.users.name = ?', 'Gabe')
+    RUBY
+  end
 end

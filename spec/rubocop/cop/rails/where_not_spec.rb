@@ -275,4 +275,10 @@ RSpec.describe RuboCop::Cop::Rails::WhereNot, :config do
       User.where('name <> ? AND age <> ?', 'john', 19)
     RUBY
   end
+
+  it 'does not register an offense when qualifying the database' do
+    expect_no_offenses(<<~RUBY)
+      User.where('database.users.name != ?', 'Gabe')
+    RUBY
+  end
 end

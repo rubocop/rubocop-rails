@@ -1,0 +1,1 @@
+* [#1340](https://github.com/rubocop/rubocop-rails/issues/1340): Fix a false positive for `Rails/WhereEquals`, `Rails/WhereNot`, and `Rails/WhereRange` when qualifying the database name. ([@earlopain][])
