@@ -74,6 +74,7 @@ module RuboCop
           range_between(node.loc.selector.begin_pos, node.source_range.end_pos)
         end
 
+        # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
         def extract_column_and_value(template_node, value_node)
           value =
             case template_node.value
@@ -90,8 +91,12 @@ module RuboCop
               return
             end
 
-          [Regexp.last_match(1), value]
+          column_qualifier = Regexp.last_match(1)
+          return if column_qualifier.count('.') > 1
+
+          [column_qualifier, value]
         end
+        # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
 
         def build_good_method(method_name, column, value)
           if column.include?('.')
