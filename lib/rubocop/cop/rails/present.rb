@@ -98,8 +98,6 @@ module RuboCop
         end
 
         def on_or(node)
-          return unless cop_config['NilOrEmpty']
-
           exists_and_not_empty?(node) do |var1, var2|
             return unless var1 == var2
 
