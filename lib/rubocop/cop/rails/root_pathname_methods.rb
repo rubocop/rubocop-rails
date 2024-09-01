@@ -23,6 +23,8 @@ module RuboCop
       #   File.binread(Rails.root.join('db', 'schema.rb'))
       #   File.write(Rails.root.join('db', 'schema.rb'), content)
       #   File.binwrite(Rails.root.join('db', 'schema.rb'), content)
+      #   Dir.glob(Rails.root.join('db', 'schema.rb'))
+      #   Dir[Rails.root.join('db', 'schema.rb')]
       #
       #   # good
       #   Rails.root.join('db', 'schema.rb').open
@@ -31,12 +33,13 @@ module RuboCop
       #   Rails.root.join('db', 'schema.rb').binread
       #   Rails.root.join('db', 'schema.rb').write(content)
       #   Rails.root.join('db', 'schema.rb').binwrite(content)
+      #   Rails.root.glob("db/schema.rb")
       #
       class RootPathnameMethods < Base # rubocop:disable Metrics/ClassLength
         extend AutoCorrector
         include RangeHelp
 
-        MSG = '`%<rails_root>s` is a `Pathname` so you can just append `#%<method>s`.'
+        MSG = '`%<rails_root>s` is a `Pathname`, so you can use `%<replacement>s`.'
 
         DIR_GLOB_METHODS = %i[[] glob].to_set.freeze
 
@@ -188,13 +191,14 @@ module RuboCop
 
         def on_send(node)
           evidence(node) do |method, path, args, rails_root|
-            add_offense(node, message: format(MSG, method: method, rails_root: rails_root.source)) do |corrector|
-              replacement = if dir_glob?(node)
-                              build_path_glob_replacement(path)
-                            else
-                              build_path_replacement(path, method, args)
-                            end
+            replacement = if dir_glob?(node)
+                            build_path_glob_replacement(path)
+                          else
+                            build_path_replacement(path, method, args)
+                          end
 
+            message = format(MSG, rails_root: rails_root.source, replacement: replacement)
+            add_offense(node, message: message) do |corrector|
               corrector.replace(node, replacement)
             end
           end
