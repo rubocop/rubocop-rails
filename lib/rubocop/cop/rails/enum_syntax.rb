@@ -57,7 +57,11 @@ module RuboCop
         def check_enum_options(node)
           enum_with_options?(node) do |key, _, options|
             options.children.each do |option|
-              add_offense(option.key, message: format(MSG_OPTIONS, enum: enum_name_value(key))) if option_key?(option)
+              next unless option_key?(option)
+
+              add_offense(option.key, message: format(MSG_OPTIONS, enum: enum_name_value(key))) do |corrector|
+                corrector.replace(option.key, option.key.source.delete_prefix('_'))
+              end
             end
           end
         end

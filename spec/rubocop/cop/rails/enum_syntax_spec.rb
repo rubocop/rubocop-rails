@@ -47,11 +47,15 @@ RSpec.describe RuboCop::Cop::Rails::EnumSyntax, :config do
       end
 
       context 'with options prefixed with `_`' do
-        it 'registers an offense' do
+        it 'registers an offense and corrects' do
           expect_offense(<<~RUBY)
             enum :status, { active: 0, archived: 1 }, _prefix: true, _suffix: true
                                                                      ^^^^^^^ Enum defined with deprecated options in `status` enum declaration. Remove the `_` prefix.
                                                       ^^^^^^^ Enum defined with deprecated options in `status` enum declaration. Remove the `_` prefix.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            enum :status, { active: 0, archived: 1 }, prefix: true, suffix: true
           RUBY
         end
       end
