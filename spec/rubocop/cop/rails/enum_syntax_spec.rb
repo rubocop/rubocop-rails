@@ -82,6 +82,32 @@ RSpec.describe RuboCop::Cop::Rails::EnumSyntax, :config do
         end
       end
 
+      context 'when the enum name is underscored' do
+        it 'registers an offense' do
+          expect_offense(<<~RUBY)
+            enum :_key => { active: 0, archived: 1 }, _prefix: true
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^ Enum defined with keyword arguments in `_key` enum declaration. Use positional arguments instead.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            enum :_key, { active: 0, archived: 1 }, prefix: true
+          RUBY
+        end
+      end
+
+      context 'when the enum value is not a literal' do
+        it 'registers an offense' do
+          expect_offense(<<~RUBY)
+            enum key: %i[foo bar].map.with_index { |v, i| [v, i] }.to_h
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Enum defined with keyword arguments in `key` enum declaration. Use positional arguments instead.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            enum :key, %i[foo bar].map.with_index { |v, i| [v, i] }.to_h
+          RUBY
+        end
+      end
+
       it 'autocorrects' do
         expect_offense(<<~RUBY)
           enum status: { active: 0, archived: 1 }
@@ -95,12 +121,12 @@ RSpec.describe RuboCop::Cop::Rails::EnumSyntax, :config do
 
       it 'autocorrects options too' do
         expect_offense(<<~RUBY)
-          enum status: { active: 0, archived: 1 }, _prefix: true, _suffix: true, _default: :active, _scopes: true
+          enum status: { active: 0, archived: 1 }, _prefix: true, _suffix: true, _default: :active, _scopes: true, _instance_methods: true
                        ^^^^^^^^^^^^^^^^^^^^^^^^^^ Enum defined with keyword arguments in `status` enum declaration. Use positional arguments instead.
         RUBY
 
         expect_correction(<<~RUBY)
-          enum :status, { active: 0, archived: 1 }, prefix: true, suffix: true, default: :active, scopes: true
+          enum :status, { active: 0, archived: 1 }, prefix: true, suffix: true, default: :active, scopes: true, instance_methods: true
         RUBY
       end
     end

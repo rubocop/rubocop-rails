@@ -24,7 +24,10 @@ module RuboCop
         MSG = 'Enum defined with keyword arguments in `%<enum>s` enum declaration. Use positional arguments instead.'
         MSG_OPTIONS = 'Enum defined with deprecated options in `%<enum>s` enum declaration. Remove the `_` prefix.'
         RESTRICT_ON_SEND = %i[enum].freeze
-        OPTION_NAMES = %w[prefix suffix scopes default].freeze
+
+        # From https://github.com/rails/rails/blob/v7.2.1/activerecord/lib/active_record/enum.rb#L231
+        OPTION_NAMES = %w[prefix suffix scopes default instance_methods].freeze
+        UNDERSCORED_OPTION_NAMES = OPTION_NAMES.map { |option| "_#{option}" }.freeze
 
         def_node_matcher :enum?, <<~PATTERN
           (send nil? :enum (hash $...))
@@ -32,14 +35,6 @@ module RuboCop
 
         def_node_matcher :enum_with_options?, <<~PATTERN
           (send nil? :enum $_ ${array hash} $_)
-        PATTERN
-
-        def_node_matcher :enum_values, <<~PATTERN
-          (pair $_ ${array hash})
-        PATTERN
-
-        def_node_matcher :enum_options, <<~PATTERN
-          (pair $_ $_)
         PATTERN
 
         def on_send(node)
@@ -52,10 +47,9 @@ module RuboCop
         def check_and_correct_keyword_args(node)
           enum?(node) do |pairs|
             pairs.each do |pair|
-              key, values = enum_values(pair)
-              next unless key
+              next if option_key?(pair)
 
-              correct_keyword_args(node, key, values, pairs[1..])
+              correct_keyword_args(node, pair.key, pair.value, pairs[1..])
             end
           end
         end
@@ -63,9 +57,7 @@ module RuboCop
         def check_enum_options(node)
           enum_with_options?(node) do |key, _, options|
             options.children.each do |option|
-              name, = enum_options(option)
-
-              add_offense(name, message: format(MSG_OPTIONS, enum: enum_name_value(key))) if name.source[0] == '_'
+              add_offense(option.key, message: format(MSG_OPTIONS, enum: enum_name_value(key))) if option_key?(option)
             end
           end
         end
@@ -105,6 +97,10 @@ module RuboCop
           else
             elem.source
           end
+        end
+
+        def option_key?(pair)
+          UNDERSCORED_OPTION_NAMES.include?(pair.key.source)
         end
 
         def correct_options(options)
