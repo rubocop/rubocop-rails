@@ -212,7 +212,9 @@ Rails/ApplicationRecord:
   Enabled: true
   SafeAutoCorrect: false
   VersionAdded: '0.49'
-  VersionChanged: '2.5'
+  VersionChanged: '<<next>>'
+  Exclude:
+    - db/**/*.rb
 
 Rails/ArelStar:
   Description: 'Enforces `Arel.star` instead of `"*"` for expanded columns.'
