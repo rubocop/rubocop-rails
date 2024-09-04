@@ -11,7 +11,7 @@ module RuboCop
       #   3.day.ago
       #   1.months.ago
       #   5.megabyte
-      #   1.gigabyte
+      #   1.gigabytes
       #
       #   # good
       #   3.days.ago
