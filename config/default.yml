@@ -212,7 +212,7 @@ Rails/ApplicationRecord:
   Enabled: true
   SafeAutoCorrect: false
   VersionAdded: '0.49'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.26'
   Exclude:
     - db/**/*.rb
 

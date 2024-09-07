@@ -612,10 +612,14 @@ end
 | Yes
 | Always (Unsafe)
 | 0.49
-| 2.5
+| 2.26
 |===
 
 Checks that models subclass `ApplicationRecord` with Rails 5.0.
+
+It is a common practice to define models inside migrations in order to retain forward
+compatibility by avoiding loading any application code. And so migration files are excluded
+by default for this cop.
 
 === Safety
 
@@ -637,6 +641,16 @@ class Rails4Model < ActiveRecord::Base
   # ...
 end
 ----
+
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Exclude
+| `+db/**/*.rb+`
+| Array
+|===
 
 == Rails/ArelStar
 
@@ -4178,7 +4192,7 @@ core extensions to the numeric classes.
 3.day.ago
 1.months.ago
 5.megabyte
-1.gigabyte
+1.gigabytes
 
 # good
 3.days.ago
@@ -5458,6 +5472,8 @@ File.read(Rails.root.join('db', 'schema.rb'))
 File.binread(Rails.root.join('db', 'schema.rb'))
 File.write(Rails.root.join('db', 'schema.rb'), content)
 File.binwrite(Rails.root.join('db', 'schema.rb'), content)
+Dir.glob(Rails.root.join('db', 'schema.rb'))
+Dir[Rails.root.join('db', 'schema.rb')]
 
 # good
 Rails.root.join('db', 'schema.rb').open
@@ -5466,6 +5482,7 @@ Rails.root.join('db', 'schema.rb').read
 Rails.root.join('db', 'schema.rb').binread
 Rails.root.join('db', 'schema.rb').write(content)
 Rails.root.join('db', 'schema.rb').binwrite(content)
+Rails.root.glob("db/schema.rb")
 ----
 
 == Rails/RootPublicPath
