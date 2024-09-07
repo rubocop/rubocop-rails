@@ -24,6 +24,17 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
       RUBY
     end
 
+    it 'registers and corrects an offense when using `reject { |k, v| v.blank? }`' do
+      expect_offense(<<~RUBY)
+        collection.reject { |k, v| v.blank? }
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `compact_blank` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.compact_blank
+      RUBY
+    end
+
     it 'registers and corrects an offense when using `delete_if { |e| e.blank? }`' do
       expect_offense(<<~RUBY)
         collection.delete_if { |e| e.blank? }
@@ -39,6 +50,17 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
       expect_offense(<<~RUBY)
         collection.delete_if(&:blank?)
                    ^^^^^^^^^^^^^^^^^^^ Use `compact_blank!` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.compact_blank!
+      RUBY
+    end
+
+    it 'registers and corrects an offense when using `delete_if { |k, v| v.blank? }`' do
+      expect_offense(<<~RUBY)
+        collection.delete_if { |k, v| v.blank? }
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `compact_blank!` instead.
       RUBY
 
       expect_correction(<<~RUBY)
@@ -91,6 +113,17 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
       RUBY
     end
 
+    it 'registers and corrects an offense when using `select { |k, v| v.present? }`' do
+      expect_offense(<<~RUBY)
+        collection.select { |k, v| v.present? }
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `compact_blank` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.compact_blank
+      RUBY
+    end
+
     it 'registers and corrects an offense when using `keep_if { |e| e.present? }`' do
       expect_offense(<<~RUBY)
         collection.keep_if { |e| e.present? }
@@ -106,6 +139,17 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
       expect_offense(<<~RUBY)
         collection.keep_if(&:present?)
                    ^^^^^^^^^^^^^^^^^^^ Use `compact_blank!` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        collection.compact_blank!
+      RUBY
+    end
+
+    it 'registers and corrects an offense when using `keep_if { |k, v| v.present? }`' do
+      expect_offense(<<~RUBY)
+        collection.keep_if { |k, v| v.present? }
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `compact_blank!` instead.
       RUBY
 
       expect_correction(<<~RUBY)
