@@ -25,6 +25,8 @@ module RuboCop
       #   collection.reject { |_k, v| v.blank? }
       #   collection.select(&:present?)
       #   collection.select { |_k, v| v.present? }
+      #   collection.filter(&:present?)
+      #   collection.filter { |_k, v| v.present? }
       #
       #   # good
       #   collection.compact_blank
@@ -44,7 +46,8 @@ module RuboCop
         extend TargetRailsVersion
 
         MSG = 'Use `%<preferred_method>s` instead.'
-        RESTRICT_ON_SEND = %i[reject delete_if select keep_if].freeze
+        RESTRICT_ON_SEND = %i[reject delete_if select filter keep_if].freeze
+        DESTRUCTIVE_METHODS = %i[delete_if keep_if].freeze
 
         minimum_target_rails_version 6.1
 
@@ -64,14 +67,14 @@ module RuboCop
 
         def_node_matcher :select_with_block?, <<~PATTERN
           (block
-            (send _ {:select :keep_if})
+            (send _ {:select :filter :keep_if})
             $(args ...)
             (send
               $(lvar _) :present?))
         PATTERN
 
         def_node_matcher :select_with_block_pass?, <<~PATTERN
-          (send _ {:select :keep_if}
+          (send _ {:select :filter :keep_if}
             (block-pass
               (sym :present?)))
         PATTERN
@@ -120,7 +123,7 @@ module RuboCop
         end
 
         def preferred_method(node)
-          node.method?(:reject) || node.method?(:select) ? 'compact_blank' : 'compact_blank!'
+          DESTRUCTIVE_METHODS.include?(node.method_name) ? 'compact_blank!' : 'compact_blank'
         end
       end
     end
