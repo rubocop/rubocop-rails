@@ -80,6 +80,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
+          return if target_ruby_version < 2.6 && node.method?(:filter)
           return unless bad_method?(node)
 
           range = offense_range(node)
