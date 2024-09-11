@@ -257,6 +257,27 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
         collection.filter { |e| e.blank? }
       RUBY
     end
+
+    context 'target_ruby_version >= 2.6', :ruby26 do
+      it 'registers and corrects an offense when using `filter { |e| e.present? }`' do
+        expect_offense(<<~RUBY)
+          collection.filter { |e| e.present? }
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^ Use `compact_blank` instead.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          collection.compact_blank
+        RUBY
+      end
+    end
+
+    context 'target_ruby_version < 2.6', :ruby25, unsupported_on: :prism do
+      it 'does not register an offense when using `filter { |e| e.present? }`' do
+        expect_no_offenses(<<~RUBY)
+          collection.filter { |e| e.present? }
+        RUBY
+      end
+    end
   end
 
   context 'Rails <= 6.0', :rails60 do
