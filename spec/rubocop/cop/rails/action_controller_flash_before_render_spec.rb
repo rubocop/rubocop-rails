@@ -128,36 +128,9 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
                 end
               end
             RUBY
-
-            expect_offense(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  flash[:alert] = "msg" if condition
-                  ^^^^^ Use `flash.now` before `render`.
-                end
-              end
-            RUBY
-
-            expect_correction(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  flash.now[:alert] = "msg" if condition
-                end
-              end
-            RUBY
           end
 
           it 'does not register an offense when using `flash` before `redirect_to`' do
-            expect_no_offenses(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  flash[:alert] = "msg" if condition
-
-                  redirect_to :index
-                end
-              end
-            RUBY
-
             expect_no_offenses(<<~RUBY)
               class HomeController < #{parent_class}
                 def create
@@ -175,16 +148,6 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
             expect_no_offenses(<<~RUBY)
               class HomeController < #{parent_class}
                 def create
-                  flash[:alert] = "msg" if condition
-
-                  redirect_back fallback_location: root_path
-                end
-              end
-            RUBY
-
-            expect_no_offenses(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
                   if condition
                     flash[:alert] = "msg"
                   end
@@ -195,7 +158,7 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
             RUBY
           end
 
-          it 'registers an offense when using `flash` in multiline `if` branch before `render`' do
+          it 'registers an offense when using `flash` in multiline `if` branch before `render_to`' do
             expect_offense(<<~RUBY)
               class HomeController < #{parent_class}
                 def create
@@ -219,29 +182,6 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
                   end
 
                   render :index
-                end
-              end
-            RUBY
-
-            expect_offense(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  if condition
-                    do_something
-                    flash[:alert] = "msg"
-                    ^^^^^ Use `flash.now` before `render`.
-                  end
-                end
-              end
-            RUBY
-
-            expect_correction(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  if condition
-                    do_something
-                    flash.now[:alert] = "msg"
-                  end
                 end
               end
             RUBY
@@ -277,81 +217,6 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
                 end
               end
             RUBY
-
-            expect_no_offenses(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  if condition
-                    flash[:alert] = "msg"
-                    redirect_to :index
-
-                    return
-                  end
-                end
-              end
-            RUBY
-          end
-
-          it 'registers an offense when using `flash` in multiline `rescue` branch before `render`' do
-            expect_offense(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  begin
-                    do_something
-                    flash[:alert] = "msg in begin"
-                    ^^^^^ Use `flash.now` before `render`.
-                  rescue
-                    flash[:alert] = "msg in rescue"
-                    ^^^^^ Use `flash.now` before `render`.
-                  end
-
-                  render :index
-                end
-              end
-            RUBY
-
-            expect_correction(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  begin
-                    do_something
-                    flash.now[:alert] = "msg in begin"
-                  rescue
-                    flash.now[:alert] = "msg in rescue"
-                  end
-
-                  render :index
-                end
-              end
-            RUBY
-
-            expect_offense(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  begin
-                    do_something
-                    flash[:alert] = "msg in begin"
-                    ^^^^^ Use `flash.now` before `render`.
-                  rescue
-                    flash[:alert] = "msg in rescue"
-                    ^^^^^ Use `flash.now` before `render`.
-                  end
-                end
-              end
-            RUBY
-
-            expect_correction(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  begin
-                    do_something
-                    flash.now[:alert] = "msg in begin"
-                  rescue
-                    flash.now[:alert] = "msg in rescue"
-                  end
-                end
-              end
-            RUBY
           end
 
           it 'does not register an offense when using `flash` in multiline `rescue` branch before `redirect_to`' do
@@ -366,48 +231,6 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
                   end
 
                   redirect_to :index
-                end
-              end
-            RUBY
-          end
-
-          it 'does not register an offense when using `flash` before `redirect_to` in `rescue` branch' do
-            expect_no_offenses(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  begin
-                    do_something
-                    flash[:alert] = "msg in begin"
-                    redirect_to :index
-
-                    return
-                  rescue
-                    flash[:alert] = "msg in rescue"
-                    redirect_to :index
- 
-                    return
-                  end
-
-                  render :index
-                end
-              end
-            RUBY
-
-            expect_no_offenses(<<~RUBY)
-              class HomeController < #{parent_class}
-                def create
-                  begin
-                    do_something
-                    flash[:alert] = "msg in begin"
-                    redirect_to :index
-
-                    return
-                  rescue
-                    flash[:alert] = "msg in rescue"
-                    redirect_to :index
- 
-                    return
-                  end
                 end
               end
             RUBY
@@ -500,6 +323,73 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
               return redirect_to "https://www.example.com/"
             end
             render :index
+          end
+        end
+      RUBY
+    end
+  end
+
+  context 'when using `flash` after `render` and `redirect_to` is used in implicit return branch ' \
+          'and render is is used in the other branch' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class HomeController < ApplicationController
+          def create
+            if foo.update(params)
+              flash[:success] = 'msg'
+
+              if redirect_to_index?
+                redirect_to index
+              else
+                redirect_to path(foo)
+              end
+            else
+              flash.now[:alert] = 'msg'
+              render :edit, status: :unprocessable_entity
+            end
+          end
+        end
+      RUBY
+    end
+  end
+
+  context 'when using `flash` after `render` and `render` is part of a different preceding branch' \
+          'that implicitly returns' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class HomeController < ApplicationController
+          def create
+            if remote_request? || sandbox?
+              if current_user.nil?
+                render :index
+              else
+                head :forbidden
+              end
+            elsif current_user.nil?
+              redirect_to sign_in_path
+            else
+              flash[:alert] = 'msg'
+              if request.referer.present?
+                redirect_to(request.referer)
+              else
+                redirect_to(root_path)
+              end
+            end
+          end
+        end
+      RUBY
+    end
+  end
+
+  context 'when using `flash` in `rescue` and `redirect_to` in `ensure`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class HomeController < ApplicationController
+          def create
+          rescue
+            flash[:alert] = 'msg'
+          ensure
+            redirect_to :index
           end
         end
       RUBY
