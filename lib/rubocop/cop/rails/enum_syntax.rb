@@ -17,8 +17,10 @@ module RuboCop
       #
       class EnumSyntax < Base
         extend AutoCorrector
+        extend TargetRubyVersion
         extend TargetRailsVersion
 
+        minimum_target_ruby_version 3.0
         minimum_target_rails_version 7.0
 
         MSG = 'Enum defined with keyword arguments in `%<enum>s` enum declaration. Use positional arguments instead.'
