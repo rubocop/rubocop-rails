@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::EnumSyntax, :config do
-  context 'Rails >= 7.0', :rails70 do
+  context 'Rails >= 7.0 and Ruby >= 3.0', :rails70, :ruby30 do
     context 'when keyword arguments are used' do
       context 'with %i[] syntax' do
         it 'registers an offense' do
@@ -144,6 +144,18 @@ RSpec.describe RuboCop::Cop::Rails::EnumSyntax, :config do
     context 'when enum with no arguments' do
       it 'does not register an offense' do
         expect_no_offenses('enum')
+      end
+    end
+  end
+
+  context 'Rails >= 7.0 and Ruby <= 2.7', :rails70, :ruby27, unsupported_on: :prism do
+    context 'when keyword arguments are used' do
+      context 'with %i[] syntax' do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            enum status: %i[active archived], _prefix: true
+          RUBY
+        end
       end
     end
   end
