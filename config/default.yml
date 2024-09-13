@@ -415,8 +415,9 @@ Rails/DynamicFindBy:
 Rails/EagerEvaluationLogMessage:
   Description: 'Checks that blocks are used for interpolated strings passed to `Rails.logger.debug`.'
   Reference: 'https://guides.rubyonrails.org/debugging_rails_applications.html#impact-of-logs-on-performance'
-  Enabled: pending
+  Enabled: true
   VersionAdded: '2.11'
+  VersionChanged: '2.26'
 
 Rails/EnumHash:
   Description: 'Prefer hash syntax over array syntax when defining enums.'
