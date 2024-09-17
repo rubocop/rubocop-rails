@@ -34,7 +34,7 @@ module RuboCop
           referer?(node) do
             return unless node.method?(wrong_method_name)
 
-            add_offense(node.source_range) do |corrector|
+            add_offense(node) do |corrector|
               corrector.replace(node, "request.#{style}")
             end
           end

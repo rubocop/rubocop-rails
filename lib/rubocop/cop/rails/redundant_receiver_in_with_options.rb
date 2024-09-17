@@ -78,7 +78,7 @@ module RuboCop
 
           send_nodes.each do |send_node|
             receiver = send_node.receiver
-            add_offense(receiver.source_range) do |corrector|
+            add_offense(receiver) do |corrector|
               autocorrect(corrector, send_node, node)
             end
           end
