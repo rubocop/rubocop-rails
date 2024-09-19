@@ -15,6 +15,10 @@ module RuboCop
       #
       # If you are defining custom transaction methods, you can configure it with `TransactionMethods`.
       #
+      # NOTE: This cop is disabled on Rails >= 7.2 because transactions were restored
+      # to their historical behavior. In Rails 7.1, the behavior is controlled with
+      # the config `active_record.commit_transaction_on_non_local_return`.
+      #
       # @example
       #   # bad
       #   ApplicationRecord.transaction do
@@ -76,6 +80,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
+          return if target_rails_version >= 7.2
           return unless in_transaction_block?(node)
 
           exit_statements(node.parent.body).each do |statement_node|

@@ -114,4 +114,14 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
 
     it_behaves_like 'flags transaction exit statements', :writable_transaction
   end
+
+  context 'Rails >= 7.2', :rails72 do
+    it 'registers no offense' do
+      expect_no_offenses(<<~RUBY)
+        ApplicationRecord.transaction do
+          return if user.active?
+        end
+      RUBY
+    end
+  end
 end
