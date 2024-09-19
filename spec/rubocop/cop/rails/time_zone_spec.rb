@@ -144,6 +144,12 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
       expect_no_corrections
     end
 
+    it 'does not register an offense for `to_time` when attaching timezone specifier `Z`' do
+      expect_no_offenses(<<~RUBY)
+        "2012-03-02T16:05:37Z".to_time
+      RUBY
+    end
+
     it 'does not register an offense for `to_time` without receiver' do
       expect_no_offenses(<<~RUBY)
         to_time
