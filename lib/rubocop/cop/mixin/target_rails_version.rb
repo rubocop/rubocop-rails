@@ -7,6 +7,9 @@ module RuboCop
       # Informs the base RuboCop gem that it the Rails version is checked via `requires_gem` API,
       # without needing to call this `#support_target_rails_version` method.
       USES_REQUIRES_GEM_API = true
+      # Look for `railties` instead of `rails`, to support apps that only use a subset of `rails`
+      # See https://github.com/rubocop/rubocop/pull/11289
+      TARGET_GEM_NAME = 'railties' # :nodoc:
 
       def minimum_target_rails_version(version)
         if respond_to?(:requires_gem)
@@ -33,11 +36,6 @@ module RuboCop
           @minimum_target_rails_version <= version
         end
       end
-
-      # Look for `railties` instead of `rails`, to support apps that only use a subset of `rails`
-      # See https://github.com/rubocop/rubocop/pull/11289
-      TARGET_GEM_NAME = 'railties'
-      private_constant :TARGET_GEM_NAME
     end
   end
 end

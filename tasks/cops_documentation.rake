@@ -12,12 +12,19 @@ end
 
 task update_cops_documentation: :yard_for_generate_documentation do
   deps = ['Rails']
+  # NOTE: Insert minimum_target_rails_version after ruby version
+  required_rails_version = lambda do |data|
+    return '' unless (version = data.cop.gem_requirements[RuboCop::Cop::TargetRailsVersion::TARGET_GEM_NAME])
+
+    "NOTE: Required Rails version: #{version.requirements[0][1]}\n\n"
+  end
+  extra_info = { required_ruby_version: required_rails_version }
 
   # NOTE: Update `<<next>>` version for docs/modules/ROOT/pages/cops_rails.adoc
   # when running release tasks.
   RuboCop::Rails::Inject.defaults!
 
-  CopsDocumentationGenerator.new(departments: deps).call
+  CopsDocumentationGenerator.new(departments: deps, extra_info: extra_info).call
 end
 
 desc 'Syntax check for the documentation comments'
