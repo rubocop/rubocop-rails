@@ -9,6 +9,16 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1362](https://github.com/rubocop/rubocop-rails/issues/1362): Fix false positives for `Rails/EnumSyntax` when using Ruby 2.7. ([@koic][])
+* [#1269](https://github.com/rubocop/rubocop-rails/issues/1269): Fix false positives for `Rails/ActionControllerFlashBeforeRender` in combination with implicit returns. ([@earlopain][])
+* [#1326](https://github.com/rubocop/rubocop-rails/pull/1326): Fix wrong autocorrect for `Rails/FilePath` when passing an array to `File.join`. ([@earlopain][])
+
+### Changes
+
+* [#1359](https://github.com/rubocop/rubocop-rails/pull/1359): Support `filter` in `Rails/CompactBlank`. ([@masato-bkn][])
+
 ## 2.26.1 (2024-09-07)
 
 ### Bug fixes
