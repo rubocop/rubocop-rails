@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.26.2 (2024-09-21)
+
 ### Bug fixes
 
 * [#1362](https://github.com/rubocop/rubocop-rails/issues/1362): Fix false positives for `Rails/EnumSyntax` when using Ruby 2.7. ([@koic][])

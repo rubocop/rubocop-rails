@@ -1109,6 +1109,8 @@ collection.reject(&:blank?)
 collection.reject { |_k, v| v.blank? }
 collection.select(&:present?)
 collection.select { |_k, v| v.present? }
+collection.filter(&:present?)
+collection.filter { |_k, v| v.present? }
 
 # good
 collection.compact_blank
@@ -1924,6 +1926,8 @@ enum status: { active: 0, archived: 1 }
 * https://rails.rubystyle.guide#enums
 
 == Rails/EnumSyntax
+
+NOTE: Required Ruby version: 3.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
