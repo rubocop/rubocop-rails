@@ -47,12 +47,12 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
         RUBY
       else
         expect_offense(<<~RUBY, method: method)
-          object.#{method}(variable)
+          object.#{method}(*variable)
                  ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
         RUBY
 
         expect_correction(<<~RUBY)
-          object.#{method}!(variable)
+          object.#{method}!(*variable)
         RUBY
       end
     end
@@ -64,12 +64,12 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
         RUBY
       else
         expect_offense(<<~RUBY, method: method)
-          object.#{method}(variable)
+          object.#{method}(**variable)
                  ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
         RUBY
 
         expect_correction(<<~RUBY)
-          object.#{method}!(variable)
+          object.#{method}!(**variable)
         RUBY
       end
     end
