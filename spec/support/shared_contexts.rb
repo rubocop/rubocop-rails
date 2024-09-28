@@ -35,3 +35,7 @@ end
 RSpec.shared_context 'with Rails 7.2', :rails72 do
   let(:rails_version) { 7.2 }
 end
+
+RSpec.shared_context 'with Rails 8.0', :rails80 do
+  let(:rails_version) { 8.0 }
+end
