@@ -19,24 +19,47 @@ module RuboCop
         extend TargetRailsVersion
 
         MSG = 'Use `Rails.env.local?` instead.'
+        MSG_NEGATED = 'Use `!Rails.env.local?` instead.'
         LOCAL_ENVIRONMENTS = %i[development? test?].to_set.freeze
 
         minimum_target_rails_version 7.1
 
-        # @!method rails_env_local_candidate?(node)
-        def_node_matcher :rails_env_local_candidate?, <<~PATTERN
+        # @!method rails_env_local_or?(node)
+        def_node_matcher :rails_env_local_or?, <<~PATTERN
           (or
             (send (send (const {cbase nil? } :Rails) :env) $%LOCAL_ENVIRONMENTS)
             (send (send (const {cbase nil? } :Rails) :env) $%LOCAL_ENVIRONMENTS)
           )
         PATTERN
 
+        # @!method rails_env_local_and?(node)
+        def_node_matcher :rails_env_local_and?, <<~PATTERN
+          (and
+            (send
+              (send (send (const {cbase nil? } :Rails) :env) $%LOCAL_ENVIRONMENTS)
+              :!)
+            (send
+              (send (send (const {cbase nil? } :Rails) :env) $%LOCAL_ENVIRONMENTS)
+              :!)
+          )
+        PATTERN
+
         def on_or(node)
-          rails_env_local_candidate?(node) do |*environments|
+          rails_env_local_or?(node) do |*environments|
             next unless environments.to_set == LOCAL_ENVIRONMENTS
 
             add_offense(node) do |corrector|
               corrector.replace(node, 'Rails.env.local?')
+            end
+          end
+        end
+
+        def on_and(node)
+          rails_env_local_and?(node) do |*environments|
+            next unless environments.to_set == LOCAL_ENVIRONMENTS
+
+            add_offense(node, message: MSG_NEGATED) do |corrector|
+              corrector.replace(node, '!Rails.env.local?')
             end
           end
         end
