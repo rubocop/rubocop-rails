@@ -31,6 +31,27 @@ RuboCop::RakeTask.new do |task|
 end
 ----
 
+== RuboCop Rails configuration
+
+The following settings specific to RuboCop Rails can be configured in `.rubocop.yml`.
+
+=== `AllCops: TargetRailsVersion`
+
+What version of Rails is the inspected code using? If a value is specified
+for `TargetRailsVersion` then it is used. Acceptable values are specified
+as a float (e.g., 7.2); the patch version of Rails should not be included.
+
+[source,yaml]
+----
+AllCops:
+  TargetRailsVersion: 7.2
+----
+
+If `TargetRailsVersion` is not set, RuboCop will parse the Gemfile.lock or
+gems.locked file to find the version of Rails that has been bound to the
+application. If neither of those files exist, RuboCop will use Rails 5.0
+as the default.
+
 == Rails configuration tip
 
 In Rails 6.1+, add the following `config.generators.after_generate` setting to

@@ -17,12 +17,12 @@ AllCops:
   # Enable checking Active Support extensions.
   # See: https://docs.rubocop.org/rubocop/configuration.html#enable-checking-active-support-extensions
   ActiveSupportExtensionsEnabled: true
-  # What version of Rails is the inspected code using?  If a value is specified
-  # for TargetRailsVersion then it is used.  Acceptable values are specified
-  # as a float (i.e. 5.1); the patch version of Rails should not be included.
-  # If TargetRailsVersion is not set, RuboCop will parse the Gemfile.lock or
+  # What version of Rails is the inspected code using? If a value is specified
+  # for `TargetRailsVersion` then it is used. Acceptable values are specified
+  # as a float (e.g., 7.2); the patch version of Rails should not be included.
+  # If `TargetRailsVersion` is not set, RuboCop will parse the Gemfile.lock or
   # gems.locked file to find the version of Rails that has been bound to the
-  # application.  If neither of those files exist, RuboCop will use Rails 5.0
+  # application. If neither of those files exist, RuboCop will use Rails 5.0
   # as the default.
   TargetRailsVersion: ~
 
