@@ -43,6 +43,39 @@ module RuboCop
       #
       #   # good
       #   something if foo.present?
+      #
+      # @example AllowMultipleUnlessBlankGuardClauses: false (default)
+      #
+      #   # bad
+      #   return unless foo.blank?
+      #
+      #   # good
+      #   return if foo.blank?
+      #
+      #   # bad
+      #   return unless foo.blank?
+      #   return if bar.present?
+      #
+      #   # bad
+      #   return unless foo.blank?
+      #   return unless bar.present?
+      #
+      # @example AllowMultipleUnlessBlankGuardClauses: true
+      #   # Allow usages of `unless blank?` in multiple `unless` guard clauses
+      #
+      #   # bad
+      #   return unless foo.blank?
+      #
+      #   # good
+      #   return if foo.blank?
+      #
+      #   # bad
+      #   return unless foo.blank?
+      #   return if bar.present?
+      #
+      #   # good
+      #   return unless foo.blank?
+      #   return unless bar.present?
       class Present < Base
         extend AutoCorrector
 
@@ -110,6 +143,7 @@ module RuboCop
         def on_if(node)
           return unless cop_config['UnlessBlank']
           return unless node.unless?
+          return if allowed_multiple_unless_guard_clauses?(node)
           return if node.else? && config.for_cop('Style/UnlessElse')['Enabled']
 
           unless_blank?(node) do |method_call, receiver|
@@ -120,6 +154,8 @@ module RuboCop
             end
           end
         end
+
+        private
 
         def autocorrect(corrector, node)
           method_call, variable1 = unless_blank?(node)
@@ -135,7 +171,17 @@ module RuboCop
           corrector.replace(range, replacement(variable1))
         end
 
-        private
+        def allowed_multiple_unless_guard_clauses?(node)
+          cop_config['AllowMultipleUnlessBlankGuardClauses'] && (
+            in_an_unless_guard_clause?(node) &&
+              (in_an_unless_guard_clause?(node.right_sibling) || in_an_unless_guard_clause?(node.left_sibling))
+          )
+        end
+
+        def in_an_unless_guard_clause?(node)
+          node.respond_to?(:unless?) && node.unless? &&
+            node.children.any? { _1.respond_to?(:guard_clause?) && _1.guard_clause? }
+        end
 
         def unless_condition(node, method_call)
           if node.modifier_form?
