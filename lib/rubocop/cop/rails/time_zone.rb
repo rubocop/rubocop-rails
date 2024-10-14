@@ -28,6 +28,8 @@ module RuboCop
       #   Time.zone.now
       #   Time.zone.parse('2015-03-02T19:05:37')
       #   Time.zone.parse('2015-03-02T19:05:37Z') # Respect ISO 8601 format with timezone specifier.
+      #   Time.parse('2015-03-02T19:05:37Z') # Also respects ISO 8601
+      #   '2015-03-02T19:05:37Z'.to_time # Also respects ISO 8601
       #
       # @example EnforcedStyle: flexible (default)
       #   # `flexible` allows usage of `in_time_zone` instead of `zone`.
@@ -67,6 +69,7 @@ module RuboCop
 
         def on_send(node)
           return if !node.receiver&.str_type? || !node.method?(:to_time)
+          return if attach_timezone_specifier?(node.receiver)
 
           add_offense(node.loc.selector, message: MSG_STRING_TO_TIME) do |corrector|
             corrector.replace(node, "Time.zone.parse(#{node.receiver.source})") unless node.csend_type?
