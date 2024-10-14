@@ -68,7 +68,7 @@ module RuboCop
         end
 
         def using_squish?(node)
-          node.parent&.send_type? && node.parent&.method?(:squish)
+          node.parent&.send_type? && node.parent.method?(:squish)
         end
 
         def singleline_comments_present?(node)

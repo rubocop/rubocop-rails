@@ -89,7 +89,7 @@ module RuboCop
 
         def where_not?(node)
           receiver = node.receiver
-          receiver&.send_type? && receiver&.method?(:where)
+          receiver&.send_type? && receiver.method?(:where)
         end
 
         # rubocop:disable Metrics
