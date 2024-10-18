@@ -258,6 +258,7 @@ Rails/Blank:
   NotPresent: true
   # Convert usages of `unless present?` to `if blank?`
   UnlessPresent: true
+  AllowMultipleUnlessPresentGuardClauses: false
 
 Rails/BulkChangeTable:
   Description: 'Check whether alter queries are combinable.'
@@ -792,6 +793,7 @@ Rails/Present:
   NotBlank: true
   # Convert usages of `unless blank?` to `if present?`
   UnlessBlank: true
+  AllowMultipleUnlessBlankGuardClauses: false
 
 Rails/RakeEnvironment:
   Description: 'Include `:environment` as a dependency for all Rake tasks.'
