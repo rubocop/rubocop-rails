@@ -146,6 +146,14 @@ RSpec.describe RuboCop::Cop::Rails::EnumSyntax, :config do
         expect_no_offenses('enum')
       end
     end
+
+    context 'when positional arguments are used and options are not passed as keyword arguments' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          enum :status, { active: 0, archived: 1 }, prefix
+        RUBY
+      end
+    end
   end
 
   context 'Rails >= 7.0 and Ruby <= 2.7', :rails70, :ruby27, unsupported_on: :prism do
