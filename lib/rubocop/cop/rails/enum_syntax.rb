@@ -106,6 +106,8 @@ module RuboCop
         end
 
         def option_key?(pair)
+          return false unless pair.respond_to?(:key)
+
           UNDERSCORED_OPTION_NAMES.include?(pair.key.source)
         end
 
