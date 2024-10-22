@@ -624,6 +624,16 @@ Rails/IndexBy:
   VersionAdded: '2.5'
   VersionChanged: '2.8'
 
+Rails/IndexNames:
+  Description: 'Checks for and removes custom index names. Since 7.1, Rails can ensure unique index names without exceeding the length limit.'
+  Enabled: pending
+  SafeAutoCorrect: false
+  StartAfterMigrationVersion: null
+  VersionAdded: <<next>>
+  VersionChanged: <<next>>
+  Include:
+    - db/**/*.rb
+
 Rails/IndexWith:
   Description: 'Prefer `index_with` over `each_with_object`, `to_h`, or `map`.'
   Enabled: true
