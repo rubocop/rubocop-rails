@@ -174,7 +174,7 @@ module RuboCop
           parent = node.parent
           return false unless POSSIBLE_ENUMERABLE_BLOCK_METHODS.include?(parent.method_name)
 
-          parent.parent&.block_type? || parent.parent&.numblock_type? || parent.first_argument&.block_pass_type?
+          parent.block_literal? || parent.first_argument&.block_pass_type?
         end
 
         def sensitive_association_method?(node)
