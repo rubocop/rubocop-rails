@@ -9,6 +9,17 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1377](https://github.com/rubocop/rubocop-rails/issues/1377): Fix an error for `Rails/EnumSyntax` when positional arguments are used and options are not passed as keyword arguments. ([@koic][])
+* [#1367](https://github.com/rubocop/rubocop-rails/pull/1367): Fix `Rails/TimeZone` should not report offense on `String#to_time` with timezone specifier. ([@armandmgt][])
+
+### Changes
+
+* [#727](https://github.com/rubocop/rubocop-rails/issues/727): Disable `Rails/TransactionExitStatement` on Rails >= 7.2. ([@earlopain][])
+* [#1374](https://github.com/rubocop/rubocop-rails/pull/1374): Change `Rails/EnvLocal` to handle negated conditions. ([@fatkodima][])
+* [#1195](https://github.com/rubocop/rubocop-rails/issues/1195): Change `Rails/SelectMap` to handle safe navigation operators. ([@fatkodima][])
+
 ## 2.26.2 (2024-09-21)
 
 ### Bug fixes
@@ -1152,3 +1163,4 @@
 [@fwolfst]: https://github.com/fwolfst
 [@maxprokopiev]: https://github.com/maxprokopiev
 [@ytjmt]: https://github.com/ytjmt
+[@armandmgt]: https://github.com/armandmgt
