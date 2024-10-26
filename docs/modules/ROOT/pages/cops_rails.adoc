@@ -6,6 +6,7 @@
 
 = Rails
 
+[#railsactioncontrollerflashbeforerender]
 == Rails/ActionControllerFlashBeforeRender
 
 |===
@@ -21,11 +22,13 @@
 Using `flash` assignment before `render` in Rails controllers will persist the message for too long.
 Check https://guides.rubyonrails.org/action_controller_overview.html#flash-now
 
+[#safety-railsactioncontrollerflashbeforerender]
 === Safety
 
 This cop's autocorrection is unsafe because it replaces `flash` by `flash.now`.
 Even though it is usually a mistake, it might be used intentionally.
 
+[#examples-railsactioncontrollerflashbeforerender]
 === Examples
 
 [source,ruby]
@@ -47,7 +50,10 @@ class HomeController < ApplicationController
 end
 ----
 
+[#railsactioncontrollertestcase]
 == Rails/ActionControllerTestCase
+
+NOTE: Required Rails version: 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -63,11 +69,13 @@ Using `ActionController::TestCase` is discouraged and should be replaced by
 `ActionDispatch::IntegrationTest`. Controller tests are too close to the
 internals of a controller whereas integration tests mimic the browser/user.
 
+[#safety-railsactioncontrollertestcase]
 === Safety
 
 This cop's autocorrection is unsafe because the API of each test case class is different.
 Make sure to update each test of your controller test cases after changing the superclass.
 
+[#examples-railsactioncontrollertestcase]
 === Examples
 
 [source,ruby]
@@ -81,6 +89,7 @@ class MyControllerTest < ActionDispatch::IntegrationTest
 end
 ----
 
+[#configurable-attributes-railsactioncontrollertestcase]
 === Configurable attributes
 
 |===
@@ -91,11 +100,13 @@ end
 | Array
 |===
 
+[#references-railsactioncontrollertestcase]
 === References
 
 * https://rails.rubystyle.guide/#integration-testing
 * https://api.rubyonrails.org/classes/ActionController/TestCase.html
 
+[#railsactionfilter]
 == Rails/ActionFilter
 
 |===
@@ -116,8 +127,10 @@ something_filter methods or the newer something_action methods.
 IMPORTANT: This cop is deprecated. Because the `*_filter` methods were removed in Rails 4.2,
 and that Rails version is no longer supported by RuboCop Rails. This cop will be removed in RuboCop Rails 3.0.
 
+[#examples-railsactionfilter]
 === Examples
 
+[#enforcedstyle_-action-_default_-railsactionfilter]
 ==== EnforcedStyle: action (default)
 
 [source,ruby]
@@ -133,6 +146,7 @@ append_around_action :do_stuff
 skip_after_action :do_stuff
 ----
 
+[#enforcedstyle_-filter-railsactionfilter]
 ==== EnforcedStyle: filter
 
 [source,ruby]
@@ -148,6 +162,7 @@ append_around_filter :do_stuff
 skip_after_filter :do_stuff
 ----
 
+[#configurable-attributes-railsactionfilter]
 === Configurable attributes
 
 |===
@@ -162,6 +177,7 @@ skip_after_filter :do_stuff
 | Array
 |===
 
+[#railsactionorder]
 == Rails/ActionOrder
 
 |===
@@ -193,6 +209,7 @@ defined before actions not specified.
      - destroy
 ----
 
+[#examples-railsactionorder]
 === Examples
 
 [source,ruby]
@@ -208,6 +225,7 @@ def show; end
 def destroy; end
 ----
 
+[#configurable-attributes-railsactionorder]
 === Configurable attributes
 
 |===
@@ -222,6 +240,7 @@ def destroy; end
 | Array
 |===
 
+[#railsactiverecordaliases]
 == Rails/ActiveRecordAliases
 
 |===
@@ -237,11 +256,13 @@ def destroy; end
 Checks that ActiveRecord aliases are not used. The direct method names
 are more clear and easier to read.
 
+[#safety-railsactiverecordaliases]
 === Safety
 
 This cop is unsafe because custom `update_attributes` method call was changed to
 `update` but the method name remained same in the method definition.
 
+[#examples-railsactiverecordaliases]
 === Examples
 
 [source,ruby]
@@ -253,6 +274,7 @@ book.update_attributes!(author: 'Alice')
 book.update!(author: 'Alice')
 ----
 
+[#railsactiverecordcallbacksorder]
 == Rails/ActiveRecordCallbacksOrder
 
 |===
@@ -268,6 +290,7 @@ book.update!(author: 'Alice')
 Checks that Active Record callbacks are declared
 in the order in which they will be executed.
 
+[#examples-railsactiverecordcallbacksorder]
 === Examples
 
 [source,ruby]
@@ -285,6 +308,7 @@ class Person < ApplicationRecord
 end
 ----
 
+[#configurable-attributes-railsactiverecordcallbacksorder]
 === Configurable attributes
 
 |===
@@ -295,10 +319,12 @@ end
 | Array
 |===
 
+[#references-railsactiverecordcallbacksorder]
 === References
 
 * https://rails.rubystyle.guide/#callbacks-order
 
+[#railsactiverecordoverride]
 == Rails/ActiveRecordOverride
 
 |===
@@ -314,6 +340,7 @@ end
 Checks for overriding built-in Active Record methods instead of using
 callbacks.
 
+[#examples-railsactiverecordoverride]
 === Examples
 
 [source,ruby]
@@ -336,6 +363,7 @@ class Book < ApplicationRecord
 end
 ----
 
+[#configurable-attributes-railsactiverecordoverride]
 === Configurable attributes
 
 |===
@@ -350,6 +378,7 @@ end
 | Array
 |===
 
+[#railsactivesupportaliases]
 == Rails/ActiveSupportAliases
 
 |===
@@ -365,6 +394,7 @@ end
 Checks that ActiveSupport aliases to core ruby methods
 are not used.
 
+[#examples-railsactivesupportaliases]
 === Examples
 
 [source,ruby]
@@ -382,6 +412,7 @@ are not used.
 [1, 2, 'a'].prepend('b')
 ----
 
+[#railsactivesupportonload]
 == Rails/ActiveSupportOnLoad
 
 |===
@@ -397,11 +428,13 @@ are not used.
 Checks for Rails framework classes that are patched directly instead of using Active Support load hooks. Direct
 patching forcibly loads the framework referenced, using hooks defers loading until it's actually needed.
 
+[#safety-railsactivesupportonload]
 === Safety
 
 While using lazy load hooks is recommended, it changes the order in which is code is loaded and may reveal
 load order dependency bugs.
 
+[#examples-railsactivesupportonload]
 === Examples
 
 [source,ruby]
@@ -413,11 +446,13 @@ ActiveRecord::Base.include(MyClass)
 ActiveSupport.on_load(:active_record) { include MyClass }
 ----
 
+[#references-railsactivesupportonload]
 === References
 
 * https://api.rubyonrails.org/classes/ActiveSupport/LazyLoadHooks.html
 * https://guides.rubyonrails.org/engines.html#available-load-hooks
 
+[#railsaddcolumnindex]
 == Rails/AddColumnIndex
 
 |===
@@ -435,6 +470,7 @@ key. `add_column` does not accept `index`, but also does not raise an
 error for extra keys, so it is possible to mistakenly add the key without
 realizing it will not actually add an index.
 
+[#examples-railsaddcolumnindex]
 === Examples
 
 [source,ruby]
@@ -447,6 +483,7 @@ add_column :table, :column, :integer
 add_index :table, :column
 ----
 
+[#configurable-attributes-railsaddcolumnindex]
 === Configurable attributes
 
 |===
@@ -457,6 +494,7 @@ add_index :table, :column
 | Array
 |===
 
+[#railsaftercommitoverride]
 == Rails/AfterCommitOverride
 
 |===
@@ -473,6 +511,7 @@ Enforces that there is only one call to `after_commit`
 (and its aliases - `after_create_commit`, `after_update_commit`,
 and `after_destroy_commit`) with the same callback name per model.
 
+[#examples-railsaftercommitoverride]
 === Examples
 
 [source,ruby]
@@ -501,6 +540,7 @@ after_create_commit :log_create_action
 after_update_commit :log_update_action
 ----
 
+[#railsapplicationcontroller]
 == Rails/ApplicationController
 
 |===
@@ -515,11 +555,13 @@ after_update_commit :log_update_action
 
 Checks that controllers subclass `ApplicationController`.
 
+[#safety-railsapplicationcontroller]
 === Safety
 
 This cop's autocorrection is unsafe because it may let the logic from `ApplicationController`
 sneak into a controller that is not purposed to inherit logic common among other controllers.
 
+[#examples-railsapplicationcontroller]
 === Examples
 
 [source,ruby]
@@ -535,7 +577,10 @@ class MyController < ActionController::Base
 end
 ----
 
+[#railsapplicationjob]
 == Rails/ApplicationJob
+
+NOTE: Required Rails version: 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -549,11 +594,13 @@ end
 
 Checks that jobs subclass `ApplicationJob` with Rails 5.0.
 
+[#safety-railsapplicationjob]
 === Safety
 
 This cop's autocorrection is unsafe because it may let the logic from `ApplicationJob`
 sneak into a job that is not purposed to inherit logic common among other jobs.
 
+[#examples-railsapplicationjob]
 === Examples
 
 [source,ruby]
@@ -569,7 +616,10 @@ class Rails4Job < ActiveJob::Base
 end
 ----
 
+[#railsapplicationmailer]
 == Rails/ApplicationMailer
+
+NOTE: Required Rails version: 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -583,11 +633,13 @@ end
 
 Checks that mailers subclass `ApplicationMailer` with Rails 5.0.
 
+[#safety-railsapplicationmailer]
 === Safety
 
 This cop's autocorrection is unsafe because it may let the logic from `ApplicationMailer`
 sneak into a mailer that is not purposed to inherit logic common among other mailers.
 
+[#examples-railsapplicationmailer]
 === Examples
 
 [source,ruby]
@@ -603,7 +655,10 @@ class MyMailer < ActionMailer::Base
 end
 ----
 
+[#railsapplicationrecord]
 == Rails/ApplicationRecord
+
+NOTE: Required Rails version: 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -621,12 +676,14 @@ It is a common practice to define models inside migrations in order to retain fo
 compatibility by avoiding loading any application code. And so migration files are excluded
 by default for this cop.
 
+[#safety-railsapplicationrecord]
 === Safety
 
 This cop's autocorrection is unsafe because it may let the logic from `ApplicationRecord`
 sneak into an Active Record model that is not purposed to inherit logic common among other
 Active Record models.
 
+[#examples-railsapplicationrecord]
 === Examples
 
 [source,ruby]
@@ -642,6 +699,7 @@ class Rails4Model < ActiveRecord::Base
 end
 ----
 
+[#configurable-attributes-railsapplicationrecord]
 === Configurable attributes
 
 |===
@@ -652,6 +710,7 @@ end
 | Array
 |===
 
+[#railsarelstar]
 == Rails/ArelStar
 
 |===
@@ -671,6 +730,7 @@ quoted asterisk (e.g. <tt>`my_model`.`*`</tt>). This causes the
 database to look for a column named <tt>`*`</tt> (or `"*"`) as opposed
 to expanding the column list as one would likely expect.
 
+[#safety-railsarelstar]
 === Safety
 
 This cop's autocorrection is unsafe because it turns a quoted `*` into
@@ -678,6 +738,7 @@ an SQL `*`, unquoted. `*` is a valid column name in certain databases
 supported by Rails, and even though it is usually a mistake,
 it might denote legitimate access to a column named `*`.
 
+[#examples-railsarelstar]
 === Examples
 
 [source,ruby]
@@ -689,6 +750,7 @@ MyTable.arel_table["*"]
 MyTable.arel_table[Arel.star]
 ----
 
+[#railsassertnot]
 == Rails/AssertNot
 
 |===
@@ -703,6 +765,7 @@ MyTable.arel_table[Arel.star]
 
 Use `assert_not` instead of `assert !`.
 
+[#examples-railsassertnot]
 === Examples
 
 [source,ruby]
@@ -714,6 +777,7 @@ assert !x
 assert_not x
 ----
 
+[#configurable-attributes-railsassertnot]
 === Configurable attributes
 
 |===
@@ -724,6 +788,7 @@ assert_not x
 | Array
 |===
 
+[#railsattributedefaultblockvalue]
 == Rails/AttributeDefaultBlockValue
 
 |===
@@ -741,6 +806,7 @@ which value is an array, string literal or method call without a block.
 It will accept all other values, such as string, symbol, integer and float literals
 as well as constants.
 
+[#examples-railsattributedefaultblockvalue]
 === Examples
 
 [source,ruby]
@@ -797,6 +863,7 @@ class User < ApplicationRecord
 end
 ----
 
+[#configurable-attributes-railsattributedefaultblockvalue]
 === Configurable attributes
 
 |===
@@ -807,7 +874,10 @@ end
 | Array
 |===
 
+[#railsbelongsto]
 == Rails/BelongsTo
+
+NOTE: Required Rails version: 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -843,6 +913,7 @@ superfluous `optional: false`). Therefore, in the cases we're using
 `required: true`, we'll simply invert it to `optional: false` and the
 user can remove depending on their defaults.
 
+[#examples-railsbelongsto]
 === Examples
 
 [source,ruby]
@@ -868,11 +939,13 @@ class Post < ApplicationRecord
 end
 ----
 
+[#references-railsbelongsto]
 === References
 
 * https://guides.rubyonrails.org/5_0_release_notes.html
 * https://github.com/rails/rails/pull/18937
 
+[#railsblank]
 == Rails/Blank
 
 |===
@@ -893,14 +966,17 @@ The configuration of `NotPresent` will not produce an offense in the
 context of `unless else` if `Style/UnlessElse` is enabled. This is
 to prevent interference between the autocorrection of the two cops.
 
+[#safety-railsblank]
 === Safety
 
 This cop is unsafe autocorrection, because `' '.empty?` returns false,
 but `' '.blank?` returns true. Therefore, autocorrection is not compatible
 if the receiver is a non-empty blank string, tab, or newline meta characters.
 
+[#examples-railsblank]
 === Examples
 
+[#nilorempty_-true-_default_-railsblank]
 ==== NilOrEmpty: true (default)
 
 [source,ruby]
@@ -915,6 +991,7 @@ foo == nil || foo.empty?
 foo.blank?
 ----
 
+[#notpresent_-true-_default_-railsblank]
 ==== NotPresent: true (default)
 
 [source,ruby]
@@ -928,6 +1005,7 @@ foo.blank?
 foo.blank?
 ----
 
+[#unlesspresent_-true-_default_-railsblank]
 ==== UnlessPresent: true (default)
 
 [source,ruby]
@@ -956,6 +1034,7 @@ def blank?
 end
 ----
 
+[#configurable-attributes-railsblank]
 === Configurable attributes
 
 |===
@@ -974,6 +1053,7 @@ end
 | Boolean
 |===
 
+[#railsbulkchangetable]
 == Rails/BulkChangeTable
 
 |===
@@ -1000,6 +1080,7 @@ when the `Database` option is not set.
 If the adapter is not `mysql2`, `trilogy`, `postgresql`, or `postgis`,
 this Cop ignores offenses.
 
+[#examples-railsbulkchangetable]
 === Examples
 
 [source,ruby]
@@ -1053,6 +1134,7 @@ def change
 end
 ----
 
+[#configurable-attributes-railsbulkchangetable]
 === Configurable attributes
 
 |===
@@ -1067,12 +1149,16 @@ end
 | Array
 |===
 
+[#references-railsbulkchangetable]
 === References
 
 * https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-change_table
 * https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/Table.html
 
+[#railscompactblank]
 == Rails/CompactBlank
+
+NOTE: Required Rails version: 6.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -1086,6 +1172,7 @@ end
 
 Checks if collection can be blank-compacted with `compact_blank`.
 
+[#safety-railscompactblank]
 === Safety
 
 It is unsafe by default because false positives may occur in the
@@ -1100,6 +1187,7 @@ And `compact_blank!` has different implementations for `Array`, `Hash`, and
 `Array#compact_blank!`, `Hash#compact_blank!` are equivalent to `delete_if(&:blank?)`.
 If the cop makes a mistake, autocorrected code may get unexpected behavior.
 
+[#examples-railscompactblank]
 === Examples
 
 [source,ruby]
@@ -1125,7 +1213,10 @@ collection.keep_if { |_k, v| v.present? } # Same behavior as `Array#compact_blan
 collection.compact_blank!
 ----
 
+[#railscontenttag]
 == Rails/ContentTag
+
+NOTE: Required Rails version: 5.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -1143,6 +1234,7 @@ NOTE: Allow `tag` when the first argument is a variable because
 `tag(name)` is simpler rather than `tag.public_send(name)`.
 And this cop will be renamed to something like `LegacyTag` in the future. (e.g. RuboCop Rails 3.0)
 
+[#examples-railscontenttag]
 === Examples
 
 [source,ruby]
@@ -1157,6 +1249,7 @@ tag.br(class: 'classname')
 tag(name, class: 'classname')
 ----
 
+[#configurable-attributes-railscontenttag]
 === Configurable attributes
 
 |===
@@ -1167,12 +1260,14 @@ tag(name, class: 'classname')
 | Array
 |===
 
+[#references-railscontenttag]
 === References
 
 * https://github.com/rubocop/rubocop-rails/issues/260
 * https://github.com/rails/rails/issues/25195
 * https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-content_tag
 
+[#railscreatetablewithtimestamps]
 == Rails/CreateTableWithTimestamps
 
 |===
@@ -1191,6 +1286,7 @@ In many cases, timestamps are useful information and should be added.
 NOTE: Allow `timestamps` not written when `id: false` because this emphasizes respecting
 user's editing intentions.
 
+[#examples-railscreatetablewithtimestamps]
 === Examples
 
 [source,ruby]
@@ -1235,6 +1331,7 @@ create_table :users, articles, id: false do |t|
 end
 ----
 
+[#configurable-attributes-railscreatetablewithtimestamps]
 === Configurable attributes
 
 |===
@@ -1249,6 +1346,7 @@ end
 | Array
 |===
 
+[#railsdangerouscolumnnames]
 == Rails/DangerousColumnNames
 
 |===
@@ -1265,6 +1363,7 @@ Avoid dangerous column names.
 
 Some column names are considered dangerous because they would overwrite methods already defined.
 
+[#examples-railsdangerouscolumnnames]
 === Examples
 
 [source,ruby]
@@ -1276,6 +1375,7 @@ add_column :users, :save
 add_column :users, :saved
 ----
 
+[#configurable-attributes-railsdangerouscolumnnames]
 === Configurable attributes
 
 |===
@@ -1290,6 +1390,7 @@ add_column :users, :saved
 | Array
 |===
 
+[#railsdate]
 == Rails/Date
 
 |===
@@ -1321,12 +1422,15 @@ When `EnforcedStyle` is `flexible` then only `Date.today` is prohibited.
 And you can set a warning for `to_time` with `AllowToTime: false`.
 `AllowToTime` is `true` by default to prevent false positive on `DateTime` object.
 
+[#safety-railsdate]
 === Safety
 
 This cop's autocorrection is unsafe because it may change handling time.
 
+[#examples-railsdate]
 === Examples
 
+[#enforcedstyle_-flexible-_default_-railsdate]
 ==== EnforcedStyle: flexible (default)
 
 [source,ruby]
@@ -1342,6 +1446,7 @@ Date.yesterday
 date.in_time_zone
 ----
 
+[#enforcedstyle_-strict-railsdate]
 ==== EnforcedStyle: strict
 
 [source,ruby]
@@ -1356,6 +1461,7 @@ Time.zone.today
 Time.zone.today - 1.day
 ----
 
+[#allowtotime_-true-_default_-railsdate]
 ==== AllowToTime: true (default)
 
 [source,ruby]
@@ -1364,6 +1470,7 @@ Time.zone.today - 1.day
 date.to_time
 ----
 
+[#allowtotime_-false-railsdate]
 ==== AllowToTime: false
 
 [source,ruby]
@@ -1372,6 +1479,7 @@ date.to_time
 date.to_time
 ----
 
+[#configurable-attributes-railsdate]
 === Configurable attributes
 
 |===
@@ -1386,6 +1494,7 @@ date.to_time
 | Boolean
 |===
 
+[#railsdefaultscope]
 == Rails/DefaultScope
 
 |===
@@ -1400,6 +1509,7 @@ date.to_time
 
 Looks for uses of `default_scope`.
 
+[#examples-railsdefaultscope]
 === Examples
 
 [source,ruby]
@@ -1421,6 +1531,7 @@ def self.published
 end
 ----
 
+[#railsdelegate]
 == Rails/Delegate
 
 |===
@@ -1445,6 +1556,7 @@ using the target object as a prefix of the method name
 without using the `delegate` method will be a violation.
 When set to `false`, this case is legal.
 
+[#examples-railsdelegate]
 === Examples
 
 [source,ruby]
@@ -1477,6 +1589,7 @@ def bar
 end
 ----
 
+[#enforceforprefixed_-true-_default_-railsdelegate]
 ==== EnforceForPrefixed: true (default)
 
 [source,ruby]
@@ -1490,6 +1603,7 @@ end
 delegate :bar, to: :foo, prefix: true
 ----
 
+[#enforceforprefixed_-false-railsdelegate]
 ==== EnforceForPrefixed: false
 
 [source,ruby]
@@ -1503,6 +1617,7 @@ end
 delegate :bar, to: :foo, prefix: true
 ----
 
+[#configurable-attributes-railsdelegate]
 === Configurable attributes
 
 |===
@@ -1513,6 +1628,7 @@ delegate :bar, to: :foo, prefix: true
 | Boolean
 |===
 
+[#railsdelegateallowblank]
 == Rails/DelegateAllowBlank
 
 |===
@@ -1529,6 +1645,7 @@ Looks for delegations that pass :allow_blank as an option
 instead of :allow_nil. :allow_blank is not a valid option to pass
 to ActiveSupport#delegate.
 
+[#examples-railsdelegateallowblank]
 === Examples
 
 [source,ruby]
@@ -1540,6 +1657,7 @@ delegate :foo, to: :bar, allow_blank: true
 delegate :foo, to: :bar, allow_nil: true
 ----
 
+[#railsdeprecatedactivemodelerrorsmethods]
 == Rails/DeprecatedActiveModelErrorsMethods
 
 |===
@@ -1555,12 +1673,14 @@ delegate :foo, to: :bar, allow_nil: true
 Checks direct manipulation of ActiveModel#errors as hash.
 These operations are deprecated in Rails 6.1 and will not work in Rails 7.
 
+[#safety-railsdeprecatedactivemodelerrorsmethods]
 === Safety
 
 This cop is unsafe because it can report `errors` manipulation on non-ActiveModel,
 which is obviously valid.
 The cop has no way of knowing whether a variable is an ActiveModel or not.
 
+[#examples-railsdeprecatedactivemodelerrorsmethods]
 === Examples
 
 [source,ruby]
@@ -1586,6 +1706,7 @@ user.errors.keys.include?(:attr)
 user.errors.attribute_names.include?(:attr)
 ----
 
+[#configurable-attributes-railsdeprecatedactivemodelerrorsmethods]
 === Configurable attributes
 
 |===
@@ -1596,6 +1717,7 @@ user.errors.attribute_names.include?(:attr)
 | String
 |===
 
+[#railsdotseparatedkeys]
 == Rails/DotSeparatedKeys
 
 |===
@@ -1612,6 +1734,7 @@ Enforces the use of dot-separated locale keys instead of specifying the `:scope`
 with an array or a single symbol in `I18n` translation methods.
 Dot-separated notation is easier to read and trace the hierarchy.
 
+[#examples-railsdotseparatedkeys]
 === Examples
 
 [source,ruby]
@@ -1625,10 +1748,12 @@ I18n.t 'activerecord.errors.messages.record_invalid'
 I18n.t :record_invalid, scope: 'activerecord.errors.messages'
 ----
 
+[#references-railsdotseparatedkeys]
 === References
 
 * https://rails.rubystyle.guide/#dot-separated-keys
 
+[#railsduplicateassociation]
 == Rails/DuplicateAssociation
 
 |===
@@ -1647,6 +1772,7 @@ When an association is defined multiple times on a model, Active Record override
 previously defined association with the new one. Because of this, this cop's autocorrection
 simply keeps the last of any duplicates and discards the rest.
 
+[#examples-railsduplicateassociation]
 === Examples
 
 [source,ruby]
@@ -1670,6 +1796,7 @@ has_many :bar, class_name: 'Foo'
 has_one :foo
 ----
 
+[#configurable-attributes-railsduplicateassociation]
 === Configurable attributes
 
 |===
@@ -1680,6 +1807,7 @@ has_one :foo
 | String
 |===
 
+[#railsduplicatescope]
 == Rails/DuplicateScope
 
 |===
@@ -1695,6 +1823,7 @@ has_one :foo
 Checks for multiple scopes in a model that have the same `where` clause. This
 often means you copy/pasted a scope, updated the name, and forgot to change the condition.
 
+[#examples-railsduplicatescope]
 === Examples
 
 [source,ruby]
@@ -1708,6 +1837,7 @@ scope :visible, -> { where(visible: true) }
 scope :hidden, -> { where(visible: false) }
 ----
 
+[#configurable-attributes-railsduplicatescope]
 === Configurable attributes
 
 |===
@@ -1718,6 +1848,7 @@ scope :hidden, -> { where(visible: false) }
 | String
 |===
 
+[#railsdurationarithmetic]
 == Rails/DurationArithmetic
 
 |===
@@ -1732,6 +1863,7 @@ scope :hidden, -> { where(visible: false) }
 
 Checks if a duration is added to or subtracted from `Time.current`.
 
+[#examples-railsdurationarithmetic]
 === Examples
 
 [source,ruby]
@@ -1750,10 +1882,12 @@ created_at - 1.minute
 2.days.from_now
 ----
 
+[#references-railsdurationarithmetic]
 === References
 
 * https://rails.rubystyle.guide#duration-arithmetic
 
+[#railsdynamicfindby]
 == Rails/DynamicFindBy
 
 |===
@@ -1770,11 +1904,13 @@ Checks dynamic `find_by_*` methods.
 Use `find_by` instead of dynamic method.
 See. https://rails.rubystyle.guide#find_by
 
+[#safety-railsdynamicfindby]
 === Safety
 
 It is certainly unsafe when not configured properly, i.e. user-defined `find_by_xxx`
 method is not added to cop's `AllowedMethods`.
 
+[#examples-railsdynamicfindby]
 === Examples
 
 [source,ruby]
@@ -1790,6 +1926,7 @@ User.find_by(name: name, email: email)
 User.find_by!(email: email)
 ----
 
+[#allowedmethods_-__find_by_sql__-_find_by_token_for__-_default_-railsdynamicfindby]
 ==== AllowedMethods: ['find_by_sql', 'find_by_token_for'] (default)
 
 [source,ruby]
@@ -1803,6 +1940,7 @@ User.find_by_sql(users_sql)
 User.find_by_token_for(:password_reset, token)
 ----
 
+[#allowedreceivers_-__gem__specification__-_page__-_default_-railsdynamicfindby]
 ==== AllowedReceivers: ['Gem::Specification', 'page'] (default)
 
 [source,ruby]
@@ -1816,6 +1954,7 @@ Gem::Specification.find_by_name('backend').gem_dir
 page.find_by_id('a_dom_id').click
 ----
 
+[#configurable-attributes-railsdynamicfindby]
 === Configurable attributes
 
 |===
@@ -1834,10 +1973,12 @@ page.find_by_id('a_dom_id').click
 | Array
 |===
 
+[#references-railsdynamicfindby]
 === References
 
 * https://rails.rubystyle.guide#find_by
 
+[#railseagerevaluationlogmessage]
 == Rails/EagerEvaluationLogMessage
 
 |===
@@ -1860,6 +2001,7 @@ arguments passed as method arguments. Passing a block to
 `Rails.logger.debug` prevents costly evaluation of interpolated strings
 when no output would be produced anyway.
 
+[#examples-railseagerevaluationlogmessage]
 === Examples
 
 [source,ruby]
@@ -1871,10 +2013,12 @@ Rails.logger.debug "The time is #{Time.zone.now}."
 Rails.logger.debug { "The time is #{Time.zone.now}." }
 ----
 
+[#references-railseagerevaluationlogmessage]
 === References
 
 * https://guides.rubyonrails.org/debugging_rails_applications.html#impact-of-logs-on-performance
 
+[#railsenumhash]
 == Rails/EnumHash
 
 |===
@@ -1894,6 +2038,7 @@ position other than the last causes all previous
 definitions to shift. Explicitly specifying the
 value for each key prevents this from happening.
 
+[#examples-railsenumhash]
 === Examples
 
 [source,ruby]
@@ -1911,6 +2056,7 @@ enum status: [:active, :archived]
 enum status: { active: 0, archived: 1 }
 ----
 
+[#configurable-attributes-railsenumhash]
 === Configurable attributes
 
 |===
@@ -1921,13 +2067,17 @@ enum status: { active: 0, archived: 1 }
 | Array
 |===
 
+[#references-railsenumhash]
 === References
 
 * https://rails.rubystyle.guide#enums
 
+[#railsenumsyntax]
 == Rails/EnumSyntax
 
 NOTE: Required Ruby version: 3.0
+
+NOTE: Required Rails version: 7.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -1944,6 +2094,7 @@ Looks for enums written with keyword arguments syntax.
 Defining enums with keyword arguments syntax is deprecated and will be removed in Rails 8.0.
 Positional arguments should be used instead:
 
+[#examples-railsenumsyntax]
 === Examples
 
 [source,ruby]
@@ -1955,6 +2106,7 @@ enum status: { active: 0, archived: 1 }, _prefix: true
 enum :status, { active: 0, archived: 1 }, prefix: true
 ----
 
+[#configurable-attributes-railsenumsyntax]
 === Configurable attributes
 
 |===
@@ -1969,6 +2121,7 @@ enum :status, { active: 0, archived: 1 }, prefix: true
 | Array
 |===
 
+[#railsenumuniqueness]
 == Rails/EnumUniqueness
 
 |===
@@ -1983,6 +2136,7 @@ enum :status, { active: 0, archived: 1 }, prefix: true
 
 Looks for duplicate values in enum declarations.
 
+[#examples-railsenumuniqueness]
 === Examples
 
 [source,ruby]
@@ -2012,6 +2166,7 @@ enum status: [:active, :archived, :active]
 enum status: [:active, :archived]
 ----
 
+[#configurable-attributes-railsenumuniqueness]
 === Configurable attributes
 
 |===
@@ -2022,7 +2177,10 @@ enum status: [:active, :archived]
 | Array
 |===
 
+[#railsenvlocal]
 == Rails/EnvLocal
+
+NOTE: Required Rails version: 7.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2037,6 +2195,7 @@ enum status: [:active, :archived]
 Checks for usage of `Rails.env.development? || Rails.env.test?` which
 can be replaced with `Rails.env.local?`, introduced in Rails 7.1.
 
+[#examples-railsenvlocal]
 === Examples
 
 [source,ruby]
@@ -2048,6 +2207,7 @@ Rails.env.development? || Rails.env.test?
 Rails.env.local?
 ----
 
+[#railsenvironmentcomparison]
 == Rails/EnvironmentComparison
 
 |===
@@ -2063,6 +2223,7 @@ Rails.env.local?
 Checks that Rails.env is compared using `.production?`-like
 methods instead of equality against a string or symbol.
 
+[#examples-railsenvironmentcomparison]
 === Examples
 
 [source,ruby]
@@ -2077,6 +2238,7 @@ Rails.env == :test
 Rails.env.production?
 ----
 
+[#railsenvironmentvariableaccess]
 == Rails/EnvironmentVariableAccess
 
 |===
@@ -2096,6 +2258,7 @@ time if the environment variables were loaded as part of initialization
 and copied into the application's configuration or secrets. The cop can
 be configured to allow either reads or writes if required.
 
+[#examples-railsenvironmentvariableaccess]
 === Examples
 
 [source,ruby]
@@ -2107,6 +2270,7 @@ Rails.application.secrets.foo
 Rails.application.config.foo = "bar"
 ----
 
+[#allowreads_-false-_default_-railsenvironmentvariableaccess]
 ==== AllowReads: false (default)
 
 [source,ruby]
@@ -2116,6 +2280,7 @@ ENV["FOO"]
 ENV.fetch("FOO")
 ----
 
+[#allowreads_-true-railsenvironmentvariableaccess]
 ==== AllowReads: true
 
 [source,ruby]
@@ -2125,6 +2290,7 @@ ENV["FOO"]
 ENV.fetch("FOO")
 ----
 
+[#allowwrites_-false-_default_-railsenvironmentvariableaccess]
 ==== AllowWrites: false (default)
 
 [source,ruby]
@@ -2133,6 +2299,7 @@ ENV.fetch("FOO")
 ENV["FOO"] = "bar"
 ----
 
+[#allowwrites_-true-railsenvironmentvariableaccess]
 ==== AllowWrites: true
 
 [source,ruby]
@@ -2141,6 +2308,7 @@ ENV["FOO"] = "bar"
 ENV["FOO"] = "bar"
 ----
 
+[#configurable-attributes-railsenvironmentvariableaccess]
 === Configurable attributes
 
 |===
@@ -2163,6 +2331,7 @@ ENV["FOO"] = "bar"
 | Boolean
 |===
 
+[#railsexit]
 == Rails/Exit
 
 |===
@@ -2189,6 +2358,7 @@ is used.)
 the program exiting, which could result in the code failing to run and
 do its job.
 
+[#examples-railsexit]
 === Examples
 
 [source,ruby]
@@ -2200,6 +2370,7 @@ exit(0)
 raise 'a bad error has happened'
 ----
 
+[#configurable-attributes-railsexit]
 === Configurable attributes
 
 |===
@@ -2214,7 +2385,10 @@ raise 'a bad error has happened'
 | Array
 |===
 
+[#railsexpandeddaterange]
 == Rails/ExpandedDateRange
+
+NOTE: Required Rails version: 5.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2229,6 +2403,7 @@ raise 'a bad error has happened'
 Checks for expanded date range. It only compatible `..` range is targeted.
 Incompatible `...` range is ignored.
 
+[#examples-railsexpandeddaterange]
 === Examples
 
 [source,ruby]
@@ -2248,10 +2423,12 @@ date.all_quarter
 date.all_year
 ----
 
+[#references-railsexpandeddaterange]
 === References
 
 * https://rails.rubystyle.guide/#date-time-range
 
+[#railsfilepath]
 == Rails/FilePath
 
 |===
@@ -2267,8 +2444,10 @@ date.all_year
 Identifies usages of file path joining process to use `Rails.root.join` clause.
 It is used to add uniformity when joining paths.
 
+[#examples-railsfilepath]
 === Examples
 
+[#enforcedstyle_-slashes-_default_-railsfilepath]
 ==== EnforcedStyle: slashes (default)
 
 [source,ruby]
@@ -2287,6 +2466,7 @@ File.join(Rails.root, 'app/models/goober')
 Rails.root.join('app/models/goober').to_s
 ----
 
+[#enforcedstyle_-arguments-railsfilepath]
 ==== EnforcedStyle: arguments
 
 [source,ruby]
@@ -2305,6 +2485,7 @@ File.join(Rails.root, 'app/models/goober')
 Rails.root.join('app', 'models', 'goober').to_s
 ----
 
+[#configurable-attributes-railsfilepath]
 === Configurable attributes
 
 |===
@@ -2315,6 +2496,7 @@ Rails.root.join('app', 'models', 'goober').to_s
 | `slashes`, `arguments`
 |===
 
+[#railsfindby]
 == Rails/FindBy
 
 |===
@@ -2334,6 +2516,7 @@ And `where(...).first` can return different results from `find_by`.
 
 If you also want to detect `where.first`, you can set `IgnoreWhereFirst` to false.
 
+[#examples-railsfindby]
 === Examples
 
 [source,ruby]
@@ -2345,6 +2528,7 @@ User.where(name: 'Bruce').take
 User.find_by(name: 'Bruce')
 ----
 
+[#ignorewherefirst_-true-_default_-railsfindby]
 ==== IgnoreWhereFirst: true (default)
 
 [source,ruby]
@@ -2353,6 +2537,7 @@ User.find_by(name: 'Bruce')
 User.where(name: 'Bruce').first
 ----
 
+[#ignorewherefirst_-false-railsfindby]
 ==== IgnoreWhereFirst: false
 
 [source,ruby]
@@ -2361,6 +2546,7 @@ User.where(name: 'Bruce').first
 User.where(name: 'Bruce').first
 ----
 
+[#configurable-attributes-railsfindby]
 === Configurable attributes
 
 |===
@@ -2371,10 +2557,12 @@ User.where(name: 'Bruce').first
 | Boolean
 |===
 
+[#references-railsfindby]
 === References
 
 * https://rails.rubystyle.guide#find_by
 
+[#railsfindbyid]
 == Rails/FindById
 
 |===
@@ -2391,6 +2579,7 @@ Enforces that `ActiveRecord#find` is used instead of
 `where.take!`, `find_by!`, and `find_by_id!` to retrieve a single record
 by primary key when you expect it to be found.
 
+[#examples-railsfindbyid]
 === Examples
 
 [source,ruby]
@@ -2404,10 +2593,12 @@ User.find_by!(id: id)
 User.find(id)
 ----
 
+[#references-railsfindbyid]
 === References
 
 * https://rails.rubystyle.guide/#find
 
+[#railsfindeach]
 == Rails/FindEach
 
 |===
@@ -2422,12 +2613,14 @@ User.find(id)
 
 Identifies usages of `all.each` and change them to use `all.find_each` instead.
 
+[#safety-railsfindeach]
 === Safety
 
 This cop is unsafe if the receiver object is not an Active Record object.
 Also, `all.each` returns an `Array` instance and `all.find_each` returns nil,
 so the return values are different.
 
+[#examples-railsfindeach]
 === Examples
 
 [source,ruby]
@@ -2439,6 +2632,7 @@ User.all.each
 User.all.find_each
 ----
 
+[#allowedmethods_-__order__-railsfindeach]
 ==== AllowedMethods: ['order']
 
 [source,ruby]
@@ -2447,6 +2641,7 @@ User.all.find_each
 User.order(:foo).each
 ----
 
+[#allowedpattern_-__order__-railsfindeach]
 ==== AllowedPattern: ['order']
 
 [source,ruby]
@@ -2455,6 +2650,7 @@ User.order(:foo).each
 User.order(:foo).each
 ----
 
+[#configurable-attributes-railsfindeach]
 === Configurable attributes
 
 |===
@@ -2469,11 +2665,15 @@ User.order(:foo).each
 | Array
 |===
 
+[#references-railsfindeach]
 === References
 
 * https://rails.rubystyle.guide#find-each
 
+[#railsfreezetime]
 == Rails/FreezeTime
+
+NOTE: Required Rails version: 5.2
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2488,12 +2688,14 @@ User.order(:foo).each
 Identifies usages of `travel_to` with an argument of the current time and
 change them to use `freeze_time` instead.
 
+[#safety-railsfreezetime]
 === Safety
 
 This cop’s autocorrection is unsafe because `freeze_time` just delegates to
 `travel_to` with a default `Time.now`, it is not strictly equivalent to `Time.now`
 if the argument of `travel_to` is the current time considering time zone.
 
+[#examples-railsfreezetime]
 === Examples
 
 [source,ruby]
@@ -2511,10 +2713,12 @@ travel_to(Time.current.to_time)
 freeze_time
 ----
 
+[#references-railsfreezetime]
 === References
 
 * https://rails.rubystyle.guide/#freeze-time
 
+[#railshasandbelongstomany]
 == Rails/HasAndBelongsToMany
 
 |===
@@ -2529,6 +2733,7 @@ freeze_time
 
 Checks for the use of the has_and_belongs_to_many macro.
 
+[#examples-railshasandbelongstomany]
 === Examples
 
 [source,ruby]
@@ -2540,6 +2745,7 @@ Checks for the use of the has_and_belongs_to_many macro.
 # has_many :ingredients, through: :recipe_ingredients
 ----
 
+[#configurable-attributes-railshasandbelongstomany]
 === Configurable attributes
 
 |===
@@ -2550,10 +2756,12 @@ Checks for the use of the has_and_belongs_to_many macro.
 | Array
 |===
 
+[#references-railshasandbelongstomany]
 === References
 
 * https://rails.rubystyle.guide#has-many-through
 
+[#railshasmanyorhasonedependent]
 == Rails/HasManyOrHasOneDependent
 
 |===
@@ -2572,6 +2780,7 @@ specify a `:dependent` option.
 It doesn't register an offense if `:through` or `dependent: nil`
 is specified, or if the model is read-only.
 
+[#examples-railshasmanyorhasonedependent]
 === Examples
 
 [source,ruby]
@@ -2600,6 +2809,7 @@ class User < ActiveRecord::Base
 end
 ----
 
+[#configurable-attributes-railshasmanyorhasonedependent]
 === Configurable attributes
 
 |===
@@ -2610,10 +2820,12 @@ end
 | Array
 |===
 
+[#references-railshasmanyorhasonedependent]
 === References
 
 * https://rails.rubystyle.guide#has_many-has_one-dependent-option
 
+[#railshelperinstancevariable]
 == Rails/HelperInstanceVariable
 
 |===
@@ -2639,6 +2851,7 @@ example to a model, decorator or presenter.
 Provided that a class inherits `ActionView::Helpers::FormBuilder`,
 an offense will not be registered.
 
+[#examples-railshelperinstancevariable]
 === Examples
 
 [source,ruby]
@@ -2659,6 +2872,7 @@ class MyFormBuilder < ActionView::Helpers::FormBuilder
 end
 ----
 
+[#configurable-attributes-railshelperinstancevariable]
 === Configurable attributes
 
 |===
@@ -2669,7 +2883,10 @@ end
 | Array
 |===
 
+[#railshttppositionalarguments]
 == Rails/HttpPositionalArguments
+
+NOTE: Required Rails version: 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2691,6 +2908,7 @@ Rails/HttpPositionalArguments cop or set your TargetRailsVersion in your
 NOTE: It does not detect any cases where `include Rack::Test::Methods` is used
 which makes the http methods incompatible behavior.
 
+[#examples-railshttppositionalarguments]
 === Examples
 
 [source,ruby]
@@ -2703,6 +2921,7 @@ get :new, params: { user_id: 1 }
 get :new, **options
 ----
 
+[#configurable-attributes-railshttppositionalarguments]
 === Configurable attributes
 
 |===
@@ -2713,6 +2932,7 @@ get :new, **options
 | Array
 |===
 
+[#railshttpstatus]
 == Rails/HttpStatus
 
 |===
@@ -2727,8 +2947,10 @@ get :new, **options
 
 Enforces use of symbolic or numeric value to define HTTP status.
 
+[#examples-railshttpstatus]
 === Examples
 
+[#enforcedstyle_-symbolic-_default_-railshttpstatus]
 ==== EnforcedStyle: symbolic (default)
 
 [source,ruby]
@@ -2753,6 +2975,7 @@ assert_response :ok
 assert_redirected_to '/some/path', status: :moved_permanently
 ----
 
+[#enforcedstyle_-numeric-railshttpstatus]
 ==== EnforcedStyle: numeric
 
 [source,ruby]
@@ -2776,6 +2999,7 @@ assert_response 200
 assert_redirected_to '/some/path', status: 301
 ----
 
+[#configurable-attributes-railshttpstatus]
 === Configurable attributes
 
 |===
@@ -2786,6 +3010,7 @@ assert_redirected_to '/some/path', status: 301
 | `numeric`, `symbolic`
 |===
 
+[#railsi18nlazylookup]
 == Rails/I18nLazyLookup
 
 |===
@@ -2806,8 +3031,10 @@ is `lazy` (the default), explicit lookups are added as offenses.
 When the EnforcedStyle is `explicit` then lazy lookups are added as
 offenses.
 
+[#examples-railsi18nlazylookup]
 === Examples
 
+[#enforcedstyle_-lazy-_default_-railsi18nlazylookup]
 ==== EnforcedStyle: lazy (default)
 
 [source,ruby]
@@ -2835,6 +3062,7 @@ class BooksController < ApplicationController
 end
 ----
 
+[#enforcedstyle_-explicit-railsi18nlazylookup]
 ==== EnforcedStyle: explicit
 
 [source,ruby]
@@ -2856,6 +3084,7 @@ class BooksController < ApplicationController
 end
 ----
 
+[#configurable-attributes-railsi18nlazylookup]
 === Configurable attributes
 
 |===
@@ -2870,11 +3099,13 @@ end
 | Array
 |===
 
+[#references-railsi18nlazylookup]
 === References
 
 * https://rails.rubystyle.guide/#lazy-lookup
 * https://guides.rubyonrails.org/i18n.html#lazy-lookup
 
+[#railsi18nlocaleassignment]
 == Rails/I18nLocaleAssignment
 
 |===
@@ -2894,6 +3125,7 @@ unexpected behavior at a later time.
 Using `I18n.with_locale` ensures the code passed in the block is the only place `I18n.locale` is affected.
 It eliminates the possibility of a `locale` sticking around longer than intended.
 
+[#examples-railsi18nlocaleassignment]
 === Examples
 
 [source,ruby]
@@ -2906,6 +3138,7 @@ I18n.with_locale(:fr) do
 end
 ----
 
+[#configurable-attributes-railsi18nlocaleassignment]
 === Configurable attributes
 
 |===
@@ -2916,6 +3149,7 @@ end
 | Array
 |===
 
+[#railsi18nlocaletexts]
 == Rails/I18nLocaleTexts
 
 |===
@@ -2930,6 +3164,7 @@ end
 
 Enforces use of I18n and locale files instead of locale specific strings.
 
+[#examples-railsi18nlocaletexts]
 === Examples
 
 [source,ruby]
@@ -2995,10 +3230,12 @@ class UserMailer < ApplicationMailer
 end
 ----
 
+[#references-railsi18nlocaletexts]
 === References
 
 * https://rails.rubystyle.guide/#locale-texts
 
+[#railsignoredcolumnsassignment]
 == Rails/IgnoredColumnsAssignment
 
 |===
@@ -3018,6 +3255,7 @@ Overwriting previous assignments is usually a mistake, since it will
 un-ignore the first set of columns. Since duplicate column names is not
 a problem, it is better to simply append to the list.
 
+[#examples-railsignoredcolumnsassignment]
 === Examples
 
 [source,ruby]
@@ -3044,10 +3282,12 @@ class User < ActiveRecord::Base
 end
 ----
 
+[#references-railsignoredcolumnsassignment]
 === References
 
 * https://rails.rubystyle.guide/#append-ignored-columns
 
+[#railsignoredskipactionfilteroption]
 == Rails/IgnoredSkipActionFilterOption
 
 |===
@@ -3067,6 +3307,7 @@ The `if` option will be ignored when `if` and `only` are used together.
 Similarly, the `except` option will be ignored when `if` and `except`
 are used together.
 
+[#examples-railsignoredskipactionfilteroption]
 === Examples
 
 [source,ruby]
@@ -3099,6 +3340,7 @@ class MyPageController < ApplicationController
 end
 ----
 
+[#configurable-attributes-railsignoredskipactionfilteroption]
 === Configurable attributes
 
 |===
@@ -3109,10 +3351,12 @@ end
 | Array
 |===
 
+[#references-railsignoredskipactionfilteroption]
 === References
 
 * https://api.rubyonrails.org/classes/AbstractController/Callbacks/ClassMethods.html#method-i-_normalize_callback_options
 
+[#railsindexby]
 == Rails/IndexBy
 
 |===
@@ -3130,6 +3374,7 @@ Looks for uses of `each_with_object({}) { ... }`,
 an enumerable into a hash where the values are the original elements.
 Rails provides the `index_by` method for this purpose.
 
+[#examples-railsindexby]
 === Examples
 
 [source,ruby]
@@ -3144,7 +3389,10 @@ Hash[[1, 2, 3].collect { |el| [foo(el), el] }]
 [1, 2, 3].index_by { |el| foo(el) }
 ----
 
+[#railsindexwith]
 == Rails/IndexWith
+
+NOTE: Required Rails version: 6.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -3161,6 +3409,7 @@ Looks for uses of `each_with_object({}) { ... }`,
 an enumerable into a hash where the keys are the original elements.
 Rails provides the `index_with` method for this purpose.
 
+[#examples-railsindexwith]
 === Examples
 
 [source,ruby]
@@ -3175,6 +3424,7 @@ Hash[[1, 2, 3].collect { |el| [el, foo(el)] }]
 [1, 2, 3].index_with { |el| foo(el) }
 ----
 
+[#railsinquiry]
 == Rails/Inquiry
 
 |===
@@ -3189,6 +3439,7 @@ Hash[[1, 2, 3].collect { |el| [el, foo(el)] }]
 
 Checks that Active Support's `inquiry` method is not used.
 
+[#examples-railsinquiry]
 === Examples
 
 [source,ruby]
@@ -3210,10 +3461,12 @@ pets = %w(cat dog)
 pets.include? 'cat'
 ----
 
+[#references-railsinquiry]
 === References
 
 * https://rails.rubystyle.guide/#inquiry
 
+[#railsinverseof]
 == Rails/InverseOf
 
 |===
@@ -3238,6 +3491,7 @@ associated object in memory, or set to `false` to opt-out. Note that
 setting `nil` does not stop Active Record from trying to determine the
 inverse automatically, and is not considered a valid value for this.
 
+[#examples-railsinverseof]
 === Examples
 
 [source,ruby]
@@ -3359,6 +3613,7 @@ class Patient < ApplicationRecord
 end
 ----
 
+[#ignorescopes_-false-_default_-railsinverseof]
 ==== IgnoreScopes: false (default)
 
 [source,ruby]
@@ -3369,6 +3624,7 @@ class Blog < ApplicationRecord
 end
 ----
 
+[#ignorescopes_-true-railsinverseof]
 ==== IgnoreScopes: true
 
 [source,ruby]
@@ -3379,6 +3635,7 @@ class Blog < ApplicationRecord
 end
 ----
 
+[#configurable-attributes-railsinverseof]
 === Configurable attributes
 
 |===
@@ -3393,11 +3650,13 @@ end
 | Array
 |===
 
+[#references-railsinverseof]
 === References
 
 * https://guides.rubyonrails.org/association_basics.html#bi-directional-associations
 * https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Setting+Inverses
 
+[#railslexicallyscopedactionfilter]
 == Rails/LexicallyScopedActionFilter
 
 |===
@@ -3413,6 +3672,7 @@ end
 Checks that methods specified in the filter's `only` or
 `except` options are defined within the same class or module.
 
+[#safety-railslexicallyscopedactionfilter]
 === Safety
 
 You can technically specify methods of superclass or methods added by
@@ -3423,6 +3683,7 @@ define the filter in that class or module.
 If you rely on behavior defined in the superclass actions, you must
 remember to invoke `super` in the subclass actions.
 
+[#examples-railslexicallyscopedactionfilter]
 === Examples
 
 [source,ruby]
@@ -3500,6 +3761,7 @@ class ArticlesController < ContentController
 end
 ----
 
+[#configurable-attributes-railslexicallyscopedactionfilter]
 === Configurable attributes
 
 |===
@@ -3510,10 +3772,12 @@ end
 | Array
 |===
 
+[#references-railslexicallyscopedactionfilter]
 === References
 
 * https://rails.rubystyle.guide#lexically-scoped-action-filter
 
+[#railslinktoblank]
 == Rails/LinkToBlank
 
 |===
@@ -3534,6 +3798,7 @@ and could change its location for phishing purposes.
 The option `rel: 'noreferrer'` also blocks this behavior
 and removes the http-referrer header.
 
+[#examples-railslinktoblank]
 === Examples
 
 [source,ruby]
@@ -3548,12 +3813,14 @@ link_to 'Click here', url, target: '_blank', rel: 'noopener'
 link_to 'Click here', url, target: '_blank', rel: 'noreferrer'
 ----
 
+[#references-railslinktoblank]
 === References
 
 * https://mathiasbynens.github.io/rel-noopener/
 * https://html.spec.whatwg.org/multipage/links.html#link-type-noopener
 * https://html.spec.whatwg.org/multipage/links.html#link-type-noreferrer
 
+[#railsmailername]
 == Rails/MailerName
 
 |===
@@ -3571,11 +3838,13 @@ Enforces that mailer names end with `Mailer` suffix.
 Without the `Mailer` suffix it isn't immediately apparent what's a mailer
 and which views are related to the mailer.
 
+[#safety-railsmailername]
 === Safety
 
 This cop's autocorrection is unsafe because renaming a constant is
 always an unsafe operation.
 
+[#examples-railsmailername]
 === Examples
 
 [source,ruby]
@@ -3595,6 +3864,7 @@ class UserMailer < ApplicationMailer
 end
 ----
 
+[#configurable-attributes-railsmailername]
 === Configurable attributes
 
 |===
@@ -3605,10 +3875,12 @@ end
 | Array
 |===
 
+[#references-railsmailername]
 === References
 
 * https://rails.rubystyle.guide/#mailer-name
 
+[#railsmatchroute]
 == Rails/MatchRoute
 
 |===
@@ -3627,6 +3899,7 @@ can be replaced with a specific HTTP method.
 Don't use `match` to define any routes unless there is a need to map multiple request types
 among [:get, :post, :patch, :put, :delete] to a single action using the `:via` option.
 
+[#examples-railsmatchroute]
 === Examples
 
 [source,ruby]
@@ -3642,6 +3915,7 @@ match 'photos/:id', to: 'photos#show', via: [:get, :post]
 match 'photos/:id', to: 'photos#show', via: :all
 ----
 
+[#configurable-attributes-railsmatchroute]
 === Configurable attributes
 
 |===
@@ -3652,10 +3926,12 @@ match 'photos/:id', to: 'photos#show', via: :all
 | Array
 |===
 
+[#references-railsmatchroute]
 === References
 
 * https://rails.rubystyle.guide/#no-match-routes
 
+[#railsmigrationclassname]
 == Rails/MigrationClassName
 
 |===
@@ -3672,6 +3948,7 @@ Makes sure that each migration file defines a migration class
 whose name matches the file name.
 (e.g. `20220224111111_create_users.rb` should define `CreateUsers` class.)
 
+[#examples-railsmigrationclassname]
 === Examples
 
 [source,ruby]
@@ -3687,6 +3964,7 @@ class CreateUsers < ActiveRecord::Migration[7.0]
 end
 ----
 
+[#configurable-attributes-railsmigrationclassname]
 === Configurable attributes
 
 |===
@@ -3697,6 +3975,7 @@ end
 | Array
 |===
 
+[#railsnegateinclude]
 == Rails/NegateInclude
 
 |===
@@ -3712,11 +3991,13 @@ end
 Enforces the use of `collection.exclude?(obj)`
 over `!collection.include?(obj)`.
 
+[#safety-railsnegateinclude]
 === Safety
 
 This cop is unsafe because false positive will occur for
 receiver objects that do not have an `exclude?` method. (e.g. `IPAddr`)
 
+[#examples-railsnegateinclude]
 === Examples
 
 [source,ruby]
@@ -3730,10 +4011,12 @@ array.exclude?(2)
 hash.exclude?(:key)
 ----
 
+[#references-railsnegateinclude]
 === References
 
 * https://rails.rubystyle.guide#exclude
 
+[#railsnotnullcolumn]
 == Rails/NotNullColumn
 
 |===
@@ -3766,6 +4049,7 @@ environment in `config/database.yml` or the environment variable
 `DATABASE_URL` when the `Database` option is not set. If the database
 is MySQL, this cop ignores offenses for `TEXT` columns.
 
+[#examples-railsnotnullcolumn]
 === Examples
 
 [source,ruby]
@@ -3787,6 +4071,7 @@ add_reference :products, :category
 change_column_null :products, :category_id, false
 ----
 
+[#configurable-attributes-railsnotnullcolumn]
 === Configurable attributes
 
 |===
@@ -3801,6 +4086,7 @@ change_column_null :products, :category_id, false
 | Array
 |===
 
+[#railsorderbyid]
 == Rails/OrderById
 
 |===
@@ -3822,6 +4108,7 @@ Use a timestamp column to order chronologically. As a bonus the intent is cleare
 NOTE: Make sure the changed order column does not introduce performance
 bottlenecks and appropriate database indexes are added.
 
+[#examples-railsorderbyid]
 === Examples
 
 [source,ruby]
@@ -3834,10 +4121,12 @@ scope :chronological, -> { order(primary_key => :asc) }
 scope :chronological, -> { order(created_at: :asc) }
 ----
 
+[#references-railsorderbyid]
 === References
 
 * https://rails.rubystyle.guide/#order-by-id
 
+[#railsoutput]
 == Rails/Output
 
 |===
@@ -3852,11 +4141,13 @@ scope :chronological, -> { order(created_at: :asc) }
 
 Checks for the use of output calls like puts and print
 
+[#safety-railsoutput]
 === Safety
 
 This cop's autocorrection is unsafe because depending on the Rails log level configuration,
 changing from `puts` to `Rails.logger.debug` could result in no output being shown.
 
+[#examples-railsoutput]
 === Examples
 
 [source,ruby]
@@ -3870,6 +4161,7 @@ print 'A debug message'
 Rails.logger.debug 'A debug message'
 ----
 
+[#configurable-attributes-railsoutput]
 === Configurable attributes
 
 |===
@@ -3880,6 +4172,7 @@ Rails.logger.debug 'A debug message'
 | Array
 |===
 
+[#railsoutputsafety]
 == Rails/OutputSafety
 
 |===
@@ -3898,6 +4191,7 @@ simply return a SafeBuffer containing the content as is. Instead,
 use `safe_join` to join content and escape it and concat to
 concatenate content and escape it, ensuring its safety.
 
+[#examples-railsoutputsafety]
 === Examples
 
 [source,ruby]
@@ -3956,7 +4250,10 @@ safe_join([user_content, " ", content_tag(:span, user_content)])
 #    "&lt;b&gt;hi&lt;/b&gt; <span>&lt;b&gt;hi&lt;/b&gt;</span>"
 ----
 
+[#railspick]
 == Rails/Pick
+
+NOTE: Required Rails version: 6.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -3978,6 +4275,7 @@ Note that when `pick` is added to a relation with an existing limit, it
 causes a subquery to be added. In most cases this is undesirable, and
 care should be taken while resolving this violation.
 
+[#safety-railspick]
 === Safety
 
 This cop is unsafe because `pluck` is defined on both `ActiveRecord::Relation` and `Enumerable`,
@@ -3986,6 +4284,7 @@ in Rails 6.1 via rails/rails#38760, at which point the cop is safe.
 
 See: https://github.com/rubocop/rubocop-rails/pull/249
 
+[#examples-railspick]
 === Examples
 
 [source,ruby]
@@ -3999,11 +4298,15 @@ Model.pick(:a)
 [{ a: :b, c: :d }].pick(:a, :b)
 ----
 
+[#references-railspick]
 === References
 
 * https://rails.rubystyle.guide#pick
 
+[#railspluck]
 == Rails/Pluck
+
+NOTE: Required Rails version: 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -4021,6 +4324,7 @@ Enforces the use of `pluck` over `map`.
 element in an enumerable. When called on an Active Record relation, it
 results in a more efficient query that only selects the necessary key.
 
+[#safety-railspluck]
 === Safety
 
 This cop is unsafe because model can use column aliases.
@@ -4034,6 +4338,7 @@ User.select('name AS nickname').map { |user| user[:nickname] } # => array of nic
 User.select('name AS nickname').pluck(:nickname) # => raises ActiveRecord::StatementInvalid
 ----
 
+[#examples-railspluck]
 === Examples
 
 [source,ruby]
@@ -4047,10 +4352,12 @@ Post.published.pluck(:title)
 [{ a: :b, c: :d }].pluck(:a)
 ----
 
+[#references-railspluck]
 === References
 
 * https://rails.rubystyle.guide#pluck
 
+[#railspluckid]
 == Rails/PluckId
 
 |===
@@ -4065,10 +4372,12 @@ Post.published.pluck(:title)
 
 Enforces the use of `ids` over `pluck(:id)` and `pluck(primary_key)`.
 
+[#safety-railspluckid]
 === Safety
 
 This cop is unsafe if the receiver object is not an Active Record object.
 
+[#examples-railspluckid]
 === Examples
 
 [source,ruby]
@@ -4090,10 +4399,12 @@ def self.user_ids
 end
 ----
 
+[#references-railspluckid]
 === References
 
 * https://rails.rubystyle.guide/#ids
 
+[#railspluckinwhere]
 == Rails/PluckInWhere
 
 |===
@@ -4117,6 +4428,7 @@ This cop has two modes of enforcement. When the `EnforcedStyle` is set
 to `conservative` (the default), only calls to `pluck` on a constant
 (e.g. a model class) within `where` are considered offenses.
 
+[#safety-railspluckinwhere]
 === Safety
 
 When `EnforcedStyle` is set to `aggressive`, all calls to `pluck`
@@ -4132,6 +4444,7 @@ subquery result sequentially, rather than using an index. This can
 cause significant performance issues compared to writing the query
 differently or using `pluck`.
 
+[#examples-railspluckinwhere]
 === Examples
 
 [source,ruby]
@@ -4147,6 +4460,7 @@ Post.where(user_id: active_users.select(:id))
 Post.where.not(user_id: active_users.select(:id))
 ----
 
+[#enforcedstyle_-conservative-_default_-railspluckinwhere]
 ==== EnforcedStyle: conservative (default)
 
 [source,ruby]
@@ -4155,6 +4469,7 @@ Post.where.not(user_id: active_users.select(:id))
 Post.where(user_id: active_users.pluck(:id))
 ----
 
+[#enforcedstyle_-aggressive-railspluckinwhere]
 ==== EnforcedStyle: aggressive
 
 [source,ruby]
@@ -4163,6 +4478,7 @@ Post.where(user_id: active_users.pluck(:id))
 Post.where(user_id: active_users.pluck(:id))
 ----
 
+[#configurable-attributes-railspluckinwhere]
 === Configurable attributes
 
 |===
@@ -4173,6 +4489,7 @@ Post.where(user_id: active_users.pluck(:id))
 | `conservative`, `aggressive`
 |===
 
+[#railspluralizationgrammar]
 == Rails/PluralizationGrammar
 
 |===
@@ -4188,6 +4505,7 @@ Post.where(user_id: active_users.pluck(:id))
 Checks for correct grammar when using ActiveSupport's
 core extensions to the numeric classes.
 
+[#examples-railspluralizationgrammar]
 === Examples
 
 [source,ruby]
@@ -4205,6 +4523,7 @@ core extensions to the numeric classes.
 1.gigabyte
 ----
 
+[#railspresence]
 == Rails/Presence
 
 |===
@@ -4220,6 +4539,7 @@ core extensions to the numeric classes.
 Checks code that can be written more easily using
 `Object#presence` defined by Active Support.
 
+[#examples-railspresence]
 === Examples
 
 [source,ruby]
@@ -4258,6 +4578,7 @@ a.blank? ? b : a
 a.presence || b
 ----
 
+[#railspresent]
 == Rails/Present
 
 |===
@@ -4278,8 +4599,10 @@ The configuration of `NotBlank` will not produce an offense in the
 context of `unless else` if `Style/UnlessElse` is enabled. This is
 to prevent interference between the autocorrection of the two cops.
 
+[#examples-railspresent]
 === Examples
 
+[#notnilandnotempty_-true-_default_-railspresent]
 ==== NotNilAndNotEmpty: true (default)
 
 [source,ruby]
@@ -4296,6 +4619,7 @@ foo != nil && !foo.empty?
 foo.present?
 ----
 
+[#notblank_-true-_default_-railspresent]
 ==== NotBlank: true (default)
 
 [source,ruby]
@@ -4312,6 +4636,7 @@ not foo.blank?
 foo.present?
 ----
 
+[#unlessblank_-true-_default_-railspresent]
 ==== UnlessBlank: true (default)
 
 [source,ruby]
@@ -4325,6 +4650,7 @@ something unless foo.blank?
 something if foo.present?
 ----
 
+[#configurable-attributes-railspresent]
 === Configurable attributes
 
 |===
@@ -4343,6 +4669,7 @@ something if foo.present?
 | Boolean
 |===
 
+[#railsrakeenvironment]
 == Rails/RakeEnvironment
 
 |===
@@ -4366,12 +4693,14 @@ following conditions:
 * The task does not need application code.
 * The task invokes the `:environment` task.
 
+[#safety-railsrakeenvironment]
 === Safety
 
 Probably not a problem in most cases, but it is possible that calling `:environment` task
 will break a behavior. It's also slower. E.g. some task that only needs one gem to be
 loaded to run will run significantly faster without loading the whole application.
 
+[#examples-railsrakeenvironment]
 === Examples
 
 [source,ruby]
@@ -4387,6 +4716,7 @@ task foo: :environment do
 end
 ----
 
+[#configurable-attributes-railsrakeenvironment]
 === Configurable attributes
 
 |===
@@ -4401,6 +4731,7 @@ end
 | Array
 |===
 
+[#railsreadwriteattribute]
 == Rails/ReadWriteAttribute
 
 |===
@@ -4428,6 +4759,7 @@ When called from within a method with the same name as the attribute,
 `read_attribute` and `write_attribute` must be used to prevent an
 infinite loop:
 
+[#examples-railsreadwriteattribute]
 === Examples
 
 [source,ruby]
@@ -4449,6 +4781,7 @@ def foo
 end
 ----
 
+[#configurable-attributes-railsreadwriteattribute]
 === Configurable attributes
 
 |===
@@ -4459,10 +4792,12 @@ end
 | Array
 |===
 
+[#references-railsreadwriteattribute]
 === References
 
 * https://rails.rubystyle.guide#read-attribute
 
+[#railsredundantactiverecordallmethod]
 == Rails/RedundantActiveRecordAllMethod
 
 |===
@@ -4483,10 +4818,12 @@ This is because omitting `all` from an association changes the methods
 from `ActiveRecord::Relation` to `ActiveRecord::Associations::CollectionProxy`,
 which can affect their behavior.
 
+[#safety-railsredundantactiverecordallmethod]
 === Safety
 
 This cop is unsafe for autocorrection if the receiver for `all` is not an Active Record object.
 
+[#examples-railsredundantactiverecordallmethod]
 === Examples
 
 [source,ruby]
@@ -4504,6 +4841,7 @@ users.where(id: ids)
 user.articles.order(:created_at)
 ----
 
+[#allowedreceivers_-__actionmailer__preview__-_activesupport__timezone__-_default_-railsredundantactiverecordallmethod]
 ==== AllowedReceivers: ['ActionMailer::Preview', 'ActiveSupport::TimeZone'] (default)
 
 [source,ruby]
@@ -4513,6 +4851,7 @@ ActionMailer::Preview.all.first
 ActiveSupport::TimeZone.all.first
 ----
 
+[#configurable-attributes-railsredundantactiverecordallmethod]
 === Configurable attributes
 
 |===
@@ -4523,10 +4862,12 @@ ActiveSupport::TimeZone.all.first
 | Array
 |===
 
+[#references-railsredundantactiverecordallmethod]
 === References
 
 * https://rails.rubystyle.guide/#redundant-all
 
+[#railsredundantallownil]
 == Rails/RedundantAllowNil
 
 |===
@@ -4542,6 +4883,7 @@ ActiveSupport::TimeZone.all.first
 Checks Rails model validations for a redundant `allow_nil` when
 `allow_blank` is present.
 
+[#examples-railsredundantallownil]
 === Examples
 
 [source,ruby]
@@ -4566,6 +4908,7 @@ validates :x, length: { is: 5 }, allow_blank: false
 validates :x, length: { is: 5 }, allow_nil: true, allow_blank: false
 ----
 
+[#configurable-attributes-railsredundantallownil]
 === Configurable attributes
 
 |===
@@ -4576,6 +4919,7 @@ validates :x, length: { is: 5 }, allow_nil: true, allow_blank: false
 | Array
 |===
 
+[#railsredundantforeignkey]
 == Rails/RedundantForeignKey
 
 |===
@@ -4591,6 +4935,7 @@ validates :x, length: { is: 5 }, allow_nil: true, allow_blank: false
 Detects cases where the `:foreign_key` option on associations
 is redundant.
 
+[#examples-railsredundantforeignkey]
 === Examples
 
 [source,ruby]
@@ -4614,7 +4959,10 @@ class Comment
 end
 ----
 
+[#railsredundantpresencevalidationonbelongsto]
 == Rails/RedundantPresenceValidationOnBelongsTo
+
+NOTE: Required Rails version: 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -4631,11 +4979,13 @@ unless `config.active_record.belongs_to_required_by_default` is
 explicitly set to `false`. The presence validator is added
 automatically, and explicit presence validation is redundant.
 
+[#safety-railsredundantpresencevalidationonbelongsto]
 === Safety
 
 This cop's autocorrection is unsafe because it changes the default error message
 from "can't be blank" to "must exist".
 
+[#examples-railsredundantpresencevalidationonbelongsto]
 === Examples
 
 [source,ruby]
@@ -4659,6 +5009,7 @@ belongs_to :user
 belongs_to :author, foreign_key: :user_id
 ----
 
+[#railsredundantreceiverinwithoptions]
 == Rails/RedundantReceiverInWithOptions
 
 |===
@@ -4674,6 +5025,7 @@ belongs_to :author, foreign_key: :user_id
 Checks for redundant receiver in `with_options`.
 Receiver is implicit from Rails 4.2 or higher.
 
+[#examples-railsredundantreceiverinwithoptions]
 === Examples
 
 [source,ruby]
@@ -4729,7 +5081,10 @@ with_options options: false do |merger|
 end
 ----
 
+[#railsredundanttravelback]
 == Rails/RedundantTravelBack
+
+NOTE: Required Rails version: 5.2
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -4744,6 +5099,7 @@ end
 Checks for redundant `travel_back` calls.
 Since Rails 5.2, `travel_back` is automatically called at the end of the test.
 
+[#examples-railsredundanttravelback]
 === Examples
 
 [source,ruby]
@@ -4771,6 +5127,7 @@ after do
 end
 ----
 
+[#configurable-attributes-railsredundanttravelback]
 === Configurable attributes
 
 |===
@@ -4781,6 +5138,7 @@ end
 | Array
 |===
 
+[#railsreflectionclassname]
 == Rails/ReflectionClassName
 
 |===
@@ -4796,11 +5154,13 @@ end
 Checks if the value of the option `class_name`, in
 the definition of a reflection is a string.
 
+[#safety-railsreflectionclassname]
 === Safety
 
 This cop is unsafe because it cannot be determined whether
 constant or method return value specified to `class_name` is a string.
 
+[#examples-railsreflectionclassname]
 === Examples
 
 [source,ruby]
@@ -4813,6 +5173,7 @@ has_many :accounts, class_name: Account.name
 has_many :accounts, class_name: 'Account'
 ----
 
+[#railsrefutemethods]
 == Rails/RefuteMethods
 
 |===
@@ -4827,8 +5188,10 @@ has_many :accounts, class_name: 'Account'
 
 Use `assert_not` methods instead of `refute` methods.
 
+[#examples-railsrefutemethods]
 === Examples
 
+[#enforcedstyle_-assert_not-_default_-railsrefutemethods]
 ==== EnforcedStyle: assert_not (default)
 
 [source,ruby]
@@ -4844,6 +5207,7 @@ assert_not_empty [1, 2, 3]
 assert_not_equal true, false
 ----
 
+[#enforcedstyle_-refute-railsrefutemethods]
 ==== EnforcedStyle: refute
 
 [source,ruby]
@@ -4859,6 +5223,7 @@ refute_empty [1, 2, 3]
 refute_equal true, false
 ----
 
+[#configurable-attributes-railsrefutemethods]
 === Configurable attributes
 
 |===
@@ -4873,6 +5238,7 @@ refute_equal true, false
 | Array
 |===
 
+[#railsrelativedateconstant]
 == Rails/RelativeDateConstant
 
 |===
@@ -4888,10 +5254,12 @@ refute_equal true, false
 Checks whether constant value isn't relative date.
 Because the relative date will be evaluated only once.
 
+[#safety-railsrelativedateconstant]
 === Safety
 
 This cop's autocorrection is unsafe because its dependence on the constant is not corrected.
 
+[#examples-railsrelativedateconstant]
 === Examples
 
 [source,ruby]
@@ -4918,6 +5286,7 @@ class SomeClass
 end
 ----
 
+[#railsrenderinline]
 == Rails/RenderInline
 
 |===
@@ -4932,6 +5301,7 @@ end
 
 Looks for inline rendering within controller actions.
 
+[#examples-railsrenderinline]
 === Examples
 
 [source,ruby]
@@ -4955,10 +5325,12 @@ class ProductsController < ApplicationController
 end
 ----
 
+[#references-railsrenderinline]
 === References
 
 * https://rails.rubystyle.guide/#inline-rendering
 
+[#railsrenderplaintext]
 == Rails/RenderPlainText
 
 |===
@@ -4974,6 +5346,7 @@ end
 Identifies places where `render text:` can be
 replaced with `render plain:`.
 
+[#examples-railsrenderplaintext]
 === Examples
 
 [source,ruby]
@@ -4988,6 +5361,7 @@ render plain: 'Ruby!'
 render text: 'Ruby!', content_type: 'text/html'
 ----
 
+[#contenttypecompatibility_-true-_default_-railsrenderplaintext]
 ==== ContentTypeCompatibility: true (default)
 
 [source,ruby]
@@ -4996,6 +5370,7 @@ render text: 'Ruby!', content_type: 'text/html'
 render text: 'Ruby!'
 ----
 
+[#contenttypecompatibility_-false-railsrenderplaintext]
 ==== ContentTypeCompatibility: false
 
 [source,ruby]
@@ -5004,6 +5379,7 @@ render text: 'Ruby!'
 render text: 'Ruby!'
 ----
 
+[#configurable-attributes-railsrenderplaintext]
 === Configurable attributes
 
 |===
@@ -5014,10 +5390,12 @@ render text: 'Ruby!'
 | Boolean
 |===
 
+[#references-railsrenderplaintext]
 === References
 
 * https://rails.rubystyle.guide/#plain-text-rendering
 
+[#railsrequestreferer]
 == Rails/RequestReferer
 
 |===
@@ -5033,8 +5411,10 @@ render text: 'Ruby!'
 Checks for consistent uses of `request.referer` or
 `request.referrer`, depending on the cop's configuration.
 
+[#examples-railsrequestreferer]
 === Examples
 
+[#enforcedstyle_-referer-_default_-railsrequestreferer]
 ==== EnforcedStyle: referer (default)
 
 [source,ruby]
@@ -5046,6 +5426,7 @@ request.referrer
 request.referer
 ----
 
+[#enforcedstyle_-referrer-railsrequestreferer]
 ==== EnforcedStyle: referrer
 
 [source,ruby]
@@ -5057,6 +5438,7 @@ request.referer
 request.referrer
 ----
 
+[#configurable-attributes-railsrequestreferer]
 === Configurable attributes
 
 |===
@@ -5067,7 +5449,10 @@ request.referrer
 | `referer`, `referrer`
 |===
 
+[#railsrequiredependency]
 == Rails/RequireDependency
+
+NOTE: Required Rails version: 6.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -5090,6 +5475,7 @@ Applications running in Zeitwerk mode should not use `require_dependency`.
 
 NOTE: This cop is disabled by default. Please enable it if you are using Zeitwerk mode.
 
+[#examples-railsrequiredependency]
 === Examples
 
 [source,ruby]
@@ -5098,11 +5484,15 @@ NOTE: This cop is disabled by default. Please enable it if you are using Zeitwer
 require_dependency 'some_lib'
 ----
 
+[#references-railsrequiredependency]
 === References
 
 * https://guides.rubyonrails.org/autoloading_and_reloading_constants.html
 
+[#railsresponseparsedbody]
 == Rails/ResponseParsedBody
+
+NOTE: Required Rails version: 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -5116,6 +5506,7 @@ require_dependency 'some_lib'
 
 Prefer `response.parsed_body` to custom parsing logic for `response.body`.
 
+[#safety-railsresponseparsedbody]
 === Safety
 
 This cop is unsafe because Content-Type may not be `application/json` or `text/html`.
@@ -5123,6 +5514,7 @@ For example, the proprietary Content-Type provided by corporate entities such as
 `application/vnd.github+json` is not supported at `response.parsed_body` by default,
 so you still have to use `JSON.parse(response.body)` there.
 
+[#examples-railsresponseparsedbody]
 === Examples
 
 [source,ruby]
@@ -5140,6 +5532,7 @@ Nokogiri::HTML5.parse(response.body)
 response.parsed_body
 ----
 
+[#configurable-attributes-railsresponseparsedbody]
 === Configurable attributes
 
 |===
@@ -5150,6 +5543,7 @@ response.parsed_body
 | Array
 |===
 
+[#railsreversiblemigration]
 == Rails/ReversibleMigration
 
 |===
@@ -5165,6 +5559,7 @@ response.parsed_body
 Checks whether the change method of the migration file is
 reversible.
 
+[#examples-railsreversiblemigration]
 === Examples
 
 [source,ruby]
@@ -5328,6 +5723,7 @@ def change
 end
 ----
 
+[#configurable-attributes-railsreversiblemigration]
 === Configurable attributes
 
 |===
@@ -5338,11 +5734,13 @@ end
 | Array
 |===
 
+[#references-railsreversiblemigration]
 === References
 
 * https://rails.rubystyle.guide#reversible-migration
 * https://api.rubyonrails.org/classes/ActiveRecord/Migration/CommandRecorder.html
 
+[#railsreversiblemigrationmethoddefinition]
 == Rails/ReversibleMigrationMethodDefinition
 
 |===
@@ -5359,6 +5757,7 @@ Checks whether the migration implements
 either a `change` method or both an `up` and a `down`
 method.
 
+[#examples-railsreversiblemigrationmethoddefinition]
 === Examples
 
 [source,ruby]
@@ -5399,6 +5798,7 @@ class SomeMigration < ActiveRecord::Migration[6.0]
 end
 ----
 
+[#configurable-attributes-railsreversiblemigrationmethoddefinition]
 === Configurable attributes
 
 |===
@@ -5409,6 +5809,7 @@ end
 | Array
 |===
 
+[#railsrootjoinchain]
 == Rails/RootJoinChain
 
 |===
@@ -5423,6 +5824,7 @@ end
 
 Use a single `#join` instead of chaining on `Rails.root` or `Rails.public_path`.
 
+[#examples-railsrootjoinchain]
 === Examples
 
 [source,ruby]
@@ -5440,6 +5842,7 @@ Rails.public_path.join('path', 'file.pdf')
 Rails.public_path.join('path', to, 'file.pdf')
 ----
 
+[#railsrootpathnamemethods]
 == Rails/RootPathnameMethods
 
 |===
@@ -5460,11 +5863,13 @@ so we can apply many IO methods directly.
 This cop works best when used together with
 `Style/FileRead`, `Style/FileWrite` and `Rails/RootJoinChain`.
 
+[#safety-railsrootpathnamemethods]
 === Safety
 
 This cop is unsafe for autocorrection because ``Dir``'s `children`, `each_child`, `entries`, and `glob`
 methods return string element, but these methods of `Pathname` return `Pathname` element.
 
+[#examples-railsrootpathnamemethods]
 === Examples
 
 [source,ruby]
@@ -5489,6 +5894,7 @@ Rails.root.join('db', 'schema.rb').binwrite(content)
 Rails.root.glob("db/schema.rb")
 ----
 
+[#railsrootpublicpath]
 == Rails/RootPublicPath
 
 |===
@@ -5503,6 +5909,7 @@ Rails.root.glob("db/schema.rb")
 
 Favor `Rails.public_path` over `Rails.root` with `'public'`
 
+[#examples-railsrootpublicpath]
 === Examples
 
 [source,ruby]
@@ -5518,6 +5925,7 @@ Rails.public_path.join('file.pdf')
 Rails.public_path.join('file.pdf')
 ----
 
+[#railssafenavigation]
 == Rails/SafeNavigation
 
 NOTE: Required Ruby version: 2.3
@@ -5536,8 +5944,10 @@ Converts usages of `try!` to `&.`. It can also be configured
 to convert `try`. It will convert code to use safe navigation
 if the target Ruby version is set to 2.3+
 
+[#examples-railssafenavigation]
 === Examples
 
+[#converttry_-false-_default_-railssafenavigation]
 ==== ConvertTry: false (default)
 
 [source,ruby]
@@ -5559,6 +5969,7 @@ foo&.bar(baz)
 foo&.bar { |e| e.baz }
 ----
 
+[#converttry_-true-railssafenavigation]
 ==== ConvertTry: true
 
 [source,ruby]
@@ -5577,6 +5988,7 @@ foo&.bar(baz)
 foo&.bar { |e| e.baz }
 ----
 
+[#configurable-attributes-railssafenavigation]
 === Configurable attributes
 
 |===
@@ -5587,6 +5999,7 @@ foo&.bar { |e| e.baz }
 | Boolean
 |===
 
+[#railssafenavigationwithblank]
 == Rails/SafeNavigationWithBlank
 
 |===
@@ -5602,6 +6015,7 @@ foo&.bar { |e| e.baz }
 Checks to make sure safe navigation isn't used with `blank?` in
 a conditional.
 
+[#safety-railssafenavigationwithblank]
 === Safety
 
 While the safe navigation operator is generally a good idea, when
@@ -5616,6 +6030,7 @@ foo&.blank? #=> nil
 foo.blank? #=> true
 ----
 
+[#examples-railssafenavigationwithblank]
 === Examples
 
 [source,ruby]
@@ -5629,6 +6044,7 @@ do_something if foo.blank?
 do_something unless foo.blank?
 ----
 
+[#railssavebang]
 == Rails/SaveBang
 
 |===
@@ -5663,6 +6079,7 @@ that behavior can be turned off with `AllowImplicitReturn: false`.
 You can permit receivers that are giving false positives with
 `AllowedReceivers: []`
 
+[#safety-railssavebang]
 === Safety
 
 This cop's autocorrection is unsafe because a custom `update` method call would be changed to `update!`,
@@ -5683,6 +6100,7 @@ end
 update
 ----
 
+[#examples-railssavebang]
 === Examples
 
 [source,ruby]
@@ -5712,6 +6130,7 @@ def save_user
 end
 ----
 
+[#allowimplicitreturn_-true-_default_-railssavebang]
 ==== AllowImplicitReturn: true (default)
 
 [source,ruby]
@@ -5724,6 +6143,7 @@ def save_user
 end
 ----
 
+[#allowimplicitreturn_-false-railssavebang]
 ==== AllowImplicitReturn: false
 
 [source,ruby]
@@ -5746,6 +6166,7 @@ def save_user
 end
 ----
 
+[#allowedreceivers_-__merchant_customers__-_service__mailer__-railssavebang]
 ==== AllowedReceivers: ['merchant.customers', 'Service::Mailer']
 
 [source,ruby]
@@ -5768,6 +6189,7 @@ Services::Service::Mailer.update(message: 'Message')
 Service::Mailer::update
 ----
 
+[#configurable-attributes-railssavebang]
 === Configurable attributes
 
 |===
@@ -5782,10 +6204,12 @@ Service::Mailer::update
 | Array
 |===
 
+[#references-railssavebang]
 === References
 
 * https://rails.rubystyle.guide#save-bang
 
+[#railsschemacomment]
 == Rails/SchemaComment
 
 |===
@@ -5801,6 +6225,7 @@ Service::Mailer::update
 Enforces the use of the `comment` option when adding a new table or column
 to the database during a migration.
 
+[#examples-railsschemacomment]
 === Examples
 
 [source,ruby]
@@ -5820,6 +6245,7 @@ create_table :table, comment: 'Table of offenses data' do |t|
 end
 ----
 
+[#railsscopeargs]
 == Rails/ScopeArgs
 
 |===
@@ -5835,6 +6261,7 @@ end
 Checks for scope calls where it was passed
 a method (usually a scope) instead of a lambda/proc.
 
+[#examples-railsscopeargs]
 === Examples
 
 [source,ruby]
@@ -5846,6 +6273,7 @@ scope :something, where(something: true)
 scope :something, -> { where(something: true) }
 ----
 
+[#configurable-attributes-railsscopeargs]
 === Configurable attributes
 
 |===
@@ -5856,6 +6284,7 @@ scope :something, -> { where(something: true) }
 | Array
 |===
 
+[#railsselectmap]
 == Rails/SelectMap
 
 |===
@@ -5873,11 +6302,13 @@ These can be replaced with `pluck(:column_name)`.
 
 There also should be some performance improvement since it skips instantiating the model class for matches.
 
+[#safety-railsselectmap]
 === Safety
 
 This cop is unsafe because the model might override the attribute getter.
 Additionally, the model's `after_initialize` hooks are skipped when using `pluck`.
 
+[#examples-railsselectmap]
 === Examples
 
 [source,ruby]
@@ -5889,6 +6320,7 @@ Model.select(:column_name).map(&:column_name)
 Model.pluck(:column_name)
 ----
 
+[#railsshorti18n]
 == Rails/ShortI18n
 
 |===
@@ -5911,6 +6343,7 @@ calls are added as offenses.
 When the EnforcedStyle is aggressive then all `translate` and `localize` calls
 without a receiver are added as offenses.
 
+[#examples-railsshorti18n]
 === Examples
 
 [source,ruby]
@@ -5924,6 +6357,7 @@ I18n.t :key
 I18n.l Time.now
 ----
 
+[#enforcedstyle_-conservative-_default_-railsshorti18n]
 ==== EnforcedStyle: conservative (default)
 
 [source,ruby]
@@ -5935,6 +6369,7 @@ t :key
 l Time.now
 ----
 
+[#enforcedstyle_-aggressive-railsshorti18n]
 ==== EnforcedStyle: aggressive
 
 [source,ruby]
@@ -5948,6 +6383,7 @@ t :key
 l Time.now
 ----
 
+[#configurable-attributes-railsshorti18n]
 === Configurable attributes
 
 |===
@@ -5958,10 +6394,12 @@ l Time.now
 | `conservative`, `aggressive`
 |===
 
+[#references-railsshorti18n]
 === References
 
 * https://rails.rubystyle.guide/#short-i18n
 
+[#railsskipsmodelvalidations]
 == Rails/SkipsModelValidations
 
 |===
@@ -5980,10 +6418,12 @@ https://guides.rubyonrails.org/active_record_validations.html#skipping-validatio
 
 Methods may be ignored from this rule by configuring a `AllowedMethods`.
 
+[#safety-railsskipsmodelvalidations]
 === Safety
 
 This cop is unsafe if the receiver object is not an Active Record object.
 
+[#examples-railsskipsmodelvalidations]
 === Examples
 
 [source,ruby]
@@ -6005,6 +6445,7 @@ user.update(website: 'example.com')
 FileUtils.touch('file')
 ----
 
+[#allowedmethods_-__touch__-railsskipsmodelvalidations]
 ==== AllowedMethods: ["touch"]
 
 [source,ruby]
@@ -6018,6 +6459,7 @@ person.toggle :active
 user.touch
 ----
 
+[#configurable-attributes-railsskipsmodelvalidations]
 === Configurable attributes
 
 |===
@@ -6032,10 +6474,12 @@ user.touch
 | Array
 |===
 
+[#references-railsskipsmodelvalidations]
 === References
 
 * https://guides.rubyonrails.org/active_record_validations.html#skipping-validations
 
+[#railssquishedsqlheredocs]
 == Rails/SquishedSQLHeredocs
 
 |===
@@ -6050,11 +6494,13 @@ user.touch
 
 Checks SQL heredocs to use `.squish`.
 
+[#safety-railssquishedsqlheredocs]
 === Safety
 
 Some SQL syntax (e.g. PostgreSQL comments and functions) requires newlines
 to be preserved in order to work, thus autocorrection for this cop is not safe.
 
+[#examples-railssquishedsqlheredocs]
 === Examples
 
 [source,ruby]
@@ -6090,10 +6536,12 @@ execute(<<~SQL.squish, "Post Load")
 SQL
 ----
 
+[#references-railssquishedsqlheredocs]
 === References
 
 * https://rails.rubystyle.guide/#squished-heredocs
 
+[#railsstripheredoc]
 == Rails/StripHeredoc
 
 NOTE: Required Ruby version: 2.3
@@ -6110,6 +6558,7 @@ NOTE: Required Ruby version: 2.3
 
 Enforces the use of squiggly heredoc over `strip_heredoc`.
 
+[#examples-railsstripheredoc]
 === Examples
 
 [source,ruby]
@@ -6130,10 +6579,12 @@ EOS
 EOS
 ----
 
+[#references-railsstripheredoc]
 === References
 
 * https://rails.rubystyle.guide/#prefer-squiggly-heredoc
 
+[#railstablenameassignment]
 == Rails/TableNameAssignment
 
 |===
@@ -6163,6 +6614,7 @@ https://api.rubyonrails.org/classes/ActiveRecord/ModelSchema.html#method-c-table
 STI base classes named `Base` are ignored by this cop.
 For more information: https://api.rubyonrails.org/classes/ActiveRecord/Inheritance.html
 
+[#examples-railstablenameassignment]
 === Examples
 
 [source,ruby]
@@ -6172,6 +6624,7 @@ self.table_name = 'some_table_name'
 self.table_name = :some_other_name
 ----
 
+[#configurable-attributes-railstablenameassignment]
 === Configurable attributes
 
 |===
@@ -6182,10 +6635,12 @@ self.table_name = :some_other_name
 | Array
 |===
 
+[#references-railstablenameassignment]
 === References
 
 * https://rails.rubystyle.guide/#keep-ar-defaults
 
+[#railsthreestatebooleancolumn]
 == Rails/ThreeStateBooleanColumn
 
 |===
@@ -6201,6 +6656,7 @@ self.table_name = :some_other_name
 Enforces that boolean columns are created with default values (`false` or `true`) and
 `NOT NULL` constraint.
 
+[#examples-railsthreestatebooleancolumn]
 === Examples
 
 [source,ruby]
@@ -6216,6 +6672,7 @@ t.column :active, :boolean, default: true, null: false
 t.boolean :active, default: true, null: false
 ----
 
+[#configurable-attributes-railsthreestatebooleancolumn]
 === Configurable attributes
 
 |===
@@ -6226,10 +6683,12 @@ t.boolean :active, default: true, null: false
 | Array
 |===
 
+[#references-railsthreestatebooleancolumn]
 === References
 
 * https://rails.rubystyle.guide/#three-state-boolean
 
+[#railstimezone]
 == Rails/TimeZone
 
 |===
@@ -6253,10 +6712,12 @@ then only use of `Time.zone` is allowed.
 When EnforcedStyle is 'flexible' then it's also allowed
 to use `Time#in_time_zone`.
 
+[#safety-railstimezone]
 === Safety
 
 This cop's autocorrection is unsafe because it may change handling time.
 
+[#examples-railstimezone]
 === Examples
 
 [source,ruby]
@@ -6271,8 +6732,11 @@ Time.current
 Time.zone.now
 Time.zone.parse('2015-03-02T19:05:37')
 Time.zone.parse('2015-03-02T19:05:37Z') # Respect ISO 8601 format with timezone specifier.
+Time.parse('2015-03-02T19:05:37Z') # Also respects ISO 8601
+'2015-03-02T19:05:37Z'.to_time # Also respects ISO 8601
 ----
 
+[#enforcedstyle_-flexible-_default_-railstimezone]
 ==== EnforcedStyle: flexible (default)
 
 [source,ruby]
@@ -6283,6 +6747,7 @@ Time.zone.parse('2015-03-02T19:05:37Z') # Respect ISO 8601 format with timezone 
 Time.at(timestamp).in_time_zone
 ----
 
+[#enforcedstyle_-strict-railstimezone]
 ==== EnforcedStyle: strict
 
 [source,ruby]
@@ -6293,6 +6758,7 @@ Time.at(timestamp).in_time_zone
 Time.at(timestamp).in_time_zone
 ----
 
+[#configurable-attributes-railstimezone]
 === Configurable attributes
 
 |===
@@ -6307,11 +6773,13 @@ Time.at(timestamp).in_time_zone
 | Array
 |===
 
+[#references-railstimezone]
 === References
 
 * https://rails.rubystyle.guide#time
 * http://danilenko.org/2012/7/6/rails_timezones
 
+[#railstimezoneassignment]
 == Rails/TimeZoneAssignment
 
 |===
@@ -6331,6 +6799,7 @@ unexpected behavior at a later time.
 Using `Time.use_zone` ensures the code passed in the block is the only place Time.zone is affected.
 It eliminates the possibility of a `zone` sticking around longer than intended.
 
+[#examples-railstimezoneassignment]
 === Examples
 
 [source,ruby]
@@ -6343,6 +6812,7 @@ Time.use_zone('EST') do
 end
 ----
 
+[#configurable-attributes-railstimezoneassignment]
 === Configurable attributes
 
 |===
@@ -6353,11 +6823,15 @@ end
 | Array
 |===
 
+[#references-railstimezoneassignment]
 === References
 
 * https://thoughtbot.com/blog/its-about-time-zones
 
+[#railstoformatteds]
 == Rails/ToFormattedS
+
+NOTE: Required Rails version: 7.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -6372,8 +6846,10 @@ end
 Checks for consistent uses of `to_fs` or `to_formatted_s`,
 depending on the cop's configuration.
 
+[#examples-railstoformatteds]
 === Examples
 
+[#enforcedstyle_-to_fs-_default_-railstoformatteds]
 ==== EnforcedStyle: to_fs (default)
 
 [source,ruby]
@@ -6385,6 +6861,7 @@ time.to_formatted_s(:db)
 time.to_fs(:db)
 ----
 
+[#enforcedstyle_-to_formatted_s-railstoformatteds]
 ==== EnforcedStyle: to_formatted_s
 
 [source,ruby]
@@ -6396,6 +6873,7 @@ time.to_fs(:db)
 time.to_formatted_s(:db)
 ----
 
+[#configurable-attributes-railstoformatteds]
 === Configurable attributes
 
 |===
@@ -6406,11 +6884,15 @@ time.to_formatted_s(:db)
 | `to_fs`, `to_formatted_s`
 |===
 
+[#references-railstoformatteds]
 === References
 
 * https://rails.rubystyle.guide/#prefer-to-fs
 
+[#railstoswithargument]
 == Rails/ToSWithArgument
+
+NOTE: Required Rails version: 7.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -6424,11 +6906,13 @@ time.to_formatted_s(:db)
 
 Identifies passing any argument to `#to_s`.
 
+[#safety-railstoswithargument]
 === Safety
 
 This cop is marked as unsafe because it may detect `#to_s` calls
 that are not related to Active Support implementation.
 
+[#examples-railstoswithargument]
 === Examples
 
 [source,ruby]
@@ -6440,7 +6924,10 @@ obj.to_s(:delimited)
 obj.to_formatted_s(:delimited)
 ----
 
+[#railstoplevelhashwithindifferentaccess]
 == Rails/TopLevelHashWithIndifferentAccess
+
+NOTE: Required Rails version: 5.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -6455,6 +6942,7 @@ obj.to_formatted_s(:delimited)
 Identifies top-level `HashWithIndifferentAccess`.
 This has been soft-deprecated since Rails 5.1.
 
+[#examples-railstoplevelhashwithindifferentaccess]
 === Examples
 
 [source,ruby]
@@ -6466,6 +6954,7 @@ HashWithIndifferentAccess.new(foo: 'bar')
 ActiveSupport::HashWithIndifferentAccess.new(foo: 'bar')
 ----
 
+[#configurable-attributes-railstoplevelhashwithindifferentaccess]
 === Configurable attributes
 
 |===
@@ -6476,10 +6965,12 @@ ActiveSupport::HashWithIndifferentAccess.new(foo: 'bar')
 | String
 |===
 
+[#references-railstoplevelhashwithindifferentaccess]
 === References
 
 * https://guides.rubyonrails.org/upgrading_ruby_on_rails.html#top-level-hashwithindifferentaccess-is-soft-deprecated
 
+[#railstransactionexitstatement]
 == Rails/TransactionExitStatement
 
 |===
@@ -6504,6 +6995,11 @@ desired.
 
 If you are defining custom transaction methods, you can configure it with `TransactionMethods`.
 
+NOTE: This cop is disabled on Rails >= 7.2 because transactions were restored
+to their historical behavior. In Rails 7.1, the behavior is controlled with
+the config `active_record.commit_transaction_on_non_local_return`.
+
+[#examples-railstransactionexitstatement]
 === Examples
 
 [source,ruby]
@@ -6546,6 +7042,7 @@ ApplicationRecord.transaction do
 end
 ----
 
+[#transactionmethods_-__custom_transaction__-railstransactionexitstatement]
 ==== TransactionMethods: ["custom_transaction"]
 
 [source,ruby]
@@ -6556,6 +7053,7 @@ CustomModel.custom_transaction do
 end
 ----
 
+[#configurable-attributes-railstransactionexitstatement]
 === Configurable attributes
 
 |===
@@ -6566,10 +7064,12 @@ end
 | Array
 |===
 
+[#references-railstransactionexitstatement]
 === References
 
 * https://github.com/rails/rails/commit/15aa4200e083
 
+[#railsuniqbeforepluck]
 == Rails/UniqBeforePluck
 
 |===
@@ -6597,13 +7097,16 @@ as the cop cannot distinguish between calls to `pluck` on an
 ActiveRecord::Relation vs a call to pluck on an
 ActiveRecord::Associations::CollectionProxy.
 
+[#safety-railsuniqbeforepluck]
 === Safety
 
 This cop is unsafe for autocorrection because the behavior may change
 depending on the database collation.
 
+[#examples-railsuniqbeforepluck]
 === Examples
 
+[#enforcedstyle_-conservative-_default_-railsuniqbeforepluck]
 ==== EnforcedStyle: conservative (default)
 
 [source,ruby]
@@ -6615,6 +7118,7 @@ Album.pluck(:band_name).uniq
 Album.distinct.pluck(:band_name)
 ----
 
+[#enforcedstyle_-aggressive-railsuniqbeforepluck]
 ==== EnforcedStyle: aggressive
 
 [source,ruby]
@@ -6634,6 +7138,7 @@ Album.distinct.where(year: 1985).pluck(:band_name)
 customer.favourites.distinct.pluck(:color)
 ----
 
+[#configurable-attributes-railsuniqbeforepluck]
 === Configurable attributes
 
 |===
@@ -6644,6 +7149,7 @@ customer.favourites.distinct.pluck(:color)
 | `conservative`, `aggressive`
 |===
 
+[#railsuniquevalidationwithoutindex]
 == Rails/UniqueValidationWithoutIndex
 
 |===
@@ -6667,6 +7173,7 @@ the query will be heavy.
 
 Note that the cop does nothing if db/schema.rb does not exist.
 
+[#examples-railsuniquevalidationwithoutindex]
 === Examples
 
 [source,ruby]
@@ -6681,6 +7188,7 @@ validates :account, uniqueness: true
 validates :account, length: { minimum: MIN_LENGTH }
 ----
 
+[#configurable-attributes-railsuniquevalidationwithoutindex]
 === Configurable attributes
 
 |===
@@ -6691,6 +7199,7 @@ validates :account, length: { minimum: MIN_LENGTH }
 | Array
 |===
 
+[#railsunknownenv]
 == Rails/UnknownEnv
 
 |===
@@ -6709,6 +7218,7 @@ By default the cop allows three environments which Rails ships with:
 `development`, `test`, and `production`.
 More can be added to the `Environments` config parameter.
 
+[#examples-railsunknownenv]
 === Examples
 
 [source,ruby]
@@ -6722,6 +7232,7 @@ Rails.env.production?
 Rails.env == 'production'
 ----
 
+[#configurable-attributes-railsunknownenv]
 === Configurable attributes
 
 |===
@@ -6736,6 +7247,7 @@ Rails.env == 'production'
 | Array
 |===
 
+[#railsunusedignoredcolumns]
 == Rails/UnusedIgnoredColumns
 
 |===
@@ -6758,6 +7270,7 @@ this cop can cause `ignored_columns` to be removed even though the production sc
 the column, which can lead to downtime when the migration is actually executed. Only enable this cop
 if you know your migrations will be run before any of your Rails applications boot with the modified code.
 
+[#examples-railsunusedignoredcolumns]
 === Examples
 
 [source,ruby]
@@ -6773,6 +7286,7 @@ class User < ApplicationRecord
 end
 ----
 
+[#configurable-attributes-railsunusedignoredcolumns]
 === Configurable attributes
 
 |===
@@ -6783,6 +7297,7 @@ end
 | Array
 |===
 
+[#railsunusedrendercontent]
 == Rails/UnusedRenderContent
 
 |===
@@ -6800,6 +7315,7 @@ it will be dropped from the response.
 
 This cop checks for uses of `render` which specify both body content and a non-content status.
 
+[#examples-railsunusedrendercontent]
 === Examples
 
 [source,ruby]
@@ -6813,6 +7329,7 @@ head :continue
 head 100
 ----
 
+[#configurable-attributes-railsunusedrendercontent]
 === Configurable attributes
 
 |===
@@ -6823,6 +7340,7 @@ head 100
 | String
 |===
 
+[#railsvalidation]
 == Rails/Validation
 
 |===
@@ -6837,6 +7355,7 @@ head 100
 
 Checks for the use of old-style attribute validation macros.
 
+[#examples-railsvalidation]
 === Examples
 
 [source,ruby]
@@ -6870,6 +7389,7 @@ validates :foo, length: true
 validates :foo, uniqueness: true
 ----
 
+[#configurable-attributes-railsvalidation]
 === Configurable attributes
 
 |===
@@ -6880,6 +7400,7 @@ validates :foo, uniqueness: true
 | Array
 |===
 
+[#railswhereequals]
 == Rails/WhereEquals
 
 |===
@@ -6896,11 +7417,13 @@ Identifies places where manually constructed SQL
 in `where` and `where.not` can be replaced with
 `where(attribute: value)` and `where.not(attribute: value)`.
 
+[#safety-railswhereequals]
 === Safety
 
 This cop's autocorrection is unsafe because is may change SQL.
 See: https://github.com/rubocop/rubocop-rails/issues/403
 
+[#examples-railswhereequals]
 === Examples
 
 [source,ruby]
@@ -6922,10 +7445,12 @@ User.where(name: ['john', 'jane'])
 User.where(users: { name: 'Gabe' })
 ----
 
+[#references-railswhereequals]
 === References
 
 * https://rails.rubystyle.guide/#hash-conditions
 
+[#railswhereexists]
 == Rails/WhereExists
 
 |===
@@ -6946,6 +7471,7 @@ then the cop enforces `exists?(...)` over `where(...).exists?`.
 When EnforcedStyle is 'where' then the cop enforces
 `where(...).exists?` over `exists?(...)`.
 
+[#safety-railswhereexists]
 === Safety
 
 This cop is unsafe for autocorrection because the behavior may change on the following case:
@@ -6959,8 +7485,10 @@ Author.includes(:articles).exists?(articles: {id: id})
 #=> Perform `preload` behavior and `ActiveRecord::StatementInvalid` error occurs.
 ----
 
+[#examples-railswhereexists]
 === Examples
 
+[#enforcedstyle_-exists-_default_-railswhereexists]
 ==== EnforcedStyle: exists (default)
 
 [source,ruby]
@@ -6977,6 +7505,7 @@ User.where('length(name) > 10').exists?
 user.posts.exists?(published: true)
 ----
 
+[#enforcedstyle_-where-railswhereexists]
 ==== EnforcedStyle: where
 
 [source,ruby]
@@ -6994,6 +7523,7 @@ user.posts.where(published: true).exists?
 User.where('length(name) > 10').exists?
 ----
 
+[#configurable-attributes-railswhereexists]
 === Configurable attributes
 
 |===
@@ -7004,7 +7534,10 @@ User.where('length(name) > 10').exists?
 | `exists`, `where`
 |===
 
+[#railswheremissing]
 == Rails/WhereMissing
+
+NOTE: Required Rails version: 6.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -7020,6 +7553,7 @@ Use `where.missing(...)` to find missing relationship records.
 
 This cop is enabled in Rails 6.1 or higher.
 
+[#examples-railswheremissing]
 === Examples
 
 [source,ruby]
@@ -7031,10 +7565,12 @@ Post.left_joins(:author).where(authors: { id: nil })
 Post.where.missing(:author)
 ----
 
+[#references-railswheremissing]
 === References
 
 * https://rails.rubystyle.guide/#finding-missing-relationship-records
 
+[#railswherenot]
 == Rails/WhereNot
 
 |===
@@ -7050,6 +7586,7 @@ Post.where.missing(:author)
 Identifies places where manually constructed SQL
 in `where` can be replaced with `where.not(...)`.
 
+[#examples-railswherenot]
 === Examples
 
 [source,ruby]
@@ -7071,10 +7608,12 @@ User.where.not(name: ['john', 'jane'])
 User.where.not(users: { name: 'Gabe' })
 ----
 
+[#references-railswherenot]
 === References
 
 * https://rails.rubystyle.guide/#hash-conditions
 
+[#railswherenotwithmultipleconditions]
 == Rails/WhereNotWithMultipleConditions
 
 |===
@@ -7095,6 +7634,7 @@ The behavior of `where.not` changed in Rails 6.1. Prior to the change,
 From Rails 6.1 onwards, this executes the query
 `WHERE NOT (trashed == TRUE AND roles == 'admin')`.
 
+[#examples-railswherenotwithmultipleconditions]
 === Examples
 
 [source,ruby]
@@ -7111,6 +7651,7 @@ User.where.not(trashed: true).where.not(role: ['moderator', 'admin'])
 User.where.not('trashed = ? OR role = ?', true, 'admin')
 ----
 
+[#configurable-attributes-railswherenotwithmultipleconditions]
 === Configurable attributes
 
 |===
@@ -7121,13 +7662,17 @@ User.where.not('trashed = ? OR role = ?', true, 'admin')
 | String
 |===
 
+[#references-railswherenotwithmultipleconditions]
 === References
 
 * https://rails.rubystyle.guide/#where-not-with-multiple-attributes
 
+[#railswhererange]
 == Rails/WhereRange
 
 NOTE: Required Ruby version: 2.6
+
+NOTE: Required Rails version: 6.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -7142,6 +7687,7 @@ NOTE: Required Ruby version: 2.6
 Identifies places where manually constructed SQL
 in `where` can be replaced with ranges.
 
+[#safety-railswhererange]
 === Safety
 
 This cop's autocorrection is unsafe because it can change the query
@@ -7151,6 +7697,7 @@ implicitly attach the `end_at` column to the `events` table. But when autocorrec
 `Booking.joins(:events).where(end_at: ...Time.current)`, it will now be incorrectly
 explicitly attached to the `bookings` table.
 
+[#examples-railswhererange]
 === Examples
 
 [source,ruby]
@@ -7175,6 +7722,7 @@ User.where(users: { age: 18.. })
 User.where('age > ?', 18)
 ----
 
+[#references-railswhererange]
 === References
 
 * https://rails.rubystyle.guide/#where-ranges
