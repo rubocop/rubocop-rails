@@ -334,6 +334,13 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
           User.all.#{method}(&:do_something)
         RUBY
       end
+
+      it "registers an offense when using `#{method}` in block" do
+        expect_offense(<<~RUBY)
+          do_something { User.all.#{method} }
+                              ^^^ Redundant `all` detected.
+        RUBY
+      end
     end
   end
 
