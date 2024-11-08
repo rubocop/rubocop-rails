@@ -1,15 +1,27 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ThreeStateBooleanColumn, :config do
+  let(:config) do
+    RuboCop::Config.new('AllCops' => { 'MigratedSchemaVersion' => '20240101010101' })
+  end
+
   describe '#add_column' do
     it 'registers an offense with three state boolean' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_add_active_to_users.rb')
         add_column :users, :active, :boolean
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Boolean columns should always have a default value and a `NOT NULL` constraint.
         add_column :users, :active, :boolean, default: true
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Boolean columns should always have a default value and a `NOT NULL` constraint.
         add_column :users, :active, :boolean, default: true, null: true
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Boolean columns should always have a default value and a `NOT NULL` constraint.
+      RUBY
+    end
+
+    it 'does not register an offense with three state boolean when migration file was migrated' do
+      expect_no_offenses(<<~RUBY, '20190101010101_add_active_to_users.rb')
+        add_column :users, :active, :boolean
+        add_column :users, :active, :boolean, default: true
+        add_column :users, :active, :boolean, default: true, null: true
       RUBY
     end
 
@@ -44,7 +56,7 @@ RSpec.describe RuboCop::Cop::Rails::ThreeStateBooleanColumn, :config do
     end
 
     it 'registers an offense when using `#change_column_null` for other table or column' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_add_active_to_users.rb')
         def change
           add_column :users, :active, :boolean
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Boolean columns should always have a default value and a `NOT NULL` constraint.
@@ -58,7 +70,7 @@ RSpec.describe RuboCop::Cop::Rails::ThreeStateBooleanColumn, :config do
 
   describe '#column' do
     it 'registers an offense with three state boolean' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_add_active_to_users.rb')
         t.column :active, :boolean
         ^^^^^^^^^^^^^^^^^^^^^^^^^^ Boolean columns should always have a default value and a `NOT NULL` constraint.
         t.column :active, :boolean, default: true
@@ -119,7 +131,7 @@ RSpec.describe RuboCop::Cop::Rails::ThreeStateBooleanColumn, :config do
 
   describe '#boolean' do
     it 'registers an offense for three state boolean' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_add_active_to_users.rb')
         t.boolean :active
         ^^^^^^^^^^^^^^^^^ Boolean columns should always have a default value and a `NOT NULL` constraint.
         t.boolean :active, default: true
@@ -168,7 +180,7 @@ RSpec.describe RuboCop::Cop::Rails::ThreeStateBooleanColumn, :config do
     end
 
     it 'registers an offense when using `#change_column_null` for other table or column' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_add_active_to_users.rb')
         def change
           create_table(:users) do |t|
             t.boolean :active

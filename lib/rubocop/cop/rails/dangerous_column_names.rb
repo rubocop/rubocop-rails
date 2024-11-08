@@ -14,6 +14,8 @@ module RuboCop
       #   # good
       #   add_column :users, :saved
       class DangerousColumnNames < Base # rubocop:disable Metrics/ClassLength
+        prepend MigrationsHelper
+
         COLUMN_TYPE_METHOD_NAMES = %i[
           bigint
           binary
