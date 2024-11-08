@@ -1,14 +1,26 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
-  let(:cop_config) { { 'Include' => nil } }
+  let(:config) do
+    RuboCop::Config.new(
+      'AllCops' => { 'MigratedSchemaVersion' => '20240101010101' },
+      'Rails/NotNullColumn' => { 'Database' => database, 'Include' => nil }
+    )
+  end
+  let(:database) { 'sqlite3' }
 
   context 'with add_column call' do
     context 'with null: false' do
       it 'reports an offense' do
-        expect_offense(<<~RUBY)
+        expect_offense(<<~RUBY, '20250101010101_add_name_to_users.rb')
           add_column :users, :name, :string, null: false
                                              ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.
+        RUBY
+      end
+
+      it 'does not register an offense when migration file was migrated' do
+        expect_no_offenses(<<~RUBY, '20190101010101_add_name_to_users.rb')
+          add_column :users, :name, :string, null: false
         RUBY
       end
     end
@@ -31,7 +43,7 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
 
     context 'with null: false and default: nil' do
       it 'reports an offense' do
-        expect_offense(<<~RUBY)
+        expect_offense(<<~RUBY, '20250101010101_add_name_to_users.rb')
           add_column :users, :name, :string, null: false, default: nil
                                              ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.
         RUBY
@@ -102,7 +114,7 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
     context 'with shortcut column call' do
       context 'with null: false' do
         it 'reports an offense' do
-          expect_offense(<<~RUBY)
+          expect_offense(<<~RUBY, '20250101010101_create_users.rb')
             def change
               change_table :users do |t|
                 t.string :name, null: false
@@ -113,7 +125,7 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
         end
 
         it 'reports multiple offenses' do
-          expect_offense(<<~RUBY)
+          expect_offense(<<~RUBY, '20250101010101_create_users.rb')
             def change
               change_table :users do |t|
                 t.string :name, null: false
@@ -154,7 +166,7 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
     context 'with column call' do
       context 'with null: false' do
         it 'reports an offense' do
-          expect_offense(<<~RUBY)
+          expect_offense(<<~RUBY, '20250101010101_create_users.rb')
             def change
               change_table :users do |t|
                 t.column :name, :string, null: false
@@ -193,7 +205,7 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
     context 'with reference call' do
       context 'with null: false' do
         it 'reports an offense' do
-          expect_offense(<<~RUBY)
+          expect_offense(<<~RUBY, '20250101010101_create_users.rb')
             def change
               change_table :users do |t|
                 t.references :address, null: false
@@ -221,7 +233,7 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
   context 'with add_reference call' do
     context 'with null: false' do
       it 'reports an offense' do
-        expect_offense(<<~RUBY)
+        expect_offense(<<~RUBY, '20250101010101_create_products.rb')
           add_reference :products, :category, null: false
                                               ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.
         RUBY
@@ -246,9 +258,7 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
   end
 
   context 'when database is MySQL' do
-    let(:cop_config) do
-      { 'Database' => 'mysql' }
-    end
+    let(:database) { 'mysql' }
 
     it 'does not register an offense when using `null: false` for `:text` type' do
       expect_no_offenses(<<~RUBY)
@@ -268,12 +278,10 @@ RSpec.describe RuboCop::Cop::Rails::NotNullColumn, :config do
   end
 
   context 'when database is PostgreSQL' do
-    let(:cop_config) do
-      { 'Database' => 'postgresql' }
-    end
+    let(:database) { 'postgresql' }
 
     it 'registers an offense when using `null: false` for `:text` type' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_add_content_to_articles.rb')
         def change
           add_column :articles, :content, :text, null: false
                                                  ^^^^^^^^^^^ Do not add a NOT NULL column without a default value.

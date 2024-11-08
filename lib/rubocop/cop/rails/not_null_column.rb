@@ -41,6 +41,7 @@ module RuboCop
       #   change_column_null :products, :category_id, false
       class NotNullColumn < Base
         include DatabaseTypeResolvable
+        prepend MigrationsHelper
 
         MSG = 'Do not add a NOT NULL column without a default value.'
         RESTRICT_ON_SEND = %i[add_column add_reference].freeze

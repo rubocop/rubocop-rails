@@ -52,6 +52,23 @@ gems.locked file to find the version of Rails that has been bound to the
 application. If neither of those files exist, RuboCop will use Rails 5.0
 as the default.
 
+=== `AllCops: MigratedSchemaVersion`
+
+By specifying the `MigratedSchemaVersion` option, migration files that have already been run can be ignored.
+When `MigratedSchemaVersion: '20241225000000'` is set, migration files lower than or equal to '20241225000000' will be ignored.
+For example, to ignore db/migrate/20241225000000_create_articles.rb and earlier migrations you would configure it the following way:
+
+[source,yaml]
+----
+AllCops
+  MigratedSchemaVersion: '20241225000000'
+----
+
+This prevents inspecting schema settings for already applied migration files.
+Changing already applied migrations should be avoided because it can lead to the schema getting out of sync
+between your local copy and what it actually is in production, depending on when `bin/rails db:migrate` was executed.
+If you want to modify your schema to comply with the cops, you should instead create new migrations.
+
 == Rails configuration tip
 
 In Rails 6.1+, add the following `config.generators.after_generate` setting to
