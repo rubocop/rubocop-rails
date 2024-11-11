@@ -1,0 +1,1 @@
+* [#1385](https://github.com/rubocop/rubocop-rails/pull/1385): Make `Lint/UselessAccessModifier` aware of `ActiveSupport::Concern` and `Module#concerning`/`Module#concern` core extensions. ([@earlopain][])
