@@ -244,7 +244,7 @@ module RuboCop
         end
 
         def operator_or_single_negative?(node)
-          node.or_type? || node.and_type? || single_negative?(node)
+          node.operator_keyword? || single_negative?(node)
         end
 
         def conditional?(parent)
