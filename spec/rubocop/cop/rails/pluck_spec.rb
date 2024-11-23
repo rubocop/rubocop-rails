@@ -128,6 +128,48 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
           end
         end
       end
+
+      context "when `#{method}` is used in block" do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            n.each do |x|
+              x.#{method} { |a| a[:foo] }
+            end
+          RUBY
+        end
+      end
+
+      context "when `#{method}` is used in block with other operations" do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            n.each do |x|
+              do_something
+              x.#{method} { |a| a[:foo] }
+            end
+          RUBY
+        end
+      end
+
+      context "when `#{method}` is used in numblock" do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            n.each do
+              _1.#{method} { |a| a[:foo] }
+            end
+          RUBY
+        end
+      end
+
+      context "when `#{method}` is used in numblock with other operations" do
+        it 'does not register an offense' do
+          expect_no_offenses(<<~RUBY)
+            n.each do
+              do_something
+              _1.#{method} { |a| a[:foo] }
+            end
+          RUBY
+        end
+      end
     end
 
     context 'when using Rails 4.2 or older', :rails42 do
