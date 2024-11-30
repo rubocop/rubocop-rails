@@ -45,7 +45,7 @@ RSpec.describe RuboCop::Cop::Rails::SelectMap, :config do
     RUBY
   end
 
-  it 'registers an offense when using `select(:column_name).map(&:column_name)` without receiver model' do
+  it 'registers an offense when using `select(:column_name).map(&:column_name)` without receiver' do
     expect_offense(<<~RUBY)
       select(:column_name).map(&:column_name)
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `pluck(:column_name)` instead of `select` with `map`.
@@ -53,6 +53,17 @@ RSpec.describe RuboCop::Cop::Rails::SelectMap, :config do
 
     expect_correction(<<~RUBY)
       pluck(:column_name)
+    RUBY
+  end
+
+  it 'registers an offense when using `select(:column_name).where(conditions).map(&:column_name)` without receiver' do
+    expect_offense(<<~RUBY)
+      select(:column_name).where(conditions).map(&:column_name)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `pluck(:column_name)` instead of `select` with `map`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      where(conditions).pluck(:column_name)
     RUBY
   end
 
