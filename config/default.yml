@@ -73,6 +73,20 @@ Lint/SafeNavigationChain:
     - try!
     - in?
 
+Lint/UselessAccessModifier:
+  # Add methods from `ActiveSupport::Concern` and `Module::Concerning`:
+  # https://api.rubyonrails.org/classes/ActiveSupport/Concern.html
+  # https://api.rubyonrails.org/classes/Module/Concerning
+  inherit_mode:
+    merge:
+      - ContextCreatingMethods
+  ContextCreatingMethods:
+    - class_methods
+    - included
+    - prepended
+    - concern
+    - concerning
+
 Rails:
   Enabled: true
   DocumentationBaseURL: https://docs.rubocop.org/rubocop-rails
