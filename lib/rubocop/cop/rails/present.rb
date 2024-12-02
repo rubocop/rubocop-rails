@@ -110,7 +110,7 @@ module RuboCop
         def on_if(node)
           return unless cop_config['UnlessBlank']
           return unless node.unless?
-          return if node.else? && config.for_cop('Style/UnlessElse')['Enabled']
+          return if node.else? && config.cop_enabled?('Style/UnlessElse')
 
           unless_blank?(node) do |method_call, receiver|
             range = unless_condition(node, method_call)
