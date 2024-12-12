@@ -406,5 +406,13 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         RUBY
       end
     end
+
+    context 'when rescued concat Rails.root' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root rescue '.'}/config"
+        RUBY
+      end
+    end
   end
 end
