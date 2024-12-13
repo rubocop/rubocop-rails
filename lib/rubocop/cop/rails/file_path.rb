@@ -76,6 +76,7 @@ module RuboCop
           rails_root_index = find_rails_root_index(node)
           slash_node = node.children[rails_root_index + 1]
           return unless slash_node&.str_type? && slash_node.source.start_with?(File::SEPARATOR)
+          return if node.children[rails_root_index].each_descendant(:rescue).any?
 
           register_offense(node, require_to_s: false) do |corrector|
             autocorrect_slash_after_rails_root_in_dstr(corrector, node, rails_root_index)
