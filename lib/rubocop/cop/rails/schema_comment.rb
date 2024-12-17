@@ -23,6 +23,7 @@ module RuboCop
       #
       class SchemaComment < Base
         include ActiveRecordMigrationsHelper
+        prepend MigrationsHelper
 
         COLUMN_MSG = 'New database column without `comment`.'
         TABLE_MSG = 'New database table without `comment`.'

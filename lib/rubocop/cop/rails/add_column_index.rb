@@ -19,6 +19,7 @@ module RuboCop
       class AddColumnIndex < Base
         extend AutoCorrector
         include RangeHelp
+        prepend MigrationsHelper
 
         MSG = '`add_column` does not accept an `index` key, use `add_index` instead.'
         RESTRICT_ON_SEND = %i[add_column].freeze

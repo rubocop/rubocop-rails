@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config do
+  let(:config) do
+    RuboCop::Config.new('AllCops' => { 'MigratedSchemaVersion' => '20240101010101' })
+  end
+
   it 'does not register an offense with a change method' do
     expect_no_offenses(<<~RUBY)
       class SomeMigration < ActiveRecord::Migration[6.0]
@@ -12,7 +16,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config
   end
 
   it 'registers an offense with only an up method' do
-    expect_offense(<<~RUBY)
+    expect_offense(<<~RUBY, '20250101010101_some_migration.rb')
       class SomeMigration < ActiveRecord::Migration[6.0]
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Migrations must contain either a `change` method, or both an `up` and a `down` method.
 
@@ -23,8 +27,18 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config
     RUBY
   end
 
+  it 'does not register an offense with only an up method when migration file was migrated' do
+    expect_no_offenses(<<~RUBY, '20190101010101_some_migration.rb')
+      class SomeMigration < ActiveRecord::Migration[6.0]
+        def up
+          add_column :users, :email, :text, null: false
+        end
+      end
+    RUBY
+  end
+
   it 'registers an offense with only an up method and `::` prefixed class name' do
-    expect_offense(<<~RUBY)
+    expect_offense(<<~RUBY, '20250101010101_some_migration.rb')
       class ::SomeMigration < ActiveRecord::Migration[6.0]
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Migrations must contain either a `change` method, or both an `up` and a `down` method.
 
@@ -36,7 +50,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config
   end
 
   it 'registers an offense with only a down method' do
-    expect_offense(<<~RUBY)
+    expect_offense(<<~RUBY, '20250101010101_some_migration.rb')
       class SomeMigration < ActiveRecord::Migration[6.0]
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Migrations must contain either a `change` method, or both an `up` and a `down` method.
 
@@ -62,7 +76,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config
   end
 
   it "registers an offense with a typo'd change method" do
-    expect_offense(<<~RUBY)
+    expect_offense(<<~RUBY, '20250101010101_some_migration.rb')
       class SomeMigration < ActiveRecord::Migration[6.0]
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Migrations must contain either a `change` method, or both an `up` and a `down` method.
         def chance
@@ -102,7 +116,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config
   end
 
   it 'registers offenses correctly with any migration class' do
-    expect_offense(<<~RUBY)
+    expect_offense(<<~RUBY, '20250101010101_some_migration.rb')
       class SomeMigration < ActiveRecord::Migration[5.2]
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Migrations must contain either a `change` method, or both an `up` and a `down` method.
         def chance
@@ -144,7 +158,7 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigrationMethodDefinition, :config
     end
 
     it 'registers an offense with only an up method' do
-      expect_offense(<<~RUBY, 'db/animals_migrate/20211007000002_add_nice_to_animals.rb')
+      expect_offense(<<~RUBY, 'db/animals_migrate/20250101010101_add_nice_to_animals.rb')
         class AddNiceToAnimals < ActiveRecord::Migration[7.0]
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Migrations must contain either a `change` method, or both an `up` and a `down` method.
 
