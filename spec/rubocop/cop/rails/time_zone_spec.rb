@@ -46,6 +46,17 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
       RUBY
     end
 
+    it 'registers an offense for Time.new with string argument' do
+      expect_offense(<<~RUBY)
+        Time.new("2012-06-10 10:12:00")
+             ^^^ Do not use `Time.new` without zone. Use `Time.zone.parse` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Time.zone.parse("2012-06-10 10:12:00")
+      RUBY
+    end
+
     it 'does not register an offense when a .new method is called independently of the Time class' do
       expect_no_offenses(<<~RUBY)
         Range.new(1, Time.class.to_s)
