@@ -236,6 +236,14 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         RUBY
       end
     end
+
+    context 'with `join` method with implicit receiver' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          join(Rails.root, path)
+        RUBY
+      end
+    end
   end
 
   context 'when EnforcedStyle is `arguments`' do
@@ -417,6 +425,14 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'does not register an offense for `rescue`' do
         expect_no_offenses(<<~'RUBY')
           "#{Rails.root rescue '.'}/config"
+        RUBY
+      end
+    end
+
+    context 'with `join` method with implicit receiver' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          join(Rails.root, path)
         RUBY
       end
     end
