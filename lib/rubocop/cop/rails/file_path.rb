@@ -117,6 +117,7 @@ module RuboCop
         def check_for_rails_root_join_with_slash_separated_path(node)
           return unless style == :arguments
           return unless rails_root_nodes?(node)
+          return unless node.receiver
           return unless rails_root_join_nodes?(node)
           return unless node.arguments.any? { |arg| string_with_slash?(arg) }
 

@@ -414,5 +414,13 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         RUBY
       end
     end
+
+    context 'with `join` method with implicit receiver' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          join(Rails.root, path)
+        RUBY
+      end
+    end
   end
 end
