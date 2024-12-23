@@ -66,6 +66,8 @@ module RuboCop
 
         def on_send(node)
           check_for_file_join_with_rails_root(node)
+          return unless node.receiver
+
           check_for_rails_root_join_with_slash_separated_path(node)
           check_for_rails_root_join_with_string_arguments(node)
         end
