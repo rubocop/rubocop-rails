@@ -407,8 +407,14 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
-    context 'when rescued concat Rails.root' do
-      it 'does not register an offense' do
+    context 'when interpolation with `Rails.root` contains other operations' do
+      it 'does not register an offense for boolean method' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root || '.'}/config"
+        RUBY
+      end
+
+      it 'does not register an offense for `rescue`' do
         expect_no_offenses(<<~'RUBY')
           "#{Rails.root rescue '.'}/config"
         RUBY
