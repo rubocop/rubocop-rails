@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::MigrationClassName, :config do
-  let(:filename) { 'db/migrate/20220101050505_create_users.rb' }
+  let(:config) do
+    RuboCop::Config.new('AllCops' => { 'MigratedSchemaVersion' => '20240101010101' })
+  end
+  let(:filename) { 'db/migrate/20250101010101_create_users.rb' }
 
   context 'when the class name matches its file name' do
     it 'does not register an offense' do
@@ -85,7 +88,7 @@ RSpec.describe RuboCop::Cop::Rails::MigrationClassName, :config do
   # end
   #
   context 'when `ActiveSupport::Inflector` is applied to the class name and the case is different' do
-    let(:filename) { 'db/migrate/20210623095243_remove_unused_oauth_scope_grants.rb' }
+    let(:filename) { 'db/migrate/20250101010101_remove_unused_oauth_scope_grants.rb' }
 
     it 'does not register an offense' do
       expect_no_offenses(<<~RUBY, filename)
