@@ -6,6 +6,9 @@ module RuboCop
       # Identifies usages of file path joining process to use `Rails.root.join` clause.
       # It is used to add uniformity when joining paths.
       #
+      # @safety
+      #   This cop's autocorrection is unsafe because it will replace the root path with an invalid path.
+      #
       # @example EnforcedStyle: slashes (default)
       #   # bad
       #   Rails.root.join('app', 'models', 'goober')
