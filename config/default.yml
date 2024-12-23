@@ -492,6 +492,7 @@ Rails/FilePath:
   VersionAdded: '0.47'
   VersionChanged: '2.4'
   EnforcedStyle: slashes
+  Safe: false
   SupportedStyles:
     - slashes
     - arguments
