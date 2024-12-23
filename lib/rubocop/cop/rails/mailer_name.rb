@@ -29,15 +29,9 @@ module RuboCop
       #
       class MailerName < Base
         extend AutoCorrector
+        include ParentClassMatchers
 
         MSG = 'Mailer should end with `Mailer` suffix.'
-
-        def_node_matcher :mailer_base_class?, <<~PATTERN
-          {
-            (const (const {nil? cbase} :ActionMailer) :Base)
-            (const {nil? cbase} :ApplicationMailer)
-          }
-        PATTERN
 
         def_node_matcher :class_definition?, <<~PATTERN
           (class $(const _ !#mailer_suffix?) #mailer_base_class? ...)
