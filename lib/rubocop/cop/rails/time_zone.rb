@@ -97,7 +97,9 @@ module RuboCop
         end
 
         def autocorrect_time_new(node, corrector)
-          if node.arguments?
+          if node.children[2]&.type == :str
+            corrector.replace(node.loc.selector, 'parse')
+          elsif node.arguments?
             corrector.replace(node.loc.selector, 'local')
           else
             corrector.replace(node.loc.selector, 'now')
@@ -183,6 +185,8 @@ module RuboCop
 
         def safe_method(method_name, node)
           if %w[new current].include?(method_name)
+            return 'parse' if node.children[2]&.type == :str
+
             node.arguments? ? 'local' : 'now'
           else
             method_name
