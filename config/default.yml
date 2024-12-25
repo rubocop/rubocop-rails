@@ -25,6 +25,10 @@ AllCops:
   # application. If neither of those files exist, RuboCop will use Rails 5.0
   # as the default.
   TargetRailsVersion: ~
+  # By specifying `MigratedSchemaVersion` option, migration files that have been migrated can be ignored.
+  # When `MigratedSchemaVersion: '20241231000000'` is set. Migration files lower than or equal to '20250101000000' will be ignored.
+  # For example, this is the timestamp in db/migrate/20250101000000_create_articles.rb.
+  MigratedSchemaVersion: ~
 
 Lint/NumberConversion:
   # Add Rails' duration methods to the ignore list for `Lint/NumberConversion`

@@ -1,30 +1,40 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
+  let(:config) do
+    RuboCop::Config.new('AllCops' => { 'MigratedSchemaVersion' => '20240101010101' })
+  end
+
   context 'when send add_column' do
     it 'registers an offense when `add_column` has no `comment` option' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_add_column_to_table.rb')
         add_column :table, :column, :integer
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ New database column without `comment`.
       RUBY
     end
 
+    it 'does not register an offense when `add_column` has no `comment` option when migration file was migrated' do
+      expect_no_offenses(<<~RUBY, '20190101010101_add_column_to_table.rb')
+        add_column :table, :column, :integer
+      RUBY
+    end
+
     it 'registers an offense when `add_column` has no `comment` option, but other options' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_add_column_to_table.rb')
         add_column :table, :column, :integer, default: 0
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ New database column without `comment`.
       RUBY
     end
 
     it 'registers an offense when `add_column` has a nil `comment` option' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_add_column_to_table.rb')
         add_column :table, :column, :integer, comment: nil
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ New database column without `comment`.
       RUBY
     end
 
     it 'registers an offense when `add_column` has an empty `comment` option' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_add_column_to_table.rb')
         add_column :table, :column, :integer, comment: ''
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ New database column without `comment`.
       RUBY
@@ -45,7 +55,7 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
 
   context 'when send create_table' do
     it 'registers an offense when `create_table` has no `comment` option' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_create_users.rb')
         create_table :users do |t|
         ^^^^^^^^^^^^^^^^^^^ New database table without `comment`.
         end
@@ -53,7 +63,7 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
     end
 
     it 'registers an offense when `create_table` has a nil `comment` option' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_create_users.rb')
         create_table :users, comment: nil do |t|
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ New database table without `comment`.
         end
@@ -61,7 +71,7 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
     end
 
     it 'registers an offense when `create_table` has a empty `comment` option' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_create_users.rb')
         create_table :users, comment: '' do |t|
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ New database table without `comment`.
 
@@ -70,7 +80,7 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
     end
 
     it 'registers an offense when `t.column` has no `comment` option' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_create_users.rb')
         create_table :users, comment: 'Table' do |t|
           t.column :column, :integer
           ^^^^^^^^^^^^^^^^^^^^^^^^^^ New database column without `comment`.
@@ -79,7 +89,7 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
     end
 
     it 'registers an offense when `t.integer` has no `comment` option' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_create_users.rb')
         create_table :users, comment: 'Table' do |t|
           t.integer :column
           ^^^^^^^^^^^^^^^^^ New database column without `comment`.
@@ -88,7 +98,7 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
     end
 
     it 'registers two offenses when two `t.column` have no `comment` option' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_create_users.rb')
         create_table :users, comment: 'Table' do |t|
           t.column :column1, :integer
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^ New database column without `comment`.
@@ -99,7 +109,7 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
     end
 
     it 'registers two offenses when two `t.integer` have no `comment` option' do
-      expect_offense(<<~RUBY)
+      expect_offense(<<~RUBY, '20250101010101_create_users.rb')
         create_table :users, comment: 'Table' do |t|
           t.integer :column1
           ^^^^^^^^^^^^^^^^^^ New database column without `comment`.
