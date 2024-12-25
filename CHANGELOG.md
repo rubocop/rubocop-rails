@@ -9,6 +9,22 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#1383](https://github.com/rubocop/rubocop-rails/pull/1383): Introduce `AllCops: MigratedSchemaVersion` config. ([@koic][])
+
+### Bug fixes
+
+* [#1390](https://github.com/rubocop/rubocop-rails/pull/1390): Fix an incorrect autocorrect for `Rails/SelectMap` when `select` has no receiver and method chains are used. ([@masato-bkn][])
+* [#1382](https://github.com/rubocop/rubocop-rails/pull/1382): Fix false negatives for `Rails/RedundantActiveRecordAllMethod` when using `all` method in block. ([@masato-bkn][])
+* [#1397](https://github.com/rubocop/rubocop-rails/pull/1397): Fix `Rails/FilePath` cop error on `join` method with implicit receiver. ([@viralpraxis][])
+* [#1398](https://github.com/rubocop/rubocop-rails/pull/1398): Fix `Rails/FilePath` cop error in case of extra operations in `Rails.root` interpolation. ([@viralpraxis][])
+* [#1392](https://github.com/rubocop/rubocop-rails/pull/1392): Fix `Rails/FilePath` cop error with rescued `Rails.root`. ([@viralpraxis][])
+
+### Changes
+
+* [#1388](https://github.com/rubocop/rubocop-rails/pull/1388): Modify `Rails/Pluck` to ignore `map/collect` when used inside blocks to prevent potential N+1 queries. ([@masato-bkn][])
+
 ## 2.27.0 (2024-10-26)
 
 ### Bug fixes
@@ -1166,3 +1182,4 @@
 [@maxprokopiev]: https://github.com/maxprokopiev
 [@ytjmt]: https://github.com/ytjmt
 [@armandmgt]: https://github.com/armandmgt
+[@viralpraxis]: https://github.com/viralpraxis
