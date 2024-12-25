@@ -90,7 +90,7 @@ When `MigratedSchemaVersion: '20241225000000'` is set, migration files lower tha
 For example, to ignore db/migrate/20241225000000_create_articles.rb and earlier migrations you would configure it the following way:
 
 ```yaml
-AllCops
+AllCops:
   MigratedSchemaVersion: '20241225000000'
 ```
 
