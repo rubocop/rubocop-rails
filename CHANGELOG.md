@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.28.0 (2024-12-25)
+
 ### New features
 
 * [#1383](https://github.com/rubocop/rubocop-rails/pull/1383): Introduce `AllCops: MigratedSchemaVersion` config. ([@koic][])

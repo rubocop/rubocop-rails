@@ -2075,7 +2075,7 @@ enum status: { active: 0, archived: 1 }
 [#railsenumsyntax]
 == Rails/EnumSyntax
 
-NOTE: Required Ruby version: 3.0
+NOTE: Requires Ruby version 3.0
 
 NOTE: Required Rails version: 7.0
 
@@ -4324,6 +4324,24 @@ Enforces the use of `pluck` over `map`.
 element in an enumerable. When called on an Active Record relation, it
 results in a more efficient query that only selects the necessary key.
 
+NOTE: If the receiver's relation is not loaded and `pluck` is used inside an iteration,
+it may result in N+1 queries because `pluck` queries the database on each iteration.
+This cop ignores offenses for `map/collect` when they are suspected to be part of an iteration
+to prevent such potential issues.
+
+[source,ruby]
+----
+users = User.all
+5.times do
+  users.map { |user| user[:foo] } # Only one query is executed
+end
+
+users = User.all
+5.times do
+  users.pluck(:id) # A query is executed on every iteration
+end
+----
+
 [#safety-railspluck]
 === Safety
 
@@ -5928,7 +5946,7 @@ Rails.public_path.join('file.pdf')
 [#railssafenavigation]
 == Rails/SafeNavigation
 
-NOTE: Required Ruby version: 2.3
+NOTE: Requires Ruby version 2.3
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -6544,7 +6562,7 @@ SQL
 [#railsstripheredoc]
 == Rails/StripHeredoc
 
-NOTE: Required Ruby version: 2.3
+NOTE: Requires Ruby version 2.3
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -7670,7 +7688,7 @@ User.where.not('trashed = ? OR role = ?', true, 'admin')
 [#railswhererange]
 == Rails/WhereRange
 
-NOTE: Required Ruby version: 2.6
+NOTE: Requires Ruby version 2.6
 
 NOTE: Required Rails version: 6.0
 
