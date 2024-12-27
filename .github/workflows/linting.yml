@@ -1,6 +1,10 @@
 name: Linting
 on:
-  - pull_request
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
 
 permissions:  # added using https://github.com/step-security/secure-workflows
   contents: read
@@ -10,11 +14,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  yamllint:
+  lint-ruby:
+    name: Ruby
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby # Latest stable CRuby version
+          bundler-cache: true
+      - name: internal_investigation
+        run: bundle exec rake internal_investigation
+
+  lint-yaml:
     permissions:
       contents: read  # for actions/checkout to fetch code
       pull-requests: write  # for karancode/yamllint-github-action to post comments on PRs
-    name: Yamllint
+    name: Yaml
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -35,8 +35,6 @@ jobs:
           bundler-cache: true
       - name: spec
         run: bundle exec rake spec
-      - name: internal_investigation
-        run: bundle exec rake internal_investigation
 
   jruby:
     name: JRuby 9.4
@@ -49,8 +47,6 @@ jobs:
           bundler-cache: true
       - name: spec
         run: bundle exec rake spec
-      - name: internal_investigation
-        run: bundle exec rake internal_investigation
 
   prism:
     runs-on: ubuntu-latest
