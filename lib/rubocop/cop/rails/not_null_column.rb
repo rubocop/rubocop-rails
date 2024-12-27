@@ -46,6 +46,9 @@ module RuboCop
         MSG = 'Do not add a NOT NULL column without a default value.'
         RESTRICT_ON_SEND = %i[add_column add_reference].freeze
 
+        VIRTUAL_TYPE_VALUES = [:virtual, 'virtual'].freeze
+        TEXT_TYPE_VALUES = [:text, 'text'].freeze
+
         def_node_matcher :add_not_null_column?, <<~PATTERN
           (send nil? :add_column _ _ $_ (hash $...))
         PATTERN
@@ -92,8 +95,8 @@ module RuboCop
 
         def check_column(type, pairs)
           if type.respond_to?(:value)
-            return if type.value == :virtual || type.value == 'virtual'
-            return if (type.value == :text || type.value == 'text') && database == MYSQL
+            return if VIRTUAL_TYPE_VALUES.include?(type.value)
+            return if TEXT_TYPE_VALUES.include?(type.value) && database == MYSQL
           end
 
           check_pairs(pairs)
