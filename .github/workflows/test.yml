@@ -16,11 +16,8 @@ concurrency:
 
 jobs:
   main:
-    name: Ruby ${{ matrix.ruby }}
+    name: Spec - ${{ matrix.ruby }}
     runs-on: ubuntu-latest
-    env:
-      # See https://github.com/tmm1/test-queue#environment-variables
-      TEST_QUEUE_WORKERS: 2
     strategy:
       fail-fast: false
       matrix:
@@ -37,13 +34,13 @@ jobs:
         run: bundle exec rake spec
 
   jruby:
-    name: JRuby 9.4
+    name: Spec - JRuby
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: jruby-9.4
+          ruby-version: jruby # Latest stable JRuby version
           bundler-cache: true
       - name: spec
         run: bundle exec rake spec
@@ -70,9 +67,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2
+          ruby-version: ruby # Latest stable CRuby version
           bundler-cache: true
-      - name: test
+      - name: Check documentation syntax
         run: bundle exec rake documentation_syntax_check
 
   oldest_supported_rubocop:
