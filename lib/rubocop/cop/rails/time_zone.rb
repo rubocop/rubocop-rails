@@ -97,11 +97,9 @@ module RuboCop
         end
 
         def autocorrect_time_new(node, corrector)
-          if node.arguments?
-            corrector.replace(node.loc.selector, 'local')
-          else
-            corrector.replace(node.loc.selector, 'now')
-          end
+          replacement = replacement(node)
+
+          corrector.replace(node.loc.selector, replacement)
         end
 
         # remove redundant `.in_time_zone` from `Time.zone.now.in_time_zone`
@@ -183,7 +181,7 @@ module RuboCop
 
         def safe_method(method_name, node)
           if %w[new current].include?(method_name)
-            node.arguments? ? 'local' : 'now'
+            replacement(node)
           else
             method_name
           end
@@ -258,6 +256,12 @@ module RuboCop
             options.each_pair.any? do |pair|
               pair.key.sym_type? && pair.key.value == :in && !pair.value.nil_type?
             end
+        end
+
+        def replacement(node)
+          return 'now' unless node.arguments?
+
+          node.first_argument.str_type? ? 'parse' : 'local'
         end
       end
     end
