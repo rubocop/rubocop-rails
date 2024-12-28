@@ -2,6 +2,9 @@ name: Spell Checking
 
 on: [pull_request]
 
+permissions:  # added using https://github.com/step-security/secure-workflows
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -14,6 +17,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: codespell-project/actions-codespell@v2
         with:
+          check_filenames: true
+          check_hidden: true
           ignore_words_file: codespell.txt
   misspell:
     name: Check spelling of all files in commit with misspell

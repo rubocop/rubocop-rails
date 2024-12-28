@@ -1,18 +1,41 @@
 name: Linting
 on:
-  - pull_request
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
+
 jobs:
-  yamllint:
-    name: Yamllint
+  lint-ruby:
+    name: Ruby
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby # Latest stable CRuby version
+          bundler-cache: true
+      - name: internal_investigation
+        run: bundle exec rake internal_investigation
+
+  lint-yaml:
+    permissions:
+      contents: read  # for actions/checkout to fetch code
+      pull-requests: write  # for karancode/yamllint-github-action to post comments on PRs
+    name: Yaml
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Yamllint
-        uses: karancode/yamllint-github-action@master
+        uses: karancode/yamllint-github-action@v3.0.0
         with:
+          yamllint_strict: true
+          yamllint_format: parsable
           yamllint_comment: true
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
