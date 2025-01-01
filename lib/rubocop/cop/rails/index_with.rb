@@ -32,18 +32,28 @@ module RuboCop
         PATTERN
 
         def_node_matcher :on_bad_to_h, <<~PATTERN
-          (block
-            (call _ :to_h)
-            (args (arg $_el))
-            (array (lvar _el) $_))
+          {
+            (block
+              (call _ :to_h)
+              (args (arg $_el))
+              (array (lvar _el) $_))
+            (numblock
+              (call _ :to_h) $1
+              (array (lvar :_1) $_))
+          }
         PATTERN
 
         def_node_matcher :on_bad_map_to_h, <<~PATTERN
           (call
-            (block
-              (call _ {:map :collect})
-              (args (arg $_el))
-              (array (lvar _el) $_))
+            {
+              (block
+                (call _ {:map :collect})
+                (args (arg $_el))
+                (array (lvar _el) $_))
+              (numblock
+                (call _ {:map :collect}) $1
+                (array (lvar :_1) $_))
+            }
             :to_h)
         PATTERN
 
@@ -51,10 +61,16 @@ module RuboCop
           (send
             (const {nil? cbase} :Hash)
             :[]
-            (block
-              (call _ {:map :collect})
-              (args (arg $_el))
-              (array (lvar _el) $_)))
+            {
+              (block
+                (call _ {:map :collect})
+                (args (arg $_el))
+                (array (lvar _el) $_))
+              (numblock
+                (call _ {:map :collect}) $1
+                (array (lvar :_1) $_))
+            }
+          )
         PATTERN
 
         private

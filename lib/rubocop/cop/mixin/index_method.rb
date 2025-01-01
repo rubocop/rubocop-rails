@@ -6,7 +6,7 @@ module RuboCop
     module IndexMethod # rubocop:disable Metrics/ModuleLength
       RESTRICT_ON_SEND = %i[each_with_object to_h map collect []].freeze
 
-      def on_block(node) # rubocop:todo InternalAffairs/NumblockHandler
+      def on_block(node)
         on_bad_each_with_object(node) do |*match|
           handle_possible_offense(node, match, 'each_with_object')
         end
@@ -17,6 +17,8 @@ module RuboCop
           handle_possible_offense(node, match, 'to_h { ... }')
         end
       end
+
+      alias on_numblock on_block
 
       def on_send(node)
         on_bad_map_to_h(node) do |*match|
@@ -153,6 +155,8 @@ module RuboCop
         end
 
         def set_new_arg_name(transformed_argname, corrector)
+          return if block_node.numblock_type?
+
           corrector.replace(block_node.arguments, "|#{transformed_argname}|")
         end
 
