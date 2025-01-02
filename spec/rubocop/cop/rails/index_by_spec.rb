@@ -182,4 +182,63 @@ RSpec.describe RuboCop::Cop::Rails::IndexBy, :config do
       RUBY
     end
   end
+
+  context 'numbered parameters' do
+    it 'registers an offense for `map { ... }.to_h`' do
+      expect_offense(<<~RUBY)
+        x.map { [_1.to_sym, _1] }.to_h
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `map { ... }.to_h`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x.index_by { _1.to_sym }
+      RUBY
+    end
+
+    context 'when values are transformed' do
+      it 'does not register an offense for `map { ... }.to_h`' do
+        expect_no_offenses(<<~RUBY)
+          x.map { [_1.to_sym, foo(_1)] }.to_h
+        RUBY
+      end
+    end
+
+    it 'registers an offense for Hash[map { ... }]' do
+      expect_offense(<<~RUBY)
+        Hash[x.map { [_1.to_sym, _1] }]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `Hash[map { ... }]`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x.index_by { _1.to_sym }
+      RUBY
+    end
+
+    context 'when the referenced numbered parameter is not _1' do
+      it 'does not register an offense for Hash[map { ... }]' do
+        expect_no_offenses(<<~RUBY)
+          Hash[x.map { [_1.to_sym, _2] }]
+        RUBY
+      end
+    end
+
+    it 'registers an offense for `to_h { ... }`' do
+      expect_offense(<<~RUBY)
+        x.to_h { [_1.to_sym, _1] }
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `to_h { ... }`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x.index_by { _1.to_sym }
+      RUBY
+    end
+
+    context 'when a numbered parameter other than _1 is referenced in the key' do
+      it 'does not register an offense for `to_h { ... }`' do
+        expect_no_offenses(<<~RUBY)
+          x.to_h { [_2.to_sym, _1] }
+        RUBY
+      end
+    end
+  end
 end
