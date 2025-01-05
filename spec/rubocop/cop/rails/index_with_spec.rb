@@ -107,6 +107,27 @@ RSpec.describe RuboCop::Cop::Rails::IndexWith, :config do
       end
     end
 
+    context 'when enclosed in another block' do
+      it 'registers an offense for `map { ... }.to_h`' do
+        expect_offense(<<~RUBY)
+          wrapping do
+            x.map do |el|
+            ^^^^^^^^^^^^^ Prefer `index_with` over `map { ... }.to_h`.
+              [el, el.to_sym]
+            end.to_h
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          wrapping do
+            x.index_with do |el|
+              el.to_sym
+            end
+          end
+        RUBY
+      end
+    end
+
     it 'registers an offense for `Hash[map { ... }]`' do
       expect_offense(<<~RUBY)
         Hash[x.map { |el| [el, el.to_sym] }]
