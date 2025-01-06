@@ -101,6 +101,32 @@ RSpec.describe RuboCop::Cop::Rails::IndexWith, :config do
       end
     end
 
+    context 'when the value is a hash literal with braces' do
+      it 'registers an offense for `to_h { ... }`' do
+        expect_offense(<<~RUBY)
+          x.map { |el| [el, { value: el }] }.to_h
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_with` over `map { ... }.to_h`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          x.index_with { |el| { value: el } }
+        RUBY
+      end
+    end
+
+    context 'when the value is a hash literal without braces' do
+      it 'registers an offense for `to_h { ... }`' do
+        expect_offense(<<~RUBY)
+          x.map { |el| [el, value: el] }.to_h
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_with` over `map { ... }.to_h`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          x.index_with { |el| { value: el } }
+        RUBY
+      end
+    end
+
     context 'when to_h is not called on the result' do
       it 'does not register an offense for `map { ... }.to_h`' do
         expect_no_offenses('x.map { |el| [el, el.to_sym] }')

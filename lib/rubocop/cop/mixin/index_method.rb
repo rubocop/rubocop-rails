@@ -161,7 +161,10 @@ module RuboCop
         end
 
         def set_new_body_expression(transforming_body_expr, corrector)
-          corrector.replace(block_node.body, transforming_body_expr.source)
+          body_source = transforming_body_expr.source
+          body_source = "{ #{body_source} }" if transforming_body_expr.hash_type? && !transforming_body_expr.braces?
+
+          corrector.replace(block_node.body, body_source)
         end
       end
     end
