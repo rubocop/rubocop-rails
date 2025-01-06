@@ -698,6 +698,12 @@ Rails/MigrationClassName:
   Include:
     - db/**/*.rb
 
+Rails/MultipleRoutePaths:
+  Description: 'Checks for mapping a route with multiple paths, which is deprecated and will be removed in Rails 8.1.'
+  Enabled: pending
+  Severity: warning
+  VersionAdded: '<<next>>'
+
 Rails/NegateInclude:
   Description: 'Prefer `collection.exclude?(obj)` over `!collection.include?(obj)`.'
   StyleGuide: 'https://rails.rubystyle.guide#exclude'

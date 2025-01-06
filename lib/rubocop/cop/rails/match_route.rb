@@ -21,11 +21,11 @@ module RuboCop
       #   match 'photos/:id', to: 'photos#show', via: :all
       #
       class MatchRoute < Base
+        include RoutesHelper
         extend AutoCorrector
 
         MSG = 'Use `%<http_method>s` instead of `match` to define a route.'
         RESTRICT_ON_SEND = %i[match].freeze
-        HTTP_METHODS = %i[get post put patch delete].freeze
 
         def_node_matcher :match_method_call?, <<~PATTERN
           (send nil? :match $_ $(hash ...) ?)
@@ -58,14 +58,6 @@ module RuboCop
               corrector.replace(node, replacement(path_node, options_node))
             end
           end
-        end
-
-        def_node_matcher :routes_draw?, <<~PATTERN
-          (send (send _ :routes) :draw)
-        PATTERN
-
-        def within_routes?(node)
-          node.each_ancestor(:block).any? { |a| routes_draw?(a.send_node) }
         end
 
         def extract_via(node)
