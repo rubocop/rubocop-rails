@@ -215,8 +215,10 @@ module RuboCop
         end
 
         def check_drop_table_node(node)
+          return unless (last_argument = node.last_argument)
+
           drop_table_call(node) do
-            unless node.parent.block_type? || node.last_argument.block_pass_type?
+            unless node.parent.block_type? || last_argument.block_pass_type?
               add_offense(node, message: format(MSG, action: 'drop_table(without block)'))
             end
           end
