@@ -32,7 +32,7 @@ module RuboCop
       #   after_update_commit :log_update_action
       #
       class AfterCommitOverride < Base
-        include ClassSendNodeHelper
+        include ClassElementsHelper
 
         MSG = 'There can only be one `after_*_commit :%<name>s` hook defined for a model.'
 

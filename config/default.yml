@@ -679,6 +679,15 @@ Rails/MailerName:
   Include:
     - app/mailers/**/*.rb
 
+Rails/MailerPreviews:
+  Description: 'Checks for existence of mailer previews.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  PreviewPaths:
+    - test/mailers/previews
+  Include:
+    - app/mailers/**/*.rb
+
 Rails/MatchRoute:
   Description: >-
                   Don't use `match` to define any routes unless there is a need to map multiple request types
