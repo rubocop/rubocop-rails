@@ -121,6 +121,10 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     it_behaves_like 'offense', 'drop_table(without block)', <<~RUBY
       drop_table :users
     RUBY
+
+    it_behaves_like 'accepts', 'drop_table(without arguments)', <<~RUBY
+      drop_table
+    RUBY
   end
 
   context 'change_column' do
