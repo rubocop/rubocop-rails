@@ -43,7 +43,7 @@ module RuboCop
       #     end
       #   end
       class ReversibleMigrationMethodDefinition < Base
-        prepend MigrationsHelper
+        include MigrationsHelper
 
         MSG = 'Migrations must contain either a `change` method, or both an `up` and a `down` method.'
 

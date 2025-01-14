@@ -18,7 +18,7 @@ module RuboCop
       #   t.boolean :active, default: true, null: false
       #
       class ThreeStateBooleanColumn < Base
-        prepend MigrationsHelper
+        include MigrationsHelper
 
         MSG = 'Boolean columns should always have a default value and a `NOT NULL` constraint.'
         RESTRICT_ON_SEND = %i[add_column column boolean].freeze

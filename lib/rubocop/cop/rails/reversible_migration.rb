@@ -151,7 +151,7 @@ module RuboCop
       #     remove_index :users, column: :email
       #   end
       class ReversibleMigration < Base
-        prepend MigrationsHelper
+        include MigrationsHelper
 
         MSG = '%<action>s is not reversible.'
 

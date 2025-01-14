@@ -15,6 +15,9 @@ RuboCop::Rails::Inject.defaults!
 
 require_relative 'rubocop/cop/rails_cops'
 
+require_relative 'rubocop/rails/migration_file_skippable'
+RuboCop::Rails::MigrationFileSkippable.apply_to_cops!
+
 RuboCop::Cop::Style::HashExcept.minimum_target_ruby_version(2.0)
 
 RuboCop::Cop::Style::InverseMethods.singleton_class.prepend(

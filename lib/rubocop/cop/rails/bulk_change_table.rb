@@ -65,7 +65,7 @@ module RuboCop
       #   end
       class BulkChangeTable < Base
         include DatabaseTypeResolvable
-        prepend MigrationsHelper
+        include MigrationsHelper
 
         MSG_FOR_CHANGE_TABLE = <<~MSG.chomp
           You can combine alter queries using `bulk: true` options.
