@@ -703,6 +703,9 @@ Rails/MultipleRoutePaths:
   Enabled: pending
   Severity: warning
   VersionAdded: '<<next>>'
+  Include:
+    - config/routes.rb
+    - config/routes/**/*.rb
 
 Rails/NegateInclude:
   Description: 'Prefer `collection.exclude?(obj)` over `!collection.include?(obj)`.'
