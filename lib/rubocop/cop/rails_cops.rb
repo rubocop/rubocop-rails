@@ -11,6 +11,7 @@ require_relative 'mixin/routes_helper'
 require_relative 'mixin/target_rails_version'
 
 require_relative 'rails/action_controller_flash_before_render'
+require_relative 'rails/strong_parameters_expect'
 require_relative 'rails/action_controller_test_case'
 require_relative 'rails/action_filter'
 require_relative 'rails/action_order'

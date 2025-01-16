@@ -1081,6 +1081,15 @@ Rails/StripHeredoc:
   Enabled: pending
   VersionAdded: '2.15'
 
+Rails/StrongParametersExpect:
+  Description: 'Enforces the use of `ActionController::Parameters#expect` as a method for strong parameter handling.'
+  Reference: 'https://api.rubyonrails.org/classes/ActionController/Parameters.html#method-i-expect'
+  Enabled: pending
+  Include:
+    - app/controllers/**/*.rb
+  SafeAutoCorrect: false
+  VersionAdded: '<<next>>'
+
 Rails/TableNameAssignment:
   Description: >-
     Do not use `self.table_name =`. Use Inflections or `table_name_prefix` instead.
