@@ -59,7 +59,7 @@ module RuboCop
           end
 
           add_offense(range, message: format(MSG, prefer: prefer)) do |corrector|
-            corrector.remove(require_method.loc.dot.join(require_method.source_range.end))
+            corrector.remove(require_method.receiver.source_range.end.join(require_method.source_range.end))
             corrector.replace(permit_method.loc.selector, 'expect')
             if replace_argument
               corrector.insert_before(permit_method.first_argument, "#{require_key(require_method)}[")
