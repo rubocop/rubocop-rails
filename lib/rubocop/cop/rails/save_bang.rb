@@ -328,8 +328,9 @@ module RuboCop
         end
 
         def return_value_assigned?(node)
-          assignment = assignable_node(node).parent
-          assignment&.lvasgn_type?
+          return false unless (assignment = assignable_node(node).parent)
+
+          assignment.assignment?
         end
 
         def persist_method?(node, methods = RESTRICT_ON_SEND)
