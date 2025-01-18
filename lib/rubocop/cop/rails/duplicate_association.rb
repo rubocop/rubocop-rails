@@ -63,11 +63,15 @@ module RuboCop
         private
 
         def register_offense(name, nodes, message_template)
-          nodes.each do |node|
-            add_offense(node, message: format(message_template, name: name)) do |corrector|
-              next if same_line?(nodes.last, node)
+          last_node = nodes.last
 
-              corrector.remove(range_by_whole_lines(node.source_range, include_final_newline: true))
+          nodes.each_with_index do |node, index|
+            add_offense(node, message: format(message_template, name: name)) do |corrector|
+              if index.zero?
+                corrector.replace(node, last_node.source)
+              else
+                corrector.remove(range_by_whole_lines(node.source_range, include_final_newline: true))
+              end
             end
           end
         end
