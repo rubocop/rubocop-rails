@@ -702,7 +702,7 @@ Rails/MultipleRoutePaths:
   Description: 'Checks for mapping a route with multiple paths, which is deprecated and will be removed in Rails 8.1.'
   Enabled: pending
   Severity: warning
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.29'
   Include:
     - config/routes.rb
     - config/routes/**/*.rb
@@ -1088,7 +1088,7 @@ Rails/StrongParametersExpect:
   Include:
     - app/controllers/**/*.rb
   SafeAutoCorrect: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.29'
 
 Rails/TableNameAssignment:
   Description: >-

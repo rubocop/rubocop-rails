@@ -3975,6 +3975,49 @@ end
 | Array
 |===
 
+[#railsmultipleroutepaths]
+== Rails/MultipleRoutePaths
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Always
+| 2.29
+| -
+|===
+
+Checks for mapping a route with multiple paths, which is deprecated and will be removed in Rails 8.1.
+
+[#examples-railsmultipleroutepaths]
+=== Examples
+
+[source,ruby]
+----
+# bad
+get '/users', '/other_path', to: 'users#index'
+
+# good
+get '/users', to: 'users#index'
+get '/other_path', to: 'users#index'
+----
+
+[#configurable-attributes-railsmultipleroutepaths]
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Severity
+| `warning`
+| String
+
+| Include
+| `config/routes.rb`, `+config/routes/**/*.rb+`
+| Array
+|===
+
 [#railsnegateinclude]
 == Rails/NegateInclude
 
@@ -6601,6 +6644,60 @@ EOS
 === References
 
 * https://rails.rubystyle.guide/#prefer-squiggly-heredoc
+
+[#railsstrongparametersexpect]
+== Rails/StrongParametersExpect
+
+NOTE: Required Rails version: 8.0
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Always (Unsafe)
+| 2.29
+| -
+|===
+
+Enforces the use of `ActionController::Parameters#expect` as a method for strong parameter handling.
+
+[#safety-railsstrongparametersexpect]
+=== Safety
+
+This cop's autocorrection is considered unsafe because there are cases where the HTTP status may change
+from 500 to 400 when handling invalid parameters. This change, however, reflects an intentional
+incompatibility introduced for valid reasons by the `expect` method, which aligns better with
+strong parameter conventions.
+
+[#examples-railsstrongparametersexpect]
+=== Examples
+
+[source,ruby]
+----
+# bad
+params.require(:user).permit(:name, :age)
+params.permit(user: [:name, :age]).require(:user)
+
+# good
+params.expect(user: [:name, :age])
+----
+
+[#configurable-attributes-railsstrongparametersexpect]
+=== Configurable attributes
+
+|===
+| Name | Default value | Configurable values
+
+| Include
+| `+app/controllers/**/*.rb+`
+| Array
+|===
+
+[#references-railsstrongparametersexpect]
+=== References
+
+* https://api.rubyonrails.org/classes/ActionController/Parameters.html#method-i-expect
 
 [#railstablenameassignment]
 == Rails/TableNameAssignment

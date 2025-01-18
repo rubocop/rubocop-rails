@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.29.0 (2025-01-18)
+
 ### New features
 
 * [#1407](https://github.com/rubocop/rubocop-rails/pull/1407): Add new `Rails/MultipleRoutePaths` cop. ([@koic][])
