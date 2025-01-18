@@ -1,1 +1,0 @@
-* [#1406](https://github.com/rubocop/rubocop-rails/pull/1406): Fix autocorrection for `Rails/IndexBy` and `Rails/IndexWith` when `map { ... }.to_h` is enclosed in another block. ([@franzliedke][], [@eugeneius][])

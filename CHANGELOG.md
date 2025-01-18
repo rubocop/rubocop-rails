@@ -9,6 +9,24 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#1407](https://github.com/rubocop/rubocop-rails/pull/1407): Add new `Rails/MultipleRoutePaths` cop. ([@koic][])
+* [#1358](https://github.com/rubocop/rubocop-rails/issues/1358): Add new `Rails/StrongParametersExpect` cop. ([@koic][])
+
+### Bug fixes
+
+* [#1409](https://github.com/rubocop/rubocop-rails/pull/1409): Fix an error for `Rails/ReversibleMigration` when calling `drop_table` without any arguments. ([@earlopain][])
+* [#1397](https://github.com/rubocop/rubocop-rails/pull/1397): Fix an incorrect autocorrect for `Rails/TimeZone` when Time.new has a string argument. ([@mterada1228][])
+* [#1406](https://github.com/rubocop/rubocop-rails/pull/1406): Fix autocorrection for `Rails/IndexBy` and `Rails/IndexWith` when `map { ... }.to_h` is enclosed in another block. ([@franzliedke][], [@eugeneius][])
+* [#1404](https://github.com/rubocop/rubocop-rails/pull/1404): Update `Rails/IndexBy` and `Rails/IndexWith` to support numbered block parameters. ([@eugeneius][])
+* [#1405](https://github.com/rubocop/rubocop-rails/pull/1405): Fix autocorrection for `Rails/IndexWith` when the value is a hash literal without braces. ([@koic][], [@eugeneius][])
+* [#1414](https://github.com/rubocop/rubocop-rails/pull/1414): Fix `Rails/HttpPositionalArguments` cop false positives with arguments forwarding. ([@viralpraxis][])
+
+### Changes
+
+* [#1410](https://github.com/rubocop/rubocop-rails/issues/1410): Make registered cops aware of `AllCops: MigratedSchemaVersion`. ([@koic][])
+
 ## 2.28.0 (2024-12-25)
 
 ### New features
@@ -1185,3 +1203,5 @@
 [@ytjmt]: https://github.com/ytjmt
 [@armandmgt]: https://github.com/armandmgt
 [@viralpraxis]: https://github.com/viralpraxis
+[@mterada1228]: https://github.com/mterada1228
+[@franzliedke]: https://github.com/franzliedke
