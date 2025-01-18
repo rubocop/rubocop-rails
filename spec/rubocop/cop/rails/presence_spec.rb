@@ -441,4 +441,16 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
       end
     RUBY
   end
+
+  context 'when inspection file that have already been migrated' do
+    let(:config) do
+      RuboCop::Config.new('AllCops' => { 'MigratedSchemaVersion' => '20240101010101' })
+    end
+
+    it 'does not register an offense and corrects when `a.present? ? a : nil`' do
+      expect_no_offenses(<<~RUBY, '20190101010101_add_column_to_table.rb')
+        a.present? ? a : nil
+      RUBY
+    end
+  end
 end

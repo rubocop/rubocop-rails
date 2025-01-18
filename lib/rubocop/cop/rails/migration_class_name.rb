@@ -20,7 +20,7 @@ module RuboCop
       #
       class MigrationClassName < Base
         extend AutoCorrector
-        prepend MigrationsHelper
+        include MigrationsHelper
 
         MSG = 'Replace with `%<camelized_basename>s` that matches the file name.'
 
