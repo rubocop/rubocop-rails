@@ -29,7 +29,7 @@ InternalAffairs/OnSendWithoutOnCSend:
 # Offense count: 10
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
-  Max: 179
+  Max: 163
 
 # Offense count: 41
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
