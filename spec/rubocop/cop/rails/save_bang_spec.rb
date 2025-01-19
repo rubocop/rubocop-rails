@@ -668,6 +668,56 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       RUBY
     end
 
+    it "does not register an offense when using persisted? after #{method} to a local variable" do
+      expect_no_offenses(<<~RUBY)
+        user = User.#{method}
+
+        if user.persisted?
+          foo
+        end
+      RUBY
+    end
+
+    it "does not register an offense when using persisted? after #{method} to an instance variable" do
+      expect_no_offenses(<<~RUBY)
+        @user = User.#{method}
+
+        if @user.persisted?
+          foo
+        end
+      RUBY
+    end
+
+    it "does not register an offense when using persisted? after #{method} to a global variable" do
+      expect_no_offenses(<<~RUBY)
+        $user = User.#{method}
+
+        if $user.persisted?
+          foo
+        end
+      RUBY
+    end
+
+    it "does not register an offense when using persisted? after #{method} for multiple assignments" do
+      expect_no_offenses(<<~RUBY)
+        a, b = User.#{method}, User.new
+
+        if a.persisted?
+          foo
+        end
+      RUBY
+    end
+
+    it "does not register an offense when using persisted? after #{method} for conditional assignments" do
+      expect_no_offenses(<<~RUBY)
+        user ||= User.#{method}
+
+        if user.persisted?
+          foo
+        end
+      RUBY
+    end
+
     it "when using #{method} with `||`" do
       expect_no_offenses(<<~RUBY)
         def find_or_create(**opts)
