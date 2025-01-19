@@ -98,6 +98,20 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'registers an offense when using a leading dot multiline call to `params.require(:user).permit(:name, :age)`' do
+      expect_offense(<<~RUBY)
+        params
+          .require(:user)
+           ^^^^^^^^^^^^^^ Use `expect(user: [:name, :age])` instead.
+          .permit(:name, :age)
+      RUBY
+
+      expect_correction(<<~RUBY)
+        params
+          .expect(user: [:name, :age])
+      RUBY
+    end
+
     it 'does not register an offense when using `params.expect(user: [:name, :age])`' do
       expect_no_offenses(<<~RUBY)
         params.expect(user: [:name, :age])
