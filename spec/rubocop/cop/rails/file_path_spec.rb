@@ -444,6 +444,123 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         RUBY
       end
     end
+
+    context 'when File.join wraps Rails.root.join with string arguments' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app', 'models'), 'user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app/models/user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with non-string arguments' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app/models'), 'user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app/models/user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with non-string arguments and path starting with `/`' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app/models'), '/vehicle' '/car.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app/models/vehicle/car.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with string arguments and .to_s' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app', 'models').to_s, 'user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app/models/user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with non-string arguments and .to_s' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app/models').to_s, 'user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app/models/user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with non-string arguments and path starting with `/` and .to_s' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app/models').to_s, '/vehicle' '/car.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app/models/vehicle/car.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when using nested File.join with Rails.root with string arguments' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(File.join(Rails.root, 'app', 'models'), 'user.rb')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app/models/user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when using nested File.join with Rails.root with non-string arguments' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(File.join(Rails.root, 'app/models'), 'user.rb')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app/models/user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when using nested File.join with Rails.root with non-string arguments and path starting with `/`' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(File.join(Rails.root, '/app/models'), '/user.rb')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app/models/user.rb').to_s
+        RUBY
+      end
+    end
   end
 
   context 'when EnforcedStyle is `arguments`' do
@@ -751,6 +868,123 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'does not register an offense' do
         expect_no_offenses(<<~RUBY)
           File.join(Rails.root, 'public//', 'assets')
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with string arguments' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app', 'models'), 'user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app', 'models', 'user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with non-string arguments' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app/models'), 'user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app', "models", 'user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with non-string arguments and path starting with `/`' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app/models'), '/vehicle' '/car.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app', "models", 'vehicle', 'car.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with string arguments and .to_s' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app', 'models').to_s, 'user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app', 'models', 'user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with non-string arguments and .to_s' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app/models').to_s, 'user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app', "models", 'user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when File.join wraps Rails.root.join with non-string arguments and path starting with `/` and .to_s' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(Rails.root.join('app/models').to_s, '/vehicle' '/car.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app', "models", 'vehicle', 'car.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when using nested File.join with Rails.root with string arguments' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(File.join(Rails.root, 'app', 'models'), 'user.rb')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join("app", "models", 'user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when using nested File.join with Rails.root with non-string arguments' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(File.join(Rails.root, 'app/models'), 'user.rb')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join("app", "models", 'user.rb').to_s
+        RUBY
+      end
+    end
+
+    context 'when using nested File.join with Rails.root with non-string arguments and path starting with `/`' do
+      it 'registers an offense once' do
+        expect_offense(<<~RUBY)
+          File.join(File.join(Rails.root, '/app/models'), '/user.rb')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join("app", "models", 'user.rb').to_s
         RUBY
       end
     end
