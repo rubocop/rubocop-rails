@@ -173,7 +173,17 @@ module RuboCop
         end
 
         def autocorrect_file_join(corrector, node)
+          replace_receiver_with_rails_root(corrector, node)
+          remove_first_argument_with_comma(corrector, node)
+          process_arguments(corrector, node.arguments)
+          append_to_string_conversion(corrector, node)
+        end
+
+        def replace_receiver_with_rails_root(corrector, node)
           corrector.replace(node.receiver, 'Rails.root')
+        end
+
+        def remove_first_argument_with_comma(corrector, node)
           corrector.remove(
             range_with_surrounding_space(
               range_with_surrounding_comma(
@@ -183,9 +193,19 @@ module RuboCop
               side: :right
             )
           )
-          node.arguments.filter(&:str_type?).each do |argument|
-            corrector.replace(argument, argument.value.delete_prefix('/').inspect)
+        end
+
+        def process_arguments(corrector, arguments)
+          arguments.each do |argument|
+            if argument.str_type?
+              corrector.replace(argument, argument.value.delete_prefix('/').inspect)
+            elsif argument.array_type?
+              corrector.replace(argument, "*#{argument.source}")
+            end
           end
+        end
+
+        def append_to_string_conversion(corrector, node)
           corrector.insert_after(node, '.to_s')
         end
 
