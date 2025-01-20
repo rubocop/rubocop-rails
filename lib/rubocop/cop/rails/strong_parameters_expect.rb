@@ -32,7 +32,7 @@ module RuboCop
         def_node_matcher :params_require_permit, <<~PATTERN
           $(call
             $(call
-              (send nil? :params) :require _) :permit ...)
+              (send nil? :params) :require _) :permit _+)
         PATTERN
 
         def_node_matcher :params_permit_require, <<~PATTERN
