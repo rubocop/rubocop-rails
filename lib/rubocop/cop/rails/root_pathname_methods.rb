@@ -237,7 +237,12 @@ module RuboCop
           end
 
           replacement = "#{path_replacement}.#{method}"
-          replacement += "(#{args.map(&:source).join(', ')})" unless args.empty?
+
+          if args.any?
+            formatted_args = args.map { |arg| arg.array_type? ? "*#{arg.source}" : arg.source }
+            replacement += "(#{formatted_args.join(', ')})"
+          end
+
           replacement
         end
 

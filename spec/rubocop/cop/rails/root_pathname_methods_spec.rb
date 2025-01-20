@@ -210,4 +210,70 @@ RSpec.describe RuboCop::Cop::Rails::RootPathnameMethods, :config do
       file = Rails.root.join('docs', 'invoice.pdf').open
     RUBY
   end
+
+  it 'registers an offense when using only [] syntax' do
+    expect_offense(<<~RUBY)
+      File.join(Rails.root, ['app', 'models'])
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname`, so you can use `Rails.root.join(*['app', 'models'])`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.root.join(*['app', 'models'])
+    RUBY
+  end
+
+  it 'registers an offense when using a leading string and an array using [] syntax' do
+    expect_offense(<<~RUBY)
+      File.join(Rails.root, "app", ["models", "goober"])
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname`, so you can use `Rails.root.join("app", *["models", "goober"])`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.root.join("app", *["models", "goober"])
+    RUBY
+  end
+
+  it 'registers an offense when using an array using [] syntax and a trailing string' do
+    expect_offense(<<~RUBY)
+      File.join(Rails.root, ["app", "models"], "goober")
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname`, so you can use `Rails.root.join(*["app", "models"], "goober")`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.root.join(*["app", "models"], "goober")
+    RUBY
+  end
+
+  it 'registers an offense when using only %w[] syntax' do
+    expect_offense(<<~RUBY)
+      File.join(Rails.root, %w[app models])
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname`, so you can use `Rails.root.join(*%w[app models])`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.root.join(*%w[app models])
+    RUBY
+  end
+
+  it 'registers an offense when using a leading string and an array using %w[] syntax' do
+    expect_offense(<<~RUBY)
+      File.join(Rails.root, "app", %w[models goober])
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname`, so you can use `Rails.root.join("app", *%w[models goober])`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.root.join("app", *%w[models goober])
+    RUBY
+  end
+
+  it 'registers an offense when using an array using %w[] syntax and a trailing string' do
+    expect_offense(<<~RUBY)
+      File.join(Rails.root, %w[app models], "goober")
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Rails.root` is a `Pathname`, so you can use `Rails.root.join(*%w[app models], "goober")`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.root.join(*%w[app models], "goober")
+    RUBY
+  end
 end
