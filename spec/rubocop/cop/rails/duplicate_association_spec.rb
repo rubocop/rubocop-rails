@@ -16,8 +16,8 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
       expect_correction(<<~RUBY)
         class Post < ApplicationRecord
-          belongs_to :bar
           belongs_to :foo
+          belongs_to :bar
           belongs_to :blah
         end
       RUBY
@@ -37,8 +37,8 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
       expect_correction(<<~RUBY)
         class Post < ApplicationRecord
-          belongs_to :bar
           belongs_to :foo, -> { active }
+          belongs_to :bar
           belongs_to :blah
         end
       RUBY
@@ -60,8 +60,8 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
       expect_correction(<<~RUBY)
         class Post < ApplicationRecord
-          has_many :bars
           has_many :foos
+          has_many :bars
           has_many :blahs
         end
       RUBY
@@ -81,9 +81,28 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
       expect_correction(<<~RUBY)
         class Post < ApplicationRecord
-          has_many :bars
           has_many 'foos', -> { active }
+          has_many :bars
           has_many :blahs
+        end
+      RUBY
+    end
+
+    it 'registers an offense with alias' do
+      expect_offense(<<~RUBY)
+        class Post < ApplicationRecord
+          belongs_to :foos, -> { active }
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Association `foos` is defined multiple times. Don't repeat associations.
+          alias bars foos
+          belongs_to :foos
+          ^^^^^^^^^^^^^^^^ Association `foos` is defined multiple times. Don't repeat associations.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class Post < ApplicationRecord
+          belongs_to :foos
+          alias bars foos
         end
       RUBY
     end
@@ -104,8 +123,8 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
       expect_correction(<<~RUBY)
         class Post < ApplicationRecord
-          has_one :bar
           has_one :foo
+          has_one :bar
           has_one :blah
         end
       RUBY
@@ -125,8 +144,8 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
       expect_correction(<<~RUBY)
         class Post < ApplicationRecord
-          has_one :bar
           has_one :foo, -> { active }
+          has_one :bar
           has_one :blah
         end
       RUBY
@@ -148,8 +167,8 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
       expect_correction(<<~RUBY)
         class Post < ApplicationRecord
-          has_and_belongs_to_many :bars
           has_and_belongs_to_many :foos
+          has_and_belongs_to_many :bars
           has_and_belongs_to_many :blahs
         end
       RUBY
@@ -169,8 +188,8 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
       expect_correction(<<~RUBY)
         class Post < ApplicationRecord
-          has_and_belongs_to_many :bars
           has_and_belongs_to_many :foos, -> { active }
+          has_and_belongs_to_many :bars
           has_and_belongs_to_many :blahs
         end
       RUBY
@@ -200,12 +219,12 @@ RSpec.describe RuboCop::Cop::Rails::DuplicateAssociation, :config do
 
       expect_correction(<<~RUBY)
         class Post < ApplicationRecord
-          has_and_belongs_to_many :bars
           has_and_belongs_to_many :foos, -> { active }
+          has_and_belongs_to_many :bars
           has_and_belongs_to_many :blahs
 
-          has_one :top_comment, -> { order(likes: :desc) }, class_name: 'Comment'
           belongs_to :author
+          has_one :top_comment, -> { order(likes: :desc) }, class_name: 'Comment'
         end
       RUBY
     end
