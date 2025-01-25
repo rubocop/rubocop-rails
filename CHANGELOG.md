@@ -9,6 +9,15 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1423](https://github.com/rubocop/rubocop-rails/issues/1423): Fix an error for `Rails/StrongParametersExpect` when using `permit` with no arguments. ([@koic][])
+* [#1417](https://github.com/rubocop/rubocop-rails/issues/1417): Fix an incorrect autocorrect for `Rails/StrongParametersExpect` when using a leading dot multiline call to `require` with `permit`. ([@koic][])
+* [#1356](https://github.com/rubocop/rubocop-rails/issues/1356): Enhance `Rails/DuplicateAssociation` to handle alias. ([@ydakuka][])
+* [#1389](https://github.com/rubocop/rubocop-rails/issues/1389): Handle `TypeError` caused by passing array literals as arguments to `File` methods in `Rails/FilePath` cop. ([@ydakuka][])
+* [#1389](https://github.com/rubocop/rubocop-rails/issues/1389): Handle `TypeError` caused by passing array literals as arguments to `File` methods in `Rails/RootPathnameMethods` cop. ([@ydakuka][])
+* [#1228](https://github.com/rubocop/rubocop-rails/issues/1228): Enhance `Rails/SaveBang` to properly handle instance variables. ([@ydakuka][])
+
 ## 2.29.0 (2025-01-18)
 
 ### New features
@@ -1207,3 +1216,4 @@
 [@viralpraxis]: https://github.com/viralpraxis
 [@mterada1228]: https://github.com/mterada1228
 [@franzliedke]: https://github.com/franzliedke
+[@ydakuka]: https://github.com/ydakuka

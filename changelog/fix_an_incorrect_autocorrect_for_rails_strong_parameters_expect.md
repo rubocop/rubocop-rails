@@ -1,1 +1,0 @@
-* [#1417](https://github.com/rubocop/rubocop-rails/issues/1417): Fix an incorrect autocorrect for `Rails/StrongParametersExpect` when using a leading dot multiline call to `require` with `permit`. ([@koic][])
