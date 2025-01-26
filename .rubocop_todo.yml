@@ -29,7 +29,9 @@ InternalAffairs/OnSendWithoutOnCSend:
 # Offense count: 10
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
-  Max: 179
+  Max: 163
+  Exclude:
+    - 'lib/rubocop/cop/rails/file_path.rb'
 
 # Offense count: 41
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.

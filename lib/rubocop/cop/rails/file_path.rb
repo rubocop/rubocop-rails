@@ -6,6 +6,9 @@ module RuboCop
       # Identifies usages of file path joining process to use `Rails.root.join` clause.
       # It is used to add uniformity when joining paths.
       #
+      # NOTE: This cop ignores leading slashes in string literal arguments for `Rails.root.join`
+      #       and multiple slashes in string literal arguments for `Rails.root.join` and `File.join`.
+      #
       # @example EnforcedStyle: slashes (default)
       #   # bad
       #   Rails.root.join('app', 'models', 'goober')
@@ -97,7 +100,7 @@ module RuboCop
 
         def check_for_file_join_with_rails_root(node)
           return unless file_join_nodes?(node)
-          return unless node.arguments.any? { |e| rails_root_nodes?(e) }
+          return unless valid_arguments_for_file_join_with_rails_root?(node.arguments)
 
           register_offense(node, require_to_s: true) do |corrector|
             autocorrect_file_join(corrector, node) unless node.first_argument.array_type?
@@ -108,8 +111,7 @@ module RuboCop
           return unless style == :slashes
           return unless rails_root_nodes?(node)
           return unless rails_root_join_nodes?(node)
-          return unless node.arguments.size > 1
-          return unless node.arguments.all?(&:str_type?)
+          return unless valid_string_arguments_for_rails_root_join?(node.arguments)
 
           register_offense(node, require_to_s: false) do |corrector|
             autocorrect_rails_root_join_with_string_arguments(corrector, node)
@@ -120,15 +122,42 @@ module RuboCop
           return unless style == :arguments
           return unless rails_root_nodes?(node)
           return unless rails_root_join_nodes?(node)
-          return unless node.arguments.any? { |arg| string_with_slash?(arg) }
+          return unless valid_slash_separated_path_for_rails_root_join?(node.arguments)
 
           register_offense(node, require_to_s: false) do |corrector|
             autocorrect_rails_root_join_with_slash_separated_path(corrector, node)
           end
         end
 
-        def string_with_slash?(node)
-          node.str_type? && node.source.include?(File::SEPARATOR)
+        def valid_arguments_for_file_join_with_rails_root?(arguments)
+          return false unless arguments.any? { |arg| rails_root_nodes?(arg) }
+
+          arguments.none? { |arg| arg.variable? || arg.const_type? || string_contains_multiple_slashes?(arg) }
+        end
+
+        def valid_string_arguments_for_rails_root_join?(arguments)
+          return false unless arguments.size > 1
+          return false unless arguments.all?(&:str_type?)
+
+          arguments.none? { |arg| string_with_leading_slash?(arg) || string_contains_multiple_slashes?(arg) }
+        end
+
+        def valid_slash_separated_path_for_rails_root_join?(arguments)
+          return false unless arguments.any? { |arg| string_contains_slash?(arg) }
+
+          arguments.none? { |arg| string_with_leading_slash?(arg) || string_contains_multiple_slashes?(arg) }
+        end
+
+        def string_contains_slash?(node)
+          node.str_type? && node.value.include?(File::SEPARATOR)
+        end
+
+        def string_contains_multiple_slashes?(node)
+          node.str_type? && node.value.include?('//')
+        end
+
+        def string_with_leading_slash?(node)
+          node.str_type? && node.value.start_with?(File::SEPARATOR)
         end
 
         def register_offense(node, require_to_s:, &block)
@@ -226,7 +255,7 @@ module RuboCop
 
         def autocorrect_rails_root_join_with_slash_separated_path(corrector, node)
           node.arguments.each do |argument|
-            next unless string_with_slash?(argument)
+            next unless string_contains_slash?(argument)
 
             index = argument.source.index(File::SEPARATOR)
             rest = inner_range_of(argument).adjust(begin_pos: index - 1)

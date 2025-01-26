@@ -322,6 +322,128 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
         RUBY
       end
     end
+
+    context 'when using File.join with a local variable' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          default_path = '/models'
+          File.join(Rails.root, 'app', default_path)
+        RUBY
+      end
+    end
+
+    context 'when using File.join with an instance variable' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app', @default_path)
+        RUBY
+      end
+    end
+
+    context 'when using File.join with a class variable' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app', @@default_path)
+        RUBY
+      end
+    end
+
+    context 'when using File.join with a global variable' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app', $default_path)
+        RUBY
+      end
+    end
+
+    context 'when using File.join with a constant' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app', DEFAULT_PATH)
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with a local variable' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          default_path = '/models'
+          Rails.root.join(Rails.root, 'app', default_path)
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with an instance variable' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app', @default_path)
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with a class variable' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app', @@default_path)
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with a global variable' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app', $default_path)
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with a constant' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app', DEFAULT_PATH)
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with a leading slash' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('/app/models')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with mixed leading and normal path strings' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('/app', 'models')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with mixed normal and leading path strings' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app', '/models')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with multiple slashes in a path' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('public//', 'assets')
+        RUBY
+      end
+    end
+
+    context 'when using File.join with multiple slashes in a path' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'public//', 'assets')
+        RUBY
+      end
+    end
   end
 
   context 'when EnforcedStyle is `arguments`' do
@@ -589,6 +711,46 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
         expect_correction(<<~RUBY)
           Rails.root.join(*%w[app models], "goober").to_s
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with a leading slash' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('/app/models')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with mixed leading and normal path strings' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('/app', 'models')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with mixed normal and leading path strings' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app', '/models')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with multiple slashes in a path' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('public//', 'assets')
+        RUBY
+      end
+    end
+
+    context 'when using File.join with multiple slashes in a path' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'public//', 'assets')
         RUBY
       end
     end
