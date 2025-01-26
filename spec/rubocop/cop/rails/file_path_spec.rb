@@ -4,6 +4,57 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
   context 'when EnforcedStyle is `slashes`' do
     let(:cop_config) { { 'EnforcedStyle' => 'slashes' } }
 
+    context 'when using Rails.root.parent' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          Rails.root.parent.join("app", "models")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.parent.join("app/models")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.dirname' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          Rails.root.dirname.join("config", "initializers")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.dirname.join("config/initializers")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.basename' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          Rails.root.basename.join("config", "initializers")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.basename.join("config/initializers")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.application.config.root' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.application.config.root, "app", "models")
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.application.config.root, "app/models")
+        RUBY
+      end
+    end
+
     context 'when using Rails.root.join with some path strings' do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
@@ -13,6 +64,19 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
         expect_correction(<<~RUBY)
           Rails.root.join("app/models/user.rb")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join in string interpolation of argument' do
+      it 'registers an offense' do
+        expect_offense(<<~'RUBY')
+          system "rm -rf #{Rails.root.join('a', 'b.png')}"
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
+        RUBY
+
+        expect_correction(<<~'RUBY')
+          system "rm -rf #{Rails.root.join("a/b.png")}"
         RUBY
       end
     end
@@ -39,19 +103,6 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
         expect_correction(<<~RUBY)
           ::Rails.root.join("app/models/user.rb")
-        RUBY
-      end
-    end
-
-    context 'when using Rails.root.join in string interpolation of argument' do
-      it 'registers an offense' do
-        expect_offense(<<~'RUBY')
-          system "rm -rf #{Rails.root.join('a', 'b.png')}"
-                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
-        RUBY
-
-        expect_correction(<<~'RUBY')
-          system "rm -rf #{Rails.root.join("a/b.png")}"
         RUBY
       end
     end
@@ -136,7 +187,9 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
     context 'when using Rails.root.join with slash separated path string' do
       it 'does not register an offense' do
-        expect_no_offenses("Rails.root.join('app/models/goober')")
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app/models/goober')
+        RUBY
       end
     end
 
@@ -233,6 +286,32 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'does not register an offense' do
         expect_no_offenses(<<~'RUBY')
           "#{Rails.root}:/foo/bar"
+        RUBY
+      end
+    end
+
+    context 'when interpolation with `Rails.root` contains other operations' do
+      it 'does not register an offense for boolean method' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root || '.'}/config"
+        RUBY
+      end
+
+      it 'does not register an offense for `rescue`' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root rescue '.'}/config"
+        RUBY
+      end
+
+      it 'does not register an offense for if condition' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root if flag}/app/models"
+        RUBY
+      end
+
+      it 'does not register an offense for a ternary operator' do
+        expect_no_offenses(<<~'RUBY')
+          "#{some_condition ? Rails.root : '/tmp'}/app/models"
         RUBY
       end
     end
@@ -566,16 +645,92 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
   context 'when EnforcedStyle is `arguments`' do
     let(:cop_config) { { 'EnforcedStyle' => 'arguments' } }
 
-    context 'when using Rails.root.join with some path strings' do
+    context 'when using Rails.root.parent' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          Rails.root.parent.join("app/models")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.parent.join("app", "models")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.dirname' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          Rails.root.dirname.join("config/initializers")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.dirname.join("config", "initializers")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.basename' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          Rails.root.basename.join("config/initializers")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.basename.join("config", "initializers")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.application.config.root' do
       it 'does not register an offense' do
-        expect_no_offenses("Rails.root.join('app', 'models', 'user.rb')")
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.application.config.root, "app", "models")
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.application.config.root, "app/models")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with some path strings' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          Rails.root.join('app/models/user.rb')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join('app', "models", "user.rb")
+        RUBY
       end
     end
 
     context 'when using Rails.root.join in string interpolation of argument' do
-      it 'does not register an offense' do
-        expect_no_offenses(<<~'RUBY')
-          'system "rm -rf #{Rails.root.join(\'a\', \'b.png\')}"'
+      it 'registers an offense' do
+        expect_offense(<<~'RUBY')
+          system "rm -rf #{Rails.root.join("a/b.png")}"
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
+        RUBY
+
+        expect_correction(<<~'RUBY')
+          system "rm -rf #{Rails.root.join("a", "b.png")}"
+        RUBY
+      end
+    end
+
+    context 'when using ::Rails.root.join with some path strings' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          ::Rails.root.join("app/models/user.rb")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          ::Rails.root.join("app", "models", "user.rb")
         RUBY
       end
     end
@@ -584,6 +739,14 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'does not register an offense' do
         expect_no_offenses(<<~'RUBY')
           "#{Rails.root.join('log', 'production.log')}"
+        RUBY
+      end
+    end
+
+    context 'when string interpolated `Rails.root` is followed by a message starting with `.`' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root}. a message"
         RUBY
       end
     end
@@ -630,6 +793,39 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
+    context 'when using ::File.join with Rails.root' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          ::File.join(Rails.root, 'app', 'models')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join("app", "models").to_s
+        RUBY
+      end
+    end
+
+    context 'when using File.join with an array' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          File.join([Rails.root, 'foo'])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_no_corrections
+      end
+
+      it 'registers an offense for nested arrays' do
+        expect_offense(<<~RUBY)
+          File.join([Rails.root, 'foo', ['bar']])
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+        RUBY
+
+        expect_no_corrections
+      end
+    end
+
     context 'when using Rails.root.join with slash separated path string' do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
@@ -652,6 +848,19 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
         expect_correction(<<~'RUBY')
           "#{Rails.root.join("app", "models", "goober")}"
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root called by double quoted string that ends with string interpolation' do
+      it 'registers an offense' do
+        expect_offense(<<~'RUBY')
+          "#{Rails.root}/a/#{b}"
+          ^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to')`.
+        RUBY
+
+        expect_correction(<<~'RUBY')
+          "#{Rails.root.join("a/#{b}")}"
         RUBY
       end
     end
@@ -742,6 +951,18 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'does not register an offense for `rescue`' do
         expect_no_offenses(<<~'RUBY')
           "#{Rails.root rescue '.'}/config"
+        RUBY
+      end
+
+      it 'does not register an offense for if condition' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root if flag}/app/models"
+        RUBY
+      end
+
+      it 'does not register an offense for a ternary operator' do
+        expect_no_offenses(<<~'RUBY')
+          "#{some_condition ? Rails.root : '/tmp'}/app/models"
         RUBY
       end
     end
