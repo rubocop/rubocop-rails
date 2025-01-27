@@ -15,8 +15,6 @@ if ENV.fetch('COVERAGE', nil) == 'true'
 end
 
 RSpec.configure do |config|
-  config.include RuboCop::RSpec::ExpectOffense
-
   config.shared_context_metadata_behavior = :apply_to_host_groups
   config.filter_run_when_matching :focus
   config.filter_run_excluding broken_on: :prism if ENV['PARSER_ENGINE'] == 'parser_prism'
