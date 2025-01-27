@@ -56,7 +56,7 @@ module RuboCop
         minimum_target_rails_version 5.0
 
         def_node_matcher :pluck_candidate?, <<~PATTERN
-          ({block numblock} (call _ {:map :collect}) $_argument (send lvar :[] $_key))
+          (any_block (call _ {:map :collect}) $_argument (send lvar :[] $_key))
         PATTERN
 
         def on_block(node)
