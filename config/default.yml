@@ -496,6 +496,7 @@ Rails/FilePath:
   VersionAdded: '0.47'
   VersionChanged: '2.4'
   EnforcedStyle: slashes
+  SafeAutoCorrect: false
   SupportedStyles:
     - slashes
     - arguments
