@@ -61,7 +61,7 @@ module RuboCop
         def_node_matcher :good_touch?, <<~PATTERN
           {
             (send (const {nil? cbase} :FileUtils) :touch ...)
-            (send _ :touch {true false})
+            (send _ :touch boolean)
           }
         PATTERN
 

@@ -66,7 +66,7 @@ module RuboCop
 
         def_node_matcher :match_belongs_to_with_options, <<~PATTERN
           (send _ :belongs_to ...
-            (hash <$(pair (sym :required) ${true false}) ...>)
+            (hash <$(pair (sym :required) $boolean) ...>)
           )
         PATTERN
 
