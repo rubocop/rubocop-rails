@@ -33,7 +33,7 @@ module RuboCop
 
         def on_send(node)
           return unless (receiver = node.receiver)
-          return unless receiver.str_type? || receiver.dstr_type?
+          return unless receiver.type?(:str, :dstr)
           return unless receiver.respond_to?(:heredoc?) && receiver.heredoc?
 
           register_offense(node, receiver)

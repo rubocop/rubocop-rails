@@ -87,7 +87,7 @@ module RuboCop
 
         options.each_pair.find do |pair|
           next unless pair.key.sym_type? && pair.key.value == :foreign_key
-          next unless pair.value.sym_type? || pair.value.str_type?
+          next unless pair.value.type?(:sym, :str)
 
           break pair.value.value.to_s
         end

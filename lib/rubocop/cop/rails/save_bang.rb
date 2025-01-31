@@ -248,7 +248,7 @@ module RuboCop
         end
 
         def conditional?(parent)
-          parent.if_type? || parent.case_type?
+          parent.type?(:if, :case)
         end
 
         def deparenthesize(node)
@@ -305,7 +305,7 @@ module RuboCop
 
           node = assignable_node(node)
           method, sibling_index = find_method_with_sibling_index(node.parent)
-          return false unless method && (method.def_type? || method.block_type?)
+          return false unless method&.type?(:def, :block)
 
           method.children.size == node.sibling_index + sibling_index
         end
@@ -324,7 +324,7 @@ module RuboCop
 
         def explicit_return?(node)
           ret = assignable_node(node).parent
-          ret && (ret.return_type? || ret.next_type?)
+          ret&.type?(:return, :next)
         end
 
         def return_value_assigned?(node)

@@ -102,7 +102,7 @@ module RuboCop
         end
 
         def ignore_other_node?(node)
-          node && (node.if_type? || node.rescue_type? || node.while_type?)
+          node&.type?(:if, :rescue, :while)
         end
 
         def message(node, receiver, other)

@@ -96,7 +96,7 @@ module RuboCop
         end
 
         def literal_number?(node)
-          node && (node.int_type? || node.float_type?)
+          node&.type?(:int, :float)
         end
 
         def pluralize(method_name)

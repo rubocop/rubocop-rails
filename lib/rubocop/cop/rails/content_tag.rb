@@ -79,7 +79,7 @@ module RuboCop
         end
 
         def allowed_name?(argument)
-          return false unless argument.str_type? || argument.sym_type?
+          return false unless argument.type?(:str, :sym)
 
           !/^[a-zA-Z-][a-zA-Z\-0-9]*$/.match?(argument.value)
         end

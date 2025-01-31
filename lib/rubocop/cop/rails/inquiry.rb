@@ -29,7 +29,7 @@ module RuboCop
         def on_send(node)
           return unless node.arguments.empty?
           return unless (receiver = node.receiver)
-          return if !receiver.str_type? && !receiver.array_type?
+          return unless receiver.type?(:str, :array)
 
           add_offense(node.loc.selector)
         end

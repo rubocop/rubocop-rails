@@ -73,7 +73,7 @@ module RuboCop
 
         def column_names(node, uniqueness_part)
           arg = node.first_argument
-          return unless arg.str_type? || arg.sym_type?
+          return unless arg.type?(:str, :sym)
 
           ret = [arg.value]
           names_from_scope = column_names_from_scope(uniqueness_part)
