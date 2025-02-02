@@ -5,6 +5,9 @@ require 'rubocop/rspec/support'
 require_relative 'support/file_helper'
 require_relative 'support/shared_contexts'
 
+# FIXME: Once only RuboCop versions that support plugins remain, please remove the `if` condition.
+RuboCop::ConfigLoader.inject_defaults!("#{__dir__}/../config/default.yml") if RuboCop.const_defined?(:Plugin)
+
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }

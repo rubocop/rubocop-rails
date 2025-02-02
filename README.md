@@ -23,10 +23,48 @@ gem 'rubocop-rails', require: false
 
 ## Usage
 
-You need to tell RuboCop to load the Rails extension. There are three
+You need to tell RuboCop to load the Rails extension. There are some
 ways to do this:
 
-### RuboCop configuration file
+### RuboCop configuration file (Recommended Style)
+
+Put this into your `.rubocop.yml`.
+
+```yaml
+plugins: rubocop-rails
+```
+
+Alternatively, use the following array notation when specifying multiple extensions.
+
+```yaml
+plugins:
+  - rubocop-other-extension
+  - rubocop-rails
+```
+
+Now you can run `rubocop` and it will automatically load the RuboCop Rails
+cops together with the standard cops.
+
+> [!NOTE]
+> The plugin system is supported in RuboCop 1.72+.
+
+### Command line
+
+```sh
+$ rubocop --plugin rubocop-rails
+```
+
+### Rake task
+
+```ruby
+require 'rubocop/rake_task'
+
+RuboCop::RakeTask.new do |task|
+  task.plugins << 'rubocop-rails'
+end
+```
+
+### RuboCop configuration file (Legacy Style)
 
 Put this into your `.rubocop.yml`.
 
@@ -45,7 +83,7 @@ require:
 Now you can run `rubocop` and it will automatically load the RuboCop Rails
 cops together with the standard cops.
 
-### Command line
+### Command line (Legacy Style)
 
 ```sh
 $ rubocop --require rubocop-rails
@@ -53,7 +91,7 @@ $ rubocop --require rubocop-rails
 
 Note: `--rails` option is required while `rubocop` command supports `--rails` option.
 
-### Rake task
+### Rake task (Legacy Style)
 
 ```ruby
 require 'rubocop/rake_task'

@@ -8,6 +8,6 @@ module RuboCop
 
     private_constant(:CONFIG_DEFAULT, :PROJECT_ROOT)
 
-    ::RuboCop::ConfigObsoletion.files << PROJECT_ROOT.join('config', 'obsoletion.yml')
+    ConfigObsoletion.files << Pathname("#{__dir__}/../../config/obsoletion.yml")
   end
 end

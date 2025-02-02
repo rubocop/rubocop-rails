@@ -11,7 +11,16 @@ require_relative 'rubocop/rails/inject'
 require_relative 'rubocop/rails/schema_loader'
 require_relative 'rubocop/rails/schema_loader/schema'
 
-RuboCop::Rails::Inject.defaults!
+# FIXME: When RuboCop Rails requires RuboCop 1.72.0+ only, the following compatibility code can be removed.
+if RuboCop.const_defined?(:Plugin)
+  require_relative 'rubocop/rails/plugin'
+else
+  # NOTE: Until the plugin stabilizes, an option to use the older version of RuboCop is provided.
+  # The plugin will be unified in the future.
+  require_relative 'rubocop/rails/inject'
+
+  RuboCop::Rails::Inject.defaults!
+end
 
 require_relative 'rubocop/cop/rails_cops'
 
