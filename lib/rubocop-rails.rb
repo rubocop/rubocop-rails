@@ -7,12 +7,9 @@ require 'active_support/core_ext/object/blank'
 
 require_relative 'rubocop/rails'
 require_relative 'rubocop/rails/version'
-require_relative 'rubocop/rails/inject'
 require_relative 'rubocop/rails/schema_loader'
 require_relative 'rubocop/rails/schema_loader/schema'
-
-RuboCop::Rails::Inject.defaults!
-
+require_relative 'rubocop/rails/plugin'
 require_relative 'rubocop/cop/rails_cops'
 
 require_relative 'rubocop/rails/migration_file_skippable'
