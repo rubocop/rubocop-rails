@@ -1,0 +1,1 @@
+* [#1071](https://github.com/rubocop/rubocop-rails/issues/1071): Fix `Rails/FilePath` cop to correctly handle `File.join` with variables and ignore leading and multiple slashes in string literal arguments for `Rails.root.join` and `File.join`. ([@ydakuka][])
