@@ -68,7 +68,7 @@ module RuboCop
 
         def_node_matcher :delegate?, <<~PATTERN
           (def _method_name _args
-            (send {(send nil? _) (self)} _ ...))
+            (send {(send nil? _) (self) (send (self) :class) ({cvar gvar ivar} _) (const _ _)} _ ...))
         PATTERN
 
         def on_def(node)
@@ -82,15 +82,37 @@ module RuboCop
 
         def register_offense(node)
           add_offense(node.loc.keyword) do |corrector|
-            body = node.body
+            receiver = determine_register_offense_receiver(node.body.receiver)
+            delegation = build_delegation(node, receiver)
 
-            receiver = body.receiver.self_type? ? 'self' : ":#{body.receiver.method_name}"
-
-            delegation = ["delegate :#{body.method_name}", "to: #{receiver}"]
-            delegation << ['prefix: true'] if node.method?(prefixed_method_name(node.body))
-
-            corrector.replace(node, delegation.join(', '))
+            corrector.replace(node, delegation)
           end
+        end
+
+        def determine_register_offense_receiver(receiver)
+          case receiver.type
+          when :self
+            'self'
+          when :const
+            full_name = full_const_name(receiver)
+            full_name.include?('::') ? ":'#{full_name}'" : ":#{full_name}"
+          when :cvar, :gvar, :ivar
+            ":#{receiver.source}"
+          else
+            ":#{receiver.method_name}"
+          end
+        end
+
+        def build_delegation(node, receiver)
+          delegation = ["delegate :#{node.body.method_name}", "to: #{receiver}"]
+          delegation << ['prefix: true'] if node.method?(prefixed_method_name(node.body))
+          delegation.join(', ')
+        end
+
+        def full_const_name(node)
+          return node.source unless node.namespace
+
+          "#{full_const_name(node.namespace)}::#{node.children.last}"
         end
 
         def trivial_delegate?(def_node)
@@ -120,7 +142,18 @@ module RuboCop
         def prefixed_method_name(body)
           return '' if body.receiver.self_type?
 
-          [body.receiver.method_name, body.method_name].join('_').to_sym
+          [determine_prefixed_method_receiver_name(body.receiver), body.method_name].join('_').to_sym
+        end
+
+        def determine_prefixed_method_receiver_name(receiver)
+          case receiver.type
+          when :cvar, :gvar, :ivar
+            receiver.source
+          when :const
+            full_const_name(receiver)
+          else
+            receiver.method_name.to_s
+          end
         end
 
         def private_or_protected_delegation(node)

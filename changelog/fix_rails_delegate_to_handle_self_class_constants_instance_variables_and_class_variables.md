@@ -1,0 +1,1 @@
+* [#912](https://github.com/rubocop/rubocop-rails/issues/912): Enhance `Rails/Delegate` by adding delegation detection for `self.class`, constants, class variables, global variables, and instance variables. ([@ydakuka][])

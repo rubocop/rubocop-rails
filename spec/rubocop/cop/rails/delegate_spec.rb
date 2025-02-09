@@ -211,15 +211,6 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
     RUBY
   end
 
-  it 'ignores delegation to constant' do
-    expect_no_offenses(<<~RUBY)
-      FOO = []
-      def size
-        FOO.size
-      end
-    RUBY
-  end
-
   it 'ignores code with no receiver' do
     expect_no_offenses(<<~RUBY)
       def change
@@ -247,6 +238,84 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
       def foo
         bar&.foo
       end
+    RUBY
+  end
+
+  it 'detects delegation to `self.class`' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        self.class.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: :class
+    RUBY
+  end
+
+  it 'detects delegation to a constant' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        CONST.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: :CONST
+    RUBY
+  end
+
+  it 'detects delegation to a namespaced constant' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        SomeModule::CONST.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: :'SomeModule::CONST'
+    RUBY
+  end
+
+  it 'detects delegation to an instance variable' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        @instance_variable.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: :@instance_variable
+    RUBY
+  end
+
+  it 'detects delegation to a class variable' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        @@class_variable.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: :@@class_variable
+    RUBY
+  end
+
+  it 'detects delegation to a global variable' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        $global_variable.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: :$global_variable
     RUBY
   end
 end
