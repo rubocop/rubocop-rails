@@ -40,7 +40,7 @@ module RuboCop
 
         def on_send(node)
           association_with_reflection(node) do |reflection_class_name|
-            return if reflection_class_name.value.send_type? && reflection_class_name.value.receiver.nil?
+            return if reflection_class_name.value.send_type? && !reflection_class_name.value.receiver&.const_type?
             return if reflection_class_name.value.lvar_type? && str_assigned?(reflection_class_name)
 
             add_offense(reflection_class_name) do |corrector|
