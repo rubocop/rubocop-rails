@@ -22,6 +22,7 @@ RSpec.describe RuboCop::Cop::Rails::UniqBeforePluck, :config do
 
       expect_correction(<<~RUBY)
         Model.distinct.pluck(:name)
+          
       RUBY
     end
 
@@ -34,6 +35,22 @@ RSpec.describe RuboCop::Cop::Rails::UniqBeforePluck, :config do
 
       expect_correction(<<~RUBY)
         Model.distinct.pluck(:name)
+
+      RUBY
+    end
+
+    it 'corrects when uniq and pluck are on different lines' do
+      expect_offense(<<~RUBY)
+        Model
+          .pluck(:name)
+          .uniq
+           ^^^^ Use `distinct` before `pluck`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Model
+          .distinct.pluck(:name)
+          
       RUBY
     end
 
@@ -83,6 +100,12 @@ RSpec.describe RuboCop::Cop::Rails::UniqBeforePluck, :config do
     it 'ignores uniq on an association' do
       expect_no_offenses(<<~RUBY)
         instance.assoc.pluck(:name).uniq
+      RUBY
+    end
+
+    it 'ignores uniq without an receiver' do
+      expect_no_offenses(<<~RUBY)
+        pluck(:name).uniq
       RUBY
     end
   end
