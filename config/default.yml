@@ -344,6 +344,17 @@ Rails/Date:
     - flexible
   AllowToTime: true
 
+Rails/DateAndTimeColumnName:
+  Description: >-
+                Enforces date/time columns naming conventions.
+                Specifically, `date` column should end with `_on` suffix,
+                `datetime` and `timestamp` - with `_at` suffix,
+                `time` - with `_time` suffix.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  Include:
+    - db/**/*.rb
+
 Rails/DefaultScope:
   Description: 'Avoid use of `default_scope`.'
   Enabled: false
