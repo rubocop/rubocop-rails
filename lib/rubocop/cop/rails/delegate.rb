@@ -110,9 +110,12 @@ module RuboCop
         end
 
         def full_const_name(node)
-          return node.source unless node.namespace
+          return unless node.const_type?
+          unless node.namespace
+            return node.absolute? ? "::#{node.source}" : node.source
+          end
 
-          "#{full_const_name(node.namespace)}::#{node.children.last}"
+          "#{full_const_name(node.namespace)}::#{node.short_name}"
         end
 
         def trivial_delegate?(def_node)
