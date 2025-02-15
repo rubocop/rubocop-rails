@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.30.0 (2025-02-16)
+
 ### New features
 
 * [#1434](https://github.com/rubocop/rubocop-rails/pull/1434): Pluginfy RuboCop Rails. ([@koic][])
