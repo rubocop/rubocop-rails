@@ -9,6 +9,15 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#1434](https://github.com/rubocop/rubocop-rails/pull/1434): Pluginfy RuboCop Rails. ([@koic][])
+
+### Bug fixes
+
+* [#1071](https://github.com/rubocop/rubocop-rails/issues/1071): Fix `Rails/FilePath` cop to correctly handle `File.join` with variables and ignore leading and multiple slashes in string literal arguments for `Rails.root.join` and `File.join`. ([@ydakuka][])
+* [#912](https://github.com/rubocop/rubocop-rails/issues/912): Enhance `Rails/Delegate` by adding delegation detection for `self.class`, constants, class variables, global variables, and instance variables. ([@ydakuka][])
+
 ## 2.29.1 (2025-01-25)
 
 ### Bug fixes
