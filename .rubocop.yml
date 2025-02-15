@@ -3,10 +3,10 @@
 inherit_from: .rubocop_todo.yml
 plugins:
   - rubocop-internal_affairs
+  - rubocop-performance
   - rubocop-rails
 
 require:
-  - rubocop-performance
   - rubocop-rspec
 
 AllCops:
