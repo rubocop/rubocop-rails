@@ -280,6 +280,19 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
     RUBY
   end
 
+  it 'detects delegation to a cbase namespaced constant' do
+    expect_offense(<<~RUBY)
+      def foo
+      ^^^ Use `delegate` to define delegations.
+        ::SomeModule::CONST.foo
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      delegate :foo, to: :'::SomeModule::CONST'
+    RUBY
+  end
+
   it 'detects delegation to an instance variable' do
     expect_offense(<<~RUBY)
       def foo
