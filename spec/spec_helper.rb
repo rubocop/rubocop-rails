@@ -15,10 +15,6 @@ if ENV.fetch('COVERAGE', nil) == 'true'
 end
 
 RSpec.configure do |config|
-  # TODO: It can be removed when the oldest supported RuboCop version is greater than 1.71.0.
-  # https://github.com/rubocop/rubocop/pull/13748
-  config.include RuboCop::RSpec::ExpectOffense
-
   config.shared_context_metadata_behavior = :apply_to_host_groups
   config.filter_run_when_matching :focus
   config.filter_run_excluding broken_on: :prism if ENV['PARSER_ENGINE'] == 'parser_prism'

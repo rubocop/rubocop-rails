@@ -31,13 +31,13 @@ ways to do this:
 Put this into your `.rubocop.yml`.
 
 ```yaml
-require: rubocop-rails
+plugins: rubocop-rails
 ```
 
 Alternatively, use the following array notation when specifying multiple extensions.
 
 ```yaml
-require:
+plugins:
   - rubocop-other-extension
   - rubocop-rails
 ```
@@ -45,13 +45,14 @@ require:
 Now you can run `rubocop` and it will automatically load the RuboCop Rails
 cops together with the standard cops.
 
+> [!NOTE]
+> The plugin system is supported in RuboCop 1.72+. In earlier versions, use `require` instead of `plugins`.
+
 ### Command line
 
 ```sh
-$ rubocop --require rubocop-rails
+$ rubocop --plugin rubocop-rails
 ```
-
-Note: `--rails` option is required while `rubocop` command supports `--rails` option.
 
 ### Rake task
 
@@ -59,7 +60,7 @@ Note: `--rails` option is required while `rubocop` command supports `--rails` op
 require 'rubocop/rake_task'
 
 RuboCop::RakeTask.new do |task|
-  task.requires << 'rubocop-rails'
+  task.plugins << 'rubocop-rails'
 end
 ```
 
