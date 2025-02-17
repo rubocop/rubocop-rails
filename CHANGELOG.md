@@ -9,6 +9,11 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1442](https://github.com/rubocop/rubocop-rails/issues/1442): Fix an incorrect behavior when using `AllCops: TargetRailsVersion`. ([@koic][])
+* [#1444](https://github.com/rubocop/rubocop-rails/pull/1444): Fix an incorrect behavior when using `AllCops: MigratedSchemaVersion`. ([@koic][])
+
 ## 2.30.0 (2025-02-16)
 
 ### New features
