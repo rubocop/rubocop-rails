@@ -28,7 +28,7 @@ AllCops:
   # By specifying `MigratedSchemaVersion` option, migration files that have been migrated can be ignored.
   # When `MigratedSchemaVersion: '20241231000000'` is set. Migration files lower than or equal to '20250101000000' will be ignored.
   # For example, this is the timestamp in db/migrate/20250101000000_create_articles.rb.
-  MigratedSchemaVersion: ~
+  MigratedSchemaVersion: '19700101000000' # NOTE: Used as a sentinel value for the UNIX epoch time.
 
 Lint/NumberConversion:
   # Add Rails' duration methods to the ignore list for `Lint/NumberConversion`
