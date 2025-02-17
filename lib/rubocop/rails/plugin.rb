@@ -24,7 +24,24 @@ module RuboCop
 
         ConfigObsoletion.files << project_root.join('config', 'obsoletion.yml')
 
+        # FIXME: This is a dirty hack relying on a private constant to prevent
+        # "Warning: AllCops does not support TargetRailsVersion parameter".
+        # It should be updated to a better design in the future.
+        without_warnings do
+          ConfigValidator.const_set(:COMMON_PARAMS, ConfigValidator::COMMON_PARAMS.dup << 'TargetRailsVersion')
+        end
+
         LintRoller::Rules.new(type: :path, config_format: :rubocop, value: project_root.join('config', 'default.yml'))
+      end
+
+      private
+
+      def without_warnings
+        original_verbose = $VERBOSE
+        $VERBOSE = nil
+        yield
+      ensure
+        $VERBOSE = original_verbose
       end
     end
   end
