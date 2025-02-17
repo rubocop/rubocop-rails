@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.30.1 (2025-02-17)
+
 ### Bug fixes
 
 * [#1442](https://github.com/rubocop/rubocop-rails/issues/1442): Fix an incorrect behavior when using `AllCops: TargetRailsVersion`. ([@koic][])
