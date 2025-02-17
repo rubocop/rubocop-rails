@@ -42,6 +42,28 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
     RUBY
   end
 
+  it 'does not find trivial delegate to `self` for separate `module_function` def' do
+    expect_no_offenses(<<~RUBY)
+      module A
+        module_function
+
+        def foo
+          self.foo
+        end
+      end
+    RUBY
+  end
+
+  it 'does not find trivial delegate to `self` for inline `module_function` def' do
+    expect_no_offenses(<<~RUBY)
+      module A
+        module_function def foo
+          self.foo
+        end
+      end
+    RUBY
+  end
+
   it 'finds trivial delegate with prefix' do
     expect_offense(<<~RUBY)
       def bar_foo

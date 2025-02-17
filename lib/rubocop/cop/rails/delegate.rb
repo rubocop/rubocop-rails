@@ -74,6 +74,7 @@ module RuboCop
         def on_def(node)
           return unless trivial_delegate?(node)
           return if private_or_protected_delegation(node)
+          return if module_function_declared?(node)
 
           register_offense(node)
         end
@@ -161,6 +162,12 @@ module RuboCop
 
         def private_or_protected_delegation(node)
           private_or_protected_inline(node) || node_visibility(node) != :public
+        end
+
+        def module_function_declared?(node)
+          node.each_ancestor(:module, :begin).any? do |ancestor|
+            ancestor.children.any? { |child| child.send_type? && child.method?(:module_function) }
+          end
         end
 
         def private_or_protected_inline(node)
