@@ -159,6 +159,27 @@ RSpec.describe RuboCop::Cop::Rails::LexicallyScopedActionFilter, :config do
     RUBY
   end
 
+  it 'does not register an offense when action method is delegated' do
+    expect_no_offenses(<<~RUBY)
+      class FooController < ApplicationController
+        before_action :authorize!, only: %i[index show]
+
+        delegate :index, :show, to: :foo
+      end
+    RUBY
+  end
+
+  it 'registers an offense when action method is not delegated' do
+    expect_offense(<<~RUBY)
+      class FooController < ApplicationController
+        before_action :authorize!, only: %i[foo show]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `foo` is not explicitly defined on the class.
+
+        delegate :show, to: :bar
+      end
+    RUBY
+  end
+
   it 'does not register an offense when action method is aliased by `alias`' do
     expect_no_offenses(<<~RUBY)
       class FooController < ApplicationController
