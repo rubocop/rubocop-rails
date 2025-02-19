@@ -926,6 +926,12 @@ Rails/RequireDependency:
   Enabled: false
   VersionAdded: '2.10'
 
+Rails/RescueFromExceptionsVariableName:
+  Description: 'Use consistent rescued exceptions variables naming.'
+  Enabled: 'pending'
+  VersionAdded: '<<next>>'
+  PreferredName: e
+
 Rails/ResponseParsedBody:
   Description: Prefer `response.parsed_body` to custom parsing logic for `response.body`.
   Enabled: pending
