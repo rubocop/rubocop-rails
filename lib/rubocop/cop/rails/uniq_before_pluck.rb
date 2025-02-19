@@ -51,51 +51,28 @@ module RuboCop
 
         MSG = 'Use `distinct` before `pluck`.'
         RESTRICT_ON_SEND = %i[uniq].freeze
-        NEWLINE = "\n"
-        PATTERN = '[!^block (send (send %<type>s :pluck ...) :uniq ...)]'
 
-        def_node_matcher :conservative_node_match, format(PATTERN, type: 'const')
-
-        def_node_matcher :aggressive_node_match, format(PATTERN, type: '_')
+        def_node_matcher :uniq_before_pluck, '[!^block $(send $(send _ :pluck ...) :uniq ...)]'
 
         def on_send(node)
-          uniq = if style == :conservative
-                   conservative_node_match(node)
-                 else
-                   aggressive_node_match(node)
-                 end
+          uniq_before_pluck(node) do |uniq_node, pluck_node|
+            next if style == :conservative && !pluck_node.receiver&.const_type?
 
-          return unless uniq
-
-          add_offense(node.loc.selector) do |corrector|
-            autocorrect(corrector, node)
+            add_offense(uniq_node.loc.selector) do |corrector|
+              autocorrect(corrector, uniq_node, pluck_node)
+            end
           end
         end
 
         private
 
-        def autocorrect(corrector, node)
-          method = node.method_name
+        def autocorrect(corrector, uniq_node, pluck_node)
+          corrector.remove(range_between(pluck_node.loc.end.end_pos, uniq_node.loc.selector.end_pos))
 
-          corrector.remove(dot_method_with_whitespace(method, node))
-          if (dot = node.receiver.loc.dot)
+          if (dot = pluck_node.loc.dot)
             corrector.insert_before(dot.begin, '.distinct')
           else
-            corrector.insert_before(node.receiver, 'distinct.')
-          end
-        end
-
-        def dot_method_with_whitespace(method, node)
-          range_between(dot_method_begin_pos(method, node), node.loc.selector.end_pos)
-        end
-
-        def dot_method_begin_pos(method, node)
-          lines = node.source.split(NEWLINE)
-
-          if lines.last.strip == ".#{method}"
-            node.source.rindex(NEWLINE)
-          else
-            node.loc.dot.begin_pos
+            corrector.insert_before(pluck_node, 'distinct.')
           end
         end
       end
