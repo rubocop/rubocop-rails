@@ -240,6 +240,12 @@ Rails/AttributeDefaultBlockValue:
   Include:
     - 'app/models/**/*'
 
+Rails/BeforeDestroy:
+  Description: 'Ensure the correct usage of `prepend: true` in `before_destroy` callbacks.'
+  Enabled: pending
+  Reference: 'https://guides.rubyonrails.org/active_record_callbacks.html#destroying-an-object'
+  VersionAdded: '<<next>>'
+
 Rails/BelongsTo:
   Description: >-
                   Use `optional: true` instead of `required: false` for
