@@ -115,6 +115,10 @@ module RuboCop
                 $_)))
         PATTERN
 
+        def_node_matcher :delegated_methods, <<~PATTERN
+          (send nil? :delegate (sym $_)+ (hash <(pair (sym :to) _) ...>))
+        PATTERN
+
         def on_send(node)
           methods_node = only_or_except_filter_methods(node)
           return unless methods_node
@@ -139,7 +143,13 @@ module RuboCop
           return [] unless block
 
           defined_methods = block.each_child_node(:def).map(&:method_name)
-          defined_methods + aliased_action_methods(block, defined_methods)
+          defined_methods + delegated_action_methods(block) + aliased_action_methods(block, defined_methods)
+        end
+
+        def delegated_action_methods(node)
+          node.each_child_node(:send).flat_map do |child_node|
+            delegated_methods(child_node) || []
+          end
         end
 
         def aliased_action_methods(node, defined_methods)
