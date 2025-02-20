@@ -226,6 +226,13 @@ Rails/ArelStar:
   SafeAutoCorrect: false
   VersionAdded: '2.9'
 
+Rails/AssertChangesSecondArgument:
+  Description: 'Do not use `assert_changes` with a non-string second argument.'
+  Enabled: true
+  VersionAdded: '2.28'
+  Include:
+    - '**/test/**/*'
+
 Rails/AssertNot:
   Description: 'Use `assert_not` instead of `assert !`.'
   Enabled: true
