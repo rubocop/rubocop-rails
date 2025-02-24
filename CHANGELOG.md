@@ -9,6 +9,12 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1447](https://github.com/rubocop/rubocop-rails/issues/1447): Fix false positive for `Rails/LexicallyScopedActionFilter` when action methods are delegated. ([@vlad-pisanov][])
+* [#1446](https://github.com/rubocop/rubocop-rails/issues/1446): Fix false positives for `Rails/Delegate` when `module_function` is used. ([@ydakuka][])
+* [#1427](https://github.com/rubocop/rubocop-rails/issues/1427): Fix an error for `Rails/UniqBeforePluck` when `pluck` and `unique` are on different lines. ([@earlopain][])
+
 ## 2.30.1 (2025-02-17)
 
 ### Bug fixes
