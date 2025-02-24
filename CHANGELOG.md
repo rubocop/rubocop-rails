@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.30.2 (2025-02-24)
+
 ### Bug fixes
 
 * [#1447](https://github.com/rubocop/rubocop-rails/issues/1447): Fix false positive for `Rails/LexicallyScopedActionFilter` when action methods are delegated. ([@vlad-pisanov][])
