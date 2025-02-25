@@ -124,6 +124,12 @@ RSpec.describe RuboCop::Cop::Rails::ReflectionClassName, :config do
     RUBY
   end
 
+  it 'does not register an offense when parameter value is a method call on an object in a variable' do
+    expect_no_offenses(<<~RUBY)
+      has_many :accounts, class_name: some_thing.class_name
+    RUBY
+  end
+
   context 'Ruby >= 3.1', :ruby31 do
     it 'registers an offense when shorthand syntax value is a local variable assigned a constant' do
       expect_offense(<<~RUBY)
