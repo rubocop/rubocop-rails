@@ -5,7 +5,8 @@
 
 A [RuboCop](https://github.com/rubocop/rubocop) extension focused on enforcing Rails best practices and coding conventions.
 
-Note: This repository manages rubocop-rails gem (>= 2.0.0). rubocop-rails gem (<= 1.5.0) has been renamed to [rubocop-rails_config](https://rubygems.org/gems/rubocop-rails_config) gem.
+> [!IMPORTANT]
+> This repository manages rubocop-rails gem (>= 2.0.0). rubocop-rails gem (<= 1.5.0) has been renamed to [rubocop-rails_config](https://rubygems.org/gems/rubocop-rails_config) gem.
 
 ## Installation
 
