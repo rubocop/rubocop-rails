@@ -41,9 +41,10 @@ module RuboCop
               'Use assert_difference instead to assert when an expression changes by a specific delta. ' \
               'The second argument to assert_changes is the message emitted on assert failure.'
 
+        RESTRICT_ON_SEND = [:assert_changes].freeze
+
         def on_send(node)
-          return if node.receiver || !node.method?(:assert_changes)
-          return if node.arguments[1].nil?
+          return if node.receiver || node.arguments[1].nil?
 
           return unless offense?(node.arguments[1])
 
@@ -55,7 +56,7 @@ module RuboCop
         private
 
         def offense?(arg)
-          !arg.hash_type? && !arg.str_type? && !arg.dstr_type? && !arg.sym_type? && !arg.dsym_type? && !arg.variable?
+          !arg.type?(:hash, :str, :dstr, :sym, :dsym, :lvar)
         end
       end
     end

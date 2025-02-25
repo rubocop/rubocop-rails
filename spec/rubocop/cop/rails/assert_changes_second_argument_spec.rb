@@ -82,6 +82,14 @@ RSpec.describe(RuboCop::Cop::Rails::AssertChangesSecondArgument, :config) do
         end
       RUBY
     end
+
+    it 'does not add offense on other methods' do
+      expect_no_offenses(<<~RUBY)
+        assert_difference @value, "Value should change" do
+          @value += 1
+        end
+      RUBY
+    end
   end
 
   describe('autocorrect') do
