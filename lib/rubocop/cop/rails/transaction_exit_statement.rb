@@ -99,7 +99,7 @@ module RuboCop
           return false unless transaction_method_name?(node.method_name)
           return false unless (parent = node.parent)
 
-          parent.block_type? && parent.body
+          parent.any_block_type? && parent.body
         end
 
         def statement(statement_node)
@@ -113,7 +113,7 @@ module RuboCop
         end
 
         def nested_block?(statement_node)
-          name = statement_node.ancestors.find(&:block_type?).children.first.method_name
+          name = statement_node.ancestors.find(&:any_block_type?).children.first.method_name
           !transaction_method_name?(name)
         end
 

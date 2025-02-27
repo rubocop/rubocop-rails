@@ -11,6 +11,16 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
       RUBY
     end
 
+    it 'registers an offense when `return` is used in transaction with numblock' do
+      expect_offense(<<~RUBY, method: method)
+        ApplicationRecord.%{method} do
+          _1.after_commit { }
+          return if user.active?
+          ^^^^^^ Exit statement `return` is not allowed. Use `raise` (rollback) or `next` (commit).
+        end
+      RUBY
+    end
+
     it 'registers an offense when `break` is used in transactions' do
       expect_offense(<<~RUBY, method: method)
         ApplicationRecord.%{method} do
@@ -56,6 +66,17 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
       RUBY
     end
 
+    it 'registers an offense when `return` is used in `each` with numblock in transactions' do
+      expect_offense(<<~RUBY, method: method)
+        ApplicationRecord.%{method} do
+          foo.each do
+            return if _1
+            ^^^^^^ Exit statement `return` is not allowed. Use `raise` (rollback) or `next` (commit).
+          end
+        end
+      RUBY
+    end
+
     it 'registers an offense when `throw` is used in `loop` in transactions' do
       expect_offense(<<~RUBY, method: method)
         ApplicationRecord.%{method} do
@@ -72,6 +93,16 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
         ApplicationRecord.#{method} do
           loop do
             break if condition
+          end
+        end
+      RUBY
+    end
+
+    it 'does not register an offense when `break` is used in `each` with numblock in transactions' do
+      expect_no_offenses(<<~RUBY)
+        ApplicationRecord.#{method} do
+          foo.each do
+            break if _1
           end
         end
       RUBY
