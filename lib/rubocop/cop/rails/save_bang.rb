@@ -182,7 +182,7 @@ module RuboCop
         def right_assignment_node(assignment)
           node = assignment.node.child_nodes.first
 
-          return node unless node&.block_type?
+          return node unless node&.any_block_type?
 
           node.send_node
         end
@@ -305,7 +305,7 @@ module RuboCop
 
           node = assignable_node(node)
           method, sibling_index = find_method_with_sibling_index(node.parent)
-          return false unless method&.type?(:def, :block)
+          return false unless method&.type?(:def, :any_block)
 
           method.children.size == node.sibling_index + sibling_index
         end

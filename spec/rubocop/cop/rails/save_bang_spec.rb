@@ -140,6 +140,23 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       end
     end
 
+    it "when assigning the return value of #{method} with numblock" do
+      if update
+        expect_no_offenses(<<~RUBY)
+          x = object.#{method} do
+            _1.name = 'Tom'
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          x = object.#{method} do
+                     ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked. Or check `persisted?` on model returned from `#{method}`.
+            _1.name = 'Tom'
+          end
+        RUBY
+      end
+    end
+
     it "when using #{method} with if" do
       if update
         expect_no_offenses(<<~RUBY)
@@ -566,6 +583,23 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
           objects.each do |object|
             object.#{method}
                    ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+        RUBY
+      end
+    end
+
+    it "when using #{method} as last method call of a numblock" do
+      if allow_implicit_return
+        expect_no_offenses(<<~RUBY)
+          objects.each do
+            _1.#{method}
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          objects.each do
+            _1.#{method}
+               ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
           end
         RUBY
       end
