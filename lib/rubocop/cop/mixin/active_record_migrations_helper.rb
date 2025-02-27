@@ -22,9 +22,9 @@ module RuboCop
       ].freeze
 
       def_node_matcher :create_table_with_block?, <<~PATTERN
-        (block
+        (any_block
           (send nil? :create_table ...)
-          (args (arg _var))
+          { _ | (args (arg _var)) }
           _)
       PATTERN
     end
