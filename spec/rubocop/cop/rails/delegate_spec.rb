@@ -353,4 +353,22 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
       delegate :foo, to: :$global_variable
     RUBY
   end
+
+  it 'is disabled for controllers' do
+    expect_no_offenses(<<~RUBY, "#{Bundler.root}/app/controllers/foo_controller.rb")
+      class FooController
+        before_action :load
+
+        def destroy
+          @foo.destroy
+        end
+
+        private
+
+        def load
+          @foo = Foo.find(params[:id])
+        end
+      end
+    RUBY
+  end
 end

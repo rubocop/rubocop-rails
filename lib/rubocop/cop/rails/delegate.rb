@@ -15,6 +15,9 @@ module RuboCop
       # without using the `delegate` method will be a violation.
       # When set to `false`, this case is legal.
       #
+      # It is disabled for controllers in order to keep controller actions
+      # explicitly defined.
+      #
       # @example
       #   # bad
       #   def bar

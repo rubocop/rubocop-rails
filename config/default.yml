@@ -367,11 +367,13 @@ Rails/Delegate:
   Description: 'Prefer delegate method for delegations.'
   Enabled: true
   VersionAdded: '0.21'
-  VersionChanged: '0.50'
+  VersionChanged: <<next>>
   # When set to true, using the target object as a prefix of the
   # method name without using the `delegate` method will be a
   # violation. When set to false, this case is legal.
   EnforceForPrefixed: true
+  Exclude:
+    - app/controllers/**/*.rb
 
 Rails/DelegateAllowBlank:
   Description: 'Do not use allow_blank as an option to delegate.'
