@@ -18,6 +18,14 @@ RSpec.describe RuboCop::Cop::Rails::RelativeDateConstant, :config do
       RUBY
     end
 
+    it 'accepts a lambda with numblock' do
+      expect_no_offenses(<<~RUBY)
+        class SomeClass
+          EXPIRED_AT = -> { _1.year.ago }
+        end
+      RUBY
+    end
+
     it 'accepts a proc' do
       expect_no_offenses(<<~RUBY)
         class SomeClass
