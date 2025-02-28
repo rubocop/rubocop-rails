@@ -74,6 +74,12 @@ RSpec.describe RuboCop::Cop::Rails::UniqBeforePluck, :config do
         Model.where(foo: 1).pluck(:name).uniq { |k| k[0] }
       RUBY
     end
+
+    it 'ignores uniq with a numblock' do
+      expect_no_offenses(<<~RUBY)
+        Model.where(foo: 1).pluck(:name).uniq { _1[0] }
+      RUBY
+    end
   end
 
   it 'registers an offense' do

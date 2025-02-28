@@ -52,7 +52,7 @@ module RuboCop
         MSG = 'Use `distinct` before `pluck`.'
         RESTRICT_ON_SEND = %i[uniq].freeze
 
-        def_node_matcher :uniq_before_pluck, '[!^block $(send $(send _ :pluck ...) :uniq ...)]'
+        def_node_matcher :uniq_before_pluck, '[!^any_block $(send $(send _ :pluck ...) :uniq ...)]'
 
         def on_send(node)
           uniq_before_pluck(node) do |uniq_node, pluck_node|
