@@ -60,7 +60,7 @@ module RuboCop
         PATTERN
 
         def on_block(node)
-          return if node.each_ancestor(:block, :numblock).any?
+          return if node.each_ancestor(:any_block).any?
 
           pluck_candidate?(node) do |argument, key|
             next if key.regexp_type? || !use_one_block_argument?(argument)
