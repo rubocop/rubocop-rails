@@ -136,8 +136,6 @@ Rails/ActionOrder:
     - create
     - update
     - destroy
-  Include:
-    - app/controllers/**/*.rb
 
 Rails/ActiveRecordAliases:
   Description: >-
