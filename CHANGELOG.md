@@ -9,6 +9,21 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1458](https://github.com/rubocop/rubocop-rails/pull/1458): Fix a false positive for `Rails/RelativeDateConstant` when assigning a lambda/proc with numblock. ([@earlopain][])
+* [#1457](https://github.com/rubocop/rubocop-rails/pull/1457): Fix a false positive for `Rails/ReversibleMigration` in `drop_table` with numblock. ([@earlopain][])
+* [#1456](https://github.com/rubocop/rubocop-rails/pull/1456): Fix a false positive for `Rails/CreateTableWithTimestamps` with numblocks. ([@earlopain][])
+* [#1459](https://github.com/rubocop/rubocop-rails/pull/1459): Fix a false positive for `Rails/UniqBeforePluck` when using a numblock with `uniq`. ([@earlopain][])
+* [#1455](https://github.com/rubocop/rubocop-rails/pull/1455): Make `Rails/SaveBang` aware of numblocks. ([@earlopain][])
+* [#1453](https://github.com/rubocop/rubocop-rails/pull/1453): Make `Rails/TransactionExitStatement` aware of numblocks. ([@earlopain][])
+
+### Changes
+
+* [#1179](https://github.com/rubocop/rubocop-rails/issues/1179): `Rails/ReflectionClassName`: Accept method calls on local variables. ([@exterm][])
+* [#1385](https://github.com/rubocop/rubocop-rails/pull/1385): Make `Lint/UselessAccessModifier` aware of `ActiveSupport::Concern` and `Module#concerning`/`Module#concern` core extensions. ([@earlopain][])
+* [#1454](https://github.com/rubocop/rubocop-rails/issues/1454): Disable `Rails/Delegate` for controllers. ([@earlopain][])
+
 ## 2.30.2 (2025-02-24)
 
 ### Bug fixes
@@ -1245,3 +1260,4 @@
 [@mterada1228]: https://github.com/mterada1228
 [@franzliedke]: https://github.com/franzliedke
 [@ydakuka]: https://github.com/ydakuka
+[@exterm]: https://github.com/exterm
