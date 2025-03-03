@@ -367,7 +367,7 @@ Rails/Delegate:
   Description: 'Prefer delegate method for delegations.'
   Enabled: true
   VersionAdded: '0.21'
-  VersionChanged: <<next>>
+  VersionChanged: '2.30'
   # When set to true, using the target object as a prefix of the
   # method name without using the `delegate` method will be a
   # violation. When set to false, this case is legal.

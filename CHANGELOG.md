@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.30.3 (2025-03-03)
+
 ### Bug fixes
 
 * [#1458](https://github.com/rubocop/rubocop-rails/pull/1458): Fix a false positive for `Rails/RelativeDateConstant` when assigning a lambda/proc with numblock. ([@earlopain][])

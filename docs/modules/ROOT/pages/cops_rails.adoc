@@ -1541,7 +1541,7 @@ end
 | Yes
 | Always
 | 0.21
-| 0.50
+| 2.30
 |===
 
 Looks for delegations that could have been created
@@ -1555,6 +1555,9 @@ The `EnforceForPrefixed` option (defaulted to `true`) means that
 using the target object as a prefix of the method name
 without using the `delegate` method will be a violation.
 When set to `false`, this case is legal.
+
+It is disabled for controllers in order to keep controller actions
+explicitly defined.
 
 [#examples-railsdelegate]
 === Examples
@@ -1626,6 +1629,10 @@ delegate :bar, to: :foo, prefix: true
 | EnforceForPrefixed
 | `true`
 | Boolean
+
+| Exclude
+| `+app/controllers/**/*.rb+`
+| Array
 |===
 
 [#railsdelegateallowblank]
