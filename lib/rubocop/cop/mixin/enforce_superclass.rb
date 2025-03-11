@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 module RuboCop
-  module Cop
+  module Cop # rubocop:disable Style/Documentation
+    # The EnforceSuperclass module is also defined in `rubocop` (for backwards
+    # compatibility), so here we remove it before (re)defining it, to avoid
+    # warnings about methods in the module being redefined.
+    remove_const(:EnforceSuperclass) if defined?(EnforceSuperclass)
+
     # Common functionality for enforcing a specific superclass.
     module EnforceSuperclass
       def self.included(base)
