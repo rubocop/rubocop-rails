@@ -76,7 +76,7 @@ module RuboCop
         def autocorrect(corrector, class_config)
           class_value = class_config.value
           replacement = const_or_string(class_value)
-          return unless replacement.present?
+          return unless replacement
 
           corrector.replace(class_value, replacement.source.inspect)
         end

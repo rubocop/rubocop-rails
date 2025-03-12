@@ -3,7 +3,6 @@
 require 'rubocop'
 require 'rack/utils'
 require 'active_support/inflector'
-require 'active_support/core_ext/object/blank'
 
 require_relative 'rubocop/rails'
 require_relative 'rubocop/rails/version'

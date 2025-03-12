@@ -29,8 +29,8 @@ module RuboCop
       end
 
       def database_from_env
-        url = ENV['DATABASE_URL'].presence
-        return unless url
+        url = ENV.fetch('DATABASE_URL', '')
+        return if url.blank?
 
         case url
         when %r{\A(mysql2|trilogy)://}
