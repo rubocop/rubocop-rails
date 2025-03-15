@@ -1,0 +1,1 @@
+* [#1106](https://github.com/rubocop/rubocop-rails/pull/1106): Add new `Rails/RelativeDateGrammar` cop. ([@aeroastro][])
