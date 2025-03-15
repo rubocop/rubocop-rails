@@ -39,7 +39,7 @@ module RuboCop
 
         # @!method comment_present?(node)
         def_node_matcher :comment_present?, <<~PATTERN
-          (hash <(pair {(sym :comment) (str "comment")} (_ [present?])) ...>)
+          (hash <(pair {(sym :comment) (str "comment")} (_ !blank?)) ...>)
         PATTERN
 
         # @!method add_column?(node)
