@@ -101,10 +101,51 @@ RSpec.describe RuboCop::Cop::Rails::EnvironmentComparison, :config do
     end
   end
 
+  context 'when comparing Rails.env using a case statement' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        case Rails.env
+             ^^^^^^^^^ Favor environment check predicate methods over case comparison.
+        when "production"
+          do_production_thing
+        when "staging"
+          do_staging_thing
+        else
+          do_other_thing
+        end
+      RUBY
+    end
+
+    context 'with pattern matching' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          case Rails.env
+               ^^^^^^^^^ Favor environment check predicate methods over case comparison.
+          when "test" | "development"
+            do_test_thing
+          else
+            do_other_thing
+          end
+        RUBY
+      end
+    end
+  end
+
   it 'does not register an offense when using `#good_method`' do
     expect_no_offenses(<<~RUBY)
       Rails.env.production?
       Rails.env.test?
+    RUBY
+  end
+
+  it 'does not register an offense for other case statements' do
+    expect_no_offenses(<<~RUBY)
+      case some_method
+      when "test" | "development"
+        do_test_thing
+      else
+        do_other_thing
+      end
     RUBY
   end
 end
