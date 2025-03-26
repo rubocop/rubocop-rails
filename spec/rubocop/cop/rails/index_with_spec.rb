@@ -261,6 +261,70 @@ RSpec.describe RuboCop::Cop::Rails::IndexWith, :config do
         end
       end
     end
+
+    context '`it` block parameter', :ruby34, unsupported_on: :parser do
+      it 'registers an offense for `map { ... }.to_h`' do
+        expect_offense(<<~RUBY)
+          x.map { [it, it.to_sym] }.to_h
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_with` over `map { ... }.to_h`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          x.index_with { it.to_sym }
+        RUBY
+      end
+
+      context 'when keys are transformed' do
+        it 'does not register an offense for `map { ... }.to_h`' do
+          expect_no_offenses(<<~RUBY)
+            x.map { [foo(it), it.to_sym] }.to_h
+          RUBY
+        end
+      end
+
+      it 'registers an offense for Hash[map { ... }]' do
+        expect_offense(<<~RUBY)
+          Hash[x.map { [it, it.to_sym] }]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_with` over `Hash[map { ... }]`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          x.index_with { it.to_sym }
+        RUBY
+      end
+
+      context 'when the referenced `it` parameter is not `it`' do
+        it 'does not register an offense for Hash[map { ... }]' do
+          expect_no_offenses(<<~RUBY)
+            Hash[x.map { [y, it.to_sym] }]
+          RUBY
+        end
+      end
+
+      it 'registers an offense for `to_h { ... }`' do
+        expect_offense(<<~RUBY)
+          x.to_h { [it, it.to_sym] }
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_with` over `to_h { ... }`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          x.index_with { it.to_sym }
+        RUBY
+      end
+
+      context 'when an `it` parameter other than `it` is referenced in the value' do
+        it 'registers an offense for `to_h { ... }`' do
+          expect_offense(<<~RUBY)
+            x.to_h { [it, y.to_sym] }
+            ^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_with` over `to_h { ... }`.
+          RUBY
+
+          expect_correction(<<~RUBY)
+            x.index_with { y.to_sym }
+          RUBY
+        end
+      end
+    end
   end
 
   context 'when using Rails 5.2 or older', :rails52 do

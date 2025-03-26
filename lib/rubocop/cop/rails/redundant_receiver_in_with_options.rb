@@ -85,18 +85,22 @@ module RuboCop
         end
 
         alias on_numblock on_block
+        alias on_itblock on_block
 
         private
 
         def autocorrect(corrector, send_node, node)
           corrector.remove(send_node.receiver)
           corrector.remove(send_node.loc.dot)
-          corrector.remove(block_argument_range(send_node)) unless node.numblock_type?
+          corrector.remove(block_argument_range(send_node)) if node.block_type?
         end
 
+        # rubocop:disable Metrics/AbcSize
         def redundant_receiver?(send_nodes, node)
           proc = if node.numblock_type?
                    ->(n) { n.receiver.lvar_type? && n.receiver.source == '_1' }
+                 elsif node.itblock_type?
+                   ->(n) { n.receiver.lvar_type? && n.receiver.source == 'it' }
                  else
                    return false if node.arguments.empty?
 
@@ -106,6 +110,7 @@ module RuboCop
 
           send_nodes.all?(&proc)
         end
+        # rubocop:enable Metrics/AbcSize
 
         def block_argument_range(node)
           block_node = node.each_ancestor(:block).first

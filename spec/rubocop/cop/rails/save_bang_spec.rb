@@ -157,6 +157,23 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       end
     end
 
+    it "when assigning the return value of #{method} with `it` block", :ruby34, unsupported_on: :parser do
+      if update
+        expect_no_offenses(<<~RUBY)
+          x = object.#{method} do
+            it.name = 'Tom'
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          x = object.#{method} do
+                     ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked. Or check `persisted?` on model returned from `#{method}`.
+            it.name = 'Tom'
+          end
+        RUBY
+      end
+    end
+
     it "when using #{method} with if" do
       if update
         expect_no_offenses(<<~RUBY)
@@ -599,6 +616,23 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
         expect_offense(<<~RUBY, method: method)
           objects.each do
             _1.#{method}
+               ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+        RUBY
+      end
+    end
+
+    it "when using #{method} as last method call of an itblock", :ruby34, unsupported_on: :parser do
+      if allow_implicit_return
+        expect_no_offenses(<<~RUBY)
+          objects.each do
+            it.#{method}
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          objects.each do
+            it.#{method}
                ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
           end
         RUBY

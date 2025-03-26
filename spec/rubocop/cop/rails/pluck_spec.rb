@@ -129,6 +129,31 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
         end
       end
 
+      context 'when using Ruby 3.4 or newer', :ruby34, unsupported_on: :parser do
+        context 'when using `it` block parameter' do
+          context "when `#{method}` can be replaced with `pluck`" do
+            it 'registers an offense' do
+              expect_offense(<<~RUBY, method: method)
+                x.%{method} { it[:foo] }
+                  ^{method}^^^^^^^^^^^^^ Prefer `pluck(:foo)` over `%{method} { it[:foo] }`.
+              RUBY
+
+              expect_correction(<<~RUBY)
+                x.pluck(:foo)
+              RUBY
+            end
+          end
+
+          context 'when the `it` argument is used in `[]`' do
+            it 'does not register an offense' do
+              expect_no_offenses(<<~RUBY)
+                x.#{method} { it[foo...it.to_something] }
+              RUBY
+            end
+          end
+        end
+      end
+
       context "when `#{method}` is used in block" do
         it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)
