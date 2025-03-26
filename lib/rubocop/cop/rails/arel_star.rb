@@ -5,14 +5,14 @@ module RuboCop
     module Rails
       # Prevents usage of `"*"` on an Arel::Table column reference.
       #
-      # Using `arel_table["*"]` causes the outputted string to be a literal
-      # quoted asterisk (e.g. <tt>`my_model`.`*`</tt>). This causes the
-      # database to look for a column named <tt>`*`</tt> (or `"*"`) as opposed
+      # Using `arel_table["\*"]` causes the outputted string to be a literal
+      # quoted asterisk (e.g. `my_model`.`*`). This causes the
+      # database to look for a column named `\*` (or `"*"`) as opposed
       # to expanding the column list as one would likely expect.
       #
       # @safety
-      #   This cop's autocorrection is unsafe because it turns a quoted `*` into
-      #   an SQL `*`, unquoted. `*` is a valid column name in certain databases
+      #   This cop's autocorrection is unsafe because it turns a quoted `\*` into
+      #   an SQL `*`, unquoted. `\*` is a valid column name in certain databases
       #   supported by Rails, and even though it is usually a mistake,
       #   it might denote legitimate access to a column named `*`.
       #
