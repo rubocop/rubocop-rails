@@ -45,12 +45,10 @@ module RuboCop
           return if node.parent&.block_type?
 
           interpolated_string_passed_to_debug(node) do |arguments|
-            message = format(MSG)
-
             range = replacement_range(node)
             replacement = replacement_source(node, arguments)
 
-            add_offense(range, message: message) do |corrector|
+            add_offense(range) do |corrector|
               corrector.replace(range, replacement)
             end
           end
