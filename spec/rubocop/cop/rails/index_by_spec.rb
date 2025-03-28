@@ -262,4 +262,68 @@ RSpec.describe RuboCop::Cop::Rails::IndexBy, :config do
       end
     end
   end
+
+  context '`it` parameter', :ruby34, unsupported_on: :parser do
+    it 'registers an offense for `map { ... }.to_h`' do
+      expect_offense(<<~RUBY)
+        x.map { [it.to_sym, it] }.to_h
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `map { ... }.to_h`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x.index_by { it.to_sym }
+      RUBY
+    end
+
+    context 'when values are transformed' do
+      it 'does not register an offense for `map { ... }.to_h`' do
+        expect_no_offenses(<<~RUBY)
+          x.map { [it.to_sym, foo(it)] }.to_h
+        RUBY
+      end
+    end
+
+    it 'registers an offense for Hash[map { ... }]' do
+      expect_offense(<<~RUBY)
+        Hash[x.map { [it.to_sym, it] }]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `Hash[map { ... }]`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x.index_by { it.to_sym }
+      RUBY
+    end
+
+    context 'when the referenced `it` parameter is not it' do
+      it 'does not register an offense for Hash[map { ... }]' do
+        expect_no_offenses(<<~RUBY)
+          Hash[x.map { [it.to_sym, y] }]
+        RUBY
+      end
+    end
+
+    it 'registers an offense for `to_h { ... }`' do
+      expect_offense(<<~RUBY)
+        x.to_h { [it.to_sym, it] }
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `to_h { ... }`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x.index_by { it.to_sym }
+      RUBY
+    end
+
+    context 'when `it` parameter other than `it` is referenced in the key' do
+      it 'registers an offense for `to_h { ... }`' do
+        expect_offense(<<~RUBY)
+          x.to_h { [y.to_sym, it] }
+          ^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_by` over `to_h { ... }`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          x.index_by { y.to_sym }
+        RUBY
+      end
+    end
+  end
 end

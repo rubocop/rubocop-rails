@@ -48,6 +48,14 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     RUBY
   end
 
+  context 'Ruby >= 3.4', :ruby34, unsupported_on: :parser do
+    it_behaves_like 'accepts', 'create_table using `it` parameter', <<~RUBY
+      create_table :users do
+        it.string :name
+      end
+    RUBY
+  end
+
   it_behaves_like 'offense', 'execute', <<~RUBY
     execute "ALTER TABLE `pages_linked_pages` ADD UNIQUE `page_id_linked_page_id` (`page_id`,`linked_page_id`)"
   RUBY
@@ -117,6 +125,12 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
     it_behaves_like 'accepts', 'drop_table(with numblock)', <<~RUBY
       drop_table :users do
         _1.string :name
+      end
+    RUBY
+
+    it_behaves_like 'accepts', 'drop_table(with itblock)', <<~RUBY, :ruby34, unsupported_on: :parser
+      drop_table :users do
+        it.string :name
       end
     RUBY
 
@@ -254,6 +268,14 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
       it_behaves_like 'offense', 'change_table(with change_default)', <<~RUBY
         change_table :users do
           _1.change_default :authorized, 1
+        end
+      RUBY
+    end
+
+    context 'Ruby >= 3.4', :ruby34, unsupported_on: :parser do
+      it_behaves_like 'offense', 'change_table(with change_default)', <<~RUBY
+        change_table :users do
+          it.change_default :authorized, 1
         end
       RUBY
     end

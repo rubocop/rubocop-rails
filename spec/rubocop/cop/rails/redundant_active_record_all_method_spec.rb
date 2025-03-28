@@ -329,6 +329,12 @@ RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
         RUBY
       end
 
+      it "does not register an offense when using `#{method}` with `it` block", :ruby34, unsupported_on: :parser do
+        expect_no_offenses(<<~RUBY)
+          User.all.#{method} { it.do_something }
+        RUBY
+      end
+
       it "does not register an offense when using `#{method}` with symbol block" do
         expect_no_offenses(<<~RUBY)
           User.all.#{method}(&:do_something)

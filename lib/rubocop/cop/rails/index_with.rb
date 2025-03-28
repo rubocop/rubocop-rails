@@ -40,6 +40,9 @@ module RuboCop
             (numblock
               (call _ :to_h) $1
               (array (lvar :_1) $_))
+            (itblock
+              (call _ :to_h) $:it
+              (array (lvar :it) $_))
           }
         PATTERN
 
@@ -53,6 +56,9 @@ module RuboCop
               (numblock
                 (call _ {:map :collect}) $1
                 (array (lvar :_1) $_))
+              (itblock
+                (call _ {:map :collect}) $:it
+                (array (lvar :it) $_))
             }
             :to_h)
         PATTERN
@@ -69,6 +75,9 @@ module RuboCop
               (numblock
                 (call _ {:map :collect}) $1
                 (array (lvar :_1) $_))
+              (itblock
+                (call _ {:map :collect}) $:it
+                (array (lvar :it) $_))
             }
           )
         PATTERN

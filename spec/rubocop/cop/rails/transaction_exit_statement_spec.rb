@@ -21,6 +21,16 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
       RUBY
     end
 
+    it 'registers an offense when `return` is used in transaction with itblock', :ruby34, unsupported_on: :parser do
+      expect_offense(<<~RUBY, method: method)
+        ApplicationRecord.%{method} do
+          it.after_commit { }
+          return if user.active?
+          ^^^^^^ Exit statement `return` is not allowed. Use `raise` (rollback) or `next` (commit).
+        end
+      RUBY
+    end
+
     it 'registers an offense when `break` is used in transactions' do
       expect_offense(<<~RUBY, method: method)
         ApplicationRecord.%{method} do
@@ -77,6 +87,18 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
       RUBY
     end
 
+    it 'registers an offense when `return` is used in `each` with itblock in transactions', :ruby34,
+       unsupported_on: :parser do
+      expect_offense(<<~RUBY, method: method)
+        ApplicationRecord.%{method} do
+          foo.each do
+            return if it
+            ^^^^^^ Exit statement `return` is not allowed. Use `raise` (rollback) or `next` (commit).
+          end
+        end
+      RUBY
+    end
+
     it 'registers an offense when `throw` is used in `loop` in transactions' do
       expect_offense(<<~RUBY, method: method)
         ApplicationRecord.%{method} do
@@ -106,6 +128,18 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
           end
         end
       RUBY
+    end
+
+    context 'when using Ruby >= 3.4', :ruby34, unsupported_on: :parser do
+      it 'does not register an offense when `break` is used in `each` with itblock in transactions' do
+        expect_no_offenses(<<~RUBY)
+          ApplicationRecord.#{method} do
+            foo.each do
+              break if it
+            end
+          end
+        RUBY
+      end
     end
 
     it 'registers an offense when `return` is used in `rescue`' do

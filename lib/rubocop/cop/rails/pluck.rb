@@ -59,6 +59,7 @@ module RuboCop
           (any_block (call _ {:map :collect}) $_argument (send lvar :[] $_key))
         PATTERN
 
+        # rubocop:disable Metrics/AbcSize
         def on_block(node)
           return if node.each_ancestor(:any_block).any?
 
@@ -68,20 +69,25 @@ module RuboCop
             match = if node.block_type?
                       block_argument = argument.children.first.source
                       use_block_argument_in_key?(block_argument, key)
-                    else # numblock
-                      argument == 1 && use_block_argument_in_key?('_1', key)
+                    elsif node.numblock_type?
+                      use_block_argument_in_key?('_1', key)
+                    else # itblock
+                      use_block_argument_in_key?('it', key)
                     end
             next unless match
 
             register_offense(node, key)
           end
         end
+        # rubocop:enable Metrics/AbcSize
         alias on_numblock on_block
+        alias on_itblock on_block
 
         private
 
         def use_one_block_argument?(argument)
-          return true if argument == 1 # Checks for numbered argument `_1`.
+          # Checks for numbered argument `_1` or `it block parameter.
+          return true if [1, :it].include?(argument)
 
           argument.respond_to?(:one?) && argument.one?
         end

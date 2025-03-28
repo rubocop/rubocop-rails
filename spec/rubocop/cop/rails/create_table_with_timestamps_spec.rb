@@ -64,6 +64,17 @@ RSpec.describe RuboCop::Cop::Rails::CreateTableWithTimestamps, :config do
     RUBY
   end
 
+  it 'does not register an offense when including timestamps in itblock', :ruby34, unsupported_on: :parser do
+    expect_no_offenses <<~RUBY
+      create_table :users do
+        it.string :name
+        it.string :email
+
+        it.timestamps
+      end
+    RUBY
+  end
+
   it 'does not register an offense when including timestamps with `to_proc` syntax' do
     expect_no_offenses <<~RUBY
       create_table :users, &:timestamps
