@@ -8,6 +8,10 @@ module RuboCop
       # an enumerable into a hash where the keys are the original elements.
       # Rails provides the `index_with` method for this purpose.
       #
+      # This cop is marked as unsafe autocorrection, because `nil.to_h` returns {}
+      # but `nil.with_index` throws `NoMethodError`. Therefore, autocorrection is not
+      # compatible if the receiver is nil.
+      #
       # @example
       #   # bad
       #   [1, 2, 3].each_with_object({}) { |el, h| h[el] = foo(el) }
