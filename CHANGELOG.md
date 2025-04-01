@@ -9,6 +9,14 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#1471](https://github.com/rubocop/rubocop-rails/pull/1471): Support `it` block parameter in `Rails` cops. ([@koic][])
+
+### Bug fixes
+
+* [#1465](https://github.com/rubocop/rubocop-rails/issues/1465): Avoid warnings about methods of `RuboCop::Cop::EnforceSuperclass` being redefined. ([@davidrunger][])
+
 ## 2.30.3 (2025-03-03)
 
 ### Bug fixes
@@ -1263,3 +1271,4 @@
 [@franzliedke]: https://github.com/franzliedke
 [@ydakuka]: https://github.com/ydakuka
 [@exterm]: https://github.com/exterm
+[@davidrunger]: https://github.com/davidrunger
