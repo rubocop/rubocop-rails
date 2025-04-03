@@ -45,7 +45,7 @@ module RuboCop
 
             return if required_options?(options_node)
 
-            def_node = node.each_ancestor(:def, :defs).first
+            def_node = node.each_ancestor(:any_def).first
             table_node = table_node(node)
             return if def_node && (table_node.nil? || change_column_null?(def_node, table_node, column_node))
 
