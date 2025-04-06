@@ -2,7 +2,6 @@
 
 $LOAD_PATH.unshift File.expand_path('lib', __dir__)
 require 'rubocop/rails/version'
-require 'English'
 
 Gem::Specification.new do |s|
   s.name = 'rubocop-rails'
