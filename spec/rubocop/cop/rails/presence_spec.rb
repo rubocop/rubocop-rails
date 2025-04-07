@@ -233,6 +233,81 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     RUBY
   end
 
+  context 'when a method is called on the receiver' do
+    it 'registers an offense and corrects when `a.present? ? a.foo : nil' do
+      expect_offense(<<~RUBY)
+        a.present? ? a.foo : nil
+        ^^^^^^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo` instead of `a.present? ? a.foo : nil`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        a.presence&.foo
+      RUBY
+    end
+
+    it 'registers an offense and corrects when `a.blank? ? nil : a.foo' do
+      expect_offense(<<~RUBY)
+        a.blank? ? nil : a.foo
+        ^^^^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo` instead of `a.blank? ? nil : a.foo`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        a.presence&.foo
+      RUBY
+    end
+
+    it 'registers an offense and corrects when `a.foo if a.present?`' do
+      expect_offense(<<~RUBY)
+        a.foo if a.present?
+        ^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo` instead of `a.foo if a.present?`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        a.presence&.foo
+      RUBY
+    end
+
+    it 'registers an offense and corrects when `a.foo unless a.blank?`' do
+      expect_offense(<<~RUBY)
+        a.foo unless a.blank?
+        ^^^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo` instead of `a.foo unless a.blank?`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        a.presence&.foo
+      RUBY
+    end
+
+    it 'registers an offense and corrects when chained method takes parameters' do
+      expect_offense(<<~RUBY)
+        a.present? ? a.foo(42, key: :value) : nil
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo(42, key: :value)` instead of `a.present? ? a.foo(42, key: :value) : nil`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        a.presence&.foo(42, key: :value)
+      RUBY
+    end
+
+    it 'does not register an offense when chained method is `[]`' do
+      expect_no_offenses(<<~RUBY)
+        a.present? ? a[1] : nil
+      RUBY
+    end
+
+    it 'does not register an offense when chained method is an arithmetic operation' do
+      expect_no_offenses(<<~RUBY)
+        a.present? ? a + 42 : nil
+      RUBY
+    end
+
+    it 'does not register an offense when multiple methods are chained' do
+      expect_no_offenses(<<~RUBY)
+        a.present? ? a.foo.bar : nil
+      RUBY
+    end
+  end
+
   context 'when multiline ternary can be replaced' do
     it 'registers an offense and corrects' do
       expect_offense(<<~RUBY)
