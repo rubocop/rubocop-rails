@@ -142,5 +142,14 @@ RSpec.describe RuboCop::Cop::Rails::SchemaComment, :config do
         end
       RUBY
     end
+
+    it 'does not register an offense when the comment is a local variable' do
+      expect_no_offenses(<<~RUBY)
+        create_table :users, comment: 'Table' do |t|
+          i_am_a_comment = 'I am a column'
+          t.integer :column, comment: i_am_a_comment
+        end
+      RUBY
+    end
   end
 end
