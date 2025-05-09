@@ -1,8 +1,18 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
+  shared_examples 'with invalid timezone literal encoding' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~'RUBY')
+        Time.new("l\366, 26 maj 2001 00:15:58")
+      RUBY
+    end
+  end
+
   context 'when EnforcedStyle is "strict"' do
     let(:cop_config) { { 'EnforcedStyle' => 'strict' } }
+
+    include_context 'with invalid timezone literal encoding'
 
     it 'registers an offense for Time.now' do
       expect_offense(<<~RUBY)
@@ -333,6 +343,8 @@ RSpec.describe RuboCop::Cop::Rails::TimeZone, :config do
 
   context 'when EnforcedStyle is "flexible"' do
     let(:cop_config) { { 'EnforcedStyle' => 'flexible' } }
+
+    include_context 'with invalid timezone literal encoding'
 
     it 'registers an offense for Time.now' do
       expect_offense(<<~RUBY)

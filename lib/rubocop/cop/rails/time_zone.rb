@@ -135,7 +135,9 @@ module RuboCop
         end
 
         def attach_timezone_specifier?(date)
-          date.respond_to?(:value) && TIMEZONE_SPECIFIER.match?(date.value.to_s)
+          return false unless date.respond_to?(:value)
+
+          !date.value.to_s.valid_encoding? || TIMEZONE_SPECIFIER.match?(date.value.to_s)
         end
 
         def build_message(klass, method_name, node)
