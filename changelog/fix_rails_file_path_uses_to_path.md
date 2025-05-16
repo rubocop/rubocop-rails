@@ -1,0 +1,1 @@
+- [#1480](https://github.com/rubocop/rubocop-rails/pull/1480): Rails/FilePath: Use Rails.root.join('path/to').to_path instead of .to_s. ([@kaibadash][])

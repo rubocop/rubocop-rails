@@ -21,7 +21,7 @@ module RuboCop
       #   "#{Rails.root}/app/models/goober"
       #
       #   # good
-      #   Rails.root.join('app/models/goober').to_s
+      #   Rails.root.join('app/models/goober').to_path
       #
       # @example EnforcedStyle: arguments
       #   # bad
@@ -35,7 +35,7 @@ module RuboCop
       #   "#{Rails.root}/app/models/goober"
       #
       #   # good
-      #   Rails.root.join('app', 'models', 'goober').to_s
+      #   Rails.root.join('app', 'models', 'goober').to_path
       #
       class FilePath < Base
         extend AutoCorrector
@@ -43,8 +43,8 @@ module RuboCop
         include ConfigurableEnforcedStyle
         include RangeHelp
 
-        MSG_SLASHES = 'Prefer `Rails.root.join(\'path/to\')%<to_s>s`.'
-        MSG_ARGUMENTS = 'Prefer `Rails.root.join(\'path\', \'to\')%<to_s>s`.'
+        MSG_SLASHES = 'Prefer `Rails.root.join(\'path/to\')%<to_path>s`.'
+        MSG_ARGUMENTS = 'Prefer `Rails.root.join(\'path\', \'to\')%<to_path>s`.'
         RESTRICT_ON_SEND = %i[join].freeze
 
         def_node_matcher :file_join_nodes?, <<~PATTERN
@@ -83,7 +83,7 @@ module RuboCop
           return unless slash_node&.str_type? && slash_node.source.start_with?(File::SEPARATOR)
           return unless node.children[rails_root_index].children.first.send_type?
 
-          register_offense(node, require_to_s: false) do |corrector|
+          register_offense(node, require_to_path: false) do |corrector|
             autocorrect_slash_after_rails_root_in_dstr(corrector, node, rails_root_index)
           end
         end
@@ -93,7 +93,7 @@ module RuboCop
           extension_node = node.children[rails_root_index + 1]
           return unless extension_node?(extension_node)
 
-          register_offense(node, require_to_s: false) do |corrector|
+          register_offense(node, require_to_path: false) do |corrector|
             autocorrect_extension_after_rails_root_join_in_dstr(corrector, node, rails_root_index, extension_node)
           end
         end
@@ -102,7 +102,7 @@ module RuboCop
           return unless file_join_nodes?(node)
           return unless valid_arguments_for_file_join_with_rails_root?(node.arguments)
 
-          register_offense(node, require_to_s: true) do |corrector|
+          register_offense(node, require_to_path: true) do |corrector|
             autocorrect_file_join(corrector, node) unless node.first_argument.array_type?
           end
         end
@@ -113,7 +113,7 @@ module RuboCop
           return unless rails_root_join_nodes?(node)
           return unless valid_string_arguments_for_rails_root_join?(node.arguments)
 
-          register_offense(node, require_to_s: false) do |corrector|
+          register_offense(node, require_to_path: false) do |corrector|
             autocorrect_rails_root_join_with_string_arguments(corrector, node)
           end
         end
@@ -124,7 +124,7 @@ module RuboCop
           return unless rails_root_join_nodes?(node)
           return unless valid_slash_separated_path_for_rails_root_join?(node.arguments)
 
-          register_offense(node, require_to_s: false) do |corrector|
+          register_offense(node, require_to_path: false) do |corrector|
             autocorrect_rails_root_join_with_slash_separated_path(corrector, node)
           end
         end
@@ -160,20 +160,20 @@ module RuboCop
           node.str_type? && node.value.start_with?(File::SEPARATOR)
         end
 
-        def register_offense(node, require_to_s:, &block)
+        def register_offense(node, require_to_path:, &block)
           line_range = node.loc.column...node.loc.last_column
           source_range = source_range(processed_source.buffer, node.first_line, line_range)
 
-          message = build_message(require_to_s)
+          message = build_message(require_to_path)
 
           add_offense(source_range, message: message, &block)
         end
 
-        def build_message(require_to_s)
+        def build_message(require_to_path)
           message_template = style == :arguments ? MSG_ARGUMENTS : MSG_SLASHES
-          to_s = require_to_s ? '.to_s' : ''
+          to_path = require_to_path ? '.to_path' : ''
 
-          format(message_template, to_s: to_s)
+          format(message_template, to_path: to_path)
         end
 
         def dstr_separated_by_colon?(node)
@@ -205,7 +205,7 @@ module RuboCop
           replace_receiver_with_rails_root(corrector, node)
           remove_first_argument_with_comma(corrector, node)
           process_arguments(corrector, node.arguments)
-          append_to_string_conversion(corrector, node)
+          append_to_pathtring_conversion(corrector, node)
         end
 
         def replace_receiver_with_rails_root(corrector, node)
@@ -234,8 +234,8 @@ module RuboCop
           end
         end
 
-        def append_to_string_conversion(corrector, node)
-          corrector.insert_after(node, '.to_s')
+        def append_to_pathtring_conversion(corrector, node)
+          corrector.insert_after(node, '.to_path')
         end
 
         def autocorrect_rails_root_join_with_string_arguments(corrector, node)
