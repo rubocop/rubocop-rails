@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.32.0 (2025-05-17)
+
 ### Bug fixes
 
 * [#1475](https://github.com/rubocop/rubocop-rails/pull/1475): Fix `Rails/TimeZone` cop error on invalid string literal encoding. ([@viralpraxis][])
