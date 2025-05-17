@@ -9,6 +9,15 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1475](https://github.com/rubocop/rubocop-rails/pull/1475): Fix `Rails/TimeZone` cop error on invalid string literal encoding. ([@viralpraxis][])
+* [#1477](https://github.com/rubocop/rubocop-rails/issues/1477): Fix an error for `Rails/SchemaComment` when the comment is passed as a local variable. ([@earlopain][])
+
+### Changes
+
+* [#234](https://github.com/rubocop/rubocop-rails/issues/234): Use globs that are compatible with Engine or Packwerk. ([@tdeo][])
+
 ## 2.31.0 (2025-04-01)
 
 ### New features
@@ -1274,3 +1283,4 @@
 [@ydakuka]: https://github.com/ydakuka
 [@exterm]: https://github.com/exterm
 [@davidrunger]: https://github.com/davidrunger
+[@tdeo]: https://github.com/tdeo
