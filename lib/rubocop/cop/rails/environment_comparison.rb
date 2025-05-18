@@ -3,12 +3,13 @@
 module RuboCop
   module Cop
     module Rails
-      # Checks that Rails.env is compared using `.production?`-like
+      # Checks that `Rails.env` is compared using `.production?`-like
       # methods instead of equality against a string or symbol.
       #
       # @example
       #   # bad
       #   Rails.env == 'production'
+      #   Rails.env.to_sym == :production
       #
       #   # bad, always returns false
       #   Rails.env == :test
@@ -18,26 +19,40 @@ module RuboCop
       class EnvironmentComparison < Base
         extend AutoCorrector
 
-        MSG = 'Favor `%<bang>sRails.env.%<env>s?` over `%<source>s`.'
+        MSG = 'Favor `%<prefer>s` over `%<source>s`.'
 
         SYM_MSG = 'Do not compare `Rails.env` with a symbol, it will always evaluate to `false`.'
 
         RESTRICT_ON_SEND = %i[== !=].freeze
 
-        def_node_matcher :comparing_str_env_with_rails_env_on_lhs?, <<~PATTERN
-          (send
-            (send (const {nil? cbase} :Rails) :env)
-            {:== :!=}
-            $str
-          )
+        def_node_matcher :comparing_env_with_rails_env_on_lhs?, <<~PATTERN
+          {
+            (send
+              (send (const {nil? cbase} :Rails) :env)
+              {:== :!=}
+              $str
+            )
+            (send
+              (send (send (const {nil? cbase} :Rails) :env) :to_sym)
+              {:== :!=}
+              $sym
+            )
+          }
         PATTERN
 
-        def_node_matcher :comparing_str_env_with_rails_env_on_rhs?, <<~PATTERN
-          (send
-            $str
-            {:== :!=}
-            (send (const {nil? cbase} :Rails) :env)
-          )
+        def_node_matcher :comparing_env_with_rails_env_on_rhs?, <<~PATTERN
+          {
+            (send
+              $str
+              {:== :!=}
+              (send (const {nil? cbase} :Rails) :env)
+            )
+            (send
+              $sym
+              {:== :!=}
+              (send (send (const {nil? cbase} :Rails) :env) :to_sym)
+            )
+          }
         PATTERN
 
         def_node_matcher :comparing_sym_env_with_rails_env_on_lhs?, <<~PATTERN
@@ -56,59 +71,52 @@ module RuboCop
           )
         PATTERN
 
-        def_node_matcher :content, <<~PATTERN
-          ({str sym} $_)
-        PATTERN
-
         def on_send(node)
-          if (env_node = comparing_str_env_with_rails_env_on_lhs?(node) ||
-                         comparing_str_env_with_rails_env_on_rhs?(node))
-            env, = *env_node
-            bang = node.method?(:!=) ? '!' : ''
-            message = format(MSG, bang: bang, env: env, source: node.source)
-
-            add_offense(node, message: message) do |corrector|
-              autocorrect(corrector, node)
-            end
-          end
-
-          return unless comparing_sym_env_with_rails_env_on_lhs?(node) || comparing_sym_env_with_rails_env_on_rhs?(node)
-
-          add_offense(node, message: SYM_MSG) do |corrector|
-            autocorrect(corrector, node)
-          end
+          check_env_comparison_with_rails_env(node)
+          check_sym_env_comparison_with_rails_env(node)
         end
 
         private
 
-        def autocorrect(corrector, node)
-          replacement = build_predicate_method(node)
+        def check_env_comparison_with_rails_env(node)
+          return unless comparing_env_with_rails_env_on_lhs?(node) || comparing_env_with_rails_env_on_rhs?(node)
 
-          corrector.replace(node, replacement)
+          replacement = build_predicate_method(node)
+          message = format(MSG, prefer: replacement, source: node.source)
+
+          add_offense(node, message: message) do |corrector|
+            corrector.replace(node, replacement)
+          end
+        end
+
+        def check_sym_env_comparison_with_rails_env(node)
+          return unless comparing_sym_env_with_rails_env_on_lhs?(node) || comparing_sym_env_with_rails_env_on_rhs?(node)
+
+          add_offense(node, message: SYM_MSG) do |corrector|
+            replacement = build_predicate_method(node)
+            corrector.replace(node, replacement)
+          end
         end
 
         def build_predicate_method(node)
+          bang = node.method?(:!=) ? '!' : ''
+
+          receiver, argument = extract_receiver_and_argument(node)
+          receiver = receiver.receiver if receiver.method?(:to_sym)
+
+          "#{bang}#{receiver.source}.#{argument.value}?"
+        end
+
+        def extract_receiver_and_argument(node)
           if rails_env_on_lhs?(node)
-            build_predicate_method_for_rails_env_on_lhs(node)
+            [node.receiver, node.first_argument]
           else
-            build_predicate_method_for_rails_env_on_rhs(node)
+            [node.first_argument, node.receiver]
           end
         end
 
         def rails_env_on_lhs?(node)
-          comparing_str_env_with_rails_env_on_lhs?(node) || comparing_sym_env_with_rails_env_on_lhs?(node)
-        end
-
-        def build_predicate_method_for_rails_env_on_lhs(node)
-          bang = node.method?(:!=) ? '!' : ''
-
-          "#{bang}#{node.receiver.source}.#{content(node.first_argument)}?"
-        end
-
-        def build_predicate_method_for_rails_env_on_rhs(node)
-          bang = node.method?(:!=) ? '!' : ''
-
-          "#{bang}#{node.first_argument.source}.#{content(node.receiver)}?"
+          comparing_env_with_rails_env_on_lhs?(node) || comparing_sym_env_with_rails_env_on_lhs?(node)
         end
       end
     end
