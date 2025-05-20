@@ -132,9 +132,13 @@ module RuboCop
         add_offense(
           node, message: "Prefer `#{new_method_name}` over `#{match_desc}`."
         ) do |corrector|
+          next if part_of_ignored_node?(node)
+
           correction = prepare_correction(node)
           execute_correction(corrector, node, correction)
         end
+
+        ignore_node(node)
       end
 
       def extract_captures(match)
