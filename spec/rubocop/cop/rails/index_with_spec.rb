@@ -325,6 +325,28 @@ RSpec.describe RuboCop::Cop::Rails::IndexWith, :config do
         end
       end
     end
+
+    context 'with nested offenses' do
+      it 'registers offenses and autocorrects' do
+        expect_offense(<<~RUBY)
+          x.each_with_object({}) do |el, h|
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_with` over `each_with_object`.
+            h[el] = el.each_with_object({}) do |inner_el, inner_h|
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `index_with` over `each_with_object`.
+              inner_h[inner_el] = foo(inner_el)
+            end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          x.index_with do |el|
+            el.each_with_object({}) do |inner_el, inner_h|
+              inner_h[inner_el] = foo(inner_el)
+            end
+          end
+        RUBY
+      end
+    end
   end
 
   context 'when using Rails 5.2 or older', :rails52 do
