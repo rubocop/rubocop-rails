@@ -21,11 +21,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, '/app/models', '/user.rb')
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join("app/models/user.rb").to_s
+          Rails.root.join("app/models/user.rb").to_path
         RUBY
       end
     end
@@ -92,11 +92,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, 'app', 'models')
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join("app/models").to_s
+          Rails.root.join("app/models").to_path
         RUBY
       end
     end
@@ -105,11 +105,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
           ::File.join(Rails.root, 'app', 'models')
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join("app/models").to_s
+          Rails.root.join("app/models").to_path
         RUBY
       end
     end
@@ -118,7 +118,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
           File.join([Rails.root, 'foo'])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_no_corrections
@@ -127,7 +127,7 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense for nested arrays' do
         expect_offense(<<~RUBY)
           File.join([Rails.root, 'foo', ['bar']])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_no_corrections
@@ -196,11 +196,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           foo(bar(File.join(Rails.root, "app", "models")))
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          foo(bar(Rails.root.join("app/models").to_s))
+          foo(bar(Rails.root.join("app/models").to_path))
         RUBY
       end
     end
@@ -249,11 +249,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, ['app', 'models'])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join(*['app', 'models']).to_s
+          Rails.root.join(*['app', 'models']).to_path
         RUBY
       end
     end
@@ -262,11 +262,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, "app", ["models", "goober"])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join("app", *["models", "goober"]).to_s
+          Rails.root.join("app", *["models", "goober"]).to_path
         RUBY
       end
     end
@@ -275,11 +275,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, ["app", "models"], "goober")
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join(*["app", "models"], "goober").to_s
+          Rails.root.join(*["app", "models"], "goober").to_path
         RUBY
       end
     end
@@ -288,11 +288,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, %w[app models])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join(*%w[app models]).to_s
+          Rails.root.join(*%w[app models]).to_path
         RUBY
       end
     end
@@ -301,11 +301,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, "app", %w[models goober])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join("app", *%w[models goober]).to_s
+          Rails.root.join("app", *%w[models goober]).to_path
         RUBY
       end
     end
@@ -314,11 +314,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, %w[app models], "goober")
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join(*%w[app models], "goober").to_s
+          Rails.root.join(*%w[app models], "goober").to_path
         RUBY
       end
     end
@@ -491,11 +491,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, 'app', 'models')
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join("app", "models").to_s
+          Rails.root.join("app", "models").to_path
         RUBY
       end
     end
@@ -504,11 +504,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, '/app/models', '/user.rb')
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join("app", "models", "user.rb").to_s
+          Rails.root.join("app", "models", "user.rb").to_path
         RUBY
       end
     end
@@ -569,11 +569,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           foo(bar(File.join(Rails.root, "app", "models")))
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          foo(bar(Rails.root.join("app", "models").to_s))
+          foo(bar(Rails.root.join("app", "models").to_path))
         RUBY
       end
     end
@@ -641,11 +641,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, ['app', 'models'])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join(*['app', 'models']).to_s
+          Rails.root.join(*['app', 'models']).to_path
         RUBY
       end
     end
@@ -654,11 +654,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, "app", ["models", "goober"])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join("app", *["models", "goober"]).to_s
+          Rails.root.join("app", *["models", "goober"]).to_path
         RUBY
       end
     end
@@ -667,11 +667,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, ["app", "models"], "goober")
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join(*["app", "models"], "goober").to_s
+          Rails.root.join(*["app", "models"], "goober").to_path
         RUBY
       end
     end
@@ -680,11 +680,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, %w[app models])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join(*%w[app models]).to_s
+          Rails.root.join(*%w[app models]).to_path
         RUBY
       end
     end
@@ -693,11 +693,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, "app", %w[models goober])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join("app", *%w[models goober]).to_s
+          Rails.root.join("app", *%w[models goober]).to_path
         RUBY
       end
     end
@@ -706,11 +706,11 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       it 'registers an offense once' do
         expect_offense(<<~RUBY)
           File.join(Rails.root, %w[app models], "goober")
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_s`.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path', 'to').to_path`.
         RUBY
 
         expect_correction(<<~RUBY)
-          Rails.root.join(*%w[app models], "goober").to_s
+          Rails.root.join(*%w[app models], "goober").to_path
         RUBY
       end
     end
