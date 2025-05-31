@@ -156,7 +156,7 @@ module RuboCop
           return unless persist_method?(node)
           return if return_value_assigned?(node)
           return if implicit_return?(node)
-          return if check_used_in_condition_or_compound_boolean(node)
+          return if check_used_in_condition_or_compound_boolean?(node)
           return if argument?(node)
           return if explicit_return?(node)
           return if checked_immediately?(node)
@@ -227,7 +227,7 @@ module RuboCop
           array
         end
 
-        def check_used_in_condition_or_compound_boolean(node)
+        def check_used_in_condition_or_compound_boolean?(node)
           return false unless in_condition_or_compound_boolean?(node)
 
           register_offense(node, CREATE_CONDITIONAL_MSG) unless MODIFY_PERSIST_METHODS.include?(node.method_name)

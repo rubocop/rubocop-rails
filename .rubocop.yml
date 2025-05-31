@@ -47,7 +47,7 @@ Naming/InclusiveLanguage:
     - spec/rubocop/cop/rails/dynamic_find_by_spec.rb
     - spec/rubocop/cop/rails/skips_model_validations_spec.rb
 
-Naming/PredicateName:
+Naming/PredicatePrefix:
   # Method define macros for dynamically generated method.
   MethodDefinitionMacros:
     - define_method
