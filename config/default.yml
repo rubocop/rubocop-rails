@@ -1126,7 +1126,7 @@ Rails/ThreeStateBooleanColumn:
 Rails/TimeZone:
   Description: 'Checks the correct usage of time zone aware methods.'
   StyleGuide: 'https://rails.rubystyle.guide#time'
-  Reference: 'http://danilenko.org/2012/7/6/rails_timezones'
+  Reference: 'https://danilenko.org/2012/7/6/rails_timezones'
   Enabled: true
   SafeAutoCorrect: false
   VersionAdded: '0.30'
