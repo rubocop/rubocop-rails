@@ -190,7 +190,7 @@ module RuboCop
           else
             replace_with_rails_root_join(corrector, rails_root_node, argument_source)
           end
-          node.children[rails_root_index + 1..].each { |child| corrector.remove(child) }
+          node.children[(rails_root_index + 1)..].each { |child| corrector.remove(child) }
         end
 
         def autocorrect_extension_after_rails_root_join_in_dstr(corrector, node, rails_root_index, extension_node)
@@ -281,7 +281,7 @@ module RuboCop
         end
 
         def extract_rails_root_join_argument_source(node, rails_root_index)
-          node.children[rails_root_index + 1..].map(&:source).join.delete_prefix(File::SEPARATOR)
+          node.children[(rails_root_index + 1)..].map(&:source).join.delete_prefix(File::SEPARATOR)
         end
 
         def extension_node?(node)
