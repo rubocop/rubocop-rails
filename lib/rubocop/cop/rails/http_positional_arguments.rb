@@ -20,6 +20,11 @@ module RuboCop
       #   # good
       #   get :new, params: { user_id: 1 }
       #   get :new, **options
+      #
+      # @example AllowedKeys: ['foo']
+      #   # good
+      #   get :new, foo: 'bar'
+      #
       class HttpPositionalArguments < Base
         include RangeHelp
         extend AutoCorrector
@@ -94,13 +99,22 @@ module RuboCop
           return false if kwsplat_hash?(data)
 
           data.each_pair.none? do |pair|
-            special_keyword_arg?(pair.key) || (format_arg?(pair.key) && data.pairs.one?)
+            not_applicable_arg?(pair.key) ||
+              (format_arg?(pair.key) && data.pairs.one?)
           end
         end
         # rubocop:enable Metrics/CyclomaticComplexity
 
+        def not_applicable_arg?(node)
+          node.sym_type? && (special_keyword_arg?(node) || allowed_arg?(node))
+        end
+
         def special_keyword_arg?(node)
-          node.sym_type? && KEYWORD_ARGS.include?(node.value)
+          KEYWORD_ARGS.include?(node.value)
+        end
+
+        def allowed_arg?(node)
+          cop_config['AllowedKeys'].include?(node.value.to_s)
         end
 
         def format_arg?(node)
