@@ -298,6 +298,12 @@ Rails/CompactBlank:
   Safe: false
   VersionAdded: '2.13'
 
+Rails/ConstantInRoutes:
+  Description: 'Checks for constants defined in config/routes.rb files.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: <<next>>
+
 Rails/ContentTag:
   Description: 'Use `tag.something` instead of `tag(:something)`.'
   Reference:
