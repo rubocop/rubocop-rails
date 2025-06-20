@@ -211,12 +211,12 @@ module RuboCop
 
         def non_optional_belongs_to(node, keys)
           keys.select do |key|
-            belongs_to = belongs_to_for(node, key)
+            belongs_to = belongs_to_for?(node, key)
             belongs_to && !optional?(belongs_to)
           end
         end
 
-        def belongs_to_for(model_class_node, key)
+        def belongs_to_for?(model_class_node, key)
           if key.to_s.end_with?('_id')
             normalized_key = key.to_s.delete_suffix('_id').to_sym
             belongs_to?(model_class_node, key: normalized_key, fk: key)

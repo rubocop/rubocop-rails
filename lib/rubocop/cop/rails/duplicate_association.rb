@@ -94,7 +94,7 @@ module RuboCop
           filtered_nodes = association_nodes.reject { |node| node.method?(:belongs_to) }
           grouped_associations = filtered_nodes.group_by do |node|
             arguments = association(node).last
-            next unless arguments.count == 1
+            next unless arguments.one?
 
             if (class_name = class_name(arguments.first))
               class_name.source

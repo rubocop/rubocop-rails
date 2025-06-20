@@ -71,7 +71,7 @@ module RuboCop
         def on_block(node)
           return unless node.method?(:with_options)
           return unless (body = node.body)
-          return unless all_block_nodes_in(body).count.zero?
+          return unless all_block_nodes_in(body).none?
 
           send_nodes = all_send_nodes_in(body)
           return unless redundant_receiver?(send_nodes, node)

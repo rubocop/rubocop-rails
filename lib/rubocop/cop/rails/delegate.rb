@@ -76,7 +76,7 @@ module RuboCop
 
         def on_def(node)
           return unless trivial_delegate?(node)
-          return if private_or_protected_delegation(node)
+          return if private_or_protected_delegation?(node)
           return if module_function_declared?(node)
 
           register_offense(node)
@@ -163,8 +163,8 @@ module RuboCop
           end
         end
 
-        def private_or_protected_delegation(node)
-          private_or_protected_inline(node) || node_visibility(node) != :public
+        def private_or_protected_delegation?(node)
+          private_or_protected_inline?(node) || node_visibility(node) != :public
         end
 
         def module_function_declared?(node)
@@ -173,7 +173,7 @@ module RuboCop
           end
         end
 
-        def private_or_protected_inline(node)
+        def private_or_protected_inline?(node)
           processed_source[node.first_line - 1].strip.match?(/\A(private )|(protected )/)
         end
       end

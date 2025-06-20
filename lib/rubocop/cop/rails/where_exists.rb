@@ -63,7 +63,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          find_offenses(node) do |args|
+          find_offenses?(node) do |args|
             return unless convertable_args?(args)
 
             range = correction_range(node)
@@ -87,7 +87,7 @@ module RuboCop
           style == :exists
         end
 
-        def find_offenses(node, &block)
+        def find_offenses?(node, &block)
           if exists_style?
             where_exists_call?(node, &block)
           elsif where_style?

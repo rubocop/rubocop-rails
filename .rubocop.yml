@@ -17,6 +17,8 @@ AllCops:
     - 'tmp/**/*'
   TargetRubyVersion: 2.7
   SuggestExtensions: false
+  # RuboCop Rails does not depend on Active Support.
+  ActiveSupportExtensionsEnabled: false
 
 InternalAffairs/NodeMatcherDirective:
   Enabled: false
