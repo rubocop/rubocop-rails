@@ -124,16 +124,8 @@ module RuboCop
           return unless MIGRATION_METHODS.include?(node.method_name)
           return unless node.body
 
-          recorder = AlterMethodsRecorder.new
-
-          node.body.child_nodes.each do |child_node|
-            if call_to_combinable_alter_method? child_node
-              recorder.process(child_node)
-            else
-              recorder.flush
-            end
-          end
-
+          recorder = AlterMethodsRecorder.new(combinable_alter_methods)
+          recorder.process_migration_body(node.body)
           recorder.offensive_nodes.each { |n| add_offense_for_alter_methods(n) }
         end
 
@@ -190,10 +182,6 @@ module RuboCop
           end
         end
 
-        def call_to_combinable_alter_method?(child_node)
-          child_node.send_type? && combinable_alter_methods.include?(child_node.method_name)
-        end
-
         def combinable_alter_methods
           case database
           when MYSQL
@@ -233,9 +221,20 @@ module RuboCop
 
         # Record combinable alter methods and register offensive nodes.
         class AlterMethodsRecorder
-          def initialize
+          def initialize(combinable_methods)
+            @combinable_methods = combinable_methods
             @nodes = []
             @offensive_nodes = []
+          end
+
+          def process_migration_body(body_node)
+            if body_node.block_type?
+              process_block_body(body_node)
+            else
+              body_node.child_nodes.each do |child_node|
+                process_node_for_alter_methods(child_node)
+              end
+            end
           end
 
           # @param new_node [RuboCop::AST::SendNode]
@@ -260,6 +259,60 @@ module RuboCop
           def offensive_nodes
             flush
             @offensive_nodes
+          end
+
+          private
+
+          def process_node_for_alter_methods(node)
+            if call_to_combinable_alter_method?(node)
+              process(node)
+            elsif node.block_type?
+              process_block_body(node)
+            else
+              flush
+            end
+          end
+
+          def process_block_body(block_node)
+            body = block_node.children[2]
+            return unless body
+
+            case body.type
+            when :begin
+              process_begin_block_body(body)
+            when :send, :block
+              process_single_node_block_body(body)
+            else
+              process_other_block_body(body)
+            end
+          end
+
+          def process_begin_block_body(body)
+            body.child_nodes.each do |child_node|
+              if child_node.block_type?
+                flush
+                process_node_for_alter_methods(child_node)
+                flush
+              else
+                process_node_for_alter_methods(child_node)
+              end
+            end
+          end
+
+          def process_single_node_block_body(body)
+            process_node_for_alter_methods(body)
+          end
+
+          def process_other_block_body(body)
+            return unless body.respond_to?(:child_nodes)
+
+            body.child_nodes.each do |child_node|
+              process_node_for_alter_methods(child_node)
+            end
+          end
+
+          def call_to_combinable_alter_method?(child_node)
+            child_node.send_type? && @combinable_methods.include?(child_node.method_name)
           end
         end
       end

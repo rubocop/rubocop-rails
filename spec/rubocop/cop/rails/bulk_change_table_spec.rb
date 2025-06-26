@@ -461,6 +461,205 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
         end
       RUBY
     end
+
+    context 'with methods wrapped in blocks' do
+      it 'registers an offense when alter methods are wrapped in safety_assured block with do..end syntax' do
+        expect_offense(<<~RUBY)
+          def change
+            safety_assured do
+              add_column :users, :name, :string, null: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+              add_column :users, :email, :string
+            end
+          end
+        RUBY
+      end
+
+      it 'registers an offense when alter methods are wrapped in safety_assured block with {} syntax' do
+        expect_offense(<<~RUBY)
+          def change
+            safety_assured {
+              add_column :users, :name, :string, null: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+              remove_column :users, :nickname
+            }
+          end
+        RUBY
+      end
+
+      it 'registers an offense when alter methods are wrapped in safety_assured with mixed table operations' do
+        expect_offense(<<~RUBY)
+          def change
+            safety_assured do
+              add_column :users, :name, :string, null: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+              add_column :users, :email, :string
+              remove_column :users, :nickname
+              add_column :profiles, :bio, :text
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :profiles, bulk: true` to combine alter queries.
+              add_column :profiles, :avatar_url, :string
+            end
+          end
+        RUBY
+      end
+
+      it 'registers an offense when alter methods are wrapped in reversible block' do
+        expect_offense(<<~RUBY)
+          def change
+            reversible do |dir|
+              dir.up do
+                add_column :users, :name, :string, null: false
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+                add_column :users, :email, :string
+              end
+              dir.down do
+                remove_column :users, :email
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+                remove_column :users, :name
+              end
+            end
+          end
+        RUBY
+      end
+
+      it 'registers an offense when alter methods are wrapped in up_only block' do
+        expect_offense(<<~RUBY)
+          def change
+            up_only do
+              add_column :users, :name, :string, null: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+              add_column :users, :email, :string
+              remove_column :users, :old_field
+            end
+          end
+        RUBY
+      end
+
+      it 'registers an offense when alter methods are wrapped in custom block' do
+        expect_offense(<<~RUBY)
+          def change
+            with_lock_retries do
+              add_column :users, :name, :string, null: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+              add_column :users, :email, :string
+            end
+          end
+        RUBY
+      end
+
+      it 'registers an offense when alter methods are wrapped in nested blocks' do
+        expect_offense(<<~RUBY)
+          def change
+            safety_assured do
+              with_lock_retries do
+                add_column :users, :name, :string, null: false
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+                add_column :users, :email, :string
+              end
+            end
+          end
+        RUBY
+      end
+
+      it 'registers an offense when some alter methods are in blocks and others are not' do
+        expect_offense(<<~RUBY)
+          def change
+            add_column :users, :first_name, :string
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+            safety_assured do
+              add_column :users, :last_name, :string
+            end
+            add_column :users, :email, :string
+          end
+        RUBY
+      end
+
+      it 'registers an offense when alter methods are wrapped in transaction block' do
+        expect_offense(<<~RUBY)
+          def change
+            transaction do
+              add_column :users, :name, :string, null: false
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+              add_column :users, :email, :string
+            end
+          end
+        RUBY
+      end
+
+      it 'registers an offense when alter methods are wrapped in disable_ddl_transaction block' do
+        expect_offense(<<~RUBY)
+          def change
+            disable_ddl_transaction!
+            
+            safety_assured do
+              add_index :users, :email, algorithm: :concurrently
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ You can use `change_table :users, bulk: true` to combine alter queries.
+              add_index :users, :name, algorithm: :concurrently
+            end
+          end
+        RUBY
+      end
+
+      it 'does not register an offense when alter methods target different tables in the same block' do
+        expect_no_offenses(<<~RUBY)
+          def change
+            safety_assured do
+              add_column :users, :name, :string
+              add_column :profiles, :bio, :text
+            end
+          end
+        RUBY
+      end
+
+      it 'does not register an offense when only one alter method is in a block' do
+        expect_no_offenses(<<~RUBY)
+          def change
+            safety_assured do
+              add_column :users, :name, :string
+            end
+          end
+        RUBY
+      end
+
+      it 'does not register an offense when blocks contain non-combinable operations' do
+        expect_no_offenses(<<~RUBY)
+          def change
+            safety_assured do
+              add_column :users, :name, :string
+              add_reference :users, :team
+              remove_column :users, :old_field
+            end
+          end
+        RUBY
+      end
+
+      it 'registers an offense when change_table transformations are wrapped in safety_assured' do
+        expect_offense(<<~RUBY)
+          def change
+            safety_assured do
+              change_table :users do |t|
+              ^^^^^^^^^^^^^^^^^^^ You can combine alter queries using `bulk: true` options.
+                t.string :name, null: false
+                t.string :email
+              end
+            end
+          end
+        RUBY
+      end
+
+      it 'does not register an offense when change_table with bulk: true is wrapped in safety_assured' do
+        expect_no_offenses(<<~RUBY)
+          def change
+            safety_assured do
+              change_table :users, bulk: true do |t|
+                t.string :name, null: false
+                t.string :email
+              end
+            end
+          end
+        RUBY
+      end
+    end
   end
 
   context 'when database is PostgreSQL' do
