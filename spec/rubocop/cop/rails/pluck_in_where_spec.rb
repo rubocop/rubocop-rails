@@ -132,6 +132,14 @@ RSpec.describe RuboCop::Cop::Rails::PluckInWhere, :config do
         RUBY
       end
     end
+
+    context 'when `pluck` is the receiver of `where`' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Post.pluck(:id).where(id: 1..10)
+        RUBY
+      end
+    end
   end
 
   context 'EnforcedStyle: aggressive' do
