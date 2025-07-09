@@ -55,4 +55,17 @@ RSpec.describe RuboCop::Cop::Rails::PluckId, :config do
       Post.where(user_id: User.pluck(:id))
     RUBY
   end
+
+  context 'when `pluck` is the receiver of `where`' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        Post.pluck(:id).where(id: 1..10)
+             ^^^^^^^^^^ Use `ids` instead of `pluck(:id)`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Post.ids.where(id: 1..10)
+      RUBY
+    end
+  end
 end

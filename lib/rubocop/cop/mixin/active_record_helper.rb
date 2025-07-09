@@ -106,7 +106,7 @@ module RuboCop
         send_node = node.each_ancestor(:call).first
         return false unless send_node
 
-        return true if WHERE_METHODS.include?(send_node.method_name)
+        return true if WHERE_METHODS.include?(send_node.method_name) && send_node.receiver != node
 
         receiver = send_node.receiver
         return false unless receiver&.send_type?
