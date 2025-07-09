@@ -2931,6 +2931,15 @@ get :new, params: { user_id: 1 }
 get :new, **options
 ----
 
+[#allowedkeys_-__foo__-railshttppositionalarguments]
+==== AllowedMethods: ['foo']
+
+[source,ruby]
+----
+# good
+get :new, foo: 'bar'
+----
+
 [#configurable-attributes-railshttppositionalarguments]
 === Configurable attributes
 
@@ -2940,6 +2949,10 @@ get :new, **options
 | Include
 | `+spec/**/*+`, `+test/**/*+`
 | Array
+
+|AllowedKeys
+|`[]`
+|Array
 |===
 
 [#railshttpstatus]
