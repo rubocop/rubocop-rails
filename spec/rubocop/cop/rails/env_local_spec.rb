@@ -43,6 +43,20 @@ RSpec.describe RuboCop::Cop::Rails::EnvLocal, :config do
       RUBY
     end
 
+    it 'registers an offense for `Rails.env.development? || Rails.env.test?` || foo?' do
+      expect_offense(<<~RUBY)
+        Rails.env.development? || Rails.env.test? || foo?
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `Rails.env.local?` instead.
+        foo? || Rails.env.test? || Rails.env.development?
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `Rails.env.local?` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Rails.env.local? || foo?
+        foo? || Rails.env.local?
+      RUBY
+    end
+
     it 'registers an offense for `!Rails.env.development? && !Rails.env.test?`' do
       expect_offense(<<~RUBY)
         !Rails.env.development? && !Rails.env.test?
@@ -57,9 +71,43 @@ RSpec.describe RuboCop::Cop::Rails::EnvLocal, :config do
       RUBY
     end
 
+    it 'registers an offense for `!Rails.env.development? && !Rails.env.test?` || foo?' do
+      expect_offense(<<~RUBY)
+        !Rails.env.development? && !Rails.env.test? || foo?
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `!Rails.env.local?` instead.
+        foo? || !Rails.env.test? && !Rails.env.development?
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `!Rails.env.local?` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        !Rails.env.local? || foo?
+        foo? || !Rails.env.local?
+      RUBY
+    end
+
+    it 'registers an offense for `!Rails.env.development? && !Rails.env.test?` && foo?' do
+      expect_offense(<<~RUBY)
+        !Rails.env.development? && !Rails.env.test? && foo?
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `!Rails.env.local?` instead.
+        foo? && !Rails.env.test? && !Rails.env.development?
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `!Rails.env.local?` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        !Rails.env.local? && foo?
+        foo? && !Rails.env.local?
+      RUBY
+    end
+
     it 'registers no offenses for `Rails.env.local?`' do
       expect_no_offenses(<<~RUBY)
         Rails.env.local?
+      RUBY
+    end
+
+    it 'registers no offenses for `Rails.env.development? || Rails.env.test? && foo?`' do
+      expect_no_offenses(<<~RUBY)
+        Rails.env.development? || Rails.env.test? && foo?
       RUBY
     end
 
