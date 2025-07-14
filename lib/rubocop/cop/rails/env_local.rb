@@ -24,44 +24,68 @@ module RuboCop
 
         minimum_target_rails_version 7.1
 
-        # @!method rails_env_local_or?(node)
-        def_node_matcher :rails_env_local_or?, <<~PATTERN
-          (or
-            (send (send (const {cbase nil? } :Rails) :env) $%LOCAL_ENVIRONMENTS)
-            (send (send (const {cbase nil? } :Rails) :env) $%LOCAL_ENVIRONMENTS)
-          )
+        # @!method rails_env_local?(node)
+        def_node_matcher :rails_env_local?, <<~PATTERN
+          (send (send (const {cbase nil? } :Rails) :env) $%LOCAL_ENVIRONMENTS)
         PATTERN
 
-        # @!method rails_env_local_and?(node)
-        def_node_matcher :rails_env_local_and?, <<~PATTERN
-          (and
-            (send
-              (send (send (const {cbase nil? } :Rails) :env) $%LOCAL_ENVIRONMENTS)
-              :!)
-            (send
-              (send (send (const {cbase nil? } :Rails) :env) $%LOCAL_ENVIRONMENTS)
-              :!)
-          )
+        # @!method not_rails_env_local?(node)
+        def_node_matcher :not_rails_env_local?, <<~PATTERN
+          (send #rails_env_local? :!)
         PATTERN
 
         def on_or(node)
-          rails_env_local_or?(node) do |*environments|
-            next unless environments.to_set == LOCAL_ENVIRONMENTS
+          lhs, rhs = *node.children
+          return unless rails_env_local?(rhs)
 
-            add_offense(node) do |corrector|
-              corrector.replace(node, 'Rails.env.local?')
-            end
+          nodes = [rhs]
+
+          if rails_env_local?(lhs)
+            nodes << lhs
+          elsif lhs.or_type? && rails_env_local?(lhs.rhs)
+            nodes << lhs.rhs
+          end
+
+          return unless environments(nodes).to_set == LOCAL_ENVIRONMENTS
+
+          range = offense_range(nodes)
+          add_offense(range) do |corrector|
+            corrector.replace(range, 'Rails.env.local?')
           end
         end
 
         def on_and(node)
-          rails_env_local_and?(node) do |*environments|
-            next unless environments.to_set == LOCAL_ENVIRONMENTS
+          lhs, rhs = *node.children
+          return unless not_rails_env_local?(rhs)
 
-            add_offense(node, message: MSG_NEGATED) do |corrector|
-              corrector.replace(node, '!Rails.env.local?')
-            end
+          nodes = [rhs]
+
+          if not_rails_env_local?(lhs)
+            nodes << lhs
+          elsif lhs.operator_keyword? && not_rails_env_local?(lhs.rhs)
+            nodes << lhs.rhs
           end
+
+          return unless environments(nodes).to_set == LOCAL_ENVIRONMENTS
+
+          range = offense_range(nodes)
+          add_offense(range, message: MSG_NEGATED) do |corrector|
+            corrector.replace(range, '!Rails.env.local?')
+          end
+        end
+
+        private
+
+        def environments(nodes)
+          if nodes[0].method?(:!)
+            nodes.map { |node| node.receiver.method_name }
+          else
+            nodes.map(&:method_name)
+          end
+        end
+
+        def offense_range(nodes)
+          nodes[1].source_range.begin.join(nodes[0].source_range.end)
         end
       end
     end
