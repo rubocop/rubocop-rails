@@ -91,6 +91,12 @@ Lint/UselessAccessModifier:
     - concern
     - concerning
 
+Lint/UselessMethodDefinition:
+  # Avoids conflict with `Rails/LexicallyScopedActionFilter` cop.
+  Exclude:
+    - '**/app/controllers/**/*.rb'
+    - '**/app/mailers/**/*.rb'
+
 Rails:
   Enabled: true
   DocumentationBaseURL: https://docs.rubocop.org/rubocop-rails
