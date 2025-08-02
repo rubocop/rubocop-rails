@@ -748,6 +748,13 @@ Rails/NotNullColumn:
   Include:
     - db/**/*.rb
 
+Rails/OrderArguments:
+  Description: 'Prefer symbol arguments over strings in `order` method.'
+  StyleGuide: 'https://rails.rubystyle.guide/#order-arguments'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  Safe: false
+
 Rails/OrderById:
   Description: >-
                   Do not use the `id` column for ordering.
