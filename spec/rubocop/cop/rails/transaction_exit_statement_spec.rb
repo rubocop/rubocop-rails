@@ -120,6 +120,26 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
       RUBY
     end
 
+    it 'does not register an offense when `break` is used in `while` in transactions' do
+      expect_no_offenses(<<~RUBY)
+        ApplicationRecord.#{method} do
+          while proceed_looping? do
+            break if condition
+          end
+        end
+      RUBY
+    end
+
+    it 'does not register an offense when `break` is used in `until` in transactions' do
+      expect_no_offenses(<<~RUBY)
+        ApplicationRecord.#{method} do
+          until stop_looping? do
+            break if condition
+          end
+        end
+      RUBY
+    end
+
     it 'does not register an offense when `break` is used in `each` with numblock in transactions' do
       expect_no_offenses(<<~RUBY)
         ApplicationRecord.#{method} do

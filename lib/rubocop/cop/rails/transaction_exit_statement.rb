@@ -97,9 +97,11 @@ module RuboCop
 
         def in_transaction_block?(node)
           return false unless transaction_method_name?(node.method_name)
-          return false unless (parent = node.parent)
+          return false unless node.parent&.body
 
-          parent.any_block_type? && parent.body
+          node.right_siblings.none? do |sibling|
+            sibling.respond_to?(:loop_keyword?) && sibling.loop_keyword?
+          end
         end
 
         def statement(statement_node)
