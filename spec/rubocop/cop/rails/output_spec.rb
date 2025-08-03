@@ -134,9 +134,32 @@ RSpec.describe RuboCop::Cop::Rails::Output, :config do
     RUBY
   end
 
+  it 'registers an offense when `p` method with positional argument' do
+    expect_offense(<<~RUBY)
+      p(do_something)
+      ^ Do not write to stdout. Use Rails's logger if you want to log.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.logger.debug(do_something)
+    RUBY
+  end
+
   it 'does not register an offense when a method is called to a local variable with the same name as a print method' do
     expect_no_offenses(<<~RUBY)
       p.do_something
+    RUBY
+  end
+
+  it 'does not register an offense when `p` method with keyword argument' do
+    expect_no_offenses(<<~RUBY)
+      p(class: 'this `p` method is a DSL')
+    RUBY
+  end
+
+  it 'does not register an offense when `p` method with symbol proc' do
+    expect_no_offenses(<<~RUBY)
+      p(&:this_p_method_is_a_dsl)
     RUBY
   end
 
