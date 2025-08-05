@@ -38,9 +38,11 @@ module RuboCop
             ...)
         PATTERN
 
+        # rubocop:disable Metrics/CyclomaticComplexity
         def on_send(node)
           return if node.parent&.call_type? || node.block_node
           return if !output?(node) && !io_output?(node)
+          return if node.arguments.any? { |arg| arg.type?(:hash, :block_pass) }
 
           range = offense_range(node)
 
@@ -48,6 +50,7 @@ module RuboCop
             corrector.replace(range, 'Rails.logger.debug')
           end
         end
+        # rubocop:enable Metrics/CyclomaticComplexity
 
         private
 
