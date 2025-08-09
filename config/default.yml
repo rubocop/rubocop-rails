@@ -459,6 +459,7 @@ Rails/EnumSyntax:
   VersionAdded: '2.26'
   Include:
     - '**/app/models/**/*.rb'
+    - '**/lib/**/*.rb'
 
 Rails/EnumUniqueness:
   Description: 'Avoid duplicate integers in hash-syntax `enum` declaration.'
