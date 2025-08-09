@@ -9,7 +9,7 @@ module RuboCop
       # but `find_by` may return `nil`, in which case it is not memoized as intended.
       #
       # @safety
-      #   This cop is unsafe because detected `find_by` may not be activerecord's method,
+      #   This cop is unsafe because detected `find_by` may not be Active Record's method,
       #   or the code may have a different purpose than memoization.
       #
       # @example
