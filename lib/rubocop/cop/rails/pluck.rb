@@ -27,6 +27,9 @@ module RuboCop
       # end
       # ----
       #
+      # If a method call has no receiver, like `do_something { users.map { |user| user[:foo] }`,
+      # it is not considered part of an iteration and will be detected.
+      #
       # @safety
       #   This cop is unsafe because model can use column aliases.
       #
@@ -59,9 +62,9 @@ module RuboCop
           (any_block (call _ {:map :collect}) $_argument (send lvar :[] $_key))
         PATTERN
 
-        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def on_block(node)
-          return if node.each_ancestor(:any_block).any?
+          return if node.each_ancestor(:any_block).first&.receiver
 
           pluck_candidate?(node) do |argument, key|
             next if key.regexp_type? || !use_one_block_argument?(argument)
@@ -79,7 +82,7 @@ module RuboCop
             register_offense(node, key)
           end
         end
-        # rubocop:enable Metrics/AbcSize
+        # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         alias on_numblock on_block
         alias on_itblock on_block
 

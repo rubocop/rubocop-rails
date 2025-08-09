@@ -154,7 +154,24 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
         end
       end
 
-      context "when `#{method}` is used in block" do
+      context "when `#{method}` is used in a block without a receiver" do
+        it 'registers an offense' do
+          expect_offense(<<~RUBY, method: method)
+            foo do
+              x.%{method} { |a| a[:foo] }
+                ^{method}^^^^^^^^^^^^^^^^ Prefer `pluck(:foo)` over `%{method} { |a| a[:foo] }`.
+            end
+          RUBY
+
+          expect_correction(<<~RUBY)
+            foo do
+              x.pluck(:foo)
+            end
+          RUBY
+        end
+      end
+
+      context "when `#{method}` is used in a repeatable block" do
         it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)
             n.each do |x|
@@ -164,7 +181,7 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
         end
       end
 
-      context "when `#{method}` is used in block with other operations" do
+      context "when `#{method}` is used in a repeatable block with other operations" do
         it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)
             n.each do |x|
@@ -175,7 +192,7 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
         end
       end
 
-      context "when `#{method}` is used in numblock" do
+      context "when `#{method}` is used in a repeatable numblock" do
         it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)
             n.each do
@@ -185,7 +202,7 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
         end
       end
 
-      context "when `#{method}` is used in numblock with other operations" do
+      context "when `#{method}` is used in reapeatable numblock with other operations" do
         it 'does not register an offense' do
           expect_no_offenses(<<~RUBY)
             n.each do
