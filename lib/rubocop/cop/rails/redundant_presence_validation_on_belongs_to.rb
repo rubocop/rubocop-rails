@@ -74,7 +74,7 @@ module RuboCop
             $[
               (hash <$(pair (sym :presence) true) ...>)         # presence: true
               !(hash <$(pair (sym :strict) {true const}) ...>)  # strict: true
-              !(hash <$(pair (sym {:if :unless}) _) ...>)       # if: some_condition or unless: some_condition
+              !(hash <$(pair (sym {:if}) _) ...>)               # if: some_condition or unless: some_condition
             ]
           )
         PATTERN

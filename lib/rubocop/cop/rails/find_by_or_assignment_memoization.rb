@@ -43,7 +43,7 @@ module RuboCop
         def on_send(node)
           assignment_node = node.parent
           find_by_or_assignment_memoization(assignment_node) do |varible_name, find_by|
-            next if in_condition?(assignment_node)
+            next if assignment_node.each_ancestor(:if).any?
 
             add_offense(assignment_node) do |corrector|
               corrector.replace(
@@ -58,12 +58,6 @@ module RuboCop
               )
             end
           end
-        end
-
-        private
-
-        def in_condition?(node)
-          node.each_ancestor(:if, :unless).any?
         end
       end
     end
