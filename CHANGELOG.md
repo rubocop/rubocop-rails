@@ -9,6 +9,26 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#1324](https://github.com/rubocop/rubocop-rails/pull/1324): Add `Rails/FindByOrAssignmentMemoization` cop. ([@r7kamura][])
+* [#1501](https://github.com/rubocop/rubocop-rails/pull/1501): Add new cop `Rails/OrderArguments`. ([@lovro-bikic][])
+
+### Bug fixes
+
+* [#1497](https://github.com/rubocop/rubocop-rails/pull/1497): Fix bugs in `Rails/PluckId` and `Rails/PluckInWhere`. ([@r7kamura][])
+* [#1478](https://github.com/rubocop/rubocop-rails/issues/1478): Fix a false negative for `Rails/EnvLocal` when having preceding conditions. ([@fatkodima][])
+* [#1505](https://github.com/rubocop/rubocop-rails/issues/1505): Fix false negatives for `Rails/Pluck` when `map` method call is used in a block without a receiver. ([@koic][])
+* [#1486](https://github.com/rubocop/rubocop-rails/issues/1486): Fix false positives for `Rails/Output` when `p` method is a DSL. ([@koic][])
+* [#1495](https://github.com/rubocop/rubocop-rails/issues/1495): Fix false positives for `Rails/TransactionExitStatement` when `break` is used in loop in transactions. ([@koic][])
+* [#1483](https://github.com/rubocop/rubocop-rails/pull/1483): Fix autocorrection error when `Rails/IndexWith` has nested offenses. ([@lovro-bikic][])
+
+### Changes
+
+* [#1500](https://github.com/rubocop/rubocop-rails/pull/1500): Exclude controllers and mailers from `Lint/UselessMethodDefinition`. ([@r7kamura][])
+* [#1474](https://github.com/rubocop/rubocop-rails/issues/1474): Make `Rails/EnumSyntax` include the lib directory by default. ([@koic][])
+* [#1463](https://github.com/rubocop/rubocop-rails/issues/1463): Mark `Rails/IndexWith` as unsafe autocorrect. ([@tejasbubane][])
+
 ## 2.32.0 (2025-05-17)
 
 ### Bug fixes
@@ -1286,3 +1306,4 @@
 [@exterm]: https://github.com/exterm
 [@davidrunger]: https://github.com/davidrunger
 [@tdeo]: https://github.com/tdeo
+[@lovro-bikic]: https://github.com/lovro-bikic
