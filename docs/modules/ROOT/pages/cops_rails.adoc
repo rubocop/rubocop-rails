@@ -2124,7 +2124,7 @@ enum :status, { active: 0, archived: 1 }, prefix: true
 | String
 
 | Include
-| `+**/app/models/**/*.rb+`
+| `+**/app/models/**/*.rb+`, `+**/lib/**/*.rb+`
 | Array
 |===
 
@@ -2607,6 +2607,55 @@ User.find(id)
 === References
 
 * https://rails.rubystyle.guide/#find
+
+[#railsfindbyorassignmentmemoization]
+== Rails/FindByOrAssignmentMemoization
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| Always (Unsafe)
+| 2.33
+| -
+|===
+
+Avoid memoizing `find_by` results with `||=`.
+
+It is common to see code that attempts to memoize `find_by` result by `||=`,
+but `find_by` may return `nil`, in which case it is not memoized as intended.
+
+[#safety-railsfindbyorassignmentmemoization]
+=== Safety
+
+This cop is unsafe because detected `find_by` may not be Active Record's method,
+or the code may have a different purpose than memoization.
+
+[#examples-railsfindbyorassignmentmemoization]
+=== Examples
+
+[source,ruby]
+----
+# bad
+def current_user
+  @current_user ||= User.find_by(id: session[:user_id])
+end
+
+# good
+def current_user
+  if instance_variable_defined?(:@current_user)
+    @current_user
+  else
+    @current_user = User.find_by(id: session[:user_id])
+  end
+end
+----
+
+[#references-railsfindbyorassignmentmemoization]
+=== References
+
+* https://rails.rubystyle.guide/#find-by-memoization
 
 [#railsfindeach]
 == Rails/FindEach
@@ -3409,15 +3458,22 @@ NOTE: Required Rails version: 6.0
 
 | Enabled
 | Yes
-| Always
+| Always (Unsafe)
 | 2.5
-| 2.8
+| 2.33
 |===
 
 Looks for uses of `each_with_object({}) { ... }`,
 `map { ... }.to_h`, and `Hash[map { ... }]` that are transforming
 an enumerable into a hash where the keys are the original elements.
 Rails provides the `index_with` method for this purpose.
+
+[#safety-railsindexwith]
+=== Safety
+
+This cop is marked as unsafe autocorrection, because `nil.to_h` returns {}
+but `nil.with_index` throws `NoMethodError`. Therefore, autocorrection is not
+compatible if the receiver is nil.
 
 [#examples-railsindexwith]
 === Examples
@@ -4139,6 +4195,45 @@ change_column_null :products, :category_id, false
 | Array
 |===
 
+[#railsorderarguments]
+== Rails/OrderArguments
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| Always (Unsafe)
+| 2.33
+| -
+|===
+
+Prefer symbol arguments over strings in `order` method.
+
+[#safety-railsorderarguments]
+=== Safety
+
+Cop is unsafe because the receiver might not be an Active Record query.
+
+[#examples-railsorderarguments]
+=== Examples
+
+[source,ruby]
+----
+# bad
+User.order('name')
+User.order('name DESC')
+
+# good
+User.order(:name)
+User.order(name: :desc)
+----
+
+[#references-railsorderarguments]
+=== References
+
+* https://rails.rubystyle.guide/#order-arguments
+
 [#railsorderbyid]
 == Rails/OrderById
 
@@ -4394,6 +4489,9 @@ users = User.all
   users.pluck(:id) # A query is executed on every iteration
 end
 ----
+
+If a method call has no receiver, like `do_something { users.map { |user| user[:foo] }`,
+it is not considered part of an iteration and will be detected.
 
 [#safety-railspluck]
 === Safety
@@ -6902,7 +7000,7 @@ Time.at(timestamp).in_time_zone
 === References
 
 * https://rails.rubystyle.guide#time
-* http://danilenko.org/2012/7/6/rails_timezones
+* https://danilenko.org/2012/7/6/rails_timezones
 
 [#railstimezoneassignment]
 == Rails/TimeZoneAssignment

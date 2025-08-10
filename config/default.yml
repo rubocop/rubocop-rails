@@ -544,7 +544,7 @@ Rails/FindByOrAssignmentMemoization:
   StyleGuide: 'https://rails.rubystyle.guide/#find-by-memoization'
   Enabled: pending
   Safe: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.33'
 
 Rails/FindEach:
   Description: 'Prefer all.find_each over all.each.'
@@ -663,7 +663,7 @@ Rails/IndexWith:
   Enabled: true
   SafeAutoCorrect: false
   VersionAdded: '2.5'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.33'
 
 Rails/Inquiry:
   Description: "Prefer Ruby's comparison operators over Active Support's `Array#inquiry` and `String#inquiry`."
@@ -761,7 +761,7 @@ Rails/OrderArguments:
   Description: 'Prefer symbol arguments over strings in `order` method.'
   StyleGuide: 'https://rails.rubystyle.guide/#order-arguments'
   Enabled: pending
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.33'
   Safe: false
 
 Rails/OrderById:

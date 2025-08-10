@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.33.0 (2025-08-10)
+
 ### New features
 
 * [#1324](https://github.com/rubocop/rubocop-rails/pull/1324): Add `Rails/FindByOrAssignmentMemoization` cop. ([@r7kamura][])
