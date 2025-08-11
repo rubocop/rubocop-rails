@@ -52,6 +52,7 @@ module RuboCop
           order_arguments.map! { |arg| extract_column_and_direction(arg.strip) }
 
           return if order_arguments.any?(&:nil?)
+          return if order_arguments.any? { |column_name, _| positional_column?(column_name) }
 
           convert_to_preferred_arguments(order_arguments).join(', ')
         end
@@ -66,6 +67,10 @@ module RuboCop
               "#{column}: :#{direction}"
             end
           end
+        end
+
+        def positional_column?(column_name)
+          column_name.match?(/\A\d+\z/)
         end
 
         def extract_column_and_direction(order_expression)

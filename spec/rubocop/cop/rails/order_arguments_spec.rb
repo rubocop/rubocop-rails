@@ -128,4 +128,30 @@ RSpec.describe RuboCop::Cop::Rails::OrderArguments, :config do
       User.order('LEFT(first_name, 1)')
     RUBY
   end
+
+  context 'with numeric string literal column name' do
+    it 'does not register an offense for `order` with a string argument' do
+      expect_no_offenses(<<~RUBY)
+        User.order('1')
+      RUBY
+    end
+
+    it 'does not register an offense for `order` with multiple string arguments' do
+      expect_no_offenses(<<~RUBY)
+        User.order('1', 'last_name')
+      RUBY
+    end
+
+    it 'does not registers an offense for `order` with a string argument with DESC direction' do
+      expect_no_offenses(<<~RUBY)
+        User.order('1 DESC')
+      RUBY
+    end
+
+    it 'does not register an offense for `order` with a string argument with ASC order' do
+      expect_no_offenses(<<~RUBY)
+        User.order('1 ASC')
+      RUBY
+    end
+  end
 end
