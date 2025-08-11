@@ -58,8 +58,8 @@ module RuboCop
           (call (call _ :where $...) :exists?)
         PATTERN
 
-        def_node_matcher :exists_with_args?, <<~PATTERN
-          (call _ :exists? $...)
+        def_node_matcher :exists_with_arg?, <<~PATTERN
+          (call _ :exists? $!splat_type?)
         PATTERN
 
         def on_send(node)
@@ -91,7 +91,7 @@ module RuboCop
           if exists_style?
             where_exists_call?(node, &block)
           elsif where_style?
-            exists_with_args?(node, &block)
+            exists_with_arg?(node) { |arg| yield([arg]) }
           end
         end
 

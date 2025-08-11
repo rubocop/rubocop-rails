@@ -142,25 +142,26 @@ RSpec.describe RuboCop::Cop::Rails::WhereExists, :config do
       RUBY
     end
 
-    it 'registers an offense and corrects when using `exists?` with an multiple arguments' do
-      expect_offense(<<~RUBY)
+    it 'does not register an offense when using `exists?` with multiple arguments' do
+      expect_no_offenses(<<~RUBY)
         User.exists?('name = ?', 'john')
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `where('name = ?', 'john').exists?` over `exists?('name = ?', 'john')`.
       RUBY
+    end
 
-      expect_correction(<<~RUBY)
-        User.where('name = ?', 'john').exists?
+    it 'does not register an offense when using `exists?` with splat argument' do
+      expect_no_offenses(<<~RUBY)
+        User.exists?(*conditions)
       RUBY
     end
 
     it 'registers an offense when using implicit receiver and arg' do
       expect_offense(<<~RUBY)
-        exists?('name = ?', 'john')
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `where('name = ?', 'john').exists?` over `exists?('name = ?', 'john')`.
+        exists?(['name = ?', 'john'])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `where(['name = ?', 'john']).exists?` over `exists?(['name = ?', 'john'])`.
       RUBY
 
       expect_correction(<<~RUBY)
-        where('name = ?', 'john').exists?
+        where(['name = ?', 'john']).exists?
       RUBY
     end
 
