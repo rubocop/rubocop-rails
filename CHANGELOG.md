@@ -9,6 +9,12 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1508](https://github.com/rubocop/rubocop-rails/issues/1508): Fix an error for `Rails/TransactionExitStatement` when `transaction` is part of a method chain. ([@earlopain][])
+* [#1510](https://github.com/rubocop/rubocop-rails/pull/1510): Fix `Rails/OrderArguments` cop false positives when using column index argument. ([@viralpraxis][])
+* [#1511](https://github.com/rubocop/rubocop-rails/pull/1511): Don't register offenses for `Rails/WhereExists` when `exists?` is given multiple or splat arguments. ([@lovro-bikic][])
+
 ## 2.33.0 (2025-08-10)
 
 ### New features
