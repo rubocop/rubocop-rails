@@ -189,6 +189,18 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
         end
       RUBY
     end
+
+    it 'does not register an offense when a method call is chained' do
+      expect_no_offenses(<<~RUBY)
+        #{method}.foo
+      RUBY
+    end
+
+    it 'does not register an offense when no receiver and no block' do
+      expect_no_offenses(<<~RUBY)
+        #{method}
+      RUBY
+    end
   end
 
   it_behaves_like 'flags transaction exit statements', :transaction
