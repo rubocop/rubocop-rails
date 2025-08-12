@@ -235,6 +235,21 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
       RUBY
     end
 
+    it 'corrects assignment with chained methods when using string attribute name' do
+      expect_offense(<<~RUBY)
+        def attr2=(k)
+          write_attribute("attr", 'test_' + postfix)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self["attr"] = 'test_' + postfix`.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        def attr2=(k)
+          self["attr"] = 'test_' + postfix
+        end
+      RUBY
+    end
+
     it 'autocorrects multiline' do
       expect_offense(<<~RUBY)
         write_attribute(

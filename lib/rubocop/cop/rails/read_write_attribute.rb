@@ -66,7 +66,7 @@ module RuboCop
           return false unless enclosing_method
 
           shadowing_method_name = first_arg.value.to_s
-          shadowing_method_name << '=' if node.method?(:write_attribute)
+          shadowing_method_name += '=' if node.method?(:write_attribute)
           enclosing_method.method?(shadowing_method_name)
         end
 
