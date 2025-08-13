@@ -9,6 +9,10 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1516](https://github.com/rubocop/rubocop-rails/pull/1516): Fix wrong autocorrect for `Rails/FindByOrAssignmentMemoization`. ([@earlopain][])
+
 ## 2.33.2 (2025-08-13)
 
 ### Bug fixes
