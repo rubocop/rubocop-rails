@@ -1,1 +1,0 @@
-* [#1488](https://github.com/rubocop/rubocop-rails/issues/1488): Fix an error for `Rails/ReadWriteAttribute` with a frozen string attribute name. ([@viralpraxis][])
