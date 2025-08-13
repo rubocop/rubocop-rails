@@ -13,7 +13,7 @@ module RuboCop
       #   or the code may have a different purpose than memoization.
       #
       # @example
-      #   # bad
+      #   # bad - exclusively doing memoization
       #   def current_user
       #     @current_user ||= User.find_by(id: session[:user_id])
       #   end
@@ -23,6 +23,22 @@ module RuboCop
       #     return @current_user if defined?(@current_user)
       #
       #     @current_user = User.find_by(id: session[:user_id])
+      #   end
+      #
+      #   # bad - method contains other code
+      #   def current_user
+      #     @current_user ||= User.find_by(id: session[:user_id])
+      #     @current_user.do_something
+      #   end
+      #
+      #   # good
+      #   def current_user
+      #     if defined?(@current_user)
+      #       @current_user
+      #     else
+      #       @current_user = User.find_by(id: session[:user_id])
+      #     end
+      #     @current_user.do_something
       #   end
       class FindByOrAssignmentMemoization < Base
         extend AutoCorrector
@@ -38,6 +54,22 @@ module RuboCop
           )
         PATTERN
 
+        # When a method body contains only memoization, the correction can be more succinct.
+        def on_def(node)
+          find_by_or_assignment_memoization(node.body) do |varible_name, find_by|
+            add_offense(node.body) do |corrector|
+              corrector.replace(
+                node.body,
+                <<~RUBY.rstrip
+                  return #{varible_name} if defined?(#{varible_name})
+                  
+                  #{varible_name} = #{find_by.source}
+                RUBY
+              )
+            end
+          end
+        end
+
         def on_send(node)
           assignment_node = node.parent
           find_by_or_assignment_memoization(assignment_node) do |varible_name, find_by|
@@ -47,9 +79,11 @@ module RuboCop
               corrector.replace(
                 assignment_node,
                 <<~RUBY.rstrip
-                  return #{varible_name} if defined?(#{varible_name})
-
-                  #{varible_name} = #{find_by.source}
+                  if defined?(#{varible_name})
+                    #{varible_name}
+                  else
+                    #{varible_name} = #{find_by.source}
+                  end
                 RUBY
               )
             end
