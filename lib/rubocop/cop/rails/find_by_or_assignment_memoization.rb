@@ -20,11 +20,9 @@ module RuboCop
       #
       #   # good
       #   def current_user
-      #     if instance_variable_defined?(:@current_user)
-      #       @current_user
-      #     else
-      #       @current_user = User.find_by(id: session[:user_id])
-      #     end
+      #     return @current_user if defined?(@current_user)
+      #
+      #     @current_user = User.find_by(id: session[:user_id])
       #   end
       class FindByOrAssignmentMemoization < Base
         extend AutoCorrector
@@ -49,11 +47,9 @@ module RuboCop
               corrector.replace(
                 assignment_node,
                 <<~RUBY.rstrip
-                  if instance_variable_defined?(:#{varible_name})
-                    #{varible_name}
-                  else
-                    #{varible_name} = #{find_by.source}
-                  end
+                  return #{varible_name} if defined?(#{varible_name})
+
+                  #{varible_name} = #{find_by.source}
                 RUBY
               )
             end
