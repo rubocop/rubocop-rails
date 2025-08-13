@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.33.2 (2025-08-13)
+
 ### Bug fixes
 
 * [#1488](https://github.com/rubocop/rubocop-rails/issues/1488): Fix an error for `Rails/ReadWriteAttribute` with a frozen string attribute name. ([@viralpraxis][])
