@@ -1232,6 +1232,14 @@ Rails/UnknownEnv:
     - test
     - production
 
+Rails/UnprocessableContentStatus:
+  Description: 'Use `:unprocessable_content` instead of `:unprocessable_entity`.'
+  Enabled: pending
+  Severity: warning
+  VersionAdded: '<<next>>'
+  Include:
+    - '**/app/controllers/**/*.rb'
+
 Rails/UnusedIgnoredColumns:
   Description: 'Remove a column that does not exist from `ignored_columns`.'
   Enabled: false
