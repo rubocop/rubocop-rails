@@ -394,6 +394,14 @@ Rails/DeprecatedActiveModelErrorsMethods:
   VersionAdded: '2.14'
   VersionChanged: '2.18'
 
+Rails/DeprecatedHttpStatusNames:
+  Description: 'Use the new HTTP status names instead of deprecated ones.'
+  Enabled: pending
+  Severity: warning
+  VersionAdded: '<<next>>'
+  Include:
+    - '**/app/controllers/**/*.rb'
+
 Rails/DotSeparatedKeys:
   Description: 'Enforces the use of dot-separated keys instead of `:scope` options in `I18n` translation methods.'
   StyleGuide: 'https://rails.rubystyle.guide/#dot-separated-keys'
