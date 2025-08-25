@@ -46,7 +46,7 @@ module RuboCop
         private
 
         def where_method?(receiver)
-          return false unless receiver
+          return false if !receiver || receiver.any_block_type?
 
           receiver.respond_to?(:method?) && receiver.method?(:where)
         end
