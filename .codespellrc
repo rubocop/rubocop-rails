@@ -1,0 +1,6 @@
+[codespell]
+# Intentionally left empty, these are passed as command-line switches
+check-hidden =
+check-filenames =
+ignore-words-list = developpment,
+                    filetest,

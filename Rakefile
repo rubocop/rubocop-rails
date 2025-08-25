@@ -41,7 +41,7 @@ end
 desc 'Run RuboCop over itself'
 RuboCop::RakeTask.new(:internal_investigation)
 
-task default: %i[documentation_syntax_check spec prism_spec internal_investigation]
+task default: %i[codespell documentation_syntax_check spec prism_spec internal_investigation]
 
 desc 'Generate a new cop template'
 task :new_cop, [:cop] do |_task, args|
