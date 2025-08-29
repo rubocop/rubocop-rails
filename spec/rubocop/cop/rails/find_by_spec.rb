@@ -103,6 +103,12 @@ RSpec.describe RuboCop::Cop::Rails::FindBy, :config do
     RUBY
   end
 
+  it 'does not register an offense when where takes a block' do
+    expect_no_offenses(<<~RUBY)
+      where { foo }.take
+    RUBY
+  end
+
   context 'when `IgnoreWhereFirst: true' do
     let(:cop_config) do
       { 'IgnoreWhereFirst' => true }
