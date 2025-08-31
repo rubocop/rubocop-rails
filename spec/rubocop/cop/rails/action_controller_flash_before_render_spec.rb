@@ -395,4 +395,36 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
       RUBY
     end
   end
+
+  context 'when using `flash` in a one-line iteration block before `redirect_to`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class HomeController < ApplicationController
+          def create
+            messages = %w[fizz buzz fizzbuzz]
+            messages.each { flash[:alert] = _1 }
+
+            redirect_to :index
+          end
+        end
+      RUBY
+    end
+  end
+
+  context 'when using `flash` in a multi-line block before `redirect_to`' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class HomeController < ApplicationController
+          def create
+            messages = %w[fizz buzz fizzbuzz]
+            messages.each do |message|
+              flash[:alert] = message
+            end
+
+            redirect_to :index
+          end
+        end
+      RUBY
+    end
+  end
 end
