@@ -73,7 +73,7 @@ module RuboCop
             return false if use_redirect_to?(context)
 
             context = node
-          elsif context.right_siblings.empty?
+          elsif context.right_siblings.empty? && !use_redirect_to?(context.parent)
             return true
           end
           context = context.right_siblings
