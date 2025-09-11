@@ -62,10 +62,12 @@ module RuboCop
                 node.body,
                 <<~RUBY.rstrip
                   return #{varible_name} if defined?(#{varible_name})
-                  
+
                   #{varible_name} = #{find_by.source}
                 RUBY
               )
+
+              correct_to_regular_method_definition(corrector, node) if node.endless?
             end
           end
         end
@@ -88,6 +90,15 @@ module RuboCop
               )
             end
           end
+        end
+
+        private
+
+        def correct_to_regular_method_definition(corrector, node)
+          range = node.loc.assignment.join(node.body.source_range.begin)
+
+          corrector.replace(range, "\n")
+          corrector.insert_after(node, "\nend")
         end
       end
     end

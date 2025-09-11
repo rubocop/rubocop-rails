@@ -41,7 +41,7 @@ RSpec.describe RuboCop::Cop::Rails::FindByOrAssignmentMemoization, :config do
         def foo
           @current_user ||= User.find_by(id: session[:user_id])
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid memoizing `find_by` results with `||=`.
-          
+
           @current_user.do_something!
         end
       RUBY
@@ -53,8 +53,23 @@ RSpec.describe RuboCop::Cop::Rails::FindByOrAssignmentMemoization, :config do
         else
           @current_user = User.find_by(id: session[:user_id])
         end
-          
+
           @current_user.do_something!
+        end
+      RUBY
+    end
+
+    it 'registers an offense when using endless method definition', :ruby30 do
+      expect_offense(<<~RUBY)
+        def foo(arg) = @current_user ||= User.find_by(id: session[:user_id])
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid memoizing `find_by` results with `||=`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        def foo(arg)#{' '}
+        return @current_user if defined?(@current_user)
+
+        @current_user = User.find_by(id: session[:user_id])
         end
       RUBY
     end
