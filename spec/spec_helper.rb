@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+# For code coverage measurements to work properly, `SimpleCov` should be loaded
+# and started before any application code is loaded.
+if ENV.fetch('COVERAGE', nil) == 'true'
+  require 'simplecov'
+  SimpleCov.start
+end
+
 require 'rubocop-rails'
 require 'rubocop/rspec/support'
 require_relative 'support/file_helper'
@@ -8,11 +15,6 @@ require_relative 'support/shared_contexts'
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }
-
-if ENV.fetch('COVERAGE', nil) == 'true'
-  require 'simplecov'
-  SimpleCov.start
-end
 
 RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
