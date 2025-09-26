@@ -223,10 +223,13 @@ RSpec.describe RuboCop::Cop::Rails::TransactionExitStatement, :config do
 
     context 'when EnableForAllRailsVersions is true' do
       let(:cop_config) { { 'EnableForAllRailsVersions' => true } }
+
       it_behaves_like 'flags transaction exit statements', :transaction
       it_behaves_like 'flags transaction exit statements', :with_lock
+
       context 'when `TransactionMethods: [writable_transaction]`' do
         let(:cop_config) { super().merge({ 'TransactionMethods' => %w[writable_transaction] }) }
+
         it_behaves_like 'flags transaction exit statements', :writable_transaction
       end
     end
