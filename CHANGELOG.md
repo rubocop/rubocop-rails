@@ -9,6 +9,12 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1530](https://github.com/rubocop/rubocop-rails/issues/1530): Fix an incorrect autocorrect for `Rails/FindByOrAssignmentMemoization` when using endless method definition. ([@koic][])
+* [#1522](https://github.com/rubocop/rubocop-rails/pull/1522): Fix an error for `Rails/FindBy` when `where` takes a block. ([@earlopain][])
+* [#1182](https://github.com/rubocop/rubocop-rails/issues/1182): Fix a false positive for `Rails/ActionControllerFlashBeforeRender` when flash is called in a block. ([@5hun-s][])
+
 ## 2.33.3 (2025-08-14)
 
 ### Bug fixes
@@ -1329,3 +1335,4 @@
 [@davidrunger]: https://github.com/davidrunger
 [@tdeo]: https://github.com/tdeo
 [@lovro-bikic]: https://github.com/lovro-bikic
+[@5hun-s]: https://github.com/5hun-s
