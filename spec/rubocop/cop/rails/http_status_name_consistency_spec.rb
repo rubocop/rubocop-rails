@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
+RSpec.describe RuboCop::Cop::Rails::HttpStatusNameConsistency, :config do
   context 'when Rack is older than 3.1' do
     let(:gem_versions) { { 'rack' => '3.0.0' } }
 
@@ -19,7 +19,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :unprocessable_entity in render' do
         expect_offense(<<~RUBY)
           render json: { error: 'Invalid data' }, status: :unprocessable_entity
-                                                          ^^^^^^^^^^^^^^^^^^^^^ Use `:unprocessable_content` instead of `:unprocessable_entity`. The `:unprocessable_entity` status is deprecated.
+                                                          ^^^^^^^^^^^^^^^^^^^^^ Prefer `:unprocessable_content` over `:unprocessable_entity`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -30,7 +30,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :unprocessable_entity in head' do
         expect_offense(<<~RUBY)
           head :unprocessable_entity
-               ^^^^^^^^^^^^^^^^^^^^^ Use `:unprocessable_content` instead of `:unprocessable_entity`. The `:unprocessable_entity` status is deprecated.
+               ^^^^^^^^^^^^^^^^^^^^^ Prefer `:unprocessable_content` over `:unprocessable_entity`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -41,7 +41,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :unprocessable_entity in redirect_to' do
         expect_offense(<<~RUBY)
           redirect_to some_path, status: :unprocessable_entity
-                                         ^^^^^^^^^^^^^^^^^^^^^ Use `:unprocessable_content` instead of `:unprocessable_entity`. The `:unprocessable_entity` status is deprecated.
+                                         ^^^^^^^^^^^^^^^^^^^^^ Prefer `:unprocessable_content` over `:unprocessable_entity`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -52,7 +52,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :unprocessable_entity in assert_response' do
         expect_offense(<<~RUBY)
           assert_response :unprocessable_entity
-                          ^^^^^^^^^^^^^^^^^^^^^ Use `:unprocessable_content` instead of `:unprocessable_entity`. The `:unprocessable_entity` status is deprecated.
+                          ^^^^^^^^^^^^^^^^^^^^^ Prefer `:unprocessable_content` over `:unprocessable_entity`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -63,7 +63,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :unprocessable_entity in assert_redirected_to' do
         expect_offense(<<~RUBY)
           assert_redirected_to some_path, status: :unprocessable_entity
-                                                  ^^^^^^^^^^^^^^^^^^^^^ Use `:unprocessable_content` instead of `:unprocessable_entity`. The `:unprocessable_entity` status is deprecated.
+                                                  ^^^^^^^^^^^^^^^^^^^^^ Prefer `:unprocessable_content` over `:unprocessable_entity`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -74,7 +74,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :unprocessable_entity in ternary expression' do
         expect_offense(<<~RUBY)
           render json: { error: 'Invalid data' }, status: some_condition ? :unprocessable_entity : :ok
-                                                                           ^^^^^^^^^^^^^^^^^^^^^ Use `:unprocessable_content` instead of `:unprocessable_entity`. The `:unprocessable_entity` status is deprecated.
+                                                                           ^^^^^^^^^^^^^^^^^^^^^ Prefer `:unprocessable_content` over `:unprocessable_entity`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -99,7 +99,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :payload_too_large in render' do
         expect_offense(<<~RUBY)
           render json: { error: 'File too big' }, status: :payload_too_large
-                                                          ^^^^^^^^^^^^^^^^^^ Use `:content_too_large` instead of `:payload_too_large`. The `:payload_too_large` status is deprecated.
+                                                          ^^^^^^^^^^^^^^^^^^ Prefer `:content_too_large` over `:payload_too_large`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -110,7 +110,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :payload_too_large in head' do
         expect_offense(<<~RUBY)
           head :payload_too_large
-               ^^^^^^^^^^^^^^^^^^ Use `:content_too_large` instead of `:payload_too_large`. The `:payload_too_large` status is deprecated.
+               ^^^^^^^^^^^^^^^^^^ Prefer `:content_too_large` over `:payload_too_large`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -121,7 +121,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :payload_too_large in redirect_to' do
         expect_offense(<<~RUBY)
           redirect_to some_path, status: :payload_too_large
-                                         ^^^^^^^^^^^^^^^^^^ Use `:content_too_large` instead of `:payload_too_large`. The `:payload_too_large` status is deprecated.
+                                         ^^^^^^^^^^^^^^^^^^ Prefer `:content_too_large` over `:payload_too_large`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -132,7 +132,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :payload_too_large in assert_response' do
         expect_offense(<<~RUBY)
           assert_response :payload_too_large
-                          ^^^^^^^^^^^^^^^^^^ Use `:content_too_large` instead of `:payload_too_large`. The `:payload_too_large` status is deprecated.
+                          ^^^^^^^^^^^^^^^^^^ Prefer `:content_too_large` over `:payload_too_large`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -143,7 +143,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :payload_too_large in assert_redirected_to' do
         expect_offense(<<~RUBY)
           assert_redirected_to some_path, status: :payload_too_large
-                                                  ^^^^^^^^^^^^^^^^^^ Use `:content_too_large` instead of `:payload_too_large`. The `:payload_too_large` status is deprecated.
+                                                  ^^^^^^^^^^^^^^^^^^ Prefer `:content_too_large` over `:payload_too_large`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -154,7 +154,7 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'registers an offense when using :payload_too_large in ternary expression' do
         expect_offense(<<~RUBY)
           render json: { error: 'File too big' }, status: some_condition ? :payload_too_large : :ok
-                                                                           ^^^^^^^^^^^^^^^^^^ Use `:content_too_large` instead of `:payload_too_large`. The `:payload_too_large` status is deprecated.
+                                                                           ^^^^^^^^^^^^^^^^^^ Prefer `:content_too_large` over `:payload_too_large`.
         RUBY
 
         expect_correction(<<~RUBY)
@@ -179,9 +179,9 @@ RSpec.describe RuboCop::Cop::Rails::DeprecatedHttpStatusNames, :config do
       it 'handles multiple deprecated statuses in the same code' do
         expect_offense(<<~RUBY)
           head :unprocessable_entity
-               ^^^^^^^^^^^^^^^^^^^^^ Use `:unprocessable_content` instead of `:unprocessable_entity`. The `:unprocessable_entity` status is deprecated.
+               ^^^^^^^^^^^^^^^^^^^^^ Prefer `:unprocessable_content` over `:unprocessable_entity`.
           head :payload_too_large
-               ^^^^^^^^^^^^^^^^^^ Use `:content_too_large` instead of `:payload_too_large`. The `:payload_too_large` status is deprecated.
+               ^^^^^^^^^^^^^^^^^^ Prefer `:content_too_large` over `:payload_too_large`.
         RUBY
 
         expect_correction(<<~RUBY)

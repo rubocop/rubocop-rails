@@ -14,7 +14,7 @@ module RuboCop
       #   render json: { error: "Invalid data" }, status: :unprocessable_content
       #   head :content_too_large
       #
-      class DeprecatedHttpStatusNames < Base
+      class HttpStatusNameConsistency < Base
         extend AutoCorrector
 
         requires_gem 'rack', '>= 3.1.0'

@@ -394,14 +394,6 @@ Rails/DeprecatedActiveModelErrorsMethods:
   VersionAdded: '2.14'
   VersionChanged: '2.18'
 
-Rails/DeprecatedHttpStatusNames:
-  Description: 'Enforces consistency by using the current HTTP status names.'
-  Enabled: pending
-  Severity: warning
-  VersionAdded: '<<next>>'
-  Include:
-    - '**/app/controllers/**/*.rb'
-
 Rails/DotSeparatedKeys:
   Description: 'Enforces the use of dot-separated keys instead of `:scope` options in `I18n` translation methods.'
   StyleGuide: 'https://rails.rubystyle.guide/#dot-separated-keys'
@@ -616,6 +608,14 @@ Rails/HttpStatus:
   SupportedStyles:
     - numeric
     - symbolic
+
+Rails/HttpStatusNameConsistency:
+  Description: 'Enforces consistency by using the current HTTP status names.'
+  Enabled: pending
+  Severity: warning
+  VersionAdded: '<<next>>'
+  Include:
+    - '**/app/controllers/**/*.rb'
 
 Rails/I18nLazyLookup:
   Description: 'Checks for places where I18n "lazy" lookup can be used.'
