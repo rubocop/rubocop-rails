@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # Enforces the use of the current HTTP status names instead of deprecated ones.
+      # Enforces consistency by using the current HTTP status names.
       #
       # @example
       #   # bad

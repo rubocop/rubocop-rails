@@ -395,7 +395,7 @@ Rails/DeprecatedActiveModelErrorsMethods:
   VersionChanged: '2.18'
 
 Rails/DeprecatedHttpStatusNames:
-  Description: 'Use the new HTTP status names instead of deprecated ones.'
+  Description: 'Enforces consistency by using the current HTTP status names.'
   Enabled: pending
   Severity: warning
   VersionAdded: '<<next>>'
