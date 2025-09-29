@@ -26,7 +26,7 @@ module RuboCop
           payload_too_large: :content_too_large
         }.freeze
 
-        MSG = 'Use `:%<preferred>s` instead of `:%<deprecated>s`. The `:%<deprecated>s` status is deprecated.'
+        MSG = 'Prefer `:%<preferred>s` over `:%<deprecated>s`.'
 
         def_node_matcher :status_method_call, <<~PATTERN
           {
