@@ -21,7 +21,7 @@ module RuboCop
 
         RESTRICT_ON_SEND = %i[render redirect_to head assert_response assert_redirected_to].freeze
 
-        DEPRECATED_STATUSES = {
+        PREFERRED_STATUSES = {
           unprocessable_entity: :unprocessable_content,
           payload_too_large: :content_too_large
         }.freeze
@@ -59,9 +59,9 @@ module RuboCop
         private
 
         def find_deprecated_status_names(node)
-          if node.sym_type? && DEPRECATED_STATUSES.key?(node.value)
+          if node.sym_type? && PREFERRED_STATUSES.key?(node.value)
             deprecated_status = node.value
-            preferred_status = DEPRECATED_STATUSES[deprecated_status]
+            preferred_status = PREFERRED_STATUSES[deprecated_status]
 
             message = format(MSG, deprecated: deprecated_status, preferred: preferred_status)
 
