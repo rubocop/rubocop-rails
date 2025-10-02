@@ -19,26 +19,52 @@ RSpec.describe RuboCop::Cop::Rails::FindByOrAssignmentMemoization, :config do
   end
 
   context 'when using `find_by` with `||=` in a method body' do
-    it 'registers an offense' do
+    it 'registers an offense when not assigning the instance variable in the `initialize` method' do
       expect_offense(<<~RUBY)
-        def foo
-          @current_user ||= User.find_by(id: session[:user_id])
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid memoizing `find_by` results with `||=`.
+        class Foo
+          def initialize
+            @not_current_user = nil
+          end
+
+          def current_user
+            @current_user ||= User.find_by(id: session[:user_id])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid memoizing `find_by` results with `||=`.
+          end
         end
       RUBY
 
       expect_correction(<<~RUBY)
-        def foo
-          return @current_user if defined?(@current_user)
+        class Foo
+          def initialize
+            @not_current_user = nil
+          end
+
+          def current_user
+            return @current_user if defined?(@current_user)
 
         @current_user = User.find_by(id: session[:user_id])
+          end
         end
       RUBY
     end
 
-    it 'registers registers an offense when the method contains other code' do
+    it 'does not register an offense when assigning the instance variable in the `initialize` method' do
+      expect_no_offenses(<<~RUBY)
+        class Foo
+          def initialize
+            @current_user = nil
+          end
+
+          def current_user
+            @current_user ||= User.find_by(id: session[:user_id])
+          end
+        end
+      RUBY
+    end
+
+    it 'registers an offense when the method contains other code' do
       expect_offense(<<~RUBY)
-        def foo
+        def current_user
           @current_user ||= User.find_by(id: session[:user_id])
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid memoizing `find_by` results with `||=`.
 
@@ -47,7 +73,7 @@ RSpec.describe RuboCop::Cop::Rails::FindByOrAssignmentMemoization, :config do
       RUBY
 
       expect_correction(<<~RUBY)
-        def foo
+        def current_user
           if defined?(@current_user)
           @current_user
         else
@@ -61,12 +87,12 @@ RSpec.describe RuboCop::Cop::Rails::FindByOrAssignmentMemoization, :config do
 
     it 'registers an offense when using endless method definition', :ruby30 do
       expect_offense(<<~RUBY)
-        def foo(arg) = @current_user ||= User.find_by(id: session[:user_id])
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid memoizing `find_by` results with `||=`.
+        def current_user(arg) = @current_user ||= User.find_by(id: session[:user_id])
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid memoizing `find_by` results with `||=`.
       RUBY
 
       expect_correction(<<~RUBY)
-        def foo(arg)#{' '}
+        def current_user(arg)#{' '}
         return @current_user if defined?(@current_user)
 
         @current_user = User.find_by(id: session[:user_id])
