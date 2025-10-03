@@ -8,6 +8,9 @@ module RuboCop
       # It is common to see code that attempts to memoize `find_by` result by `||=`,
       # but `find_by` may return `nil`, in which case it is not memoized as intended.
       #
+      # NOTE: Respecting the object shapes introduced in Ruby 3.2, instance variables used
+      # for memoization that are initialized at object creation are ignored.
+      #
       # @safety
       #   This cop is unsafe because detected `find_by` may not be Active Record's method,
       #   or the code may have a different purpose than memoization.
@@ -56,14 +59,16 @@ module RuboCop
 
         # When a method body contains only memoization, the correction can be more succinct.
         def on_def(node)
-          find_by_or_assignment_memoization(node.body) do |varible_name, find_by|
+          find_by_or_assignment_memoization(node.body) do |variable_name, find_by|
+            next if instance_variable_assigned?(variable_name)
+
             add_offense(node.body) do |corrector|
               corrector.replace(
                 node.body,
                 <<~RUBY.rstrip
-                  return #{varible_name} if defined?(#{varible_name})
+                  return #{variable_name} if defined?(#{variable_name})
 
-                  #{varible_name} = #{find_by.source}
+                  #{variable_name} = #{find_by.source}
                 RUBY
               )
 
@@ -74,17 +79,18 @@ module RuboCop
 
         def on_send(node)
           assignment_node = node.parent
-          find_by_or_assignment_memoization(assignment_node) do |varible_name, find_by|
-            next if assignment_node.each_ancestor(:if).any?
+
+          find_by_or_assignment_memoization(assignment_node) do |variable_name, find_by|
+            next if assignment_node.each_ancestor(:if).any? || instance_variable_assigned?(variable_name)
 
             add_offense(assignment_node) do |corrector|
               corrector.replace(
                 assignment_node,
                 <<~RUBY.rstrip
-                  if defined?(#{varible_name})
-                    #{varible_name}
+                  if defined?(#{variable_name})
+                    #{variable_name}
                   else
-                    #{varible_name} = #{find_by.source}
+                    #{variable_name} = #{find_by.source}
                   end
                 RUBY
               )
@@ -93,6 +99,18 @@ module RuboCop
         end
 
         private
+
+        def instance_variable_assigned?(instance_variable_name)
+          initialize_methods.any? do |def_node|
+            def_node.each_descendant(:ivasgn).any? do |asgn_node|
+              asgn_node.name == instance_variable_name
+            end
+          end
+        end
+
+        def initialize_methods
+          @initialize_methods ||= processed_source.ast.each_descendant(:def).select { |node| node.method?(:initialize) }
+        end
 
         def correct_to_regular_method_definition(corrector, node)
           range = node.loc.assignment.join(node.body.source_range.begin)
