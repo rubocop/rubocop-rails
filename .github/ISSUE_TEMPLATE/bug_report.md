@@ -16,6 +16,11 @@ rule with your own words.*
 
 --------
 
+## Steps to reproduce the problem
+
+This is extremely important! Providing us with a reliable way to reproduce
+a problem will expedite its solution.
+
 ## Expected behavior
 
 Describe here how you expected RuboCop Rails to behave in this particular situation.
@@ -23,11 +28,6 @@ Describe here how you expected RuboCop Rails to behave in this particular situat
 ## Actual behavior
 
 Describe here what actually happened.
-
-## Steps to reproduce the problem
-
-This is extremely important! Providing us with a reliable way to reproduce
-a problem will expedite its solution.
 
 ## RuboCop version
 
