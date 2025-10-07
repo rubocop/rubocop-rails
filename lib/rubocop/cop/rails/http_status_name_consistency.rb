@@ -47,18 +47,18 @@ module RuboCop
             if status_node.hash_type?
               # Handle hash arguments like { status: :unprocessable_entity }
               status_hash_value(status_node) do |status_value|
-                find_deprecated_status_names(status_value)
+                check_status_name_consistency(status_value)
               end
             else
               # Handle positional arguments like head :unprocessable_entity
-              find_deprecated_status_names(status_node)
+              check_status_name_consistency(status_node)
             end
           end
         end
 
         private
 
-        def find_deprecated_status_names(node)
+        def check_status_name_consistency(node)
           if node.sym_type? && PREFERRED_STATUSES.key?(node.value)
             deprecated_status = node.value
             preferred_status = PREFERRED_STATUSES[deprecated_status]
@@ -71,7 +71,7 @@ module RuboCop
           elsif node.respond_to?(:children)
             # Recursively search child nodes (handles ternary expressions, etc.)
             node.children.each do |child|
-              find_deprecated_status_names(child) if child.is_a?(Parser::AST::Node)
+              check_status_name_consistency(child) if child.is_a?(Parser::AST::Node)
             end
           end
         end
