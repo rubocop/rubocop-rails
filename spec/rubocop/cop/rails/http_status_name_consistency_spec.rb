@@ -93,6 +93,23 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatusNameConsistency, :config do
           { unprocessable_entity: 'Invalid data' }
         RUBY
       end
+
+      it 'does not register an offense when status is provided via variable' do
+        expect_no_offenses(<<~RUBY)
+          status_var = :unprocessable_entity
+          head status_var
+          render json: { error: 'Invalid data' }, status: status_var
+          redirect_to some_path, status: status_var
+          assert_response status_var
+        RUBY
+      end
+
+      it 'does not register an offense when status is provided via method call' do
+        expect_no_offenses(<<~RUBY)
+          head get_status_code
+          render json: { error: 'Invalid data' }, status: calculate_status
+        RUBY
+      end
     end
 
     context 'with :payload_too_large' do
@@ -171,6 +188,23 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatusNameConsistency, :config do
       it 'does not register an offense when using :payload_too_large in hash key' do
         expect_no_offenses(<<~RUBY)
           { payload_too_large: 'File too big' }
+        RUBY
+      end
+
+      it 'does not register an offense when status is provided via variable' do
+        expect_no_offenses(<<~RUBY)
+          status_var = :payload_too_large
+          head status_var
+          render json: { error: 'Invalid data' }, status: status_var
+          redirect_to some_path, status: status_var
+          assert_response status_var
+        RUBY
+      end
+
+      it 'does not register an offense when status is provided via method call' do
+        expect_no_offenses(<<~RUBY)
+          head get_status_code
+          render json: { error: 'Invalid data' }, status: calculate_status
         RUBY
       end
     end
