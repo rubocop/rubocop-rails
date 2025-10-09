@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module Rails
-      # Enforces that `exit` calls are not used within a rails app.
+      # Enforces that `exit` and `abort` calls are not used within a rails app.
       # Valid options are instead to raise an error, break, return, or some
       # other form of stopping execution of current request.
       #
@@ -26,8 +26,8 @@ module RuboCop
       class Exit < Base
         include ConfigurableEnforcedStyle
 
-        MSG = 'Do not use `exit` in Rails applications.'
-        RESTRICT_ON_SEND = %i[exit exit!].freeze
+        MSG = 'Do not use `exit` or `abort` in Rails applications.'
+        RESTRICT_ON_SEND = %i[exit exit! abort].freeze
         EXPLICIT_RECEIVERS = %i[Kernel Process].freeze
 
         def on_send(node)
