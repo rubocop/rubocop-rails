@@ -175,8 +175,8 @@ RSpec.describe RuboCop::Cop::Rails::HttpStatusNameConsistency, :config do
       end
     end
 
-    context 'with mixed deprecated statuses' do
-      it 'handles multiple deprecated statuses in the same code' do
+    context 'with partial preferred statuses' do
+      it 'handles status preference in the same code' do
         expect_offense(<<~RUBY)
           head :unprocessable_entity
                ^^^^^^^^^^^^^^^^^^^^^ Prefer `:unprocessable_content` over `:unprocessable_entity`.

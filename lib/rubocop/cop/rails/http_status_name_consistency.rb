@@ -26,7 +26,7 @@ module RuboCop
           payload_too_large: :content_too_large
         }.freeze
 
-        MSG = 'Prefer `:%<preferred>s` over `:%<deprecated>s`.'
+        MSG = 'Prefer `:%<preferred>s` over `:%<current>s`.'
 
         def_node_matcher :status_method_call, <<~PATTERN
           {
@@ -60,16 +60,15 @@ module RuboCop
 
         def check_status_name_consistency(node)
           if node.sym_type? && PREFERRED_STATUSES.key?(node.value)
-            deprecated_status = node.value
-            preferred_status = PREFERRED_STATUSES[deprecated_status]
+            current_status = node.value
+            preferred_status = PREFERRED_STATUSES[current_status]
 
-            message = format(MSG, deprecated: deprecated_status, preferred: preferred_status)
+            message = format(MSG, current: current_status, preferred: preferred_status)
 
             add_offense(node, message: message) do |corrector|
               corrector.replace(node, ":#{preferred_status}")
             end
-          elsif node.respond_to?(:children)
-            # Recursively search child nodes (handles ternary expressions, etc.)
+          else
             node.children.each do |child|
               check_status_name_consistency(child) if child.is_a?(Parser::AST::Node)
             end
