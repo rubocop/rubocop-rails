@@ -35,36 +35,17 @@ RSpec.describe RuboCop::Cop::Rails::HelperInstanceVariable, :config do
     RUBY
   end
 
-  it 'does not register an offense when a class which inherits `ActionView::Helpers::FormBuilder`' do
+  it 'does not register an offense when an instance variable is defined within a class' do
     expect_no_offenses(<<~RUBY)
-      class MyFormBuilder < ActionView::Helpers::FormBuilder
-        def do_something
-          @template
-          @template = do_something
+      module ButtonHelper
+        class Button
+          def initialize(text:)
+            @text = text
+          end
         end
-      end
-    RUBY
-  end
 
-  it 'does not register an offense when a class which inherits `::ActionView::Helpers::FormBuilder`' do
-    expect_no_offenses(<<~RUBY)
-      class MyFormBuilder < ::ActionView::Helpers::FormBuilder
-        def do_something
-          @template
-          @template = do_something
-        end
-      end
-    RUBY
-  end
-
-  it 'registers an offense when using a class which does not inherit `ActionView::Helpers::FormBuilder`' do
-    expect_offense(<<~RUBY)
-      class Foo
-        def do_something
-          @template
-          ^^^^^^^^^ Do not use instance variables in helpers.
-          @template = do_something
-          ^^^^^^^^^ Do not use instance variables in helpers.
+        def button(**args)
+          render Button.new(**args)
         end
       end
     RUBY
