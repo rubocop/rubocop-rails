@@ -22,11 +22,13 @@ module RuboCop
 
         SYM_MSG = 'Do not compare `Rails.env` with a symbol, it will always evaluate to `false`.'
 
+        CASE_MSG = 'Favor environment check predicate methods over case comparison.'
+
         RESTRICT_ON_SEND = %i[== !=].freeze
 
         def_node_matcher :comparing_str_env_with_rails_env_on_lhs?, <<~PATTERN
           (send
-            (send (const {nil? cbase} :Rails) :env)
+            #rails_env_const?
             {:== :!=}
             $str
           )
@@ -36,13 +38,13 @@ module RuboCop
           (send
             $str
             {:== :!=}
-            (send (const {nil? cbase} :Rails) :env)
+            #rails_env_const?
           )
         PATTERN
 
         def_node_matcher :comparing_sym_env_with_rails_env_on_lhs?, <<~PATTERN
           (send
-            (send (const {nil? cbase} :Rails) :env)
+            #rails_env_const?
             {:== :!=}
             $sym
           )
@@ -52,12 +54,16 @@ module RuboCop
           (send
             $sym
             {:== :!=}
-            (send (const {nil? cbase} :Rails) :env)
+            #rails_env_const?
           )
         PATTERN
 
         def_node_matcher :content, <<~PATTERN
           ({str sym} $_)
+        PATTERN
+
+        def_node_matcher :rails_env_const?, <<~PATTERN
+          (send (const {nil? cbase} :Rails) :env)
         PATTERN
 
         def on_send(node)
@@ -77,6 +83,13 @@ module RuboCop
           add_offense(node, message: SYM_MSG) do |corrector|
             autocorrect(corrector, node)
           end
+        end
+
+        def on_case(case_node)
+          condition = case_node.condition
+          return unless rails_env_const?(condition)
+
+          add_offense(condition, message: CASE_MSG)
         end
 
         private
