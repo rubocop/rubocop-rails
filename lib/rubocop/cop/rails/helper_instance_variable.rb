@@ -13,7 +13,7 @@ module RuboCop
       # variable, consider moving the behavior elsewhere, for
       # example to a model, decorator or presenter.
       #
-      # Provided that a class inherits `ActionView::Helpers::FormBuilder`,
+      # Provided that an instance variable belongs to a class,
       # an offense will not be registered.
       #
       # @example
@@ -28,38 +28,37 @@ module RuboCop
       #   end
       #
       #   # good
-      #   class MyFormBuilder < ActionView::Helpers::FormBuilder
-      #     @template.do_something
+      #   module ButtonHelper
+      #     class Welcome
+      #       def initialize(text:)
+      #         @text = text
+      #       end
+      #     end
+      #
+      #     def welcome(**)
+      #       render Welcome.new(**)
+      #     end
       #   end
+      #
       class HelperInstanceVariable < Base
         MSG = 'Do not use instance variables in helpers.'
 
-        def_node_matcher :form_builder_class?, <<~PATTERN
-          (const
-            (const
-               (const {nil? cbase} :ActionView) :Helpers) :FormBuilder)
-        PATTERN
-
         def on_ivar(node)
-          return if inherit_form_builder?(node)
+          return if instance_variable_belongs_to_class?(node)
 
           add_offense(node)
         end
 
         def on_ivasgn(node)
-          return if node.parent.or_asgn_type? || inherit_form_builder?(node)
+          return if node.parent.or_asgn_type? || instance_variable_belongs_to_class?(node)
 
           add_offense(node.loc.name)
         end
 
         private
 
-        def inherit_form_builder?(node)
-          node.each_ancestor(:class) do |class_node|
-            return true if form_builder_class?(class_node.parent_class)
-          end
-
-          false
+        def instance_variable_belongs_to_class?(node)
+          node.each_ancestor(:class).any?
         end
       end
     end
