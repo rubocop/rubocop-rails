@@ -427,4 +427,16 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
       RUBY
     end
   end
+
+  context 'when `flash` is used inside a block followed by method chaining' do
+    it 'does not register an offense and corrects' do
+      expect_no_offenses(<<~RUBY)
+        class NonController < ApplicationRecord
+          before_action do
+            flash[:notice] = 'hello'
+          end.do_something
+        end
+      RUBY
+    end
+  end
 end
