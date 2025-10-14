@@ -468,6 +468,11 @@ Rails/EnumUniqueness:
   Include:
     - '**/app/models/**/*.rb'
 
+Rails/Env:
+  Description: 'Use Feature Flags or config instead of `Rails.env`.'
+  Enabled: false
+  VersionAdded: '<<next>>'
+
 Rails/EnvLocal:
   Description: 'Use `Rails.env.local?` instead of `Rails.env.development? || Rails.env.test?`.'
   Enabled: pending
