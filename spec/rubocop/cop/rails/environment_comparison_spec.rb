@@ -101,6 +101,70 @@ RSpec.describe RuboCop::Cop::Rails::EnvironmentComparison, :config do
     end
   end
 
+  context 'when comparing `Rails.env.to_sym` to a symbol' do
+    context 'when using equals' do
+      it 'registers an offense and corrects when `Rails.env.to_sym` is used on LHS' do
+        expect_offense(<<~RUBY)
+          Rails.env.to_sym == :production
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Favor `Rails.env.production?` over `Rails.env.to_sym == :production`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.env.production?
+        RUBY
+      end
+
+      it 'registers an offense and corrects when `Rails.env.to_sym` is used on RHS' do
+        expect_offense(<<~RUBY)
+          :production == Rails.env.to_sym
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Favor `Rails.env.production?` over `:production == Rails.env.to_sym`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.env.production?
+        RUBY
+      end
+    end
+
+    context 'when using not equals' do
+      it 'registers an offense and corrects when `Rails.env.to_sym` is used on LHS' do
+        expect_offense(<<~RUBY)
+          Rails.env.to_sym != :production
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Favor `!Rails.env.production?` over `Rails.env.to_sym != :production`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          !Rails.env.production?
+        RUBY
+      end
+
+      it 'registers an offense and corrects when `Rails.env.to_sym` is used on RHS' do
+        expect_offense(<<~RUBY)
+          :production != Rails.env.to_sym
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Favor `!Rails.env.production?` over `:production != Rails.env.to_sym`.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          !Rails.env.production?
+        RUBY
+      end
+    end
+  end
+
+  context 'when comparing `Rails.env.to_sym` to a string' do
+    it 'does not register when `Rails.env.to_sym` is used on LHS' do
+      expect_no_offenses(<<~RUBY)
+        Rails.env.to_sym == 'production'
+      RUBY
+    end
+
+    it 'does not register when `Rails.env.to_sym` is used on RHS' do
+      expect_no_offenses(<<~RUBY)
+        'production' == Rails.env.to_sym
+      RUBY
+    end
+  end
+
   it 'does not register an offense when using `#good_method`' do
     expect_no_offenses(<<~RUBY)
       Rails.env.production?
