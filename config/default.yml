@@ -614,6 +614,14 @@ Rails/HttpStatus:
     - numeric
     - symbolic
 
+Rails/HttpStatusNameConsistency:
+  Description: 'Enforces consistency by using the current HTTP status names.'
+  Enabled: pending
+  Severity: warning
+  VersionAdded: '<<next>>'
+  Include:
+    - '**/app/controllers/**/*.rb'
+
 Rails/I18nLazyLookup:
   Description: 'Checks for places where I18n "lazy" lookup can be used.'
   StyleGuide: 'https://rails.rubystyle.guide/#lazy-lookup'
