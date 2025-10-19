@@ -880,6 +880,14 @@ Rails/ReadWriteAttribute:
   Include:
     - '**/app/models/**/*.rb'
 
+Rails/RedirectBackOrTo:
+  Description: >-
+                  Use `redirect_back_or_to` instead of `redirect_back` with
+                  `fallback_location` option.
+  Enabled: pending
+  Severity: warning
+  VersionAdded: '<<next>>'
+
 Rails/RedundantActiveRecordAllMethod:
   Description: Detect redundant `all` used as a receiver for Active Record query methods.
   StyleGuide: 'https://rails.rubystyle.guide/#redundant-all'
