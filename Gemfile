@@ -7,8 +7,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gemspec
 
 gem 'bump', require: false
-# FIXME: Remove when the next prism version is released.
-gem 'prism', '< 1.5.0' if RUBY_VERSION < '3.0' || RUBY_ENGINE == 'jruby'
 gem 'rake'
 gem 'rspec'
 gem 'rubocop', github: 'rubocop/rubocop'
