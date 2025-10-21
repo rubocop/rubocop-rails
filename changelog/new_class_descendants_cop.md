@@ -1,0 +1,1 @@
+* [#1544](https://github.com/rubocop/rubocop-rails/pull/1544): Add new `Rails/ClassDescendants` cop to discourage use of `Class#descendants` due to autoloading issues and non-deterministic behavior with Garbage Collection. ([@alexanderadam][])

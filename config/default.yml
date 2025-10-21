@@ -298,6 +298,14 @@ Rails/BulkChangeTable:
   Include:
     - db/**/*.rb
 
+Rails/ClassDescendants:
+  Description: >-
+                  Avoid using `Class#descendants` as it may not include classes that have yet
+                  to be autoloaded and is non-deterministic with regards to Garbage Collection.
+  Enabled: pending
+  Severity: warning
+  VersionAdded: '<<next>>'
+
 Rails/CompactBlank:
   Description: 'Checks if collection can be blank-compacted with `compact_blank`.'
   Enabled: pending
