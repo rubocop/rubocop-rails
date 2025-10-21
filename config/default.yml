@@ -600,6 +600,7 @@ Rails/HttpPositionalArguments:
   Description: 'Use keyword arguments instead of positional arguments in http method calls.'
   Enabled: true
   VersionAdded: '0.44'
+  AllowedKeys: []
   Include:
     - 'spec/**/*'
     - 'test/**/*'
