@@ -408,7 +408,7 @@ Rails/DuplicateAssociation:
   VersionChanged: '2.18'
 
 Rails/DuplicateScope:
-  Description: 'Multiple scopes share this same where clause.'
+  Description: 'Multiple scopes share this same expression.'
   Enabled: pending
   Severity: warning
   VersionAdded: '2.14'
