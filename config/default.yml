@@ -844,6 +844,7 @@ Rails/Presence:
   Description: 'Checks code that can be written more easily using `Object#presence` defined by Active Support.'
   Enabled: true
   VersionAdded: '0.52'
+  VersionChanged: '<<next>>'
 
 Rails/Present:
   Description: 'Enforces use of `present?`.'
