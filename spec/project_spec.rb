@@ -158,15 +158,10 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
           next if config[name][clusivity_key].nil?
 
           config[name][clusivity_key].each do |clusivity_pattern|
-            expect(clusivity_pattern).to match(%r{\*\*/app/}), <<~ERROR if clusivity_pattern.match?(%r{\bapp/})
-              Invalid pattern for #{name} #{clusivity_key}: #{clusivity_pattern}
-            ERROR
-            expect(clusivity_pattern).to match(%r{\*\*/config/}), <<~ERROR if clusivity_pattern.match?(%r{\bconfig/})
-              Invalid pattern for #{name} #{clusivity_key}: #{clusivity_pattern}
-            ERROR
-            expect(clusivity_pattern).to match(%r{\*\*/lib/}), <<~ERROR if clusivity_pattern.match?(%r{\blib/})
-              Invalid pattern for #{name} #{clusivity_key}: #{clusivity_pattern}
-            ERROR
+            msg = "Invalid pattern for #{name} #{clusivity_key}: #{clusivity_pattern}"
+            expect(clusivity_pattern).to match(%r[{../\*\*/,}app/]), msg if clusivity_pattern.match?(%r{\bapp/})
+            expect(clusivity_pattern).to match(%r[{../\*\*/,}config/]), msg if clusivity_pattern.match?(%r{\bconfig/})
+            expect(clusivity_pattern).to match(%r[{../\*\*/,}lib/]), msg if clusivity_pattern.match?(%r{\blib/})
           end
         end
       end
