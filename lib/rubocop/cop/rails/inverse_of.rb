@@ -178,6 +178,7 @@ module RuboCop
           (pair (sym :inverse_of) nil)
         PATTERN
 
+        # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def on_send(node)
           recv, arguments = association_recv_arguments(node)
           return unless arguments
@@ -192,9 +193,11 @@ module RuboCop
           return unless scope?(arguments) || options_requiring_inverse_of?(options)
 
           return if options_contain_inverse_of?(options)
+          return if dynamic_options?(options) && options.none? { |opt| inverse_of_nil_option?(opt) }
 
           add_offense(node.loc.selector, message: message(options))
         end
+        # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
         def scope?(arguments)
           !ignore_scopes? && arguments.any?(&:block_type?)
@@ -214,6 +217,10 @@ module RuboCop
           options.any? do |opt|
             through_option?(opt) || polymorphic_option?(opt)
           end
+        end
+
+        def dynamic_options?(options)
+          options.any? { |option| option&.kwsplat_type? }
         end
 
         def options_contain_inverse_of?(options)

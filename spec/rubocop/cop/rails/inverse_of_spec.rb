@@ -24,6 +24,17 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
       RUBY
     end
 
+    it 'registers an offense when specifying `inverse_of: nil` with dynamic options' do
+      expect_offense(<<~RUBY)
+        class Person
+          def define_association(**options)
+            has_many :foo, -> () { where(bar: true) }, inverse_of: nil, **options
+            ^^^^^^^^ You specified `inverse_of: nil`, you probably meant to use `inverse_of: false`.
+          end
+        end
+      RUBY
+    end
+
     context 'when `IgnoreScopes: true`' do
       let(:cop_config) do
         { 'IgnoreScopes' => true }
@@ -70,6 +81,16 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
         end
       RUBY
     end
+
+    it 'does not register an offense with dynamic options' do
+      expect_no_offenses(<<~RUBY)
+        class Person
+          def define_association(**options)
+            has_many :foo, conditions: -> { where(bar: true) }, **options
+          end
+        end
+      RUBY
+    end
   end
 
   context 'with scope and options' do
@@ -78,6 +99,16 @@ RSpec.describe RuboCop::Cop::Rails::InverseOf, :config do
         class Person
           has_many :foo, -> { group 'x' }, dependent: :destroy
           ^^^^^^^^ Specify an `:inverse_of` option.
+        end
+      RUBY
+    end
+
+    it 'does not register an offense with dynamic options' do
+      expect_no_offenses(<<~RUBY)
+        class Person
+          def define_association(**options)
+            has_many(:foo, -> { group 'x' }, dependent: :destroy, **options)
+          end
         end
       RUBY
     end
