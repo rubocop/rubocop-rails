@@ -16,7 +16,7 @@ task update_cops_documentation: :yard_for_generate_documentation do
   required_rails_version = lambda do |data|
     return '' unless (version = data.cop.gem_requirements[RuboCop::Cop::TargetRailsVersion::TARGET_GEM_NAME])
 
-    "NOTE: Required Rails version: #{version.requirements[0][1]}\n\n"
+    "NOTE: Requires Rails version #{version.requirements[0][1]}\n\n"
   end
   extra_info = { required_ruby_version: required_rails_version }
 
