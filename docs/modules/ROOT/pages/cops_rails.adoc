@@ -53,7 +53,7 @@ end
 [#railsactioncontrollertestcase]
 == Rails/ActionControllerTestCase
 
-NOTE: Required Rails version: 5.0
+NOTE: Requires Rails version 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -580,7 +580,7 @@ end
 [#railsapplicationjob]
 == Rails/ApplicationJob
 
-NOTE: Required Rails version: 5.0
+NOTE: Requires Rails version 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -619,7 +619,7 @@ end
 [#railsapplicationmailer]
 == Rails/ApplicationMailer
 
-NOTE: Required Rails version: 5.0
+NOTE: Requires Rails version 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -658,7 +658,7 @@ end
 [#railsapplicationrecord]
 == Rails/ApplicationRecord
 
-NOTE: Required Rails version: 5.0
+NOTE: Requires Rails version 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -877,7 +877,7 @@ end
 [#railsbelongsto]
 == Rails/BelongsTo
 
-NOTE: Required Rails version: 5.0
+NOTE: Requires Rails version 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -1158,7 +1158,7 @@ end
 [#railscompactblank]
 == Rails/CompactBlank
 
-NOTE: Required Rails version: 6.1
+NOTE: Requires Rails version 6.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -1216,7 +1216,7 @@ collection.compact_blank!
 [#railscontenttag]
 == Rails/ContentTag
 
-NOTE: Required Rails version: 5.1
+NOTE: Requires Rails version 5.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2084,7 +2084,7 @@ enum status: { active: 0, archived: 1 }
 
 NOTE: Requires Ruby version 3.0
 
-NOTE: Required Rails version: 7.0
+NOTE: Requires Rails version 7.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2187,7 +2187,7 @@ enum status: [:active, :archived]
 [#railsenvlocal]
 == Rails/EnvLocal
 
-NOTE: Required Rails version: 7.1
+NOTE: Requires Rails version 7.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2395,7 +2395,7 @@ raise 'a bad error has happened'
 [#railsexpandeddaterange]
 == Rails/ExpandedDateRange
 
-NOTE: Required Rails version: 5.1
+NOTE: Requires Rails version 5.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2746,7 +2746,7 @@ User.order(:foo).each
 [#railsfreezetime]
 == Rails/FreezeTime
 
-NOTE: Required Rails version: 5.2
+NOTE: Requires Rails version 5.2
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -2959,7 +2959,7 @@ end
 [#railshttppositionalarguments]
 == Rails/HttpPositionalArguments
 
-NOTE: Required Rails version: 5.0
+NOTE: Requires Rails version 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -3465,7 +3465,7 @@ Hash[[1, 2, 3].collect { |el| [foo(el), el] }]
 [#railsindexwith]
 == Rails/IndexWith
 
-NOTE: Required Rails version: 6.0
+NOTE: Requires Rails version 6.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -4415,7 +4415,7 @@ safe_join([user_content, " ", content_tag(:span, user_content)])
 [#railspick]
 == Rails/Pick
 
-NOTE: Required Rails version: 6.0
+NOTE: Requires Rails version 6.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -4468,7 +4468,7 @@ Model.pick(:a)
 [#railspluck]
 == Rails/Pluck
 
-NOTE: Required Rails version: 5.0
+NOTE: Requires Rails version 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -5145,7 +5145,7 @@ end
 [#railsredundantpresencevalidationonbelongsto]
 == Rails/RedundantPresenceValidationOnBelongsTo
 
-NOTE: Required Rails version: 5.0
+NOTE: Requires Rails version 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -5267,7 +5267,7 @@ end
 [#railsredundanttravelback]
 == Rails/RedundantTravelBack
 
-NOTE: Required Rails version: 5.2
+NOTE: Requires Rails version 5.2
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -5635,7 +5635,7 @@ request.referrer
 [#railsrequiredependency]
 == Rails/RequireDependency
 
-NOTE: Required Rails version: 6.0
+NOTE: Requires Rails version 6.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -5675,7 +5675,7 @@ require_dependency 'some_lib'
 [#railsresponseparsedbody]
 == Rails/ResponseParsedBody
 
-NOTE: Required Rails version: 5.0
+NOTE: Requires Rails version 5.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -6770,7 +6770,7 @@ EOS
 [#railsstrongparametersexpect]
 == Rails/StrongParametersExpect
 
-NOTE: Required Rails version: 8.0
+NOTE: Requires Rails version 8.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -7068,7 +7068,7 @@ end
 [#railstoformatteds]
 == Rails/ToFormattedS
 
-NOTE: Required Rails version: 7.0
+NOTE: Requires Rails version 7.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -7129,7 +7129,7 @@ time.to_formatted_s(:db)
 [#railstoswithargument]
 == Rails/ToSWithArgument
 
-NOTE: Required Rails version: 7.0
+NOTE: Requires Rails version 7.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -7164,7 +7164,7 @@ obj.to_formatted_s(:delimited)
 [#railstoplevelhashwithindifferentaccess]
 == Rails/TopLevelHashWithIndifferentAccess
 
-NOTE: Required Rails version: 5.1
+NOTE: Requires Rails version 5.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -7774,7 +7774,7 @@ User.where('length(name) > 10').exists?
 [#railswheremissing]
 == Rails/WhereMissing
 
-NOTE: Required Rails version: 6.1
+NOTE: Requires Rails version 6.1
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
@@ -7909,7 +7909,7 @@ User.where.not('trashed = ? OR role = ?', true, 'admin')
 
 NOTE: Requires Ruby version 2.6
 
-NOTE: Required Rails version: 6.0
+NOTE: Requires Rails version 6.0
 
 |===
 | Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
