@@ -40,6 +40,42 @@ RSpec.describe RuboCop::Cop::Rails::OutputSafety, :config do
       RUBY
     end
 
+    it 'does not register an offense for static single line heredoc receiver' do
+      expect_no_offenses(<<~RUBY)
+        <<~HTML.html_safe
+          foo
+        HTML
+      RUBY
+    end
+
+    it 'registers an offense for dynamic single line heredoc receiver' do
+      expect_offense(<<~'RUBY')
+        <<~HTML.html_safe
+                ^^^^^^^^^ Tagging a string as html safe may be a security risk.
+          #{foo}
+        HTML
+      RUBY
+    end
+
+    it 'does not register an offense for static multiline heredoc receiver' do
+      expect_no_offenses(<<~RUBY)
+        <<~HTML.html_safe
+          foo
+          bar
+        HTML
+      RUBY
+    end
+
+    it 'registers an offense for dynamic multiline heredoc receiver' do
+      expect_offense(<<~'RUBY')
+        <<~HTML.html_safe
+                ^^^^^^^^^ Tagging a string as html safe may be a security risk.
+          foo
+          #{bar}
+        HTML
+      RUBY
+    end
+
     it 'registers an offense for variable receiver' do
       expect_offense(<<~RUBY)
         foo.html_safe
