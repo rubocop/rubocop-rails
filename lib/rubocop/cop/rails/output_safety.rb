@@ -84,7 +84,9 @@ module RuboCop
         private
 
         def non_interpolated_string?(node)
-          node.receiver&.str_type? && !node.receiver.dstr_type?
+          return false unless (receiver = node.receiver)
+
+          receiver.str_type? || (receiver.dstr_type? && receiver.children.all?(&:str_type?))
         end
 
         def looks_like_rails_html_safe?(node)
