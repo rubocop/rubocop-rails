@@ -1,1 +1,0 @@
-* [#1532](https://github.com/rubocop/rubocop-rails/issues/1532): Fix false positives for `Rails/FindByOrAssignmentMemoization` when assigning a memoization instance variable at `initialize` method. ([@koic][])

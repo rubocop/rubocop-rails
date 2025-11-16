@@ -1,1 +1,0 @@
-* [#1541](https://github.com/rubocop/rubocop-rails/pull/1541): Add new `Rails/RedirectBackOrTo` cop to suggest using `redirect_back_or_to` instead of `redirect_back` with `fallback_location`. ([@davidenglishmusic][])

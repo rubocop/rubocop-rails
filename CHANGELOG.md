@@ -9,6 +9,26 @@
 
 ## master (unreleased)
 
+### New features
+
+* [#1520](https://github.com/rubocop/rubocop-rails/pull/1520): New `Rails/HttpStatusNameConsistency` cop. ([@tuxagon][])
+* [#1376](https://github.com/rubocop/rubocop-rails/issues/1376): Add new `Rails/Env` cop. ([@cdudas17][])
+* [#1541](https://github.com/rubocop/rubocop-rails/pull/1541): Add new `Rails/RedirectBackOrTo` cop to suggest using `redirect_back_or_to` instead of `redirect_back` with `fallback_location`. ([@davidenglishmusic][])
+
+### Bug fixes
+
+* [#1539](https://github.com/rubocop/rubocop-rails/issues/1539): Fix an error in `Rails/ActionControllerFlashBeforeRender` when `flash` is used inside a block followed by method chaining. ([@koic][])
+* [#1553](https://github.com/rubocop/rubocop-rails/issues/1553): Fix false positives for `Rails/OutputSafety` when using non-interpolated multiline heredoc. ([@koic][])
+* [#1532](https://github.com/rubocop/rubocop-rails/issues/1532): Fix false positives for `Rails/FindByOrAssignmentMemoization` when assigning a memoization instance variable at `initialize` method. ([@koic][])
+* [#1549](https://github.com/rubocop/rubocop-rails/pull/1549): Fix `Rails/InverseOf` cop false positives when using dynamic association options. ([@viralpraxis][])
+
+### Changes
+
+* [#1537](https://github.com/rubocop/rubocop-rails/pull/1537): Add `abort` to the `Rails/Exit` cop. ([@adamstegman][])
+* [#932](https://github.com/rubocop/rubocop-rails/issues/932): Add support for chained method calls in `Rails/Presence`. ([@vlad-pisanov][])
+* [#1525](https://github.com/rubocop/rubocop-rails/issues/1525): Change `Rails::HelperInstanceVariable` not to detect offenses for instance variables within classes. ([@viralpraxis][])
+* [#1481](https://github.com/rubocop/rubocop-rails/pull/1481): Recognize `Rails.env.to_sym` in `Rails/EnvironmentComparison`. ([@lovro-bikic][])
+
 ## 2.33.4 (2025-09-27)
 
 ### Bug fixes
@@ -1338,3 +1358,7 @@
 [@tdeo]: https://github.com/tdeo
 [@lovro-bikic]: https://github.com/lovro-bikic
 [@5hun-s]: https://github.com/5hun-s
+[@adamstegman]: https://github.com/adamstegman
+[@tuxagon]: https://github.com/tuxagon
+[@cdudas17]: https://github.com/cdudas17
+[@davidenglishmusic]: https://github.com/davidenglishmusic
