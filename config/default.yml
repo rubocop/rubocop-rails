@@ -471,7 +471,7 @@ Rails/EnumUniqueness:
 Rails/Env:
   Description: 'Use Feature Flags or config instead of `Rails.env`.'
   Enabled: false
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.34'
 
 Rails/EnvLocal:
   Description: 'Use `Rails.env.local?` instead of `Rails.env.development? || Rails.env.test?`.'
@@ -618,7 +618,7 @@ Rails/HttpStatusNameConsistency:
   Description: 'Enforces consistency by using the current HTTP status names.'
   Enabled: pending
   Severity: warning
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.34'
   Include:
     - '**/app/controllers/**/*.rb'
 
@@ -844,7 +844,7 @@ Rails/Presence:
   Description: 'Checks code that can be written more easily using `Object#presence` defined by Active Support.'
   Enabled: true
   VersionAdded: '0.52'
-  VersionChanged: '<<next>>'
+  VersionChanged: '2.34'
 
 Rails/Present:
   Description: 'Enforces use of `present?`.'
@@ -887,7 +887,7 @@ Rails/RedirectBackOrTo:
                   `fallback_location` option.
   Enabled: pending
   Severity: warning
-  VersionAdded: '<<next>>'
+  VersionAdded: '2.34'
 
 Rails/RedundantActiveRecordAllMethod:
   Description: Detect redundant `all` used as a receiver for Active Record query methods.

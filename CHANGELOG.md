@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.34.0 (2025-11-16)
+
 ### New features
 
 * [#1520](https://github.com/rubocop/rubocop-rails/pull/1520): New `Rails/HttpStatusNameConsistency` cop. ([@tuxagon][])
