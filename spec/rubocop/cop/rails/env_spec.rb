@@ -22,6 +22,12 @@ RSpec.describe RuboCop::Cop::Rails::Env, :config do
     RUBY
   end
 
+  it 'does not register an offense when assigning `Rails.env`' do
+    expect_no_offenses(<<~RUBY)
+      rails_env = Rails.env
+    RUBY
+  end
+
   it 'does not register an offense for valid Rails.env methods' do
     expect_no_offenses(<<~RUBY)
       Rails.env.capitalize

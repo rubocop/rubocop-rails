@@ -45,7 +45,7 @@ module RuboCop
           return unless node.receiver&.const_name == 'Rails'
 
           parent = node.parent
-          return unless parent&.predicate_method?
+          return unless parent.respond_to?(:predicate_method?) && parent.predicate_method?
 
           return if ALLOWED_LIST.include?(parent.method_name)
 
