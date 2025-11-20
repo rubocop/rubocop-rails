@@ -24,6 +24,17 @@ RSpec.describe RuboCop::Cop::Rails::RedirectBackOrTo, :config do
       RUBY
     end
 
+    it 'registers an offense and corrects with additional options as double splat' do
+      expect_offense(<<~RUBY)
+        redirect_back(fallback_location: root_path, **options)
+        ^^^^^^^^^^^^^ Use `redirect_back_or_to` instead of `redirect_back` with `:fallback_location` keyword argument.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        redirect_back_or_to(root_path, **options)
+      RUBY
+    end
+
     it 'registers no offense when using redirect_back_or_to' do
       expect_no_offenses(<<~RUBY)
         redirect_back_or_to(root_path)

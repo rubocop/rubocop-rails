@@ -33,33 +33,36 @@ module RuboCop
 
         def_node_matcher :redirect_back_with_fallback_location, <<~PATTERN
           (send nil? :redirect_back
-            (hash <$(pair (sym :fallback_location) $_) ...>)
+            (hash <$(pair (sym :fallback_location) $_) $...>)
           )
         PATTERN
 
         def on_send(node)
-          redirect_back_with_fallback_location(node) do |fallback_pair, fallback_value|
+          redirect_back_with_fallback_location(node) do |fallback_pair, fallback_value, options|
             add_offense(node.loc.selector) do |corrector|
-              correct_redirect_back(corrector, node, fallback_pair, fallback_value)
+              correct_redirect_back(corrector, node, fallback_pair, fallback_value, options)
             end
           end
         end
 
         private
 
-        def correct_redirect_back(corrector, node, fallback_pair, fallback_value)
+        # rubocop:disable Metrics/AbcSize
+        def correct_redirect_back(corrector, node, fallback_pair, fallback_value, options)
           corrector.replace(node.loc.selector, 'redirect_back_or_to')
 
           hash_arg = node.first_argument
 
           if hash_arg.pairs.one?
-            corrector.replace(hash_arg, fallback_value.source)
+            arguments = [fallback_value.source] + options.map(&:source)
+            corrector.replace(hash_arg, arguments.join(', '))
           else
             remove_fallback_location_pair(corrector, hash_arg, fallback_pair)
             first_pair = hash_arg.pairs.find { |pair| pair != fallback_pair }
             corrector.insert_before(first_pair, "#{fallback_value.source}, ")
           end
         end
+        # rubocop:enable Metrics/AbcSize
 
         def remove_fallback_location_pair(corrector, hash_node, fallback_pair)
           pairs = hash_node.pairs
