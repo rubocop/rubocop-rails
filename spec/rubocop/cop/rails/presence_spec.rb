@@ -295,9 +295,27 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
       RUBY
     end
 
+    it 'does not register an offense when chained method is `[]=`' do
+      expect_no_offenses(<<~RUBY)
+        a[1] = 1 if a.present?
+      RUBY
+    end
+
     it 'does not register an offense when chained method is an arithmetic operation' do
       expect_no_offenses(<<~RUBY)
         a.present? ? a + 42 : nil
+      RUBY
+    end
+
+    it 'does not register an offense when using comparison operation in modifier if' do
+      expect_no_offenses(<<~RUBY)
+        a <= 0 if a.present?
+      RUBY
+    end
+
+    it 'does not register an offense when chained method is a comparison operation in ternary' do
+      expect_no_offenses(<<~RUBY)
+        a.present? ? a > 42 : nil
       RUBY
     end
 
