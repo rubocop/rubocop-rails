@@ -61,6 +61,8 @@ module RuboCop
             first_pair = hash_arg.pairs.find { |pair| pair != fallback_pair }
             corrector.insert_before(first_pair, "#{fallback_value.source}, ")
           end
+
+          wrap_with_parentheses(node, corrector) unless node.parenthesized?
         end
         # rubocop:enable Metrics/AbcSize
 
@@ -75,6 +77,11 @@ module RuboCop
           else
             remove_non_first_pair(corrector, fallback_pair, pairs[index - 1])
           end
+        end
+
+        def wrap_with_parentheses(node, corrector)
+          corrector.replace(node.loc.selector.end.join(node.first_argument.source_range.begin), '(')
+          corrector.insert_after(node, ')')
         end
 
         def remove_first_pair(corrector, fallback_pair, next_pair)
