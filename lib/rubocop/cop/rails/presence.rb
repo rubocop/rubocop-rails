@@ -53,6 +53,16 @@ module RuboCop
       #
       #   # good
       #   a.presence&.foo
+      #
+      #   # good
+      #   a.present? ? a[1] : nil
+      #
+      #   # good
+      #   a[:key] = value if a.present?
+      #
+      #   # good
+      #   a.present? ? a > 1 : nil
+      #   a <= 0 if a.present?
       class Presence < Base
         include RangeHelp
         extend AutoCorrector
@@ -130,7 +140,7 @@ module RuboCop
         end
 
         def ignore_chain_node?(node)
-          node.method?('[]') || node.arithmetic_operation?
+          node.method?('[]') || node.method?('[]=') || node.arithmetic_operation? || node.comparison_method?
         end
 
         def message(node, replacement)
