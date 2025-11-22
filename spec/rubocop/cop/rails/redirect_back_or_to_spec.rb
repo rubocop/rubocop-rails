@@ -35,6 +35,28 @@ RSpec.describe RuboCop::Cop::Rails::RedirectBackOrTo, :config do
       RUBY
     end
 
+    it 'registers an offense and corrects when `fallback_location` arg is a hash and the call has no arg parentheses' do
+      expect_offense(<<~RUBY)
+        redirect_back fallback_location: {action: 'index'}
+        ^^^^^^^^^^^^^ Use `redirect_back_or_to` instead of `redirect_back` with `:fallback_location` keyword argument.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        redirect_back_or_to({action: 'index'})
+      RUBY
+    end
+
+    it 'registers an offense and corrects when `fallback_location` arg is a hash and the call uses arg parentheses' do
+      expect_offense(<<~RUBY)
+        redirect_back(fallback_location: {action: 'index'})
+        ^^^^^^^^^^^^^ Use `redirect_back_or_to` instead of `redirect_back` with `:fallback_location` keyword argument.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        redirect_back_or_to({action: 'index'})
+      RUBY
+    end
+
     it 'registers no offense when using redirect_back_or_to' do
       expect_no_offenses(<<~RUBY)
         redirect_back_or_to(root_path)

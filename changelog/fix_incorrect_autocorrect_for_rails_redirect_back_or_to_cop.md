@@ -1,0 +1,1 @@
+* [#1561](https://github.com/rubocop/rubocop-rails/issues/1561): Fix incorrect autocorrect for `Rails/RedirectBackOrTo` when `fallback_location` argument is a hash and the call has no argument parentheses. ([@koic][])
