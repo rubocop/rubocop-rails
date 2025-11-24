@@ -4862,6 +4862,16 @@ a.blank? ? nil : a.foo
 
 # good
 a.presence&.foo
+
+# good
+a.present? ? a[1] : nil
+
+# good
+a[:key] = value if a.present?
+
+# good
+a.present? ? a > 1 : nil
+a <= 0 if a.present?
 ----
 
 [#railspresent]
