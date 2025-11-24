@@ -68,6 +68,7 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
+        INDEX_ACCESS_METHODS = %i[[] []=].freeze
 
         def_node_matcher :redundant_receiver_and_other, <<~PATTERN
           {
@@ -140,7 +141,7 @@ module RuboCop
         end
 
         def ignore_chain_node?(node)
-          node.method?('[]') || node.method?('[]=') || node.arithmetic_operation? || node.comparison_method?
+          index_access_method?(node) || node.assignment? || node.arithmetic_operation? || node.comparison_method?
         end
 
         def message(node, replacement)
@@ -189,6 +190,10 @@ module RuboCop
           replaced = "#{receiver.source}.presence&.#{chain.method_name}"
           replaced += "(#{chain.arguments.map(&:source).join(', ')})" if chain.arguments?
           left_sibling ? "(#{replaced})" : replaced
+        end
+
+        def index_access_method?(node)
+          INDEX_ACCESS_METHODS.include?(node.method_name)
         end
       end
     end
