@@ -9,6 +9,13 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1556](https://github.com/rubocop/rubocop-rails/pull/1556): Fix an error for `Rails/Env` when assigning `Rails.env`. ([@koic][])
+* [#1557](https://github.com/rubocop/rubocop-rails/issues/1557): Fix false positives for `Rails/Presence` with comparison and assignment operators. ([@davidenglishmusic][])
+* [#1558](https://github.com/rubocop/rubocop-rails/issues/1558): This PR fixes incorrect autocorrect for `Rails/RedirectBackOrTo` when additional options as double splat are used. ([@koic][])
+* [#1561](https://github.com/rubocop/rubocop-rails/issues/1561): Fix incorrect autocorrect for `Rails/RedirectBackOrTo` when `fallback_location` argument is a hash and the call has no argument parentheses. ([@koic][])
+
 ## 2.34.0 (2025-11-16)
 
 ### New features
