@@ -9,6 +9,10 @@
 
 ## master (unreleased)
 
+### Changes
+
+* [#1565](https://github.com/rubocop/rubocop-rails/issues/1565): Make `Rails/Presence` allow index access methods. ([@koic][])
+
 ## 2.34.1 (2025-11-24)
 
 ### Bug fixes
