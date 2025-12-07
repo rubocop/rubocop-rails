@@ -14,12 +14,15 @@ module RuboCop
       # @example
       #   # bad
       #   JSON.parse(response.body)
-      #
-      #   # bad
+      #   Nokogiri::HTML(response.body)
+      #   Nokogiri::HTML4(response.body)
+      #   Nokogiri::HTML5(response.body)
       #   Nokogiri::HTML.parse(response.body)
-      #
-      #   # bad
+      #   Nokogiri::HTML4.parse(response.body)
       #   Nokogiri::HTML5.parse(response.body)
+      #   Nokogiri::HTML::Document.parse(response.body)
+      #   Nokogiri::HTML4::Document.parse(response.body)
+      #   Nokogiri::HTML5::Document.parse(response.body)
       #
       #   # good
       #   response.parsed_body
@@ -27,71 +30,77 @@ module RuboCop
         extend AutoCorrector
         extend TargetRailsVersion
 
-        RESTRICT_ON_SEND = %i[parse].freeze
+        MSG = 'Prefer `response.parsed_body`.'
+
+        HTML = %i[HTML HTML4 HTML5].to_set.freeze
+
+        RESTRICT_ON_SEND = [:parse, *HTML].freeze
 
         minimum_target_rails_version 5.0
 
         # @!method json_parse_response_body?(node)
         def_node_matcher :json_parse_response_body?, <<~PATTERN
-          (send
-            (const {nil? cbase} :JSON)
-            :parse
-            (send
-              (send nil? :response)
-              :body
-            )
-          )
+          (send #json? :parse #response_body?)
         PATTERN
 
-        # @!method nokogiri_html_parse_response_body(node)
-        def_node_matcher :nokogiri_html_parse_response_body, <<~PATTERN
-          (send
-            (const
-              (const {nil? cbase} :Nokogiri)
-              ${:HTML :HTML5}
-            )
-            :parse
-            (send
-              (send nil? :response)
-              :body
-            )
-          )
+        # @!method nokogiri_html_response_body?(node)
+        def_node_matcher :nokogiri_html_response_body?, <<~PATTERN
+          (send #nokogiri? HTML #response_body?)
+        PATTERN
+
+        # @!method nokogiri_html_parse_response_body?(node)
+        def_node_matcher :nokogiri_html_parse_response_body?, <<~PATTERN
+          (send #nokogiri_html? :parse #response_body?)
+        PATTERN
+
+        # @!method nokogiri_html_document_parse_response_body?(node)
+        def_node_matcher :nokogiri_html_document_parse_response_body?, <<~PATTERN
+          (send (const #nokogiri_html? :Document) :parse #response_body?)
+        PATTERN
+
+        # @!method json?(node)
+        def_node_matcher :json?, <<~PATTERN
+          (const {nil? cbase} :JSON)
+        PATTERN
+
+        # @!method nokogiri?(node)
+        def_node_matcher :nokogiri?, <<~PATTERN
+          (const {nil? cbase} :Nokogiri)
+        PATTERN
+
+        # @!method nokogiri_html?(node)
+        def_node_matcher :nokogiri_html?, <<~PATTERN
+          (const #nokogiri? HTML)
+        PATTERN
+
+        # @!method response_body?(node)
+        def_node_matcher :response_body?, <<~PATTERN
+          (send (send nil? :response) :body)
         PATTERN
 
         def on_send(node)
-          check_json_parse_response_body(node)
+          return unless html_offense?(node) || json_offense?(node)
 
-          return unless target_rails_version >= 7.1
-
-          check_nokogiri_html_parse_response_body(node)
+          add_offense(node) do |corrector|
+            corrector.replace(node, 'response.parsed_body')
+          end
         end
 
         private
 
-        def autocorrect(corrector, node)
-          corrector.replace(node, 'response.parsed_body')
+        def html_offense?(node)
+          support_response_parsed_body_for_html? &&
+            (nokogiri_html_response_body?(node) ||
+              nokogiri_html_parse_response_body?(node) ||
+              nokogiri_html_document_parse_response_body?(node))
         end
 
-        def check_json_parse_response_body(node)
-          return unless json_parse_response_body?(node)
-
-          add_offense(
-            node,
-            message: 'Prefer `response.parsed_body` to `JSON.parse(response.body)`.'
-          ) do |corrector|
-            autocorrect(corrector, node)
-          end
+        def json_offense?(node)
+          json_parse_response_body?(node)
         end
 
-        def check_nokogiri_html_parse_response_body(node)
-          return unless (const = nokogiri_html_parse_response_body(node))
-
-          add_offense(
-            node,
-            message: "Prefer `response.parsed_body` to `Nokogiri::#{const}.parse(response.body)`."
-          ) do |corrector|
-            autocorrect(corrector, node)
-          end
+        def support_response_parsed_body_for_html?
+          target_rails_version >= 7.1
         end
       end
     end
