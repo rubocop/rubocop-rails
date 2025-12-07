@@ -114,6 +114,12 @@ RSpec.describe RuboCop::Cop::Rails::SelectMap, :config do
     RUBY
   end
 
+  it 'does not register an offense when multiple `select` calls are present before `map`' do
+    expect_no_offenses(<<~RUBY)
+      (Foo.select(:column_name) + Bar.select(:column_name)).map(&:column_name)
+    RUBY
+  end
+
   it 'does not register an offense when using `pluck(:column_name)`' do
     expect_no_offenses(<<~RUBY)
       Model.pluck(:column_name)

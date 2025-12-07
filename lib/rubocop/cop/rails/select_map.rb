@@ -45,11 +45,15 @@ module RuboCop
         private
 
         def find_select_node(node, column_name)
-          node.descendants.detect do |select_candidate|
+          select_method_nodes = node.descendants.select do |select_candidate|
             next if !select_candidate.call_type? || !select_candidate.method?(:select)
 
             match_column_name?(select_candidate, column_name)
           end
+
+          return unless select_method_nodes.one?
+
+          select_method_nodes.first
         end
 
         # rubocop:disable Metrics/AbcSize
