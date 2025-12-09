@@ -1,0 +1,1 @@
+* [#1536](https://github.com/rubocop/rubocop-rails/issues/1536): Fix glob pattern. We added '**/' to support packwerk and engines, but this will glob directories above the project directory. Change to optional '../**/' ([@malmckay][])
