@@ -12,6 +12,17 @@ RSpec.describe RuboCop::Cop::Rails::SelectMap, :config do
     RUBY
   end
 
+  it 'registers an offense when using `select(:column_name).map(&:column_name)` with parentheses' do
+    expect_offense(<<~RUBY)
+      (Model.select(:column_name)).map(&:column_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `pluck(:column_name)` instead of `select` with `map`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Model.pluck(:column_name)
+    RUBY
+  end
+
   it "registers an offense when using `select('column_name').map(&:column_name)`" do
     expect_offense(<<~RUBY)
       Model.select('column_name').map(&:column_name)

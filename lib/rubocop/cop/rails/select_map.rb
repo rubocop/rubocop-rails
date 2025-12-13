@@ -58,9 +58,13 @@ module RuboCop
 
         # rubocop:disable Metrics/AbcSize
         def autocorrect(corrector, select_node, node, preferred_method)
-          corrector.remove(select_node.parent.loc.dot)
-          corrector.remove(select_node.loc.selector.begin.join(select_node.source_range.end))
-          corrector.replace(node.loc.selector.begin.join(node.source_range.end), preferred_method)
+          if (parent = select_node.parent).loc?(:dot)
+            corrector.remove(parent.loc.dot)
+            corrector.remove(select_node.loc.selector.begin.join(select_node.source_range.end))
+            corrector.replace(node.loc.selector.begin.join(node.source_range.end), preferred_method)
+          else
+            corrector.replace(node, "#{select_node.receiver.source}.#{preferred_method}")
+          end
         end
         # rubocop:enable Metrics/AbcSize
 
