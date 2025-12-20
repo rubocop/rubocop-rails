@@ -111,7 +111,7 @@ RSpec.describe RuboCop::Cop::Rails::EnvLocal, :config do
       RUBY
     end
 
-    include_examples 'non-local candidates'
+    it_behaves_like 'non-local candidates'
   end
 
   context 'In Rails < 7.1', :rails70 do
@@ -135,6 +135,6 @@ RSpec.describe RuboCop::Cop::Rails::EnvLocal, :config do
       RUBY
     end
 
-    include_examples 'non-local candidates'
+    it_behaves_like 'non-local candidates'
   end
 end

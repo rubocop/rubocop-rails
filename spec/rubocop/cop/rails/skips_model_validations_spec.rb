@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
+  # rubocop:disable RSpec/LeakyLocalVariable
   cop_config = {
     'ForbiddenMethods' => %w[decrement!
                              decrement_counter
@@ -21,6 +22,7 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
                              upsert
                              upsert_all]
   }
+  # rubocop:enable RSpec/LeakyLocalVariable
 
   let(:msg) { 'Avoid using `%s` because it skips validations.' }
   let(:cop_config) { cop_config }
