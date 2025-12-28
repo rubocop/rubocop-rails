@@ -142,7 +142,7 @@ RSpec.describe RuboCop::Cop::Rails::OrderArguments, :config do
       RUBY
     end
 
-    it 'does not registers an offense for `order` with a string argument with DESC direction' do
+    it 'does not register an offense for `order` with a string argument with DESC direction' do
       expect_no_offenses(<<~RUBY)
         User.order('1 DESC')
       RUBY

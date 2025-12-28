@@ -28,6 +28,9 @@ Naming/InclusiveLanguage:
     ' a offense':
       Suggestions:
         - an offense
+    ' and offense':
+      Suggestions:
+        - ' an offense'
     auto-correct:
       Suggestions:
         - autocorrect
@@ -40,6 +43,24 @@ Naming/InclusiveLanguage:
     offence:
       Suggestions:
         - offense
+    'does not registers':
+      Suggestions:
+        - does not register
+    'register no offense':
+      Suggestions:
+        - registers no offense
+    'register an error':
+      Suggestions:
+        - register an offense
+    'registers an error':
+      Suggestions:
+        - registers an offense
+    'does not register and corrects':
+      Suggestions:
+        does not register
+    'does not register an offense and corrects':
+      Suggestions:
+        does not register an offense
   # These are excluded for compatible API names. RuboCop Rails 3.0 will fix it.
   Exclude:
     - lib/rubocop/cop/rails/dynamic_find_by.rb
