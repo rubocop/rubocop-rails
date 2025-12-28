@@ -7,7 +7,7 @@ RSpec.describe RuboCop::Cop::Rails::RootJoinChain, :config do
     RUBY
   end
 
-  it 'registers and offense and corrects for `::Rails.root.join(...).join(...)`' do
+  it 'registers an offense and corrects for `::Rails.root.join(...).join(...)`' do
     expect_offense(<<~RUBY)
       ::Rails.root.join('db').join('sch' + 'ema.rb')
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `::Rails.root.join(...)` instead of chaining `#join` calls.
@@ -18,7 +18,7 @@ RSpec.describe RuboCop::Cop::Rails::RootJoinChain, :config do
     RUBY
   end
 
-  it 'registers and offense and corrects for `::Rails.root.join(...).join(...).read`' do
+  it 'registers an offense and corrects for `::Rails.root.join(...).join(...).read`' do
     expect_offense(<<~RUBY)
       ::Rails.root.join('db').join('sch' + 'ema.rb').read
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `::Rails.root.join(...)` instead of chaining `#join` calls.
@@ -29,7 +29,7 @@ RSpec.describe RuboCop::Cop::Rails::RootJoinChain, :config do
     RUBY
   end
 
-  it 'registers and offense and corrects for `Rails.root.join(...).join(...)`' do
+  it 'registers an offense and corrects for `Rails.root.join(...).join(...)`' do
     expect_offense(<<~RUBY)
       Rails.root.join('db').join('sch' + 'ema.rb')
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `Rails.root.join(...)` instead of chaining `#join` calls.
@@ -40,7 +40,7 @@ RSpec.describe RuboCop::Cop::Rails::RootJoinChain, :config do
     RUBY
   end
 
-  it 'registers and offense and corrects for `Rails.root` with any number of joins greater one' do
+  it 'registers an offense and corrects for `Rails.root` with any number of joins greater one' do
     expect_offense(<<~RUBY)
       Rails.root.join.join.join('db').join(migrate).join.join("migration.\#{rb}")
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `Rails.root.join(...)` instead of chaining `#join` calls.
@@ -57,7 +57,7 @@ RSpec.describe RuboCop::Cop::Rails::RootJoinChain, :config do
     RUBY
   end
 
-  it 'registers and offense and corrects for `Rails.public_path.join(...).join(...)`' do
+  it 'registers an offense and corrects for `Rails.public_path.join(...).join(...)`' do
     expect_offense(<<~RUBY)
       Rails.public_path.join('path').join('fi' + 'le.pdf')
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `Rails.public_path.join(...)` instead of chaining `#join` calls.
@@ -68,7 +68,7 @@ RSpec.describe RuboCop::Cop::Rails::RootJoinChain, :config do
     RUBY
   end
 
-  it 'registers and offense and corrects for `Rails.public_path` with any number of joins greater one' do
+  it 'registers an offense and corrects for `Rails.public_path` with any number of joins greater one' do
     expect_offense(<<~RUBY)
       Rails.public_path.join.join.join('path').join(to).join.join("file.\#{pdf}")
       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `Rails.public_path.join(...)` instead of chaining `#join` calls.

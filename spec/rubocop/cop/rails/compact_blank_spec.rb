@@ -68,7 +68,7 @@ RSpec.describe RuboCop::Cop::Rails::CompactBlank, :config do
       RUBY
     end
 
-    it 'does not registers an offense when using `reject! { |e| e.blank? }`' do
+    it 'does not register an offense when using `reject! { |e| e.blank? }`' do
       expect_no_offenses(<<~RUBY)
         collection.reject! { |e| e.blank? }
       RUBY
