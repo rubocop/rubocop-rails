@@ -840,6 +840,11 @@ Rails/PluralizationGrammar:
   Enabled: true
   VersionAdded: '0.35'
 
+Rails/PrependTrueOptionOnBeforeDestroy:
+  Description: 'Add `prepend: true` option on `before_destroy`.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/Presence:
   Description: 'Checks code that can be written more easily using `Object#presence` defined by Active Support.'
   Enabled: true
