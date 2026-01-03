@@ -9,6 +9,11 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1473](https://github.com/rubocop/rubocop-rails/pull/1473): Fix an error for `Rails/SelectMap` when `select(:column_name).map(&:column_name)` with parentheses. ([@koic][])
+* [#1569](https://github.com/rubocop/rubocop-rails/issues/1569): Fix an error in `Rails/SelectMap` when multiple `select` calls are present before `map`. ([@koic][])
+
 ## 2.34.2 (2025-11-29)
 
 ### Changes
