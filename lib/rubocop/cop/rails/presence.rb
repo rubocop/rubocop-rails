@@ -69,6 +69,7 @@ module RuboCop
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
         INDEX_ACCESS_METHODS = %i[[] []=].freeze
+        NUMERIC_CONVERSION_METHODS = %i[to_i to_f].freeze
 
         def_node_matcher :redundant_receiver_and_other, <<~PATTERN
           {
@@ -141,7 +142,11 @@ module RuboCop
         end
 
         def ignore_chain_node?(node)
-          index_access_method?(node) || node.assignment? || node.arithmetic_operation? || node.comparison_method?
+          index_access_method?(node) ||
+            numeric_conversion_method?(node) ||
+            node.assignment? ||
+            node.arithmetic_operation? ||
+            node.comparison_method?
         end
 
         def message(node, replacement)
@@ -194,6 +199,10 @@ module RuboCop
 
         def index_access_method?(node)
           INDEX_ACCESS_METHODS.include?(node.method_name)
+        end
+
+        def numeric_conversion_method?(node)
+          NUMERIC_CONVERSION_METHODS.include?(node.method_name)
         end
       end
     end

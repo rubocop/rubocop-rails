@@ -301,6 +301,12 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
       RUBY
     end
 
+    it 'does not register an offense when chained method is `to_i`' do
+      expect_no_offenses(<<~RUBY)
+        a.to_i if a.present?
+      RUBY
+    end
+
     it 'does not register an offense when chained method is attribute assignment' do
       expect_no_offenses(<<~RUBY)
         a.attribute = 42 if a.present?
