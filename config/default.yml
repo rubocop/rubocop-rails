@@ -202,6 +202,15 @@ Rails/AddColumnIndex:
   Include:
     - db/**/*.rb
 
+Rails/AddIndexInCreateTable:
+  Description: >-
+    Add indexes using `t.index` inside `create_table` block instead of
+    calling `add_index` after table creation.
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  Include:
+    - db/**/*.rb
+
 Rails/AfterCommitOverride:
   Description: >-
                   Enforces that there is only one call to `after_commit`
