@@ -17,6 +17,20 @@ module RuboCop
       #   # good
       #   Rails.env.production?
       #   Rails.env == 'production'
+      #
+      # @example
+      #   # bad
+      #   case Rails.env
+      #   when 'proudction'
+      #     do_something
+      #   end
+      #
+      #   # good
+      #   case Rails.env
+      #   when 'production'
+      #     do_something
+      #   end
+      #
       class UnknownEnv < Base
         MSG = 'Unknown environment `%<name>s`.'
         MSG_SIMILAR = 'Unknown environment `%<name>s`. Did you mean `%<similar>s`?'
@@ -46,6 +60,19 @@ module RuboCop
           unknown_environment_equal?(node) do |str_node|
             name = str_node.value
             add_offense(str_node, message: message(name))
+          end
+        end
+
+        def on_case(node)
+          return unless rails_env?(node.condition)
+
+          node.when_branches.each do |branch|
+            branch.conditions.each do |condition|
+              next unless condition.str_type?
+              next unless unknown_env_name?(condition.value)
+
+              add_offense(condition, message: message(condition.value))
+            end
           end
         end
 
