@@ -51,10 +51,6 @@ module RuboCop
 
         private
 
-        def collect_variable_like_names(_scope)
-          environments
-        end
-
         def message(name)
           name = name.to_s.chomp('?')
 
@@ -78,19 +74,21 @@ module RuboCop
 
         def unknown_env_predicate?(name)
           name = name.to_s
-          name.end_with?('?') && !environments.include?(name[0..-2])
+          name.end_with?('?') && !environments(with_local: true).include?(name[0..-2])
         end
 
         def unknown_env_name?(name)
           !environments.include?(name)
         end
 
-        def environments
-          @environments ||= begin
-            environments = cop_config['Environments'].dup || []
-            environments << 'local' if target_rails_version >= 7.1
-            environments
-          end
+        def environments(with_local: false)
+          environments = cop_config['Environments'] || []
+          environments += ['local'] if with_local && supports_local?
+          environments
+        end
+
+        def supports_local?
+          target_rails_version >= 7.1
         end
       end
     end

@@ -85,17 +85,22 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
   end
 
   context 'when Rails 7.1 or newer', :rails71 do
+    it 'registers an offense for environment `local` with `==` operator' do
+      expect_offense(<<~RUBY)
+        Rails.env == 'local'
+                     ^^^^^^^ Unknown environment `local`.
+      RUBY
+    end
+
     it 'accepts local as an environment name' do
       expect_no_offenses(<<~RUBY)
         Rails.env.local?
-        Rails.env == 'local'
       RUBY
     end
 
     it 'does not mutate the cop config' do
       expect_no_offenses(<<~RUBY)
         Rails.env.local?
-        Rails.env == 'local'
       RUBY
 
       expect(cop_config['Environments'].include?('local')).to be(false)
@@ -111,7 +116,6 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
       it 'accepts local as an environment name' do
         expect_no_offenses(<<~RUBY)
           Rails.env.local?
-          Rails.env == 'local'
         RUBY
       end
     end

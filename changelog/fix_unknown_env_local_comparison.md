@@ -1,0 +1,1 @@
+* [#1582](https://github.com/rubocop/rubocop-rails/pull/1582): Fix a false negative where `local` was incorrectly treated as a known environment name when using `==` comparison in `Rails/UnknownEnv`. ([@lovro-bikic][])
