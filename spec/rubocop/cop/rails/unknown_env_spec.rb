@@ -43,6 +43,47 @@ RSpec.describe RuboCop::Cop::Rails::UnknownEnv, :config do
           ^^^^^^^ Unknown environment `local`.
         RUBY
       end
+
+      it 'registers an offense when case condition is an unknown environment name' do
+        expect_offense(<<~RUBY)
+          case Rails.env
+          when 'proudction'
+               ^^^^^^^^^^^^ Unknown environment `proudction`. Did you mean `production`?
+            something
+          end
+        RUBY
+      end
+
+      it 'registers an offense for `case` when there are multiple conditions in one `when`' do
+        expect_offense(<<~RUBY)
+          case Rails.env
+          when 'development', 'proudction'
+                              ^^^^^^^^^^^^ Unknown environment `proudction`. Did you mean `production`?
+            something
+          end
+        RUBY
+      end
+
+      it 'accepts when case condition is not a string' do
+        expect_no_offenses(<<~RUBY)
+          case Rails.env
+          when proudction
+            something
+          end
+        RUBY
+      end
+
+      context 'when Rails 7.1 or newer', :rails71 do
+        it 'registers an offense when case condition is string "local"' do
+          expect_offense(<<~RUBY)
+            case Rails.env
+            when 'local'
+                 ^^^^^^^ Unknown environment `local`.
+              something
+            end
+          RUBY
+        end
+      end
     end
   else
     context 'when DidYouMean is not available' do
