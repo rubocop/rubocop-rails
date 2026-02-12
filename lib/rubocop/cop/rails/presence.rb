@@ -119,14 +119,14 @@ module RuboCop
         private
 
         def register_offense(node, receiver, other)
-          replacement = replacement(receiver, other, node.left_sibling)
+          replacement = replacement(node, receiver, other)
           add_offense(node, message: message(node, replacement)) do |corrector|
             corrector.replace(node, replacement)
           end
         end
 
         def register_chain_offense(node, receiver, chain)
-          replacement = chain_replacement(receiver, chain, node.left_sibling)
+          replacement = chain_replacement(receiver, chain)
           add_offense(node, message: message(node, replacement)) do |corrector|
             corrector.replace(node, replacement)
           end
@@ -158,7 +158,7 @@ module RuboCop
           end
         end
 
-        def replacement(receiver, other, left_sibling)
+        def replacement(node, receiver, other)
           or_source = if other&.send_type?
                         build_source_for_or_method(other)
                       elsif other.nil? || other.nil_type?
@@ -168,7 +168,13 @@ module RuboCop
                       end
 
           replaced = "#{receiver.source}.presence#{or_source}"
-          left_sibling ? "(#{replaced})" : replaced
+          require_parentheses?(node, or_source) ? "(#{replaced})" : replaced
+        end
+
+        def require_parentheses?(node, or_source)
+          return false if or_source.empty?
+
+          (node.parent&.send_type? && !node.parent.parenthesized?) || node.parent&.and_type?
         end
 
         def build_source_for_or_method(other)
@@ -186,10 +192,10 @@ module RuboCop
           range_between(node.source_range.begin_pos, node.first_argument.source_range.begin_pos - 1)
         end
 
-        def chain_replacement(receiver, chain, left_sibling)
+        def chain_replacement(receiver, chain)
           replaced = "#{receiver.source}.presence&.#{chain.method_name}"
           replaced += "(#{chain.arguments.map(&:source).join(', ')})" if chain.arguments?
-          left_sibling ? "(#{replaced})" : replaced
+          replaced
         end
 
         def index_access_method?(node)
