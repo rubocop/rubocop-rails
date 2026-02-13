@@ -325,6 +325,18 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
       RUBY
     end
 
+    it 'does not register an offense when chained method is `<<`' do
+      expect_no_offenses(<<~RUBY)
+        foo << "bar" if foo.present?
+      RUBY
+    end
+
+    it 'does not register an offense when chained method is `=~`' do
+      expect_no_offenses(<<~RUBY)
+        foo =~ /pattern/ if foo.present?
+      RUBY
+    end
+
     it 'does not register an offense when multiple methods are chained' do
       expect_no_offenses(<<~RUBY)
         a.present? ? a.foo.bar : nil
