@@ -330,6 +330,17 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
         a.present? ? a.foo.bar : nil
       RUBY
     end
+
+    it 'registers an offense and corrects without parentheses when assigned to a variable' do
+      expect_offense(<<~RUBY)
+        x = a.present? ? a.foo : nil
+            ^^^^^^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo` instead of `a.present? ? a.foo : nil`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x = a.presence&.foo
+      RUBY
+    end
   end
 
   context 'when multiline ternary can be replaced' do
@@ -431,6 +442,79 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
           a #{operator} (b.presence || c)
         RUBY
       end
+    end
+  end
+
+  context 'when a right-hand side of `&&` operator' do
+    it 'registers an offense and corrects with parentheses' do
+      expect_offense(<<~RUBY)
+        a && if b.present?
+             ^^^^^^^^^^^^^ Use `(b.presence || c)` instead of `if b.present? ... end`.
+               b
+             else
+               c
+             end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        a && (b.presence || c)
+      RUBY
+    end
+  end
+
+  context 'when a parenthesized method argument' do
+    it 'registers an offense and corrects without parentheses' do
+      expect_offense(<<~RUBY)
+        foo(a.present? ? a : b)
+            ^^^^^^^^^^^^^^^^^^ Use `a.presence || b` instead of `a.present? ? a : b`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        foo(a.presence || b)
+      RUBY
+    end
+  end
+
+  context 'when an unparenthesized method argument' do
+    it 'registers an offense and corrects with parentheses' do
+      expect_offense(<<~RUBY)
+        foo bar, a.present? ? a : b
+                 ^^^^^^^^^^^^^^^^^^ Use `(a.presence || b)` instead of `a.present? ? a : b`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        foo bar, (a.presence || b)
+      RUBY
+    end
+  end
+
+  context 'when a right-hand side of `||` operator' do
+    it 'registers an offense and corrects without parentheses' do
+      expect_offense(<<~RUBY)
+        a || if b.present?
+             ^^^^^^^^^^^^^ Use `b.presence || c` instead of `if b.present? ... end`.
+               b
+             else
+               c
+             end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        a || b.presence || c
+      RUBY
+    end
+  end
+
+  context 'when assigned to a variable' do
+    it 'registers an offense and corrects without parentheses' do
+      expect_offense(<<~RUBY)
+        x = a.present? ? a : b
+            ^^^^^^^^^^^^^^^^^^ Use `a.presence || b` instead of `a.present? ? a : b`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        x = a.presence || b
+      RUBY
     end
   end
 
