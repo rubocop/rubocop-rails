@@ -1,0 +1,1 @@
+* [#1580](https://github.com/rubocop/rubocop-rails/pull/1580): Add new `Rails/AddIndexInCreateTable` cop to detect when `add_index` is called after `create_table` and suggest using `t.index` inside the block instead. ([@desheikh][])
