@@ -742,6 +742,11 @@ Rails/MigrationClassName:
   Include:
     - db/**/*.rb
 
+Rails/MigrationExecute:
+  Description: 'Checks for uses of `connection.execute` in migrations and enforces `execute`.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/MultipleRoutePaths:
   Description: 'Checks for mapping a route with multiple paths, which is deprecated and will be removed in Rails 8.1.'
   Enabled: pending
