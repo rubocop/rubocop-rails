@@ -188,6 +188,20 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'registers an offense when using
+  `params.require(:user).permit(:salary, :employees_count, rows_prices:
+ { row_total_one_post: [:price, :cell_id], row_total_all_posts: [:price, :cell_id]
+ }, data: {}, another_array: [:name], empty_array: [])`' do
+      expect_offense(<<~RUBY)
+        params.require(:user).permit(:salary, :posts_count, rows_prices: { row_total_one_post: [:price, :cell_id], row_total_all_posts: [:price, :cell_id] }, data: {}, another_array: [:name], empty_array: [])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `expect(user: [:salary, :posts_count, rows_prices: [row_total_one_post: [[:price, :cell_id]], row_total_all_posts: [[:price, :cell_id]]], data: {}, another_array: [[:name]], empty_array: []])` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        params.expect(user: [:salary, :posts_count, rows_prices: [row_total_one_post: [[:price, :cell_id]], row_total_all_posts: [[:price, :cell_id]]], data: {}, another_array: [[:name]], empty_array: []])
+      RUBY
+    end
+
     it 'registers an offense when using `params&.require(:user)&.permit(:name, :age)`' do
       expect_offense(<<~RUBY)
         params&.require(:user)&.permit(:name, :age)
@@ -267,9 +281,7 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
 
       expect_correction(<<~RUBY)
         params.expect(
-          user: [:name, # comment
-          :age] # comment
-        )
+          user: [:name, :age])
       RUBY
     end
 

@@ -100,8 +100,13 @@ module RuboCop
             corrector.remove(require_method.receiver.source_range.end.join(require_method.source_range.end))
             corrector.replace(permit_method.loc.selector, 'expect')
             if replace_argument
-              corrector.insert_before(permit_method.first_argument, "#{require_key(require_method)}[")
-              corrector.insert_after(permit_method.last_argument, ']')
+              transformed_arguments = permit_method.arguments.map { |arg| recursive_transform(arg) }.join(', ')
+              transformed_string = "#{require_key(require_method)}[#{transformed_arguments}])"
+
+              args_range = permit_method.source_range.with(
+                begin_pos: permit_method.first_argument.source_range.begin_pos
+              )
+              corrector.replace(args_range, transformed_string)
             end
           end
 
@@ -150,11 +155,35 @@ module RuboCop
 
         def expect_method(require_method, permit_method)
           require_key = require_key(require_method)
-          permit_args = permit_method.arguments.map(&:source).join(', ')
 
-          arguments = "#{require_key}[#{permit_args}]"
+          permit_args = permit_method.arguments.map { |arg| recursive_transform(arg) }.join(', ')
 
-          "expect(#{arguments})"
+          "expect(#{require_key}[#{permit_args}])"
+        end
+
+        def recursive_transform(node, top_level: true)
+          case node.type
+          when :hash
+            elements = hash_elements_from_node(node)
+            if top_level
+              elements.join(', ')
+            else
+              elements.empty? ? '{}' : "[#{elements.join(', ')}]"
+            end
+          when :array
+            elements = node.children.map { |child| recursive_transform(child, top_level: false) }
+            elements.empty? ? elements : "[[#{elements.join(', ')}]]"
+          else
+            node.source
+          end
+        end
+
+        def hash_elements_from_node(node)
+          node.pairs.map do |pair|
+            key = pair.key.source
+            value = recursive_transform(pair.value, top_level: false)
+            "#{key}: #{value}"
+          end
         end
 
         def require_key(require_method)
