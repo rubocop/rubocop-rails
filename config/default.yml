@@ -835,6 +835,15 @@ Rails/PluckInWhere:
     - conservative
     - aggressive
 
+Rails/PluckOnSelect:
+  Description: 'Do not use `pluck` on `select`.'
+  Enabled: 'pending'
+  VersionAdded: '<<next>>'
+  EnforcedStyle: conservative
+  SupportedStyles:
+    - conservative
+    - aggressive
+
 Rails/PluralizationGrammar:
   Description: 'Checks for incorrect grammar when using methods like `3.day.ago`.'
   Enabled: true
