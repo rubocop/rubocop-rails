@@ -152,7 +152,7 @@ module RuboCop
 
         def receiver_used_in_chain_arguments?(receiver, chain)
           chain.arguments.any? do |arg|
-            arg == receiver || arg.each_descendant.any? { |node| node == receiver }
+            arg == receiver || arg.each_descendant.any?(receiver)
           end
         end
 
