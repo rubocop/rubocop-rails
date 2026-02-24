@@ -116,6 +116,7 @@ module RuboCop
 
           redundant_receiver_and_chain(node) do |receiver, chain|
             return if ignore_chain_node?(chain) || receiver.nil?
+            return if receiver_used_in_chain_arguments?(receiver, chain)
 
             register_chain_offense(node, receiver, chain)
           end
@@ -147,6 +148,12 @@ module RuboCop
 
         def ignore_chain_node?(node)
           node.assignment? || node.operator_method?
+        end
+
+        def receiver_used_in_chain_arguments?(receiver, chain)
+          chain.arguments.any? do |arg|
+            arg == receiver || arg.each_descendant.any? { |node| node == receiver }
+          end
         end
 
         def message(node, replacement)

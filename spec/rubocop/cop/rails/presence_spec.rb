@@ -289,6 +289,24 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
       RUBY
     end
 
+    it 'does not register an offense when the receiver is used in the chained method arguments' do
+      expect_no_offenses(<<~RUBY)
+        a.present? ? a.foo(a.bar) : nil
+      RUBY
+    end
+
+    it 'does not register an offense when the receiver is used in chained method keyword arguments' do
+      expect_no_offenses(<<~RUBY)
+        a.present? ? a.foo(key: a.bar) : nil
+      RUBY
+    end
+
+    it 'does not register an offense when the receiver is used in chained method arguments with blank?' do
+      expect_no_offenses(<<~RUBY)
+        a.blank? ? nil : a.foo(a.bar)
+      RUBY
+    end
+
     it 'does not register an offense when chained method is `[]`' do
       expect_no_offenses(<<~RUBY)
         a.present? ? a[1] : nil
