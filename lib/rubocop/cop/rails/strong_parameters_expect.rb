@@ -53,7 +53,7 @@ module RuboCop
 
         MSG = 'Use `%<prefer>s` instead.'
         RESTRICT_ON_SEND = %i[[] require permit].freeze
-        PRESENCE_CHECK_METHODS = %i[nil? blank? present?].freeze
+        PRESENCE_CHECK_METHODS = %i[nil? blank? present? presence].freeze
         RAISING_FINDER_METHODS = %i[find find_by! find_sole_by].freeze
 
         minimum_target_rails_version 8.0
