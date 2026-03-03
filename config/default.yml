@@ -844,6 +844,7 @@ Rails/Presence:
   Description: 'Checks code that can be written more easily using `Object#presence` defined by Active Support.'
   Enabled: true
   SafeAutoCorrect: false
+  MethodChain: true
   VersionAdded: '0.52'
   VersionChanged: '2.35'
 

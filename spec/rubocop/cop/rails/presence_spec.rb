@@ -637,6 +637,71 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
     RUBY
   end
 
+  context 'when `MethodChain: false`' do
+    let(:cop_config) { { 'MethodChain' => false } }
+
+    it 'does not register an offense for `foo.call if foo.present?`' do
+      expect_no_offenses(<<~RUBY)
+        foo.call if foo.present?
+      RUBY
+    end
+
+    it 'does not register an offense for `foo.call unless foo.blank?`' do
+      expect_no_offenses(<<~RUBY)
+        foo.call unless foo.blank?
+      RUBY
+    end
+
+    it 'does not register an offense for `foo.present? ? foo.call : nil`' do
+      expect_no_offenses(<<~RUBY)
+        foo.present? ? foo.call : nil
+      RUBY
+    end
+
+    it 'does not register an offense for `foo.blank? ? nil : foo.call`' do
+      expect_no_offenses(<<~RUBY)
+        foo.blank? ? nil : foo.call
+      RUBY
+    end
+
+    it 'still registers an offense for `a.present? ? a : nil`' do
+      expect_offense(<<~RUBY)
+        a.present? ? a : nil
+        ^^^^^^^^^^^^^^^^^^^^ Use `a.presence` instead of `a.present? ? a : nil`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        a.presence
+      RUBY
+    end
+
+    it 'still registers an offense for `a.present? ? a : b`' do
+      expect_offense(<<~RUBY)
+        a.present? ? a : b
+        ^^^^^^^^^^^^^^^^^^ Use `a.presence || b` instead of `a.present? ? a : b`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        a.presence || b
+      RUBY
+    end
+  end
+
+  context 'when `MethodChain: true`' do
+    let(:cop_config) { { 'MethodChain' => true } }
+
+    it 'registers an offense and corrects `foo.call if foo.present?` to `foo.presence&.call`' do
+      expect_offense(<<~RUBY)
+        foo.call if foo.present?
+        ^^^^^^^^^^^^^^^^^^^^^^^^ Use `foo.presence&.call` instead of `foo.call if foo.present?`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        foo.presence&.call
+      RUBY
+    end
+  end
+
   context 'when inspection file that have already been migrated' do
     let(:config) do
       RuboCop::Config.new('AllCops' => { 'MigratedSchemaVersion' => '20240101010101' })
