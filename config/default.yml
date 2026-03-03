@@ -843,8 +843,9 @@ Rails/PluralizationGrammar:
 Rails/Presence:
   Description: 'Checks code that can be written more easily using `Object#presence` defined by Active Support.'
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '0.52'
-  VersionChanged: '2.34'
+  VersionChanged: '2.35'
 
 Rails/Present:
   Description: 'Enforces use of `present?`.'

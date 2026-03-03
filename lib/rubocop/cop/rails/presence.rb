@@ -69,6 +69,12 @@ module RuboCop
       #
       #   # good
       #   a << "bar" if a.present?
+      #
+      # @safety
+      #   This cop's autocorrection is unsafe when the receiver is a `Delegator`
+      #   subclass. `Delegator` forwards missing methods to the delegated object,
+      #   so `receiver.presence` may call `__getobj__.presence` rather than
+      #   `Object#presence`, potentially changing behavior.
       class Presence < Base
         include RangeHelp
         extend AutoCorrector
