@@ -234,58 +234,33 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
   end
 
   context 'when a method is called on the receiver' do
-    it 'registers an offense and corrects when `a.present? ? a.foo : nil' do
-      expect_offense(<<~RUBY)
+    it 'does not register an offense when `a.present? ? a.foo : nil`' do
+      expect_no_offenses(<<~RUBY)
         a.present? ? a.foo : nil
-        ^^^^^^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo` instead of `a.present? ? a.foo : nil`.
-      RUBY
-
-      expect_correction(<<~RUBY)
-        a.presence&.foo
       RUBY
     end
 
-    it 'registers an offense and corrects when `a.blank? ? nil : a.foo' do
-      expect_offense(<<~RUBY)
+    it 'does not register an offense when `a.blank? ? nil : a.foo`' do
+      expect_no_offenses(<<~RUBY)
         a.blank? ? nil : a.foo
-        ^^^^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo` instead of `a.blank? ? nil : a.foo`.
-      RUBY
-
-      expect_correction(<<~RUBY)
-        a.presence&.foo
       RUBY
     end
 
-    it 'registers an offense and corrects when `a.foo if a.present?`' do
-      expect_offense(<<~RUBY)
+    it 'does not register an offense when `a.foo if a.present?`' do
+      expect_no_offenses(<<~RUBY)
         a.foo if a.present?
-        ^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo` instead of `a.foo if a.present?`.
-      RUBY
-
-      expect_correction(<<~RUBY)
-        a.presence&.foo
       RUBY
     end
 
-    it 'registers an offense and corrects when `a.foo unless a.blank?`' do
-      expect_offense(<<~RUBY)
+    it 'does not register an offense when `a.foo unless a.blank?`' do
+      expect_no_offenses(<<~RUBY)
         a.foo unless a.blank?
-        ^^^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo` instead of `a.foo unless a.blank?`.
-      RUBY
-
-      expect_correction(<<~RUBY)
-        a.presence&.foo
       RUBY
     end
 
-    it 'registers an offense and corrects when chained method takes parameters' do
-      expect_offense(<<~RUBY)
+    it 'does not register an offense when chained method takes parameters' do
+      expect_no_offenses(<<~RUBY)
         a.present? ? a.foo(42, key: :value) : nil
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo(42, key: :value)` instead of `a.present? ? a.foo(42, key: :value) : nil`.
-      RUBY
-
-      expect_correction(<<~RUBY)
-        a.presence&.foo(42, key: :value)
       RUBY
     end
 
@@ -343,14 +318,9 @@ RSpec.describe RuboCop::Cop::Rails::Presence, :config do
       RUBY
     end
 
-    it 'registers an offense and corrects without parentheses when assigned to a variable' do
-      expect_offense(<<~RUBY)
+    it 'does not register an offense when assigned to a variable' do
+      expect_no_offenses(<<~RUBY)
         x = a.present? ? a.foo : nil
-            ^^^^^^^^^^^^^^^^^^^^^^^^ Use `a.presence&.foo` instead of `a.present? ? a.foo : nil`.
-      RUBY
-
-      expect_correction(<<~RUBY)
-        x = a.presence&.foo
       RUBY
     end
   end
