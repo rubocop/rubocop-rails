@@ -70,17 +70,6 @@ module RuboCop
       #   # good
       #   a << "bar" if a.present?
       #
-      # @example MethodChain: true (default)
-      #   # bad
-      #   foo.call if foo.present?
-      #
-      #   # good
-      #   foo.presence&.call
-      #
-      # @example MethodChain: false
-      #   # good - avoids potential misbehavior with `Delegator` subclasses
-      #   foo.call if foo.present?
-      #
       # @safety
       #   This cop's autocorrection is unsafe when the receiver is a `Delegator`
       #   subclass. `Delegator` forwards missing methods to the delegated object,
@@ -130,8 +119,6 @@ module RuboCop
 
             register_offense(node, receiver, other)
           end
-
-          return unless cop_config['MethodChain']
 
           redundant_receiver_and_chain(node) do |receiver, chain|
             return if ignore_chain_node?(chain) || receiver.nil?
