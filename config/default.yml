@@ -202,6 +202,16 @@ Rails/AddColumnIndex:
   Include:
     - db/**/*.rb
 
+Rails/AdvanceArgument:
+  Description: 'Checks for invalid keyword arguments passed to `#advance`.'
+  Reference:
+    - https://api.rubyonrails.org/classes/ActiveSupport/TimeWithZone.html#method-i-advance
+    - https://api.rubyonrails.org/classes/Date.html#method-i-advance
+    - https://api.rubyonrails.org/classes/DateTime.html#method-i-advance
+    - https://api.rubyonrails.org/classes/Time.html#method-i-advance
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/AfterCommitOverride:
   Description: >-
                   Enforces that there is only one call to `after_commit`
