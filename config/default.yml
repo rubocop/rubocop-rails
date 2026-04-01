@@ -601,8 +601,8 @@ Rails/HttpPositionalArguments:
   Enabled: true
   VersionAdded: '0.44'
   Include:
-    - 'spec/**/*'
-    - 'test/**/*'
+    - '**/spec/**/*'
+    - '**/test/**/*'
 
 Rails/HttpStatus:
   Description: 'Enforces use of symbolic or numeric value to define HTTP status.'
@@ -640,8 +640,8 @@ Rails/I18nLocaleAssignment:
   Enabled: 'pending'
   VersionAdded: '2.11'
   Include:
-    - spec/**/*.rb
-    - test/**/*.rb
+    - '**/spec/**/*.rb'
+    - '**/test/**/*.rb'
 
 Rails/I18nLocaleTexts:
   Description: 'Enforces use of I18n and locale files instead of locale specific strings.'
@@ -929,8 +929,8 @@ Rails/RedundantTravelBack:
   Enabled: pending
   VersionAdded: '2.12'
   Include:
-    - spec/**/*.rb
-    - test/**/*.rb
+    - '**/spec/**/*.rb'
+    - '**/test/**/*.rb'
 
 Rails/ReflectionClassName:
   Description: 'Use a string for `class_name` option value in the definition of a reflection.'
@@ -993,10 +993,10 @@ Rails/ResponseParsedBody:
   VersionAdded: '2.18'
   VersionChanged: '2.19'
   Include:
-    - spec/controllers/**/*.rb
-    - spec/requests/**/*.rb
-    - test/controllers/**/*.rb
-    - test/integration/**/*.rb
+    - '**/spec/controllers/**/*.rb'
+    - '**/spec/requests/**/*.rb'
+    - '**/test/controllers/**/*.rb'
+    - '**/test/integration/**/*.rb'
 
 Rails/ReversibleMigration:
   Description: 'Checks whether the change method of the migration file is reversible.'
@@ -1190,8 +1190,8 @@ Rails/TimeZoneAssignment:
   Enabled: 'pending'
   VersionAdded: '2.10'
   Include:
-    - spec/**/*.rb
-    - test/**/*.rb
+    - '**/spec/**/*.rb'
+    - '**/test/**/*.rb'
 
 Rails/ToFormattedS:
   Description: 'Checks for consistent uses of `to_fs` or `to_formatted_s`.'
