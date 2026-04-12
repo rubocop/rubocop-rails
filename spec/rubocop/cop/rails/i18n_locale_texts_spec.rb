@@ -33,6 +33,26 @@ RSpec.describe RuboCop::Cop::Rails::I18nLocaleTexts, :config do
     RUBY
   end
 
+  it 'registers an offense when using `redirect_back_or_to` with a notice text message' do
+    expect_offense(<<~RUBY)
+      redirect_back_or_to root_path, notice: "Post created!"
+                                             ^^^^^^^^^^^^^^^ Move locale texts to the locale files in the `config/locales` directory.
+    RUBY
+  end
+
+  it 'registers an offense when using `redirect_back_or_to` with an alert text message' do
+    expect_offense(<<~RUBY)
+      redirect_back_or_to root_path, alert: "Failed to update!"
+                                            ^^^^^^^^^^^^^^^^^^^ Move locale texts to the locale files in the `config/locales` directory.
+    RUBY
+  end
+
+  it 'does not register an offense when using `redirect_back_or_to` with localized flash messages' do
+    expect_no_offenses(<<~RUBY)
+      redirect_back_or_to root_path, notice: t(".success")
+    RUBY
+  end
+
   it 'does not register an offense when using `redirect_to` with localized flash messages' do
     expect_no_offenses(<<~RUBY)
       redirect_to root_path, notice: t(".success")
