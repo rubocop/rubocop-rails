@@ -40,7 +40,7 @@ module RuboCop
         end
       end
 
-      def database_yaml
+      def database_yaml(environment = 'development')
         return unless File.exist?('config/database.yml')
 
         yaml = if YAML.respond_to?(:unsafe_load_file)
@@ -50,7 +50,7 @@ module RuboCop
                end
         return unless yaml.is_a? Hash
 
-        config = yaml['development']
+        config = yaml[environment]
         return unless config.is_a?(Hash)
 
         config
@@ -59,7 +59,7 @@ module RuboCop
       end
 
       def database_adapter
-        database_yaml['adapter'] || database_yaml.first.last['adapter']
+        database_yaml['adapter'] || database_yaml('shared')&.fetch('adapter') || database_yaml.first.last['adapter']
       end
     end
   end
