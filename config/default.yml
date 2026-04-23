@@ -386,6 +386,12 @@ Rails/DelegateAllowBlank:
   Enabled: true
   VersionAdded: '0.44'
 
+Rails/DelegateVisibilityMismatch:
+  Description: 'Flags `delegate` calls whose `private:` option does not match the surrounding visibility scope.'
+  Enabled: pending
+  SafeAutoCorrect: false
+  VersionAdded: '<<next>>'
+
 Rails/DeprecatedActiveModelErrorsMethods:
   Description: 'Avoid manipulating ActiveModel errors hash directly.'
   Enabled: pending
