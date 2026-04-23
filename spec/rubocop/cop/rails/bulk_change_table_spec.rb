@@ -687,6 +687,29 @@ RSpec.describe RuboCop::Cop::Rails::BulkChangeTable, :config do
       end
     end
 
+    context 'shared key' do
+      context 'with top-level adapter configuration' do
+        let(:yaml) do
+          {
+            'shared' => {
+              'adapter' => 'postgresql'
+            },
+            'development' => {
+              'foo' => 'bar'
+            }
+          }
+        end
+
+        context 'with Rails 5.2', :rails52 do
+          it_behaves_like 'offense for postgresql'
+        end
+
+        context 'with Rails 5.1', :rails51 do
+          it_behaves_like 'no offense for postgresql'
+        end
+      end
+    end
+
     context 'invalid (e.g. ERB)' do
       before do
         allow(YAML).to receive(:load_file).with('config/database.yml') do
