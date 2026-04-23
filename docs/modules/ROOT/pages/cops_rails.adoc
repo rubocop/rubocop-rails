@@ -4140,6 +4140,43 @@ end
 | Array
 |===
 
+[#railsmigrationexecute]
+== Rails/MigrationExecute
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| Always
+| <<next>>
+| -
+|===
+
+Checks for uses of `connection.execute` in migrations.
+
+This cop enforces using `execute` directly.
+
+[#examples-railsmigrationexecute]
+=== Examples
+
+[source,ruby]
+----
+# bad
+class AddIndexToUsers < ActiveRecord::Migration[7.0]
+  def up
+    connection.execute('CREATE INDEX index_users_on_email ON users(email)')
+  end
+end
+
+# good
+class AddIndexToUsers < ActiveRecord::Migration[7.0]
+  def up
+    execute('CREATE INDEX index_users_on_email ON users(email)')
+  end
+end
+----
+
 [#railsmultipleroutepaths]
 == Rails/MultipleRoutePaths
 
