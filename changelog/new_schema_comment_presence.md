@@ -1,0 +1,1 @@
+* [#1607](https://github.com/rubocop/rubocop-rails/issues/1607): Add new `Rails/SchemaCommentPresence` cop to enforce `comment:` on every `create_table` and column in `db/schema.rb`. ([@vlad-pisanov][])
