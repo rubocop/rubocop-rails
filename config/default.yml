@@ -665,6 +665,13 @@ Rails/IgnoredSkipActionFilterOption:
     - '**/app/controllers/**/*.rb'
     - '**/app/mailers/**/*.rb'
 
+Rails/IncludeViewHelper:
+  Description: 'Do not include view helpers outside of the view context.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+  Exclude:
+    - '**/app/helpers/**/*.rb'
+
 Rails/IndexBy:
   Description: 'Prefer `index_by` over `each_with_object`, `to_h`, or `map`.'
   Enabled: true
