@@ -378,6 +378,51 @@ end
 | Array
 |===
 
+[#railsactivestorageattacheddependent]
+== Rails/ActiveStorageAttachedDependent
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| No
+| 2.35
+| -
+|===
+
+Flags `has_one_attached` / `has_many_attached` declarations whose
+`dependent:` value silently no-ops in ActiveStorage.
+
+Rails stores `dependent:` verbatim on the reflection but only
+`ActiveStorage::Attachment#purge_dependent_blob_later` consumes it,
+with strict equality on `:purge_later`. Anything else (`true`, `nil`,
+`:destroy`, arbitrary symbols) leaves orphan blobs in storage with
+no warning when the parent record is destroyed.
+
+`:purge` is documented but not honored by the consumer today;
+see https://github.com/rails/rails/issues/36423.
+
+[#examples-railsactivestorageattacheddependent]
+=== Examples
+
+[source,ruby]
+----
+# bad - silent no-op
+has_one_attached :avatar, dependent: true
+
+# bad - silent no-op
+has_many_attached :photos, dependent: :destroy
+
+# bad - documented but not honored, see rails/rails#36423
+has_one_attached :avatar, dependent: :purge
+
+# good
+has_one_attached :avatar
+has_one_attached :avatar, dependent: :purge_later
+has_one_attached :avatar, dependent: false
+----
+
 [#railsactivesupportaliases]
 == Rails/ActiveSupportAliases
 
@@ -3042,7 +3087,7 @@ get :new, **options
 | Name | Default value | Configurable values
 
 | Include
-| `+spec/**/*+`, `+test/**/*+`
+| `+**/spec/**/*+`, `+**/test/**/*+`
 | Array
 |===
 
@@ -3303,7 +3348,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+spec/**/*.rb+`, `+test/**/*.rb+`
+| `+**/spec/**/*.rb+`, `+**/test/**/*.rb+`
 | Array
 |===
 
@@ -3364,6 +3409,28 @@ class PostsController < ApplicationController
   def create
     # ...
     redirect_to root_path, notice: t(".success")
+  end
+end
+
+# bad
+class PostsController < ApplicationController
+  def update
+    # ...
+    redirect_back_or_to root_path, alert: "Failed to update!"
+  end
+end
+
+# good
+# config/locales/en.yml
+# en:
+#   posts:
+#     update:
+#       failure: "Failed to update!"
+
+class PostsController < ApplicationController
+  def update
+    # ...
+    redirect_back_or_to root_path, alert: t(".failure")
   end
 end
 
@@ -4862,7 +4929,10 @@ a.blank? ? nil : a.foo
 
 # good
 a.presence&.foo
+----
 
+[source,ruby]
+----
 # good
 a.present? ? a[1] : nil
 
@@ -4871,7 +4941,12 @@ a[:key] = value if a.present?
 
 # good
 a.present? ? a > 1 : nil
+
+# good
 a <= 0 if a.present?
+
+# good
+a << "bar" if a.present?
 ----
 
 [#railspresent]
@@ -5480,7 +5555,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+spec/**/*.rb+`, `+test/**/*.rb+`
+| `+**/spec/**/*.rb+`, `+**/test/**/*.rb+`
 | Array
 |===
 
@@ -5867,12 +5942,15 @@ so you still have to use `JSON.parse(response.body)` there.
 ----
 # bad
 JSON.parse(response.body)
-
-# bad
+Nokogiri::HTML(response.body)
+Nokogiri::HTML4(response.body)
+Nokogiri::HTML5(response.body)
 Nokogiri::HTML.parse(response.body)
-
-# bad
+Nokogiri::HTML4.parse(response.body)
 Nokogiri::HTML5.parse(response.body)
+Nokogiri::HTML::Document.parse(response.body)
+Nokogiri::HTML4::Document.parse(response.body)
+Nokogiri::HTML5::Document.parse(response.body)
 
 # good
 response.parsed_body
@@ -5885,7 +5963,7 @@ response.parsed_body
 | Name | Default value | Configurable values
 
 | Include
-| `+spec/controllers/**/*.rb+`, `+spec/requests/**/*.rb+`, `+test/controllers/**/*.rb+`, `+test/integration/**/*.rb+`
+| `+**/spec/controllers/**/*.rb+`, `+**/spec/requests/**/*.rb+`, `+**/test/controllers/**/*.rb+`, `+**/test/integration/**/*.rb+`
 | Array
 |===
 
@@ -6947,6 +7025,15 @@ NOTE: Requires Rails version 8.0
 
 Enforces the use of `ActionController::Parameters#expect` as a method for strong parameter handling.
 
+In the following cases, `params[:key]` is treated as a key that is expected to be passed from the HTTP client,
+and the cop detects it using the `expect` method.
+
+- Method calls on `params[:key]` without comparison methods
+- Passing `params[:key]` as an argument to finder methods that raise on missing records
+- Strong parameter methods using `require` or `permit`
+
+Other cases are not detected, as they are cases where `params[:key]` may not be passed from the HTTP client.
+
 [#safety-railsstrongparametersexpect]
 === Safety
 
@@ -6960,6 +7047,24 @@ strong parameter conventions.
 
 [source,ruby]
 ----
+# bad
+params[:key].do_something
+
+# good
+params.expect(:key).do_something
+
+# bad
+Model.find(params[:id])
+
+# good
+Model.find(params.expect(:id))
+
+# bad
+Model.find_by!(key: params[:key])
+
+# good
+Model.find_by!(key: params.expect(:key))
+
 # bad
 params.require(:user).permit(:name, :age)
 params.permit(user: [:name, :age]).require(:user)
@@ -7219,7 +7324,7 @@ end
 | Name | Default value | Configurable values
 
 | Include
-| `+spec/**/*.rb+`, `+test/**/*.rb+`
+| `+**/spec/**/*.rb+`, `+**/test/**/*.rb+`
 | Array
 |===
 
@@ -7626,10 +7731,27 @@ More can be added to the `Environments` config parameter.
 # bad
 Rails.env.proudction?
 Rails.env == 'proudction'
+Rails.env != 'proudction'
 
 # good
 Rails.env.production?
 Rails.env == 'production'
+Rails.env != 'production'
+----
+
+[source,ruby]
+----
+# bad
+case Rails.env
+when 'proudction'
+  do_something
+end
+
+# good
+case Rails.env
+when 'production'
+  do_something
+end
 ----
 
 [#configurable-attributes-railsunknownenv]

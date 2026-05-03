@@ -1,0 +1,1 @@
+* [#1612](https://github.com/rubocop/rubocop-rails/issues/1612): Add new `Rails/ActiveStorageAttachedDependent` cop that flags `has_one_attached` / `has_many_attached` declarations whose `dependent:` value silently no-ops in ActiveStorage. ([@melody-universe][])
