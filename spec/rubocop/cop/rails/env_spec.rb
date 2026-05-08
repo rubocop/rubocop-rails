@@ -35,6 +35,12 @@ RSpec.describe RuboCop::Cop::Rails::Env, :config do
     RUBY
   end
 
+  it 'does not register an offense for `Rails.env.local?`' do
+    expect_no_offenses(<<~RUBY)
+      raise unless Rails.env.local?
+    RUBY
+  end
+
   it 'does not register an offense for unrelated config' do
     expect_no_offenses(<<~RUBY)
       Rails.environment
