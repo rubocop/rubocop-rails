@@ -378,6 +378,51 @@ end
 | Array
 |===
 
+[#railsactivestorageattacheddependent]
+== Rails/ActiveStorageAttachedDependent
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| Yes
+| No
+| 2.35
+| -
+|===
+
+Flags `has_one_attached` / `has_many_attached` declarations whose
+`dependent:` value silently no-ops in ActiveStorage.
+
+Rails stores `dependent:` verbatim on the reflection but only
+`ActiveStorage::Attachment#purge_dependent_blob_later` consumes it,
+with strict equality on `:purge_later`. Anything else (`true`, `nil`,
+`:destroy`, arbitrary symbols) leaves orphan blobs in storage with
+no warning when the parent record is destroyed.
+
+`:purge` is documented but not honored by the consumer today;
+see https://github.com/rails/rails/issues/36423.
+
+[#examples-railsactivestorageattacheddependent]
+=== Examples
+
+[source,ruby]
+----
+# bad - silent no-op
+has_one_attached :avatar, dependent: true
+
+# bad - silent no-op
+has_many_attached :photos, dependent: :destroy
+
+# bad - documented but not honored, see rails/rails#36423
+has_one_attached :avatar, dependent: :purge
+
+# good
+has_one_attached :avatar
+has_one_attached :avatar, dependent: :purge_later
+has_one_attached :avatar, dependent: false
+----
+
 [#railsactivesupportaliases]
 == Rails/ActiveSupportAliases
 

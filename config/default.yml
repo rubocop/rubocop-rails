@@ -173,6 +173,13 @@ Rails/ActiveRecordOverride:
   Include:
     - '**/app/models/**/*.rb'
 
+Rails/ActiveStorageAttachedDependent:
+  Description: >-
+                  Flags `has_one_attached` / `has_many_attached` `dependent:`
+                  values that silently no-op in ActiveStorage.
+  Enabled: pending
+  VersionAdded: '2.35'
+
 Rails/ActiveSupportAliases:
   Description: >-
                   Avoid ActiveSupport aliases of standard ruby methods:

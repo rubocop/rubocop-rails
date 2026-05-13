@@ -23,6 +23,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsactiverecordaliases[Rails/ActiveRecordAliases]
 * xref:cops_rails.adoc#railsactiverecordcallbacksorder[Rails/ActiveRecordCallbacksOrder]
 * xref:cops_rails.adoc#railsactiverecordoverride[Rails/ActiveRecordOverride]
+* xref:cops_rails.adoc#railsactivestorageattacheddependent[Rails/ActiveStorageAttachedDependent]
 * xref:cops_rails.adoc#railsactivesupportaliases[Rails/ActiveSupportAliases]
 * xref:cops_rails.adoc#railsactivesupportonload[Rails/ActiveSupportOnLoad]
 * xref:cops_rails.adoc#railsaddcolumnindex[Rails/AddColumnIndex]
