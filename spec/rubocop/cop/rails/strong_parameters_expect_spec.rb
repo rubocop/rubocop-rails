@@ -73,6 +73,30 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `params[:key].key?(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].key?(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].has_key?(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].has_key?(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].include?(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].include?(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].member?(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].member?(:inner)
+      RUBY
+    end
+
     it "does not register an offense when using `params[:key] == 'value'`" do
       expect_no_offenses(<<~RUBY)
         params[:key] == 'value'
