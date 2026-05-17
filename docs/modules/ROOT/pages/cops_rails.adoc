@@ -5197,7 +5197,7 @@ which can affect their behavior.
 [#safety-railsredundantactiverecordallmethod]
 === Safety
 
-This cop is unsafe for autocorrection if the receiver for `all` is not an Active Record object.
+This cop is unsafe because false positives will occur if the receiver is not an Active Record object.
 
 [#examples-railsredundantactiverecordallmethod]
 === Examples
@@ -6983,7 +6983,8 @@ Enforces the use of `ActionController::Parameters#expect` as a method for strong
 In the following cases, `params[:key]` is treated as a key that is expected to be passed from the HTTP client,
 and the cop detects it using the `expect` method.
 
-- Method calls on `params[:key]` without comparison methods
+- Method calls on `params[:key]` without comparison methods, methods that are safe to call
+  on `nil` (such as `to_i`, `to_s`, or `is_a?`), or key-check methods such as `key?`
 - Passing `params[:key]` as an argument to finder methods that raise on missing records
 - Strong parameter methods using `require` or `permit`
 
