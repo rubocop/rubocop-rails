@@ -1,1 +1,0 @@
-* [#1620](https://github.com/rubocop/rubocop-rails/issues/1620): Fix false positives in `Rails/StrongParametersExpect` when using type-check methods such as `is_a?`, `kind_of?`, and `instance_of?` on `params[:key]`. ([@koic][])

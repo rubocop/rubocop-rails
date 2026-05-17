@@ -9,6 +9,12 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1616](https://github.com/rubocop/rubocop-rails/pull/1616): Fix false positives in `Rails/StrongParametersExpect` when using nil-safe conversion methods such as `to_i`, `to_s`, `to_a`, `to_f`, and `to_h` on `params[:key]`. ([@koic][])
+* [#1622](https://github.com/rubocop/rubocop-rails/issues/1622): Fix false positives in `Rails/StrongParametersExpect` when using key-check methods such as `key?`, `has_key?`, `include?`, and `member?` on `params[:key]`. ([@koic][])
+* [#1620](https://github.com/rubocop/rubocop-rails/issues/1620): Fix false positives in `Rails/StrongParametersExpect` when using type-check methods such as `is_a?`, `kind_of?`, and `instance_of?` on `params[:key]`. ([@koic][])
+
 ## 2.35.0 (2026-05-09)
 
 ### Bug fixes

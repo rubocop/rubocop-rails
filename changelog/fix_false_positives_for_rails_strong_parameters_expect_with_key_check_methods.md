@@ -1,1 +1,0 @@
-* [#1622](https://github.com/rubocop/rubocop-rails/issues/1622): Fix false positives in `Rails/StrongParametersExpect` when using key-check methods such as `key?`, `has_key?`, `include?`, and `member?` on `params[:key]`. ([@koic][])

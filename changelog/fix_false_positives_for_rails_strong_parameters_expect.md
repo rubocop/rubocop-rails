@@ -1,1 +1,0 @@
-* [#1616](https://github.com/rubocop/rubocop-rails/pull/1616): Fix false positives in `Rails/StrongParametersExpect` when using nil-safe conversion methods such as `to_i`, `to_s`, `to_a`, `to_f`, and `to_h` on `params[:key]`. ([@koic][])
