@@ -55,7 +55,7 @@ module RuboCop
         MSG = 'Use `%<prefer>s` instead.'
         RESTRICT_ON_SEND = %i[[] require permit].freeze
         PRESENCE_CHECK_METHODS = %i[nil? blank? present? presence].freeze
-        NIL_SAFE_METHODS = %i[instance_of? is_a? kind_of? to_a to_f to_h to_i to_s].freeze
+        NIL_SAFE_METHODS = %i[instance_of? is_a? kind_of? to_a to_f to_h to_i to_s try try!].freeze
         KEY_CHECK_METHODS = %i[key? has_key? include? member?].freeze
         RAISING_FINDER_METHODS = %i[find find_by! find_sole_by].freeze
 

@@ -73,6 +73,18 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `params[:key].try(:method)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].try(:method)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].try!(:method)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].try!(:method)
+      RUBY
+    end
+
     it 'does not register an offense when using `params[:key].key?(:inner)`' do
       expect_no_offenses(<<~RUBY)
         params[:key].key?(:inner)
