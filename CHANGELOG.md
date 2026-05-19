@@ -9,6 +9,11 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1625](https://github.com/rubocop/rubocop-rails/issues/1625): Fix false positives in `Rails/StrongParametersExpect` when using collection methods (such as `delete`, `keys`, `merge`, `slice`, `dig`, `fetch`, or `transform_values`) on `params[:key]`, as well as block-style calls such as `params[:key].each { ... }` or `params[:key].map(&:to_s)`. ([@koic][])
+* [#1627](https://github.com/rubocop/rubocop-rails/pull/1627): Fix false positives in `Rails/StrongParametersExpect` for usages like `params[:key].try(:method)` and `params[:key].try!(:method)`. ([@nicholasdower][])
+
 ## 2.35.1 (2026-05-17)
 
 ### Bug fixes
@@ -1416,3 +1421,4 @@
 [@y-yagi]: https://github.com/y-yagi
 [@55728]: https://github.com/55728
 [@codergeek121]: https://github.com/codergeek121
+[@nicholasdower]: https://github.com/nicholasdower
