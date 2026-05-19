@@ -6984,7 +6984,9 @@ In the following cases, `params[:key]` is treated as a key that is expected to b
 and the cop detects it using the `expect` method.
 
 - Method calls on `params[:key]` without comparison methods, methods that are safe to call
-  on `nil` (such as `to_i`, `to_s`, or `is_a?`), or key-check methods such as `key?`
+  on `nil` (such as `to_i`, `to_s`, or `is_a?`), key-check methods such as `key?`,
+  collection methods such as `keys`, `merge`, or `slice`, or block-style calls such as
+  `params[:key].each { ... }` or `params[:key].map(&:to_s)`
 - Passing `params[:key]` as an argument to finder methods that raise on missing records
 - Strong parameter methods using `require` or `permit`
 
