@@ -1,0 +1,1 @@
+* [#1627](https://github.com/rubocop/rubocop-rails/pull/1627): Fix false positives in `Rails/StrongParametersExpect` for usages like `params[:key].try(:method)` and `params[:key].try!(:method)`. ([@nicholasdower][])
