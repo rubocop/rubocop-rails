@@ -109,6 +109,98 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `params[:key].delete(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].delete(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].each do |_index, subparams|`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].each do |_index, subparams|
+          do_something(subparams)
+        end
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].map { ... }`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].map { |item| item[:id] }
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].select(&:present?)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].select(&:present?)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].reject { |k, v| v.blank? }`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].reject { |_k, v| v.blank? }
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].keys`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].keys
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].values`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].values
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].slice(:a, :b)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].slice(:a, :b)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].except(:a)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].except(:a)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].merge(other)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].merge(other)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].dig(:a, :b)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].dig(:a, :b)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].fetch(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].fetch(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].compact`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].compact
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].transform_values(&:to_s)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].transform_values(&:to_s)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].to_unsafe_h`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].to_unsafe_h
+      RUBY
+    end
+
     it "does not register an offense when using `params[:key] == 'value'`" do
       expect_no_offenses(<<~RUBY)
         params[:key] == 'value'

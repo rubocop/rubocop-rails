@@ -1,0 +1,1 @@
+* [#1625](https://github.com/rubocop/rubocop-rails/issues/1625): Fix false positives in `Rails/StrongParametersExpect` when using collection methods (such as `delete`, `keys`, `merge`, `slice`, `dig`, `fetch`, or `transform_values`) on `params[:key]`, as well as block-style calls such as `params[:key].each { ... }` or `params[:key].map(&:to_s)`. ([@koic][])

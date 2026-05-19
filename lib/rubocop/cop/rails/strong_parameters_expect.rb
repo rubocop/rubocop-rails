@@ -9,7 +9,9 @@ module RuboCop
       # and the cop detects it using the `expect` method.
       #
       # - Method calls on `params[:key]` without comparison methods, methods that are safe to call
-      #   on `nil` (such as `to_i`, `to_s`, or `is_a?`), or key-check methods such as `key?`
+      #   on `nil` (such as `to_i`, `to_s`, or `is_a?`), key-check methods such as `key?`,
+      #   collection methods such as `keys`, `merge`, or `slice`, or block-style calls such as
+      #   `params[:key].each { ... }` or `params[:key].map(&:to_s)`
       # - Passing `params[:key]` as an argument to finder methods that raise on missing records
       # - Strong parameter methods using `require` or `permit`
       #
@@ -54,9 +56,18 @@ module RuboCop
 
         MSG = 'Use `%<prefer>s` instead.'
         RESTRICT_ON_SEND = %i[[] require permit].freeze
-        PRESENCE_CHECK_METHODS = %i[nil? blank? present? presence].freeze
-        NIL_SAFE_METHODS = %i[instance_of? is_a? kind_of? to_a to_f to_h to_i to_s try try!].freeze
-        KEY_CHECK_METHODS = %i[key? has_key? include? member?].freeze
+        # Method calls on `params[:key]` that should not be rewritten with `expect(:key)`.
+        # Covers presence/nil checks, nil-safe conversions and type checks, key-check methods,
+        # and collection methods that imply `params[:key]` is a Hash/Array.
+        IGNORED_METHODS = %i[
+          blank? compact compact! compact_blank compact_blank! deep_merge deep_merge!
+          delete delete_if dig each except exclude? extract! fetch has_key? has_value?
+          include? instance_of? is_a? keep_if key? keys kind_of? member? merge merge!
+          nil? presence present? reverse_merge reverse_merge! slice stringify_keys
+          to_a to_f to_h to_hash to_i to_s to_unsafe_h to_unsafe_hash
+          transform_keys transform_keys! transform_values transform_values! try try!
+          value? values values_at with_defaults with_defaults! without
+        ].freeze
         RAISING_FINDER_METHODS = %i[find find_by! find_sole_by].freeze
 
         minimum_target_rails_version 8.0
@@ -135,12 +146,9 @@ module RuboCop
 
           if parent.receiver == node
             return false if parent.comparison_method? || parent.method?(:[])
+            return false if block_call?(parent)
 
-            method_name = parent.method_name
-
-            !PRESENCE_CHECK_METHODS.include?(method_name) &&
-              !NIL_SAFE_METHODS.include?(method_name) &&
-              !KEY_CHECK_METHODS.include?(method_name)
+            !IGNORED_METHODS.include?(parent.method_name)
           else
             raising_finder_method?(parent)
           end
@@ -149,6 +157,10 @@ module RuboCop
 
         def raising_finder_method?(node)
           RAISING_FINDER_METHODS.include?(node.method_name)
+        end
+
+        def block_call?(send_node)
+          send_node.block_literal? || send_node.last_argument&.block_pass_type?
         end
 
         def offense_range(method_node, node)
