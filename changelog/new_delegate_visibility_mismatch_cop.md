@@ -1,0 +1,1 @@
+* [#368](https://github.com/rubocop/rubocop-rails/issues/368): Add `Rails/DelegateVisibilityMismatch` cop that flags mismatch between the delegate visibility and the scope it is declared in. ([@Darhazer][])
