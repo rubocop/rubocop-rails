@@ -814,8 +814,14 @@ Rails/Pluck:
   StyleGuide: 'https://rails.rubystyle.guide#pluck'
   Enabled: 'pending'
   Safe: false
+  AllowedReceivers:
+    - xpath
+    - css
+    - search
+    - at_xpath
+    - at_css
   VersionAdded: '2.7'
-  VersionChanged: '2.18'
+  VersionChanged: "<<next>>"
 
 Rails/PluckId:
   Description: 'Use `ids` instead of `pluck(:id)` or `pluck(primary_key)`.'
