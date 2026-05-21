@@ -27,7 +27,7 @@ module RuboCop
 
         MSG = 'Use keyword arguments instead of positional arguments for http call: `%<verb>s`.'
         KEYWORD_ARGS = %i[method params session body flash xhr as headers env to].freeze
-        ROUTING_METHODS = %i[draw routes].freeze
+        ROUTING_METHODS = %i[draw routes append].freeze
         RESTRICT_ON_SEND = %i[get post put patch delete head].freeze
 
         minimum_target_rails_version 5.0
