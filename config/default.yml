@@ -971,6 +971,12 @@ Rails/RenderPlainText:
   # Convert only when `content_type` is explicitly set to `text/plain`.
   ContentTypeCompatibility: true
 
+Rails/RequestBodyRead:
+  Description: 'Prefer `request.raw_post` over `request.body.read`.'
+  Enabled: 'pending'
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Rails/RequestReferer:
   Description: 'Use consistent syntax for request.referer.'
   Enabled: true
