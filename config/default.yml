@@ -154,6 +154,11 @@ Rails/ActiveRecordAliases:
   VersionAdded: '0.53'
   SafeAutoCorrect: false
 
+Rails/ActiveRecordCalculation:
+  Description: 'Use ActiveRecord calculation methods instead of `pluck` followed by Enumerable methods.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/ActiveRecordCallbacksOrder:
   Description: 'Order callback declarations in the order in which they will be executed.'
   StyleGuide: 'https://rails.rubystyle.guide/#callbacks-order'
