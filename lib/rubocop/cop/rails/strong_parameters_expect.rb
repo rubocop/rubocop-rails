@@ -141,6 +141,7 @@ module RuboCop
         def offensive_bracket_access?(node)
           return false unless (parent = node.parent)
           return false if parent.or_type?
+          return false if parent.csend_type? && parent.receiver == node
           return true if parent.each_ancestor(:call).any? { |node| raising_finder_method?(node) }
           return false unless parent.call_type?
 

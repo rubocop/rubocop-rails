@@ -225,6 +225,26 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'does not flag params[:key]&.method' do
+      expect_no_offenses(<<~RUBY)
+        sort_direction = params[:sort_direction]&.downcase
+      RUBY
+    end
+
+    it 'does not flag params[:key]&.method used in a condition' do
+      expect_no_offenses(<<~RUBY)
+        if params[:query]&.present?
+          filter(params[:query])
+        end
+      RUBY
+    end
+
+    it 'does not flag params[:key]&.method in a ternary' do
+      expect_no_offenses(<<~RUBY)
+        direction = (params[:sort_direction]&.downcase == "asc") ? :asc : :desc
+      RUBY
+    end
+
     it 'registers an offense when using `Model.find(params[:id])`' do
       expect_offense(<<~RUBY)
         Model.find(params[:id])
