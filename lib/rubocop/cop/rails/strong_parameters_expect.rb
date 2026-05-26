@@ -60,7 +60,7 @@ module RuboCop
         # Covers presence/nil checks, nil-safe conversions and type checks, key-check methods,
         # and collection methods that imply `params[:key]` is a Hash/Array.
         IGNORED_METHODS = %i[
-          blank? compact compact! compact_blank compact_blank! deep_merge deep_merge!
+          ! blank? compact compact! compact_blank compact_blank! deep_merge deep_merge!
           delete delete_if dig each except exclude? extract! fetch has_key? has_value?
           include? instance_of? is_a? keep_if key? keys kind_of? member? merge merge!
           nil? presence present? reverse_merge reverse_merge! slice stringify_keys

@@ -207,6 +207,18 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `!params[:key]`' do
+      expect_no_offenses(<<~RUBY)
+        !params[:key]
+      RUBY
+    end
+
+    it 'does not register an offense when using `condition && !params[:key]`' do
+      expect_no_offenses(<<~RUBY)
+        condition && !params[:key]
+      RUBY
+    end
+
     it 'does not register an offense when using `params[:key].blank?`' do
       expect_no_offenses(<<~RUBY)
         params[:key].blank?
