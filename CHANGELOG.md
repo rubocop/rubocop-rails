@@ -9,6 +9,11 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1630](https://github.com/rubocop/rubocop-rails/issues/1630): Fix a false positive in `Rails/StrongParametersExpect` when negating `params[:key]` with `!`, such as `!params[:key]`. ([@koic][])
+* [#1629](https://github.com/rubocop/rubocop-rails/pull/1629): Fix false positives in `Rails/StrongParametersExpect` when using the safe navigation operator (`&.`) on `params[:key]`. Autocorrecting `params[:key]&.downcase` to `params.expect(:key).downcase` silently changes behavior — a missing param goes from returning `nil` to raising `ActionController::ParameterMissing`. ([@lucasmazza][])
+
 ## 2.35.2 (2026-05-19)
 
 ### Bug fixes
@@ -1424,3 +1429,4 @@
 [@55728]: https://github.com/55728
 [@codergeek121]: https://github.com/codergeek121
 [@nicholasdower]: https://github.com/nicholasdower
+[@lucasmazza]: https://github.com/lucasmazza
