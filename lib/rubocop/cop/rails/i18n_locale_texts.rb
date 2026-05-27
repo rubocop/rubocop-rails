@@ -47,6 +47,28 @@ module RuboCop
       #   end
       #
       #   # bad
+      #   class PostsController < ApplicationController
+      #     def update
+      #       # ...
+      #       redirect_back_or_to root_path, alert: "Failed to update!"
+      #     end
+      #   end
+      #
+      #   # good
+      #   # config/locales/en.yml
+      #   # en:
+      #   #   posts:
+      #   #     update:
+      #   #       failure: "Failed to update!"
+      #
+      #   class PostsController < ApplicationController
+      #     def update
+      #       # ...
+      #       redirect_back_or_to root_path, alert: t(".failure")
+      #     end
+      #   end
+      #
+      #   # bad
       #   class UserMailer < ApplicationMailer
       #     def welcome(user)
       #       mail(to: user.email, subject: "Welcome to My Awesome Site")
@@ -69,7 +91,7 @@ module RuboCop
       class I18nLocaleTexts < Base
         MSG = 'Move locale texts to the locale files in the `config/locales` directory.'
 
-        RESTRICT_ON_SEND = %i[validates redirect_to redirect_back []= mail].freeze
+        RESTRICT_ON_SEND = %i[validates redirect_to redirect_back redirect_back_or_to []= mail].freeze
 
         def_node_search :validation_message, <<~PATTERN
           (pair (sym :message) $str)
@@ -98,7 +120,7 @@ module RuboCop
               add_offense(text_node)
             end
             return
-          when :redirect_to, :redirect_back
+          when :redirect_to, :redirect_back, :redirect_back_or_to
             text_node = redirect_to_flash(node).to_a.last
           when :[]=
             text_node = flash_assignment?(node)

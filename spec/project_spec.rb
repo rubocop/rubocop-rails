@@ -167,6 +167,12 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
             expect(clusivity_pattern).to match(%r{\*\*/lib/}), <<~ERROR if clusivity_pattern.match?(%r{\blib/})
               Invalid pattern for #{name} #{clusivity_key}: #{clusivity_pattern}
             ERROR
+            expect(clusivity_pattern).to match(%r{\*\*/spec/}), <<~ERROR if clusivity_pattern.match?(%r{\bspec/})
+              Invalid pattern for #{name} #{clusivity_key}: #{clusivity_pattern}
+            ERROR
+            expect(clusivity_pattern).to match(%r{\*\*/test/}), <<~ERROR if clusivity_pattern.match?(%r{\btest/})
+              Invalid pattern for #{name} #{clusivity_key}: #{clusivity_pattern}
+            ERROR
           end
         end
       end

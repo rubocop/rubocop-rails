@@ -53,7 +53,9 @@ module RuboCop
 
           return unless select_method_nodes.one?
 
-          select_method_nodes.first
+          select_node = select_method_nodes.first
+
+          receiver_chain?(node, select_node) ? select_node : nil
         end
 
         # rubocop:disable Metrics/AbcSize
@@ -80,6 +82,18 @@ module RuboCop
                      end
 
           argument == column_name
+        end
+
+        def receiver_chain?(map_node, select_node)
+          current = map_node.receiver
+          while current
+            current = current.children.last if current.begin_type?
+            return true if current.equal?(select_node)
+            break unless current.call_type?
+
+            current = current.receiver
+          end
+          false
         end
       end
     end

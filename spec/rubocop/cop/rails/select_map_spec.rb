@@ -131,6 +131,12 @@ RSpec.describe RuboCop::Cop::Rails::SelectMap, :config do
     RUBY
   end
 
+  it 'does not register an offense when `.select` appears inside a subquery in the `where` argument' do
+    expect_no_offenses(<<~RUBY)
+      Model.where(other_table: { column_name: OtherModel.select(:column_name) }).map(&:column_name)
+    RUBY
+  end
+
   it 'does not register an offense when using `pluck(:column_name)`' do
     expect_no_offenses(<<~RUBY)
       Model.pluck(:column_name)

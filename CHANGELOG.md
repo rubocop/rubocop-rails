@@ -9,6 +9,47 @@
 
 ## master (unreleased)
 
+## 2.35.3 (2026-05-27)
+
+### Bug fixes
+
+* [#1630](https://github.com/rubocop/rubocop-rails/issues/1630): Fix a false positive in `Rails/StrongParametersExpect` when negating `params[:key]` with `!`, such as `!params[:key]`. ([@koic][])
+* [#1629](https://github.com/rubocop/rubocop-rails/pull/1629): Fix false positives in `Rails/StrongParametersExpect` when using the safe navigation operator (`&.`) on `params[:key]`. Autocorrecting `params[:key]&.downcase` to `params.expect(:key).downcase` silently changes behavior — a missing param goes from returning `nil` to raising `ActionController::ParameterMissing`. ([@lucasmazza][])
+
+## 2.35.2 (2026-05-19)
+
+### Bug fixes
+
+* [#1625](https://github.com/rubocop/rubocop-rails/issues/1625): Fix false positives in `Rails/StrongParametersExpect` when using collection methods (such as `delete`, `keys`, `merge`, `slice`, `dig`, `fetch`, or `transform_values`) on `params[:key]`, as well as block-style calls such as `params[:key].each { ... }` or `params[:key].map(&:to_s)`. ([@koic][])
+* [#1627](https://github.com/rubocop/rubocop-rails/pull/1627): Fix false positives in `Rails/StrongParametersExpect` for usages like `params[:key].try(:method)` and `params[:key].try!(:method)`. ([@nicholasdower][])
+
+## 2.35.1 (2026-05-17)
+
+### Bug fixes
+
+* [#1616](https://github.com/rubocop/rubocop-rails/pull/1616): Fix false positives in `Rails/StrongParametersExpect` when using nil-safe conversion methods such as `to_i`, `to_s`, `to_a`, `to_f`, and `to_h` on `params[:key]`. ([@koic][])
+* [#1622](https://github.com/rubocop/rubocop-rails/issues/1622): Fix false positives in `Rails/StrongParametersExpect` when using key-check methods such as `key?`, `has_key?`, `include?`, and `member?` on `params[:key]`. ([@koic][])
+* [#1620](https://github.com/rubocop/rubocop-rails/issues/1620): Fix false positives in `Rails/StrongParametersExpect` when using type-check methods such as `is_a?`, `kind_of?`, and `instance_of?` on `params[:key]`. ([@koic][])
+
+## 2.35.0 (2026-05-09)
+
+### Bug fixes
+
+* [#1595](https://github.com/rubocop/rubocop-rails/issues/1595): Fix a false negative for `Rails/I18nLocaleTexts` when using `redirect_back_or_to` with a flash message. ([@55728][])
+* [#1587](https://github.com/rubocop/rubocop-rails/pull/1587): Fix false positives for `Rails/Presence` with operator methods like `<<`, `=~`, and others. ([@eugeneius][])
+* [#1586](https://github.com/rubocop/rubocop-rails/pull/1586): Don't add unnecessary parentheses in `Rails/Presence`. ([@eugeneius][])
+* [#1602](https://github.com/rubocop/rubocop-rails/issues/1602): Fix an error in `Rails/SelectMap` when `.select` appears inside a subquery in an argument. ([@koic][])
+* [#1604](https://github.com/rubocop/rubocop-rails/pull/1604): Allow `DatabaseTypeResolvable` to fall back to an `adapter` configuration specified in a `shared` key. ([@codergeek121][])
+* [#1582](https://github.com/rubocop/rubocop-rails/pull/1582): Fix a false negative where `local` was incorrectly treated as a known environment name when using `==` comparison in `Rails/UnknownEnv`. ([@lovro-bikic][])
+
+### Changes
+
+* [#1571](https://github.com/rubocop/rubocop-rails/pull/1571): Add more detection patterns on `Rails/ResponseParsedBody`. ([@r7kamura][])
+* [#1583](https://github.com/rubocop/rubocop-rails/pull/1583): Extend `Rails/StrongParametersExpect` to detect `params[:key]` in method calls and raising finder methods. ([@koic][])
+* [#1584](https://github.com/rubocop/rubocop-rails/pull/1584): Add support for `case` statements to `Rails/UnknownEnv`. ([@lovro-bikic][])
+* [#1592](https://github.com/rubocop/rubocop-rails/pull/1592): Fix false negative for `!=` comparison in `Rails/UnknownEnv`. ([@lovro-bikic][])
+* [#1598](https://github.com/rubocop/rubocop-rails/pull/1598): Use glob patterns compatible with Engine or Packwerk for cops targeting `spec/` and `test/` directories. ([@y-yagi][])
+
 ## 2.34.3 (2026-01-03)
 
 ### Bug fixes
@@ -1386,3 +1427,8 @@
 [@tuxagon]: https://github.com/tuxagon
 [@cdudas17]: https://github.com/cdudas17
 [@davidenglishmusic]: https://github.com/davidenglishmusic
+[@y-yagi]: https://github.com/y-yagi
+[@55728]: https://github.com/55728
+[@codergeek121]: https://github.com/codergeek121
+[@nicholasdower]: https://github.com/nicholasdower
+[@lucasmazza]: https://github.com/lucasmazza

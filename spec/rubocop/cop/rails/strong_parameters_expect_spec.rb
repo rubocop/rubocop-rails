@@ -25,9 +25,197 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `key = params[:key].to_i`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].to_i
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].to_s`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].to_s
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].to_a`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].to_a
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].to_f`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].to_f
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].to_h`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].to_h
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].is_a?(String)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].is_a?(String)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].kind_of?(String)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].kind_of?(String)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].instance_of?(String)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].instance_of?(String)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].try(:method)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].try(:method)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].try!(:method)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].try!(:method)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].key?(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].key?(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].has_key?(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].has_key?(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].include?(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].include?(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].member?(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].member?(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].delete(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].delete(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].each do |_index, subparams|`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].each do |_index, subparams|
+          do_something(subparams)
+        end
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].map { ... }`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].map { |item| item[:id] }
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].select(&:present?)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].select(&:present?)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].reject { |k, v| v.blank? }`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].reject { |_k, v| v.blank? }
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].keys`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].keys
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].values`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].values
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].slice(:a, :b)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].slice(:a, :b)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].except(:a)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].except(:a)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].merge(other)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].merge(other)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].dig(:a, :b)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].dig(:a, :b)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].fetch(:inner)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].fetch(:inner)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].compact`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].compact
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].transform_values(&:to_s)`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].transform_values(&:to_s)
+      RUBY
+    end
+
+    it 'does not register an offense when using `params[:key].to_unsafe_h`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].to_unsafe_h
+      RUBY
+    end
+
     it "does not register an offense when using `params[:key] == 'value'`" do
       expect_no_offenses(<<~RUBY)
         params[:key] == 'value'
+      RUBY
+    end
+
+    it 'does not register an offense when using `!params[:key]`' do
+      expect_no_offenses(<<~RUBY)
+        !params[:key]
+      RUBY
+    end
+
+    it 'does not register an offense when using `condition && !params[:key]`' do
+      expect_no_offenses(<<~RUBY)
+        condition && !params[:key]
       RUBY
     end
 
@@ -46,6 +234,26 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
     it 'does not register an offense when using `params[:key].presence`' do
       expect_no_offenses(<<~RUBY)
         params[:key].presence || default
+      RUBY
+    end
+
+    it 'does not flag params[:key]&.method' do
+      expect_no_offenses(<<~RUBY)
+        sort_direction = params[:sort_direction]&.downcase
+      RUBY
+    end
+
+    it 'does not flag params[:key]&.method used in a condition' do
+      expect_no_offenses(<<~RUBY)
+        if params[:query]&.present?
+          filter(params[:query])
+        end
+      RUBY
+    end
+
+    it 'does not flag params[:key]&.method in a ternary' do
+      expect_no_offenses(<<~RUBY)
+        direction = (params[:sort_direction]&.downcase == "asc") ? :asc : :desc
       RUBY
     end
 

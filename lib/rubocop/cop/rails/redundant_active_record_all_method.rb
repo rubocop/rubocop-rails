@@ -12,7 +12,7 @@ module RuboCop
       # which can affect their behavior.
       #
       # @safety
-      #   This cop is unsafe for autocorrection if the receiver for `all` is not an Active Record object.
+      #   This cop is unsafe because false positives will occur if the receiver is not an Active Record object.
       #
       # @example
       #   # bad
