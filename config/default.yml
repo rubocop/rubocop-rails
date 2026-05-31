@@ -1071,6 +1071,20 @@ Rails/SchemaComment:
   Enabled: false
   VersionAdded: '2.13'
 
+Rails/SchemaCommentPresence:
+  Description: >-
+    Checks that every `create_table` and every column inside it carries a
+    `comment:` option, so the database is self-documenting via
+    `COMMENT ON TABLE` / `COMMENT ON COLUMN`.
+  Enabled: false
+  VersionAdded: '<<next>>'
+  Include:
+    - 'db/schema.rb'
+  ExcludedTables: []
+  ExcludedColumns:
+    - created_at
+    - updated_at
+
 Rails/ScopeArgs:
   Description: 'Checks the arguments of ActiveRecord scopes.'
   Enabled: true
