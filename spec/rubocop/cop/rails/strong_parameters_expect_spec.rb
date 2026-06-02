@@ -513,6 +513,19 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'does not register an offense when `permit` receives a single method call argument' do
+      expect_no_offenses(<<~RUBY)
+        params.require(:moderation_comment).permit(policy(ModerationComment).permitted_attributes_for_create)
+      RUBY
+    end
+
+    it 'does not register an offense when `permit` receives a single variable argument' do
+      expect_no_offenses(<<~RUBY)
+        permitted_keys = %i[name age]
+        params.require(:user).permit(permitted_keys)
+      RUBY
+    end
+
     it 'does not register an offense when using `params.permit(unmatch_require_param: [:name, :age]).require(:user)`' do
       expect_no_offenses(<<~RUBY)
         params.permit(unmatch_require_param: [:name, :age]).require(:user)
