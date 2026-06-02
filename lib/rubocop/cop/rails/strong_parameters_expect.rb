@@ -76,10 +76,12 @@ module RuboCop
           (send (send nil? :params) :[] $_)
         PATTERN
 
+        # `require` with an array literal expects multiple top-level keys and has no single `expect` equivalent,
+        # so such calls are excluded to avoid generating broken code.
         def_node_matcher :params_require_permit, <<~PATTERN
           $(call
             $(call
-              (send nil? :params) :require _) :permit _+)
+              (send nil? :params) :require !array) :permit _+)
         PATTERN
 
         def_node_matcher :params_permit_require, <<~PATTERN
