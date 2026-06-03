@@ -62,7 +62,7 @@ module RuboCop
         IGNORED_METHODS = %i[
           ! blank? compact compact! compact_blank compact_blank! deep_merge deep_merge!
           delete delete_if dig each except exclude? extract! fetch has_key? has_value?
-          include? instance_of? is_a? keep_if key? keys kind_of? member? merge merge!
+          include? inspect instance_of? is_a? keep_if key? keys kind_of? member? merge merge!
           nil? presence present? reverse_merge reverse_merge! slice stringify_keys
           to_a to_f to_h to_hash to_i to_s to_unsafe_h to_unsafe_hash
           transform_keys transform_keys! transform_values transform_values! try try!

@@ -37,6 +37,12 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `params[:key].inspect`' do
+      expect_no_offenses(<<~RUBY)
+        params[:key].inspect
+      RUBY
+    end
+
     it 'does not register an offense when using `params[:key].to_a`' do
       expect_no_offenses(<<~RUBY)
         params[:key].to_a
