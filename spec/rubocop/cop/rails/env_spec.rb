@@ -35,9 +35,31 @@ RSpec.describe RuboCop::Cop::Rails::Env, :config do
     RUBY
   end
 
+  it 'registers an offense for `Rails.env.local?` under the default `AllowedPredicates`' do
+    expect_offense(<<~RUBY)
+      Rails.env.local?
+      ^^^^^^^^^^^^^^^^ Use Feature Flags or config instead of `Rails.env`.
+    RUBY
+  end
+
   it 'does not register an offense for unrelated config' do
     expect_no_offenses(<<~RUBY)
       Rails.environment
     RUBY
+  end
+
+  context 'with `AllowedPredicates` overridden' do
+    let(:cop_config) { { 'AllowedPredicates' => ['local?'] } }
+
+    it 'does not register an offense for a predicate listed in the config' do
+      expect_no_offenses('raise unless Rails.env.local?')
+    end
+
+    it 'registers an offense for a predicate omitted from the config' do
+      expect_offense(<<~RUBY)
+        Rails.env.empty?
+        ^^^^^^^^^^^^^^^^ Use Feature Flags or config instead of `Rails.env`.
+      RUBY
+    end
   end
 end

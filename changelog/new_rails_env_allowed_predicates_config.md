@@ -1,0 +1,1 @@
+* [#1617](https://github.com/rubocop/rubocop-rails/pull/1617): Add `AllowedPredicates` configuration option to `Rails/Env`. Users can now customize which predicate methods on `Rails.env` are exempt from the cop (e.g. to allow `Rails.env.local?` or a custom monkey-patched predicate). ([@dduugg][])
