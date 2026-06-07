@@ -9,6 +9,12 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1418](https://github.com/rubocop/rubocop-rails/issues/1418): Fix a false positive for `Rails/StrongParametersExpect` when `require` is given an array literal, such as `params.require([:foo, :bar]).permit(:baz)`. ([@koic][])
+* [#1574](https://github.com/rubocop/rubocop-rails/issues/1574): Fix an invalid autocorrection for `Rails/StrongParametersExpect` when `permit` receives a single dynamic argument, such as `params.require(:user).permit(permitted_attributes)`. ([@koic][])
+* [#1635](https://github.com/rubocop/rubocop-rails/issues/1635): Fix `Rails/StrongParametersExpect` to allow `params[:foo].inspect`. ([@jdelStrother][])
+
 ## 2.35.3 (2026-05-27)
 
 ### Bug fixes
