@@ -29,6 +29,12 @@ module RuboCop
       #   from an array of nested hashes, so it always generates the single-hash form, which can turn
       #   a previously successful request into a failure.
       #
+      #   It is also unsafe when `params[:key]` is passed to a finder method such as `find`, because
+      #   `find` accepts an array of IDs. `Model.find(params[:id])` loads every record for an array of IDs,
+      #   but the corrected `Model.find(params.expect(:id))` raises `ActionController::ParameterMissing`
+      #   for an array value, since `expect` requires a scalar. The cop cannot tell a scalar ID from
+      #   an array of IDs, so the autocorrection can turn a previously successful request into a failure.
+      #
       # @example
       #
       #   # bad
