@@ -23,6 +23,12 @@ module RuboCop
       #   incompatibility introduced for valid reasons by the `expect` method, which aligns better with
       #   strong parameter conventions.
       #
+      #   It is also unsafe because `expect` is stricter about the structure of the parameters than
+      #   `require`/`permit`. Nested attributes that hold an array of records need an extra array wrapper,
+      #   such as `expect(user: [{ pets_attributes: [[:name]] }])`. The cop cannot tell a single nested hash
+      #   from an array of nested hashes, so it always generates the single-hash form, which can turn
+      #   a previously successful request into a failure.
+      #
       # @example
       #
       #   # bad
