@@ -9,6 +9,8 @@
 
 ## master (unreleased)
 
+## 2.35.4 (2026-06-07)
+
 ### Bug fixes
 
 * [#1418](https://github.com/rubocop/rubocop-rails/issues/1418): Fix a false positive for `Rails/StrongParametersExpect` when `require` is given an array literal, such as `params.require([:foo, :bar]).permit(:baz)`. ([@koic][])

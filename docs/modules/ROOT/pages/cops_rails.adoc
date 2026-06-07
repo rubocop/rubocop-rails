@@ -7000,6 +7000,18 @@ from 500 to 400 when handling invalid parameters. This change, however, reflects
 incompatibility introduced for valid reasons by the `expect` method, which aligns better with
 strong parameter conventions.
 
+It is also unsafe because `expect` is stricter about the structure of the parameters than
+`require`/`permit`. Nested attributes that hold an array of records need an extra array wrapper,
+such as `expect(user: [{ pets_attributes: [[:name]] }])`. The cop cannot tell a single nested hash
+from an array of nested hashes, so it always generates the single-hash form, which can turn
+a previously successful request into a failure.
+
+It is also unsafe when `params[:key]` is passed to a finder method such as `find`, because
+`find` accepts an array of IDs. `Model.find(params[:id])` loads every record for an array of IDs,
+but the corrected `Model.find(params.expect(:id))` raises `ActionController::ParameterMissing`
+for an array value, since `expect` requires a scalar. The cop cannot tell a scalar ID from
+an array of IDs, so the autocorrection can turn a previously successful request into a failure.
+
 [#examples-railsstrongparametersexpect]
 === Examples
 
