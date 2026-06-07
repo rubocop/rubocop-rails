@@ -84,10 +84,16 @@ module RuboCop
 
         # `require` with an array literal expects multiple top-level keys and has no single `expect` equivalent,
         # so such calls are excluded to avoid generating broken code.
+        # A single dynamic argument to `permit` (such as a method call or variable that may return an array)
+        # has no safe `expect` rewrite, because the cop cannot tell whether the value is a list of attributes
+        # or a nested hash. Such calls are excluded to avoid generating broken code.
         def_node_matcher :params_require_permit, <<~PATTERN
-          $(call
+          [
             $(call
-              (send nil? :params) :require !array) :permit _+)
+              $(call
+                (send nil? :params) :require !array) :permit _+)
+            !(call _ :permit {call lvar ivar cvar gvar const})
+          ]
         PATTERN
 
         def_node_matcher :params_permit_require, <<~PATTERN

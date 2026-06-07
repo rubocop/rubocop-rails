@@ -1,0 +1,1 @@
+* [#1574](https://github.com/rubocop/rubocop-rails/issues/1574): Fix an invalid autocorrection for `Rails/StrongParametersExpect` when `permit` receives a single dynamic argument, such as `params.require(:user).permit(permitted_attributes)`. ([@koic][])
