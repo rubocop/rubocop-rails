@@ -519,6 +519,12 @@ RSpec.describe RuboCop::Cop::Rails::StrongParametersExpect, :config do
       RUBY
     end
 
+    it 'does not register an offense when using `params.require([:foo, :bar]).permit(:baz)`' do
+      expect_no_offenses(<<~RUBY)
+        params.require([:foo, :bar]).permit(:baz)
+      RUBY
+    end
+
     it 'does not register an offense when using `params.require(:name)`' do
       expect_no_offenses(<<~RUBY)
         params.require(:name)
