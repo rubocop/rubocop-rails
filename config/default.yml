@@ -1125,6 +1125,21 @@ Rails/SkipsModelValidations:
     - upsert_all
   AllowedMethods: []
 
+Rails/SpecificActionNames:
+  Description: Use only specific action names.
+  Enabled: false
+  VersionAdded: '<<next>>'
+  ActionNames:
+    - index
+    - show
+    - new
+    - edit
+    - create
+    - update
+    - destroy
+  Include:
+    - '**/app/controllers/**/*.rb'
+
 Rails/SquishedSQLHeredocs:
   Description: 'Checks SQL heredocs to use `.squish`.'
   StyleGuide: 'https://rails.rubystyle.guide/#squished-heredocs'
