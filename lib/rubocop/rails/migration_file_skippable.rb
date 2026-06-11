@@ -29,10 +29,6 @@ module RuboCop
         super if method(__method__).super_method
       end
 
-      def self.apply_to_cops!
-        RuboCop::Cop::Registry.all.each { |cop| cop.prepend(MigrationFileSkippable) }
-      end
-
       private
 
       def already_migrated_file?
