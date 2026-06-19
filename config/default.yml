@@ -472,6 +472,23 @@ Rails/Env:
   Description: 'Use Feature Flags or config instead of `Rails.env`.'
   Enabled: false
   VersionAdded: '2.34'
+  VersionChanged: "<<next>>"
+  AllowedPredicates:
+    - acts_like_string?
+    - ascii_only?
+    - between?
+    - casecmp?
+    - empty?
+    - end_with?
+    - ends_with?
+    - exclude?
+    - include?
+    - is_utf8?
+    - match?
+    - start_with?
+    - starts_with?
+    - unicode_normalized?
+    - valid_encoding?
 
 Rails/EnvLocal:
   Description: 'Use `Rails.env.local?` instead of `Rails.env.development? || Rails.env.test?`.'
