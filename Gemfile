@@ -7,6 +7,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gemspec
 
 gem 'bump', require: false
+# Avoid i18n 1.15.0, which breaks on Ruby 3.1 (ruby-i18n/i18n#735).
+gem 'i18n', '!= 1.15.0'
 gem 'irb'
 gem 'rake'
 gem 'rspec'
