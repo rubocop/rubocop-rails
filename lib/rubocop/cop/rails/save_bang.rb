@@ -117,6 +117,7 @@ module RuboCop
       #   Services::Service::Mailer.update(message: 'Message')
       #   Service::Mailer::update
       #
+      # rubocop:disable Metrics/ClassLength
       class SaveBang < Base
         include NegativeConditional
         extend AutoCorrector
@@ -303,11 +304,18 @@ module RuboCop
         def implicit_return?(node)
           return false unless cop_config['AllowImplicitReturn']
 
-          node = assignable_node(node)
+          node = last_expression_in_begin(assignable_node(node))
           method, sibling_index = find_method_with_sibling_index(node.parent)
           return false unless method&.type?(:def, :any_block)
 
           method.children.size == node.sibling_index + sibling_index
+        end
+
+        # A multiline method or block body is wrapped in a `begin` node, so climb
+        # to it when the node is the last expression, to detect the implicit return.
+        def last_expression_in_begin(node)
+          node = node.parent while node.parent&.begin_type? && node.right_sibling.nil?
+          node
         end
 
         def find_method_with_sibling_index(node, sibling_index = 1)
@@ -345,6 +353,7 @@ module RuboCop
           node.first_argument.hash_type? || !node.first_argument.literal?
         end
       end
+      # rubocop:enable Metrics/ClassLength
     end
   end
 end
