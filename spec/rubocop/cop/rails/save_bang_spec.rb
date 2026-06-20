@@ -655,6 +655,54 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
         RUBY
       end
     end
+
+    it "when using #{method} as the last method call in a multiline method" do
+      if allow_implicit_return
+        expect_no_offenses(<<~RUBY)
+          def foo
+            bar
+            object.#{method}
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          def foo
+            bar
+            object.#{method}
+                   ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+        RUBY
+      end
+    end
+
+    it "when using #{method} as the last method call in a multiline block" do
+      if allow_implicit_return
+        expect_no_offenses(<<~RUBY)
+          objects.each do |object|
+            bar
+            object.#{method}
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          objects.each do |object|
+            bar
+            object.#{method}
+                   ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+        RUBY
+      end
+    end
+
+    it "when using #{method} not as the last method call in a multiline method" do
+      expect_offense(<<~RUBY, method: method)
+        def foo
+          object.#{method}
+                 ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          bar
+        end
+      RUBY
+    end
   end
 
   described_class::MODIFY_PERSIST_METHODS.each do |method|

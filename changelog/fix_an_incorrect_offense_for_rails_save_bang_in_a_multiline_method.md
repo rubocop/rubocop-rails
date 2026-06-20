@@ -1,0 +1,1 @@
+* [#1379](https://github.com/rubocop/rubocop-rails/issues/1379): Fix an incorrect offense for `Rails/SaveBang` when a persist method is the last expression in a multiline method or block. ([@aki77][])
