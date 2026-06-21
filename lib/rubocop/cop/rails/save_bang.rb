@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 module RuboCop
   module Cop
     module Rails
@@ -117,7 +118,6 @@ module RuboCop
       #   Services::Service::Mailer.update(message: 'Message')
       #   Service::Mailer::update
       #
-      # rubocop:disable Metrics/ClassLength
       class SaveBang < Base
         include NegativeConditional
         extend AutoCorrector
@@ -353,7 +353,7 @@ module RuboCop
           node.first_argument.hash_type? || !node.first_argument.literal?
         end
       end
-      # rubocop:enable Metrics/ClassLength
     end
   end
 end
+# rubocop:enable Metrics/ClassLength
