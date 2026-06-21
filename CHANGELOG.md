@@ -9,6 +9,14 @@
 
 ## master (unreleased)
 
+### Bug fixes
+
+* [#1379](https://github.com/rubocop/rubocop-rails/issues/1379): Fix an incorrect offense for `Rails/SaveBang` when a persist method is the last expression in a multiline method or block. ([@aki77][])
+
+### Changes
+
+* [#1617](https://github.com/rubocop/rubocop-rails/pull/1617): Allow `Rails.env.local?` in `Rails/Env`. ([@corsonknowles][])
+
 ## 2.35.4 (2026-06-07)
 
 ### Bug fixes
@@ -1440,3 +1448,5 @@
 [@codergeek121]: https://github.com/codergeek121
 [@nicholasdower]: https://github.com/nicholasdower
 [@lucasmazza]: https://github.com/lucasmazza
+[@corsonknowles]: https://github.com/corsonknowles
+[@aki77]: https://github.com/aki77
