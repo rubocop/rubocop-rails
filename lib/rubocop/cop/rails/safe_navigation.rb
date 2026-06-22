@@ -12,8 +12,8 @@ module RuboCop
       #   foo.try!(:bar)
       #   foo.try!(:bar, baz)
       #   foo.try!(:bar) { |e| e.baz }
-      #
       #   foo.try!(:[], 0)
+      #   foo.try!(:==, baz)
       #
       #   # good
       #   foo.try(:bar)
@@ -23,6 +23,8 @@ module RuboCop
       #   foo&.bar
       #   foo&.bar(baz)
       #   foo&.bar { |e| e.baz }
+      #   foo&.[](0)
+      #   foo&.==(baz)
       #
       # @example ConvertTry: true
       #   # bad
@@ -32,11 +34,15 @@ module RuboCop
       #   foo.try(:bar)
       #   foo.try(:bar, baz)
       #   foo.try(:bar) { |e| e.baz }
+      #   foo.try(:[], 0)
+      #   foo.try(:==, baz)
       #
       #   # good
       #   foo&.bar
       #   foo&.bar(baz)
       #   foo&.bar { |e| e.baz }
+      #   foo&.[](0)
+      #   foo&.==(baz)
       class SafeNavigation < Base
         include RangeHelp
         extend AutoCorrector
@@ -58,11 +64,16 @@ module RuboCop
         def on_send(node)
           try_call(node) do |try_method, dispatch|
             return if try_method == :try && !cop_config['ConvertTry']
-            return unless dispatch.sym_type? && dispatch.value.match?(/\w+[=!?]?/)
+            return unless dispatch.sym_type?
+            # When a `try` is nested in another `try`'s argument, correcting both at once
+            # produces overlapping replacements. Correct the outer one first and defer the
+            # inner one to a subsequent pass.
+            return if part_of_ignored_node?(node)
 
             add_offense(node, message: format(MSG, try: try_method)) do |corrector|
               autocorrect(corrector, node)
             end
+            ignore_node(node)
           end
         end
 
@@ -85,13 +96,19 @@ module RuboCop
         def replacement(method, params)
           new_params = params.map(&:source).join(', ')
 
-          if method.end_with?('=')
+          if setter_method?(method)
             "&.#{method[0...-1]} = #{new_params}"
           elsif params.empty?
             "&.#{method}"
           else
             "&.#{method}(#{new_params})"
           end
+        end
+
+        # Operator methods such as `==` and `[]=` also end with `=`, but they are not setters
+        # and must keep the explicit call form (e.g. `&.==(bar)`, `&.[]=(key, value)`).
+        def setter_method?(method)
+          method.match?(/\A\w+=\z/)
         end
       end
     end
