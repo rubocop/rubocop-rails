@@ -50,9 +50,10 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
         it_behaves_like 'offense', 'try! with a question method', 'try!', '(:something?)'
         it_behaves_like 'offense', 'try! with a bang method', 'try!', '(:something!)'
 
-        it_behaves_like 'accepts', 'try! used to call an enumerable accessor', 'foo.try!(:[], :bar)'
-        it_behaves_like 'accepts', 'try! with ==', 'foo.try!(:==, bar)'
-        it_behaves_like 'accepts', 'try! with an operator', 'foo.try!(:+, bar)'
+        it_behaves_like 'offense', 'try! used to call an enumerable accessor', 'try!', '(:[], :bar)'
+        it_behaves_like 'offense', 'try! with ==', 'try!', '(:==, bar)'
+        it_behaves_like 'offense', 'try! with an operator', 'try!', '(:+, bar)'
+
         it_behaves_like 'accepts', 'try! with a method stored as a variable',
                         ['bar = :==',
                          'foo.try!(baz, bar)'].join("\n")
@@ -70,6 +71,10 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
     end
 
     it_behaves_like 'autocorrect', 'try! a single parameter', 'foo.try!(:thing=, bar)', 'foo&.thing = bar'
+    it_behaves_like 'autocorrect', 'try! with an indexer', 'foo.try!(:[], :bar)', 'foo&.[](:bar)'
+    it_behaves_like 'autocorrect', 'try! with an indexer assignment', 'foo.try!(:[]=, :x, :y)', 'foo&.[]=(:x, :y)'
+    it_behaves_like 'autocorrect', 'try! with ==', 'foo.try!(:==, bar)', 'foo&.==(bar)'
+    it_behaves_like 'autocorrect', 'try! with an operator', 'foo.try!(:+, bar)', 'foo&.+(bar)'
     it_behaves_like 'autocorrect', 'try! a single parameter', '[1, 2].try!(:join)', '[1, 2]&.join'
     it_behaves_like 'autocorrect', 'try! with 2 parameters', '[1, 2].try!(:join, ",")', '[1, 2]&.join(",")'
     it_behaves_like 'autocorrect', 'try! with multiple parameters',
@@ -88,6 +93,20 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
                     ['[foo, bar]&.each_with_object([]) do |e, acc|',
                      '  acc << e.some_method',
                      'end'].join("\n")
+
+    # A `try` nested in another `try`'s argument used to make autocorrection emit overlapping
+    # replacements (`Parser::ClobberingError`). The outer call is corrected first and the inner
+    # one is left for the next pass, so a single pass no longer clobbers.
+    it 'corrects a try! nested in another try! argument without clobbering' do
+      expect_offense(<<~RUBY)
+        foo.try!(:[], bar.try!(:[], :baz))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use safe navigation (`&.`) instead of `try!`.
+      RUBY
+
+      expect_correction(<<~RUBY, loop: false)
+        foo&.[](bar.try!(:[], :baz))
+      RUBY
+    end
   end
 
   context 'convert try and try!' do
@@ -113,9 +132,11 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
                          '  acc << e.some_method',
                          'end'].join("\n")
 
-        it_behaves_like 'accepts', 'try! used to call an enumerable accessor', 'foo.try!(:[], :bar)'
+        it_behaves_like 'offense', 'try! used to call an enumerable accessor', 'try!', '(:[], :bar)'
 
         it_behaves_like 'autocorrect', 'try! a single parameter', '[1, 2].try!(:join)', '[1, 2]&.join'
+        it_behaves_like 'autocorrect', 'try! with an indexer', 'foo.try!(:[], :bar)', 'foo&.[](:bar)'
+        it_behaves_like 'autocorrect', 'try! with ==', 'foo.try!(:==, bar)', 'foo&.==(bar)'
         it_behaves_like 'autocorrect', 'try! with 2 parameters', '[1, 2].try!(:join, ",")', '[1, 2]&.join(",")'
         it_behaves_like 'autocorrect', 'try! with multiple parameters',
                         '[1, 2].try!(:join, bar, baz)', '[1, 2]&.join(bar, baz)'
@@ -145,9 +166,11 @@ RSpec.describe RuboCop::Cop::Rails::SafeNavigation, :config do
                          '  acc << e.some_method',
                          'end'].join("\n")
 
-        it_behaves_like 'accepts', 'try! used to call an enumerable accessor', 'foo.try!(:[], :bar)'
+        it_behaves_like 'offense', 'try used to call an enumerable accessor', 'try', '(:[], :bar)'
 
         it_behaves_like 'autocorrect', 'try a single parameter', '[1, 2].try(:join)', '[1, 2]&.join'
+        it_behaves_like 'autocorrect', 'try with an indexer', 'foo.try(:[], :bar)', 'foo&.[](:bar)'
+        it_behaves_like 'autocorrect', 'try with ==', 'foo.try(:==, bar)', 'foo&.==(bar)'
         it_behaves_like 'autocorrect', 'try with 2 parameters', '[1, 2].try(:join, ",")', '[1, 2]&.join(",")'
         it_behaves_like 'autocorrect', 'try with multiple parameters',
                         '[1, 2].try(:join, bar, baz)', '[1, 2]&.join(bar, baz)'
