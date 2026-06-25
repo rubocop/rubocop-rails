@@ -87,6 +87,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsmailername[Rails/MailerName]
 * xref:cops_rails.adoc#railsmatchroute[Rails/MatchRoute]
 * xref:cops_rails.adoc#railsmigrationclassname[Rails/MigrationClassName]
+* xref:cops_rails.adoc#railsmigrationexecute[Rails/MigrationExecute]
 * xref:cops_rails.adoc#railsmultipleroutepaths[Rails/MultipleRoutePaths]
 * xref:cops_rails.adoc#railsnegateinclude[Rails/NegateInclude]
 * xref:cops_rails.adoc#railsnotnullcolumn[Rails/NotNullColumn]
