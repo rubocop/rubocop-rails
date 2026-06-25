@@ -12,6 +12,8 @@ module RuboCop
       #   foo.try!(:bar)
       #   foo.try!(:bar, baz)
       #   foo.try!(:bar) { |e| e.baz }
+      #   foo.try!(&:bar)
+      #
       #   foo.try!(:[], 0)
       #   foo.try!(:==, baz)
       #
@@ -31,9 +33,11 @@ module RuboCop
       #   foo.try!(:bar)
       #   foo.try!(:bar, baz)
       #   foo.try!(:bar) { |e| e.baz }
+      #   foo.try!(&:bar)
       #   foo.try(:bar)
       #   foo.try(:bar, baz)
       #   foo.try(:bar) { |e| e.baz }
+      #   foo.try(&:bar)
       #   foo.try(:[], 0)
       #   foo.try(:==, baz)
       #
@@ -57,6 +61,11 @@ module RuboCop
           (send _ ${:try :try!} $_ ...)
         PATTERN
 
+        # Extracts the method name from a symbol-to-proc block argument, e.g. `:foo` from `try(&:foo)`.
+        def_node_matcher :symbol_proc_method, <<~PATTERN
+          (block_pass (sym $_))
+        PATTERN
+
         def self.autocorrect_incompatible_with
           [Style::RedundantSelf]
         end
@@ -64,7 +73,7 @@ module RuboCop
         def on_send(node)
           try_call(node) do |try_method, dispatch|
             return if try_method == :try && !cop_config['ConvertTry']
-            return unless dispatch.sym_type?
+            return unless dispatch.sym_type? || symbol_proc_method(dispatch)
             # When a `try` is nested in another `try`'s argument, correcting both at once
             # produces overlapping replacements. Correct the outer one first and defer the
             # inner one to a subsequent pass.
@@ -81,7 +90,6 @@ module RuboCop
 
         def autocorrect(corrector, node)
           method_node, *params = *node.arguments
-          method = method_node.source[1..]
 
           range = if node.receiver
                     range_between(node.loc.dot.begin_pos, node.source_range.end_pos)
@@ -90,10 +98,13 @@ module RuboCop
                     node
                   end
 
-          corrector.replace(range, replacement(method, params))
+          corrector.replace(range, replacement(method_node, params))
         end
 
-        def replacement(method, params)
+        def replacement(method_node, params)
+          return "&.#{symbol_proc_method(method_node)}" if method_node.block_pass_type?
+
+          method = method_node.source[1..]
           new_params = params.map(&:source).join(', ')
 
           if setter_method?(method)
