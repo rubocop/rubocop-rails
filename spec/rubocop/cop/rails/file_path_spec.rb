@@ -140,6 +140,123 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
+    context 'when using File.join with Rails.root and a single forward slash as a path' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, "/")
+        RUBY
+      end
+    end
+
+    context 'when using File.join with Rails.root and a single forward slash as the last argument' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app', '/')
+        RUBY
+      end
+    end
+
+    context 'when using File.join with Rails.root and multiple string paths with different trailing slash placements' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app/models/', 'goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app/models/', '/goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app/models', 'goober/')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app/models/', 'goober/')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join and a single forward slash as a path' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join("/")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join and a single forward slash as the last argument' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app', '/')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join and multiple string paths with different trailing slash placements' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app/models/', 'goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app/models/', '/goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app/models', 'goober/')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app/models/', 'goober/')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with Rails.root and a single forward slash as a path' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, "/")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with Rails.root and a single forward slash as the last argument' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app', '/')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with Rails.root and multiple string paths ' \
+            'with different trailing slash placements' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app/models/', 'goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app/models/', '/goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app/models', 'goober/')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app/models/', 'goober/')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root in string interpolation followed by a forward slash' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root}/"
+        RUBY
+      end
+    end
+
     context 'when using Rails.root called by double quoted string' do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
@@ -522,6 +639,123 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
 
         expect_correction(<<~RUBY)
           Rails.root.join('app', "models", "goober")
+        RUBY
+      end
+    end
+
+    context 'when using File.join with Rails.root and a single forward slash as a path' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, "/")
+        RUBY
+      end
+    end
+
+    context 'when using File.join with Rails.root and a single forward slash as the last argument' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app', '/')
+        RUBY
+      end
+    end
+
+    context 'when using File.join with Rails.root and multiple string paths with different trailing slash placements' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app/models/', 'goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app/models/', '/goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app/models', 'goober/')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          File.join(Rails.root, 'app/models/', 'goober/')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join and a single forward slash as a path' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join("/")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join and a single forward slash as the last argument' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app', '/')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join and multiple string paths with different trailing slash placements' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app/models/', 'goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app/models/', '/goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app/models', 'goober/')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join('app/models/', 'goober/')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with Rails.root and a single forward slash as a path' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, "/")
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with Rails.root and a single forward slash as the last argument' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app', '/')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root.join with Rails.root and multiple string paths ' \
+            'with different trailing slash placements' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app/models/', 'goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app/models/', '/goober')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app/models', 'goober/')
+        RUBY
+
+        expect_no_offenses(<<~RUBY)
+          Rails.root.join(Rails.root, 'app/models/', 'goober/')
+        RUBY
+      end
+    end
+
+    context 'when using Rails.root in string interpolation followed by a forward slash' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~'RUBY')
+          "#{Rails.root}/"
         RUBY
       end
     end
