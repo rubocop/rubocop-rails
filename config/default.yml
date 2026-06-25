@@ -695,6 +695,11 @@ Rails/InverseOf:
   Include:
     - '**/app/models/**/*.rb'
 
+Rails/JSONSymbolizeNames:
+  Description: 'Use `JSON.parse(json, symbolize_names: true)` instead of `JSON.parse(json).deep_symbolize_keys`.'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/LexicallyScopedActionFilter:
   Description: "Checks that methods specified in the filter's `only` or `except` options are explicitly defined in the class."
   StyleGuide: 'https://rails.rubystyle.guide#lexically-scoped-action-filter'
