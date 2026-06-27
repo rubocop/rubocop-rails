@@ -52,6 +52,28 @@ RSpec.describe 'RuboCop::CLI --autocorrect', :isolated_environment do # rubocop:
     RUBY
   end
 
+  it 'corrects `Rails/LinkToBlank` with `Style/TrailingCommaInArguments`' do
+    create_file('.rubocop.yml', <<~YAML)
+      Style/TrailingCommaInArguments:
+        EnforcedStyleForMultiline: consistent_comma
+    YAML
+
+    create_file('example.rb', <<~RUBY)
+      link_to('Click here', 'https://www.example.com',
+        target: '_blank',
+        class: 'big'
+      )
+    RUBY
+
+    expect(cli.run(['-a', '--only', 'Rails/LinkToBlank,Style/TrailingCommaInArguments'])).to eq(0)
+    expect(File.read('example.rb')).to eq(<<~RUBY)
+      link_to('Click here', 'https://www.example.com',
+        target: '_blank',
+        class: 'big', rel: 'noopener',
+      )
+    RUBY
+  end
+
   it 'corrects `Style/HashExcept` with `TargetRubyVersion: 2.0`' do
     create_file('.rubocop.yml', <<~YAML)
       AllCops:
