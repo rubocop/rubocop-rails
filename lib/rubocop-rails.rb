@@ -39,3 +39,11 @@ RuboCop::Cop::Style::RedundantSelf.singleton_class.prepend(
     end
   end
 )
+
+RuboCop::Cop::Style::TrailingCommaInArguments.singleton_class.prepend(
+  Module.new do
+    def autocorrect_incompatible_with
+      super.push(RuboCop::Cop::Rails::LinkToBlank)
+    end
+  end
+)

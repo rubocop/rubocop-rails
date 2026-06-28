@@ -1,0 +1,1 @@
+* [#1599](https://github.com/rubocop/rubocop-rails/issues/1599): Fix an incorrect autocorrect for `Rails/LinkToBlank` when `Style/TrailingCommaInArguments` with `EnforcedStyleForMultiline: consistent_comma` adds a trailing comma, which produced a duplicate comma. ([@koic][])
