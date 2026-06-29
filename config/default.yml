@@ -714,6 +714,15 @@ Rails/LinkToBlank:
   Enabled: true
   VersionAdded: '0.62'
 
+Rails/LoadDefaultsMismatch:
+  Description: 'Checks that `config.load_defaults` version has the same major version as the target Rails version.'
+  StyleGuide: 'https://rails.rubystyle.guide/#config-defaults'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+  Include:
+    - '**/config/application.rb'
+
 Rails/MailerName:
   Description: 'Mailer should end with `Mailer` suffix.'
   StyleGuide: 'https://rails.rubystyle.guide/#mailer-name'
