@@ -294,12 +294,20 @@ module RuboCop
             false
           when :remove
             target_rails_version >= 6.1 && all_hash_key?(node.last_argument, :type)
+          when :remove_index
+            reversible_remove_index?(node)
           when :change_default, :change_column_default, :change_table_comment,
                :change_column_comment
             all_hash_key?(node.last_argument, :from, :to)
           else
             true
           end
+        end
+
+        def reversible_remove_index?(node)
+          return true if node.arguments.any? { |arg| !arg.hash_type? }
+
+          all_hash_key?(node.last_argument, :column)
         end
 
         def within_change_method?(node)

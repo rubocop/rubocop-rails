@@ -309,6 +309,32 @@ RSpec.describe RuboCop::Cop::Rails::ReversibleMigration, :config do
         RUBY
       end
     end
+
+    context 'remove_index' do
+      it_behaves_like 'accepts', 't.remove_index (with column)', <<~RUBY
+        change_table :users do |t|
+          t.remove_index column: :email
+        end
+      RUBY
+
+      it_behaves_like 'accepts', 't.remove_index (with positional column)', <<~RUBY
+        change_table :users do |t|
+          t.remove_index :email
+        end
+      RUBY
+
+      it_behaves_like 'accepts', 't.remove_index (with positional column and options)', <<~RUBY
+        change_table :users do |t|
+          t.remove_index :email, if_exists: true
+        end
+      RUBY
+
+      it_behaves_like 'offense', 'change_table(with remove_index)', <<~RUBY
+        change_table :users do |t|
+          t.remove_index name: :index_users_on_email
+        end
+      RUBY
+    end
   end
 
   context 'remove_columns' do

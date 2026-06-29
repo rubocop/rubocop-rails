@@ -1,0 +1,1 @@
+* [#1646](https://github.com/rubocop/rubocop-rails/pull/1646): Fix a false negative for `Rails/ReversibleMigration` when using `remove_index` without a column inside a `change_table` block. ([@ilianah][])
