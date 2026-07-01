@@ -50,6 +50,11 @@ module RuboCop
       #   # good
       #   Post.published.pluck(:title)
       #   [{ a: :b, c: :d }].pluck(:a)
+      #
+      # @example AllowedReceivers: ['xpath', 'css', 'search', 'at_xpath', 'at_css'] (default)
+      #   # good (receiver chain contains an allowed method, e.g. Nokogiri)
+      #   doc.xpath('//item').map { |node| node['name'] }
+      #   page.css('.row').collect { |el| el[:id] }
       class Pluck < Base
         extend AutoCorrector
         extend TargetRailsVersion
@@ -65,6 +70,7 @@ module RuboCop
         # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def on_block(node)
           return if node.each_ancestor(:any_block).first&.receiver
+          return if allowed_receiver?(node.send_node.receiver)
 
           pluck_candidate?(node) do |argument, key|
             next if key.regexp_type? || !use_one_block_argument?(argument)
@@ -87,6 +93,15 @@ module RuboCop
         alias on_itblock on_block
 
         private
+
+        def allowed_receiver?(receiver)
+          return false unless receiver
+
+          allowed = cop_config.fetch('AllowedReceivers', [])
+          return false if allowed.empty?
+
+          receiver.each_node(:send, :csend).any? { |send_node| allowed.include?(send_node.method_name.to_s) }
+        end
 
         def use_one_block_argument?(argument)
           # Checks for numbered argument `_1` or `it block parameter.
