@@ -12,7 +12,8 @@ require_relative 'rubocop/rails/plugin'
 require_relative 'rubocop/cop/rails_cops'
 
 require_relative 'rubocop/rails/migration_file_skippable'
-RuboCop::Rails::MigrationFileSkippable.apply_to_cops!
+
+RuboCop::Cop::Base.prepend(RuboCop::Rails::MigrationFileSkippable)
 
 RuboCop::Cop::Style::HashExcept.minimum_target_ruby_version(2.0)
 
