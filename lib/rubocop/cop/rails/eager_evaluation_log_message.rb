@@ -42,7 +42,7 @@ module RuboCop
         end
 
         def on_send(node)
-          return if node.parent&.block_type?
+          return if node.block_literal?
 
           interpolated_string_passed_to_debug(node) do |arguments|
             range = replacement_range(node)

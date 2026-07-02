@@ -34,4 +34,51 @@ RSpec.describe RuboCop::Cop::Rails::EagerEvaluationLogMessage, :config do
       end
     RUBY
   end
+
+  it 'registers an offense when the interpolated string is passed to Rails.logger.debug as the sole body of a block' do
+    expect_offense(<<~'RUBY')
+      names.each do |name|
+        Rails.logger.debug "The name is #{name}"
+                           ^^^^^^^^^^^^^^^^^^^^^ Pass a block to `Rails.logger.debug`.
+      end
+    RUBY
+
+    expect_correction(<<~'RUBY')
+      names.each do |name|
+        Rails.logger.debug { "The name is #{name}" }
+      end
+    RUBY
+  end
+
+  it 'registers an offense for a parenthesized call passed to Rails.logger.debug as the sole body of a block' do
+    expect_offense(<<~'RUBY')
+      names.each do |name|
+        Rails.logger.debug("The name is #{name}")
+                          ^^^^^^^^^^^^^^^^^^^^^^^ Pass a block to `Rails.logger.debug`.
+      end
+    RUBY
+
+    expect_correction(<<~'RUBY')
+      names.each do |name|
+        Rails.logger.debug { "The name is #{name}" }
+      end
+    RUBY
+  end
+
+  it 'registers an offense when passed to Rails.logger.debug inside a block alongside other statements' do
+    expect_offense(<<~'RUBY')
+      names.each do |name|
+        process(name)
+        Rails.logger.debug "The name is #{name}"
+                           ^^^^^^^^^^^^^^^^^^^^^ Pass a block to `Rails.logger.debug`.
+      end
+    RUBY
+
+    expect_correction(<<~'RUBY')
+      names.each do |name|
+        process(name)
+        Rails.logger.debug { "The name is #{name}" }
+      end
+    RUBY
+  end
 end
