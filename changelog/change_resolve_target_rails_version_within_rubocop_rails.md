@@ -1,0 +1,1 @@
+* [#1655](https://github.com/rubocop/rubocop-rails/pull/1655): Resolve `AllCops: TargetRailsVersion` within RuboCop Rails itself instead of relying on RuboCop core, in preparation for the removal of `TargetRailsVersion` support from RuboCop core in RuboCop 2.0. ([@koic][])

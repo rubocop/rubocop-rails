@@ -34,6 +34,8 @@ module RuboCop
       #   end
       #
       class UnknownEnv < Base
+        extend TargetRailsVersion
+
         MSG = 'Unknown environment `%<name>s`.'
         MSG_SIMILAR = 'Unknown environment `%<name>s`. Did you mean `%<similar>s`?'
 

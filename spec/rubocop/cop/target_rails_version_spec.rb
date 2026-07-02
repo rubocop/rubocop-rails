@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-RSpec.describe RuboCop::Config do
+RSpec.describe RuboCop::Cop::TargetRailsVersion do
   include FileHelper
-
-  subject(:configuration) { described_class.new(hash, loaded_path) }
 
   let(:loaded_path) { 'example/.rubocop.yml' }
 
-  describe '#target_rails_version' do
+  describe '.resolve' do
+    subject(:resolved_version) { described_class.resolve(configuration) }
+
+    let(:configuration) { RuboCop::Config.new(hash, loaded_path) }
+
     context 'when TargetRailsVersion is set' do
       let(:hash) do
         {
@@ -19,10 +21,9 @@ RSpec.describe RuboCop::Config do
 
       context 'with patch version' do
         let(:rails_version) { '5.1.4' }
-        let(:rails_version_to_f) { 5.1 }
 
         it 'truncates the patch part and converts to a float' do
-          expect(configuration.target_rails_version).to eq rails_version_to_f
+          expect(resolved_version).to eq 5.1
         end
       end
 
@@ -30,7 +31,7 @@ RSpec.describe RuboCop::Config do
         let(:rails_version) { 6.0 }
 
         it 'uses TargetRailsVersion' do
-          expect(configuration.target_rails_version).to eq rails_version
+          expect(resolved_version).to eq rails_version
         end
       end
     end
@@ -44,8 +45,7 @@ RSpec.describe RuboCop::Config do
 
       context 'and lock files do not exist' do
         it 'uses the default rails version' do
-          default = described_class::DEFAULT_RAILS_VERSION
-          expect(configuration.target_rails_version).to eq default
+          expect(resolved_version).to eq described_class::DEFAULT_RAILS_VERSION
         end
       end
 
@@ -86,7 +86,7 @@ RSpec.describe RuboCop::Config do
                   1.16.1
               LOCKFILE
             create_file(lock_file_path, content)
-            expect(configuration.target_rails_version).to eq 4.1
+            expect(resolved_version).to eq 4.1
           end
 
           it "uses the multi digit Rails version in #{file_name}" do
@@ -121,7 +121,7 @@ RSpec.describe RuboCop::Config do
                   1.16.1
               LOCKFILE
             create_file(lock_file_path, content)
-            expect(configuration.target_rails_version).to eq 400.33
+            expect(resolved_version).to eq 400.33
           end
 
           it "does not use the DEPENDENCIES Rails version in #{file_name}" do
@@ -145,7 +145,7 @@ RSpec.describe RuboCop::Config do
                   1.16.1
               LOCKFILE
             create_file(lock_file_path, content)
-            expect(configuration.target_rails_version).not_to eq 900.88
+            expect(resolved_version).not_to eq 900.88
           end
 
           it "uses the default Rails when Rails is not in #{file_name}" do
@@ -170,8 +170,7 @@ RSpec.describe RuboCop::Config do
                   1.16.1
               LOCKFILE
             create_file(lock_file_path, content)
-            default = described_class::DEFAULT_RAILS_VERSION
-            expect(configuration.target_rails_version).to eq default
+            expect(resolved_version).to eq described_class::DEFAULT_RAILS_VERSION
           end
         end
       end

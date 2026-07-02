@@ -19,6 +19,7 @@ module RuboCop
       #   ActiveSupport.on_load(:active_record) { include MyClass }
       class ActiveSupportOnLoad < Base
         extend AutoCorrector
+        extend TargetRailsVersion
 
         MSG = 'Use `%<prefer>s` instead of `%<current>s`.'
         RESTRICT_ON_SEND = %i[prepend include extend].freeze
