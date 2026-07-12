@@ -79,6 +79,11 @@ Naming/PredicatePrefix:
 Rails:
   Enabled: false
 
+Style/Documentation:
+  Exclude:
+    - lib/rubocop/cop/mixin.rb
+    - spec/support/file_helper.rb
+
 Style/FormatStringToken:
   # Because we parse a lot of source codes from strings. Percent arrays
   # look like unannotated format string tokens to this cop.
@@ -111,6 +116,10 @@ Layout/ClassStructure:
     - instance_methods
     - protected_methods
     - private_methods
+
+Layout/LineLength:
+  AllowedPatterns:
+    - !ruby/regexp /\A +register_cop :/
 
 Layout/RedundantLineBreak:
   Enabled: true
@@ -146,6 +155,8 @@ Naming/FileName:
 Metrics/ModuleLength:
   Exclude:
     - 'spec/**/*.rb'
+    # The department module is a generated list of `register_cop` directives.
+    - lib/rubocop/cop/rails.rb
 
 Performance/DeletePrefix:
   SafeMultiline: false
