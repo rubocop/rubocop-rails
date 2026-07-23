@@ -29,6 +29,11 @@ module RuboCop
       #     attribute :roles, :string, array: true, default: -> { [] }
       #   end
       #
+      #   # good
+      #   class User < ApplicationRecord
+      #     attribute :roles, :string, array: true, default: [].freeze
+      #   end
+      #
       #   # bad
       #   class User < ApplicationRecord
       #     attribute :configuration, default: {}
@@ -71,10 +76,14 @@ module RuboCop
         PATTERN
 
         def_node_matcher :attribute, '(pair (sym :default) $_)'
+        def_node_matcher :frozen_literal_default?, <<~PATTERN
+          (send {(array) (hash)} :freeze)
+        PATTERN
 
         def on_send(node)
           default_attribute(node) do |attribute|
             value = attribute.children.last
+            return if frozen_literal_default?(value)
             return unless TYPE_OFFENDERS.any?(value.type)
 
             add_offense(value) do |corrector|
