@@ -21,6 +21,27 @@ RSpec.describe RuboCop::Cop::Rails::AttributeDefaultBlockValue, :config do
       RUBY
     end
 
+    it 'disallows frozen method call' do
+      expect_offense(<<~RUBY)
+        attribute :foo, :string, default: Foo.bar.freeze
+                                          ^^^^^^^^^^^^^^ #{message}
+      RUBY
+    end
+
+    it 'disallows non-empty frozen array literal' do
+      expect_offense(<<~RUBY)
+        attribute :roles, :string, array: true, default: [Foo.default_roles].freeze
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^ #{message}
+      RUBY
+    end
+
+    it 'disallows non-empty frozen hash literal' do
+      expect_offense(<<~RUBY)
+        attribute :config, default: { a: [] }.freeze
+                                    ^^^^^^^^^^^^^^^^ #{message}
+      RUBY
+    end
+
     it 'disallows array literals' do
       expect_offense(<<~RUBY)
         attribute :foo, :string, array: true, default: []
@@ -99,6 +120,18 @@ RSpec.describe RuboCop::Cop::Rails::AttributeDefaultBlockValue, :config do
     it 'allows block' do
       expect_no_offenses(<<~RUBY)
         attribute :foo, :datetime, default: -> { Time.zone.now }
+      RUBY
+    end
+
+    it 'allows frozen array literal' do
+      expect_no_offenses(<<~RUBY)
+        attribute :foo, :string, array: true, default: [].freeze
+      RUBY
+    end
+
+    it 'allows frozen hash literal' do
+      expect_no_offenses(<<~RUBY)
+        attribute :foo, default: {}.freeze
       RUBY
     end
 
