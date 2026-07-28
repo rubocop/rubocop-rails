@@ -665,6 +665,13 @@ Rails/IgnoredSkipActionFilterOption:
     - '**/app/controllers/**/*.rb'
     - '**/app/mailers/**/*.rb'
 
+Rails/InBatchesMigrationTransaction:
+  Description: 'Check for `in_batches` block usage in migrations without `disable_ddl_transaction!`.'
+  Enabled: pending
+  VersionAdded: <<next>>
+  Include:
+    - db/**/*.rb
+
 Rails/IndexBy:
   Description: 'Prefer `index_by` over `each_with_object`, `to_h`, or `map`.'
   Enabled: true
