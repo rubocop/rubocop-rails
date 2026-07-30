@@ -80,7 +80,7 @@ module RuboCop
         PATTERN
 
         def on_send(node)
-          return if target_rails_version >= 7.2
+          return unless enable_for_all_rails_versions? || target_rails_version < 7.2
           return unless in_transaction_block?(node)
 
           exit_statements(node.parent.body).each do |statement_node|
@@ -126,6 +126,10 @@ module RuboCop
 
         def transaction_method?(method_name)
           cop_config.fetch('TransactionMethods', []).include?(method_name.to_s)
+        end
+
+        def enable_for_all_rails_versions?
+          cop_config.fetch('EnableForAllRailsVersions', false)
         end
       end
     end
