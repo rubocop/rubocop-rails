@@ -9,7 +9,7 @@ require_relative 'rubocop/rails/version'
 require_relative 'rubocop/rails/schema_loader'
 require_relative 'rubocop/rails/schema_loader/schema'
 require_relative 'rubocop/rails/plugin'
-require_relative 'rubocop/cop/rails_cops'
+require_relative 'rubocop/cop/rails'
 
 require_relative 'rubocop/rails/migration_file_skippable'
 
