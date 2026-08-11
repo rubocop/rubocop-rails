@@ -80,6 +80,7 @@ module RuboCop
         def check_for_slash_after_rails_root_in_dstr(node)
           rails_root_index = find_rails_root_index(node)
           slash_node = node.children[rails_root_index + 1]
+          return if slash_node&.source == File::SEPARATOR
           return unless slash_node&.str_type? && slash_node.source.start_with?(File::SEPARATOR)
           return unless node.children[rails_root_index].children.first.send_type?
 
@@ -132,20 +133,29 @@ module RuboCop
         def valid_arguments_for_file_join_with_rails_root?(arguments)
           return false unless arguments.any? { |arg| rails_root_nodes?(arg) }
 
-          arguments.none? { |arg| arg.variable? || arg.const_type? || string_contains_multiple_slashes?(arg) }
+          arguments.none? do |arg|
+            arg.variable? || arg.const_type? ||
+              string_contains_multiple_slashes?(arg) || string_with_trailing_slash?(arg)
+          end
         end
 
         def valid_string_arguments_for_rails_root_join?(arguments)
           return false unless arguments.size > 1
           return false unless arguments.all?(&:str_type?)
 
-          arguments.none? { |arg| string_with_leading_slash?(arg) || string_contains_multiple_slashes?(arg) }
+          arguments.none? do |arg|
+            string_with_leading_slash?(arg) ||
+              string_contains_multiple_slashes?(arg) || string_with_trailing_slash?(arg)
+          end
         end
 
         def valid_slash_separated_path_for_rails_root_join?(arguments)
           return false unless arguments.any? { |arg| string_contains_slash?(arg) }
 
-          arguments.none? { |arg| string_with_leading_slash?(arg) || string_contains_multiple_slashes?(arg) }
+          arguments.none? do |arg|
+            string_with_leading_slash?(arg) ||
+              string_contains_multiple_slashes?(arg) || string_with_trailing_slash?(arg)
+          end
         end
 
         def string_contains_slash?(node)
@@ -158,6 +168,10 @@ module RuboCop
 
         def string_with_leading_slash?(node)
           node.str_type? && node.value.start_with?(File::SEPARATOR)
+        end
+
+        def string_with_trailing_slash?(node)
+          node.str_type? && node.value.end_with?(File::SEPARATOR)
         end
 
         def register_offense(node, require_to_s:, &block)
