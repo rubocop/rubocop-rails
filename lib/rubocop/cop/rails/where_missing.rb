@@ -89,7 +89,7 @@ module RuboCop
           end
         end
 
-        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable-next Metrics/AbcSize
         def remove_where_method(corrector, node, where_node)
           range = range_between(where_node.loc.selector.begin_pos, where_node.loc.end.end_pos)
           if node.multiline? && !same_line?(node, where_node)
@@ -102,7 +102,6 @@ module RuboCop
 
           corrector.remove(range)
         end
-        # rubocop:enable Metrics/AbcSize
 
         def same_line?(left_joins_node, where_node)
           left_joins_node.loc.selector.line == where_node.loc.selector.line

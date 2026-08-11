@@ -27,9 +27,8 @@ module RuboCop
         SUPERCLASS = 'ApplicationController'
         BASE_PATTERN = '(const (const {nil? cbase} :ActionController) :Base)'
 
-        # rubocop:disable Layout/ClassStructure
+        # rubocop:disable-next Layout/ClassStructure
         include RuboCop::Cop::EnforceSuperclass
-        # rubocop:enable Layout/ClassStructure
       end
     end
   end

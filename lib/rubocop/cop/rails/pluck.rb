@@ -62,7 +62,7 @@ module RuboCop
           (any_block (call _ {:map :collect}) $_argument (send lvar :[] $_key))
         PATTERN
 
-        # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        # rubocop:disable-next Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def on_block(node)
           return if node.each_ancestor(:any_block).first&.receiver
 
@@ -82,7 +82,6 @@ module RuboCop
             register_offense(node, key)
           end
         end
-        # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         alias on_numblock on_block
         alias on_itblock on_block
 

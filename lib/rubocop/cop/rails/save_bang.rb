@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable-next Metrics/ClassLength
 module RuboCop
   module Cop
     module Rails
@@ -152,7 +152,7 @@ module RuboCop
           register_offense(node, CREATE_MSG)
         end
 
-        # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable-next Metrics/CyclomaticComplexity
         def on_send(node)
           return unless persist_method?(node)
           return if return_value_assigned?(node)
@@ -164,7 +164,6 @@ module RuboCop
 
           register_offense(node, MSG)
         end
-        # rubocop:enable Metrics/CyclomaticComplexity
         alias on_csend on_send
 
         private
@@ -356,4 +355,3 @@ module RuboCop
     end
   end
 end
-# rubocop:enable Metrics/ClassLength

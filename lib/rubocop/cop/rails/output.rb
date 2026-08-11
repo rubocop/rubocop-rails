@@ -38,7 +38,7 @@ module RuboCop
             ...)
         PATTERN
 
-        # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable-next Metrics/CyclomaticComplexity
         def on_send(node)
           return if node.parent&.call_type? || node.block_node
           return if !output?(node) && !io_output?(node)
@@ -50,7 +50,6 @@ module RuboCop
             corrector.replace(range, 'Rails.logger.debug')
           end
         end
-        # rubocop:enable Metrics/CyclomaticComplexity
 
         private
 

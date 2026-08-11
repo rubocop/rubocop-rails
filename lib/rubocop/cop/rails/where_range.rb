@@ -92,7 +92,7 @@ module RuboCop
           receiver&.send_type? && receiver.method?(:where)
         end
 
-        # rubocop:disable Metrics
+        # rubocop:disable-next Metrics
         def extract_column_and_value(template_node, values_node)
           case template_node.value
           when GTEQ_ANONYMOUS_RE
@@ -157,7 +157,6 @@ module RuboCop
 
           [column_qualifier, "#{lhs_source}#{operator}#{rhs_source}"] if operator
         end
-        # rubocop:enable Metrics
 
         def range_operator(comparison_operator)
           comparison_operator == '<' ? '...' : '..'

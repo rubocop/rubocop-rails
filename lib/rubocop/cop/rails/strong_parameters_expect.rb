@@ -109,7 +109,7 @@ module RuboCop
                  :require  _require_param_name)
         PATTERN
 
-        # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+        # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength
         def on_send(node)
           return if part_of_ignored_node?(node)
 
@@ -141,7 +141,6 @@ module RuboCop
 
           ignore_node(node)
         end
-        # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
         alias on_csend on_send
 
         private
@@ -157,7 +156,7 @@ module RuboCop
           end
         end
 
-        # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        # rubocop:disable-next Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def offensive_bracket_access?(node)
           return false unless (parent = node.parent)
           return false if parent.or_type?
@@ -174,7 +173,6 @@ module RuboCop
             raising_finder_method?(parent)
           end
         end
-        # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
         def raising_finder_method?(node)
           RAISING_FINDER_METHODS.include?(node.method_name)

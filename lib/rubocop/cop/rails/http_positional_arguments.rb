@@ -87,7 +87,7 @@ module RuboCop
           end
         end
 
-        # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable-next Metrics/CyclomaticComplexity
         def needs_conversion?(data)
           return false if data.forwarded_args_type? || forwarded_kwrestarg?(data)
           return true unless data.hash_type?
@@ -97,7 +97,6 @@ module RuboCop
             special_keyword_arg?(pair.key) || (format_arg?(pair.key) && data.pairs.one?)
           end
         end
-        # rubocop:enable Metrics/CyclomaticComplexity
 
         def special_keyword_arg?(node)
           node.sym_type? && KEYWORD_ARGS.include?(node.value)

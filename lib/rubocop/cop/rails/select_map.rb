@@ -58,7 +58,7 @@ module RuboCop
           receiver_chain?(node, select_node) ? select_node : nil
         end
 
-        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable-next Metrics/AbcSize
         def autocorrect(corrector, select_node, node, preferred_method)
           if (parent = select_node.parent).loc?(:dot)
             corrector.remove(parent.loc.dot)
@@ -68,7 +68,6 @@ module RuboCop
             corrector.replace(node, "#{select_node.receiver.source}.#{preferred_method}")
           end
         end
-        # rubocop:enable Metrics/AbcSize
 
         def match_column_name?(select_candidate, column_name)
           return false unless select_candidate.arguments.one?

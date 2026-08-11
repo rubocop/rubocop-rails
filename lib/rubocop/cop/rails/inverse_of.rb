@@ -178,7 +178,7 @@ module RuboCop
           (pair (sym :inverse_of) nil)
         PATTERN
 
-        # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        # rubocop:disable-next Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def on_send(node)
           recv, arguments = association_recv_arguments(node)
           return unless arguments
@@ -197,7 +197,6 @@ module RuboCop
 
           add_offense(node.loc.selector, message: message(options))
         end
-        # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
         def scope?(arguments)
           !ignore_scopes? && arguments.any?(&:block_type?)

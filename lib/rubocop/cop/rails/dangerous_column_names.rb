@@ -34,7 +34,7 @@ module RuboCop
         ].to_set.freeze
 
         # Generated from `ActiveRecord::AttributeMethods.dangerous_attribute_methods` on activerecord 7.1.3.
-        # rubocop:disable Metrics/CollectionLiteralLength
+        # rubocop:disable-next Metrics/CollectionLiteralLength
         DANGEROUS_COLUMN_NAMES = %w[
           __callbacks
           __id__
@@ -406,7 +406,6 @@ module RuboCop
           write_attribute
           write_store_attribute
         ].freeze
-        # rubocop:enable Metrics/CollectionLiteralLength
 
         MSG = 'Avoid dangerous column names.'
 

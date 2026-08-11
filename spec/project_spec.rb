@@ -77,7 +77,7 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
       end
     end
 
-    # rubocop:disable RSpec/NoExpectationExample
+    # rubocop:disable-next RSpec/NoExpectationExample
     it 'has a SupportedStyles for all EnforcedStyle and EnforcedStyle is valid' do
       errors = []
       cop_names.each do |name|
@@ -97,9 +97,8 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
 
       raise errors.join("\n") unless errors.empty?
     end
-    # rubocop:enable RSpec/NoExpectationExample
 
-    # rubocop:disable RSpec/NoExpectationExample
+    # rubocop:disable-next RSpec/NoExpectationExample
     it 'does not have any duplication' do
       fname = File.expand_path('../config/default.yml', __dir__)
       content = File.read(fname)
@@ -107,7 +106,6 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
         raise "#{fname} has duplication of #{key1.value} on line #{key1.start_line} and line #{key2.start_line}"
       end
     end
-    # rubocop:enable RSpec/NoExpectationExample
 
     it 'does not include `Safe: true`' do
       cop_names.each do |name|
@@ -282,9 +280,8 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
     let(:path) { File.expand_path('../CHANGELOG.md', __dir__) }
     let(:entries) { lines.grep(/^\*/).map(&:chomp) }
 
-    # rubocop:disable RSpec/IncludeExamples
+    # rubocop:disable-next RSpec/IncludeExamples
     include_examples 'has Changelog format'
-    # rubocop:enable RSpec/IncludeExamples
 
     context 'future entries' do
       let(:allowed_cop_names) do
@@ -299,9 +296,8 @@ RSpec.describe 'RuboCop Rails Project', type: :feature do
         RuboCop::ConfigObsoletion.legacy_cop_names
       end
 
-      # rubocop:disable RSpec/LeakyLocalVariable
+      # rubocop:disable-next RSpec/LeakyLocalVariable
       dir = File.expand_path('../changelog', __dir__)
-      # rubocop:enable RSpec/LeakyLocalVariable
 
       it 'does not have a directory' do
         expect(Dir["#{dir}/*"].none? { |path| File.directory?(path) }).to be(true)

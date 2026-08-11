@@ -47,7 +47,7 @@ module RuboCop
 
         private
 
-        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable-next Metrics/AbcSize
         def correct_redirect_back(corrector, node, fallback_pair, fallback_value, options)
           corrector.replace(node.loc.selector, 'redirect_back_or_to')
 
@@ -64,7 +64,6 @@ module RuboCop
 
           wrap_with_parentheses(node, corrector) unless node.parenthesized?
         end
-        # rubocop:enable Metrics/AbcSize
 
         def remove_fallback_location_pair(corrector, hash_node, fallback_pair)
           pairs = hash_node.pairs

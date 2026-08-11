@@ -19,9 +19,8 @@ module FileHelper
     end
   end
 
-  # rubocop:disable InternalAffairs/CreateEmptyFile
+  # rubocop:disable-next InternalAffairs/CreateEmptyFile
   def create_empty_file(file_path)
     create_file(file_path, '')
   end
-  # rubocop:enable InternalAffairs/CreateEmptyFile
 end
