@@ -6,7 +6,7 @@ module RuboCop
     module RoutesHelper
       extend NodePattern::Macros
 
-      HTTP_METHODS = %i[get post put patch delete].freeze
+      HTTP_METHODS = %i[get post put patch delete query].freeze
 
       def_node_matcher :routes_draw?, <<~PATTERN
         (send (send _ :routes) :draw)
