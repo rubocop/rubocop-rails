@@ -475,5 +475,20 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config do
         RUBY
       end
     end
+
+    context 'when a source using `include Rack::Test::Methods` is followed by one that does not' do
+      it 'still registers an offense for the second source' do
+        expect_no_offenses(<<~RUBY)
+          include Rack::Test::Methods
+
+          get :create, user_id: @user.id
+        RUBY
+
+        expect_offense(<<~RUBY)
+          get :create, user_id: @user.id
+                       ^^^^^^^^^^^^^^^^^ Use keyword arguments instead of positional arguments for http call: `get`.
+        RUBY
+      end
+    end
   end
 end

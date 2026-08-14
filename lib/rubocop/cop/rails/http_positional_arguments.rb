@@ -51,6 +51,10 @@ module RuboCop
                 (const {nil? cbase} :Rack) :Test) :Methods))
         PATTERN
 
+        def on_new_investigation
+          @use_rack_test_methods = nil
+        end
+
         def on_send(node)
           return if in_routing_block?(node) || use_rack_test_methods?
 
@@ -81,8 +85,11 @@ module RuboCop
           !!node.each_ancestor(:block).detect { |block| ROUTING_METHODS.include?(block.method_name) }
         end
 
+        # The result is the same for every node in a file, so scan the AST only once.
         def use_rack_test_methods?
-          processed_source.ast.each_descendant(:send).any? do |node|
+          return @use_rack_test_methods unless @use_rack_test_methods.nil?
+
+          @use_rack_test_methods = processed_source.ast.each_descendant(:send).any? do |node|
             include_rack_test_methods?(node)
           end
         end
