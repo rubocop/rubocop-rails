@@ -9,6 +9,12 @@
 
 ## master (unreleased)
 
+### Changes
+
+* [#1649](https://github.com/rubocop/rubocop-rails/pull/1649): Allow frozen array/hash literal (e.g. `[].freeze`, `{}.freeze`) as `:default` value in `Rails/AttributeDefaultBlockValue`. ([@kuboon][])
+* [#1652](https://github.com/rubocop/rubocop-rails/pull/1652): Improve `Rails/HttpPositionalArguments` performance by checking for `include Rack::Test::Methods` once per file instead of once per HTTP call. ([@moberegger][])
+* [#1650](https://github.com/rubocop/rubocop-rails/pull/1650): Speed up loading rubocop-rails by lazily loading only the cops and mixins needed for a run. This requires RuboCop 1.89.0+. ([@koic][])
+
 ## 2.36.0 (2026-07-11)
 
 ### Bug fixes
@@ -1468,3 +1474,5 @@
 [@aki77]: https://github.com/aki77
 [@conwayje]: https://github.com/conwayje
 [@ilianah]: https://github.com/ilianah
+[@kuboon]: https://github.com/kuboon
+[@moberegger]: https://github.com/moberegger

@@ -1,1 +1,0 @@
-* [#1652](https://github.com/rubocop/rubocop-rails/pull/1652): Improve `Rails/HttpPositionalArguments` performance by checking for `include Rack::Test::Methods` once per file instead of once per HTTP call. ([@moberegger][])
