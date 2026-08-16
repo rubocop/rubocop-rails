@@ -26,6 +26,10 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config do
       expect_no_offenses('head :destroy, id: @user.id')
     end
 
+    it 'does not register an offense for query method' do
+      expect_no_offenses('query :create, user_id: @user.id')
+    end
+
     it 'does not register an offense for process method' do
       expect_no_offenses(<<~RUBY)
         process :new, method: :get, params: { user_id: @user.id }
@@ -166,6 +170,17 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config do
 
       expect_correction(<<~RUBY)
         head :create, params: { user_id: @user.id }
+      RUBY
+    end
+
+    it 'registers an offense for query method' do
+      expect_offense(<<~RUBY)
+        query :create, user_id: @user.id
+                       ^^^^^^^^^^^^^^^^^ Use keyword arguments instead of positional arguments for http call: `query`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        query :create, params: { user_id: @user.id }
       RUBY
     end
 
