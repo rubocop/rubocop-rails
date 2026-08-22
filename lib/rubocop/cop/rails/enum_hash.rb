@@ -25,6 +25,7 @@ module RuboCop
       #
       class EnumHash < Base
         extend AutoCorrector
+        extend TargetRailsVersion
 
         MSG = 'Enum defined as an array found in `%<enum>s` enum declaration. Use hash syntax instead.'
         RESTRICT_ON_SEND = %i[enum].freeze

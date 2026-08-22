@@ -152,6 +152,7 @@ module RuboCop
       #   end
       class ReversibleMigration < Base
         include MigrationsHelper
+        extend TargetRailsVersion
 
         MSG = '%<action>s is not reversible.'
 

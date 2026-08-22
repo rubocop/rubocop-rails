@@ -35,6 +35,7 @@ module RuboCop
       class DeprecatedActiveModelErrorsMethods < Base
         include RangeHelp
         extend AutoCorrector
+        extend TargetRailsVersion
 
         MSG = 'Avoid manipulating ActiveModel errors as hash directly.'
         AUTOCORRECTABLE_METHODS = %i[<< clear keys].freeze

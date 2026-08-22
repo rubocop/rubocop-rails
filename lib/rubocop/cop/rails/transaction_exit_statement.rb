@@ -64,6 +64,8 @@ module RuboCop
       #   end
       #
       class TransactionExitStatement < Base
+        extend TargetRailsVersion
+
         MSG = 'Exit statement `%<statement>s` is not allowed. Use `raise` (rollback) or `next` (commit).'
         BUILT_IN_TRANSACTION_METHODS = %i[transaction with_lock].freeze
 

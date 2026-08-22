@@ -10,6 +10,9 @@ end
 require 'rubocop-rails'
 require 'rubocop/rspec/support'
 require_relative 'support/file_helper'
+# The 'rails configuration' context must be registered before the 'with Rails N.N'
+# contexts in shared_contexts.rb. See support/rails_configuration.rb.
+require_relative 'support/rails_configuration'
 require_relative 'support/shared_contexts'
 
 # Requires supporting files with custom matchers and macros, etc,
