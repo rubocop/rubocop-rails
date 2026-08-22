@@ -1,0 +1,1 @@
+* [#1657](https://github.com/rubocop/rubocop-rails/pull/1657): Fix version-gated cops using `minimum_target_rails_version` to respect `AllCops: TargetRailsVersion` so that an explicitly configured version takes precedence over the lockfile and enables these cops in projects without a lockfile. ([@koic][])
