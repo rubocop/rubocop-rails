@@ -58,6 +58,25 @@ module RuboCop
         def target_rails_version
           @target_rails_version ||= TargetRailsVersion.resolve(config)
         end
+
+        private
+
+        # Overrides `RuboCop::Cop::Base` so that `railties` requirements declared via
+        # `minimum_target_rails_version` are checked against the resolved target Rails version
+        # instead of the lockfile alone. This keeps `AllCops: TargetRailsVersion` effective for
+        # version-gated cops, including in projects without a lockfile.
+        def target_satisfies_all_gem_version_requirements?
+          self.class.gem_requirements.all? do |gem_name, version_requirement|
+            if gem_name == TARGET_GEM_NAME
+              version_requirement.satisfied_by?(Gem::Version.new(target_rails_version.to_s))
+            else
+              gem_versions_in_target = config.gem_versions_in_target
+              gem_version_in_target = gem_versions_in_target && gem_versions_in_target[gem_name]
+
+              gem_version_in_target && version_requirement.satisfied_by?(gem_version_in_target)
+            end
+          end
+        end
       end
     end
   end
