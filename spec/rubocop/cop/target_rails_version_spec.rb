@@ -176,4 +176,61 @@ RSpec.describe RuboCop::Cop::TargetRailsVersion do
       end
     end
   end
+
+  describe 'version gating for cops using `minimum_target_rails_version`' do
+    subject(:satisfied) { cop.send(:target_satisfies_all_gem_version_requirements?) }
+
+    include_context 'maintain registry'
+
+    let(:cop_class) do
+      stub_cop_class('RuboCop::Cop::Test::VersionGatedCop') do
+        # `described_class` is unavailable here because this block is class-evaled.
+        extend RuboCop::Cop::TargetRailsVersion # rubocop:disable RSpec/DescribedClass
+
+        minimum_target_rails_version 7.1
+      end
+    end
+    let(:cop) { cop_class.new(configuration) }
+
+    context 'when TargetRailsVersion satisfies the requirement and no lockfile exists', :isolated_environment do
+      let(:configuration) do
+        RuboCop::Config.new({ 'AllCops' => { 'TargetRailsVersion' => 7.1 } }, loaded_path)
+      end
+
+      it { is_expected.to be(true) }
+    end
+
+    context 'when TargetRailsVersion is below the requirement and the lockfile `railties` satisfies it' do
+      let(:configuration) do
+        configuration = RuboCop::Config.new({ 'AllCops' => { 'TargetRailsVersion' => 5.0 } }, loaded_path)
+        allow(configuration).to receive(:gem_versions_in_target).and_return({ 'railties' => Gem::Version.new('7.1.0') })
+        configuration
+      end
+
+      it { is_expected.to be(false) }
+    end
+
+    context 'when TargetRailsVersion is not set and the lockfile `railties` satisfies the requirement' do
+      let(:configuration) do
+        configuration = RuboCop::Config.new({ 'AllCops' => {} }, loaded_path)
+        allow(configuration).to receive(:gem_versions_in_target).and_return({ 'railties' => Gem::Version.new('7.2.0') })
+        configuration
+      end
+
+      it { is_expected.to be(true) }
+    end
+
+    context 'when neither TargetRailsVersion nor a lockfile exists', :isolated_environment do
+      let(:configuration) { RuboCop::Config.new({ 'AllCops' => {} }, loaded_path) }
+
+      it { is_expected.to be(false) }
+    end
+
+    # The override targets a private method of `RuboCop::Cop::Base`. This example fails loudly
+    # when RuboCop core renames it, in which case the override must follow; the behavior examples
+    # above cannot catch that because they call the override directly.
+    it 'overrides a private method that still exists in RuboCop core' do
+      expect(RuboCop::Cop::Base.private_method_defined?(:target_satisfies_all_gem_version_requirements?)).to be(true)
+    end
+  end
 end
