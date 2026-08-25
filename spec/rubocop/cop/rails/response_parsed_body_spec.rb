@@ -43,6 +43,48 @@ RSpec.describe RuboCop::Cop::Rails::ResponseParsedBody, :config do
     end
   end
 
+  context 'when `Oj.load(response.body)` is used' do
+    it 'registers offense' do
+      expect_offense(<<~RUBY)
+        expect(Oj.load(response.body)).to eq('foo' => 'bar')
+               ^^^^^^^^^^^^^^^^^^^^^^ Prefer `response.parsed_body`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        expect(response.parsed_body).to eq('foo' => 'bar')
+      RUBY
+    end
+  end
+
+  context 'when `::Oj.load(response.body)` is used' do
+    it 'registers offense' do
+      expect_offense(<<~RUBY)
+        expect(::Oj.load(response.body)).to eq('foo' => 'bar')
+               ^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `response.parsed_body`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        expect(response.parsed_body).to eq('foo' => 'bar')
+      RUBY
+    end
+  end
+
+  context 'when `Oj.load(response.body)` is used with options' do
+    it 'registers no offense' do
+      expect_no_offenses(<<~RUBY)
+        expect(Oj.load(response.body, mode: :strict)).to eq('foo' => 'bar')
+      RUBY
+    end
+  end
+
+  context 'when `Oj.load` is used with another source' do
+    it 'registers no offense' do
+      expect_no_offenses(<<~RUBY)
+        expect(Oj.load(payload)).to eq('foo' => 'bar')
+      RUBY
+    end
+  end
+
   context 'when `Nokogiri::HTML(response.body)` is used on Rails 7.0', :rails70 do
     it 'registers no offense' do
       expect_no_offenses(<<~RUBY)
