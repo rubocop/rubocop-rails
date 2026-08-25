@@ -68,6 +68,22 @@ RSpec.describe RuboCop::Cop::Rails::MultipleRoutePaths, :config do
     RUBY
   end
 
+  it 'registers an offense when using `query` with multiple route paths' do
+    expect_offense(<<~RUBY)
+      Rails.application.routes.draw do
+        query '/users', '/other_path/users', to: 'users#index'
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use separate routes instead of combining multiple route paths in a single route.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      Rails.application.routes.draw do
+        query '/users', to: 'users#index'
+        query '/other_path/users', to: 'users#index'
+      end
+    RUBY
+  end
+
   it 'does not register an offense when using single string path method calls' do
     expect_no_offenses(<<~RUBY)
       Rails.application.routes.draw do
