@@ -200,6 +200,14 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config do
       end
     end
 
+    describe 'when using AllowedKeys option value' do
+      let(:cop_config) { { 'AllowedKeys' => %w[user_id foo] } }
+
+      it 'does not register an offense' do
+        expect_no_offenses("get :new, user_id: @user.id, foo: 'bar'")
+      end
+    end
+
     describe '.get' do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
