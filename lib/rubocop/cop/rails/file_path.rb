@@ -51,6 +51,14 @@ module RuboCop
           (send (const {nil? cbase} :File) :join ...)
         PATTERN
 
+        def_node_matcher :file_join_with_rails_root_nodes?, <<~PATTERN
+          (send (const {nil? cbase} :File) :join (_ $_)* {(send #rails_root_nodes? :to_s) #rails_root_nodes?} ...)
+        PATTERN
+
+        def_node_matcher :file_join_with_rails_root_join_nodes?, <<~PATTERN
+          (send (const {nil? cbase} :File) :join (_ $_)* {(send #rails_root_join_nodes? :to_s) #rails_root_join_nodes?} ...)
+        PATTERN
+
         def_node_search :rails_root_nodes?, <<~PATTERN
           (send (const {nil? cbase} :Rails) :root)
         PATTERN
@@ -68,8 +76,10 @@ module RuboCop
         end
 
         def on_send(node)
+          check_for_file_join_with_rails_root_join(node)
           check_for_file_join_with_rails_root(node)
           return unless node.receiver
+          return if node.ancestors.any? { |ancestor| file_join_nodes?(ancestor) }
 
           check_for_rails_root_join_with_slash_separated_path(node)
           check_for_rails_root_join_with_string_arguments(node)
@@ -99,11 +109,20 @@ module RuboCop
         end
 
         def check_for_file_join_with_rails_root(node)
-          return unless file_join_nodes?(node)
+          return unless file_join_with_rails_root_nodes?(node)
           return unless valid_arguments_for_file_join_with_rails_root?(node.arguments)
+          return if node.descendants.any? { |descendant| file_join_nodes?(descendant) }
 
           register_offense(node, require_to_s: true) do |corrector|
-            autocorrect_file_join(corrector, node) unless node.first_argument.array_type?
+            autocorrect_file_join_with_rails_root(corrector, node) unless node.first_argument.array_type?
+          end
+        end
+
+        def check_for_file_join_with_rails_root_join(node)
+          return unless file_join_with_rails_root_join_nodes?(node)
+
+          register_offense(node, require_to_s: true) do |corrector|
+            autocorrect_file_join_with_rails_root_join(corrector, node)
           end
         end
 
@@ -201,7 +220,7 @@ module RuboCop
           corrector.remove(extension_node)
         end
 
-        def autocorrect_file_join(corrector, node)
+        def autocorrect_file_join_with_rails_root(corrector, node)
           replace_receiver_with_rails_root(corrector, node)
           remove_first_argument_with_comma(corrector, node)
           process_arguments(corrector, node.arguments)
@@ -236,6 +255,67 @@ module RuboCop
 
         def append_to_string_conversion(corrector, node)
           corrector.insert_after(node, '.to_s')
+        end
+
+        def autocorrect_file_join_with_rails_root_join(corrector, node)
+          rails_root_join_node = find_rails_root_join_node(node)
+          return unless rails_root_join_node
+
+          combined_arguments = combine_arguments(rails_root_join_node, node)
+          corrector.replace(node, "Rails.root.join(#{combined_arguments}).to_s")
+        end
+
+        def find_rails_root_join_node(node)
+          node.arguments.find { |argument| rails_root_join_typical?(argument) }
+        end
+
+        def rails_root_join_typical?(node)
+          rails_root_join_nodes?(node) || (node.send_type? && rails_root_join_nodes?(node.receiver))
+        end
+
+        def extract_rails_root_call(rails_root_join_node)
+          if rails_root_join_node.send_type? && rails_root_join_node.method?(:to_s)
+            rails_root_join_node.receiver
+          else
+            rails_root_join_node
+          end
+        end
+
+        def combine_arguments(rails_root_join_node, node)
+          rails_root_call = extract_rails_root_call(rails_root_join_node)
+          rails_root_arguments = rails_root_call.arguments
+          other_arguments = node.arguments.reject { |argument| argument == rails_root_join_node }
+
+          case style
+          when :arguments
+            combine_as_arguments(rails_root_arguments, other_arguments)
+          when :slashes
+            combine_as_slashes(rails_root_arguments, other_arguments)
+          end
+        end
+
+        def combine_as_arguments(rails_root_arguments, other_arguments)
+          first_argument = other_arguments.first
+
+          other_arguments_values =
+            if first_argument.dstr_type?
+              first_argument.children.map do |child|
+                "'#{child.value.delete_prefix('/')}'"
+              end
+            else
+              ["'#{first_argument.value.delete_prefix('/')}'"]
+            end
+
+          (rails_root_arguments.map(&:source) + other_arguments_values).join(', ')
+        end
+
+        def combine_as_slashes(rails_root_arguments, other_arguments)
+          return "'#{rails_root_arguments.map(&:value).join}'" if other_arguments.empty?
+
+          first_value = other_arguments.first.value
+          separator = first_value.start_with?(File::SEPARATOR) ? '' : '/'
+
+          "'#{(rails_root_arguments + other_arguments).map(&:value).join(separator)}'"
         end
 
         def autocorrect_rails_root_join_with_string_arguments(corrector, node)
