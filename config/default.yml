@@ -1224,6 +1224,9 @@ Rails/TransactionExitStatement:
   Enabled: pending
   VersionAdded: '2.14'
   TransactionMethods: []
+  # This rule is disabled by default in Rails 7.2 and above
+  # Set EnableForAllRailsVersions to true to enable this rule regardless of Rails version
+  EnableForAllRailsVersions: false
 
 Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'
