@@ -253,6 +253,14 @@ Rails/AssertNot:
   Include:
     - '**/test/**/*'
 
+Rails/AssertRaisesMatch:
+  Description: 'Use `assert_raises` with a `match:` keyword instead of a separate message assertion.'
+  Enabled: pending
+  SafeAutoCorrect: false
+  VersionAdded: '<<next>>'
+  Include:
+    - '**/test/**/*'
+
 Rails/AttributeDefaultBlockValue:
   Description: 'Pass method call in block for attribute option `default`.'
   Enabled: pending
