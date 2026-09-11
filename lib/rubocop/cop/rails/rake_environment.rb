@@ -45,22 +45,62 @@ module RuboCop
             return if with_dependencies?(task_method)
 
             add_offense(task_method) do |corrector|
-              if with_arguments?(task_method)
-                new_task_dependency = correct_task_arguments_dependency(task_method)
-                corrector.replace(task_arguments(task_method), new_task_dependency)
-              else
-                task_name = task_method.first_argument
-                new_task_dependency = correct_task_dependency(task_name)
-                corrector.replace(task_name, new_task_dependency)
-              end
+              autocorrect(corrector, task_method)
             end
           end
         end
 
         private
 
-        def correct_task_arguments_dependency(task_method)
-          "#{task_arguments(task_method).source} => :environment"
+        def autocorrect(corrector, task_method)
+          task_name, *task_arguments = task_method.arguments
+
+          if task_arguments.empty?
+            correct_task_name(corrector, task_name)
+          else
+            correct_task_arguments(corrector, task_arguments)
+          end
+        end
+
+        def correct_task_name(corrector, task_name)
+          if task_name.hash_type?
+            correct_empty_dependencies(corrector, task_name)
+          else
+            corrector.replace(task_name, correct_task_dependency(task_name))
+          end
+        end
+
+        def correct_task_arguments(corrector, task_arguments)
+          if task_arguments.one?
+            correct_single_task_argument(corrector, task_arguments.first)
+          elsif task_arguments.all? { |argument| argument.type?(:sym, :str) }
+            corrector.replace(task_arguments_range(task_arguments), task_arguments_dependency(task_arguments))
+          end
+        end
+
+        def correct_single_task_argument(corrector, argument)
+          if argument.hash_type?
+            correct_empty_dependencies(corrector, argument)
+          elsif argument.array_type?
+            corrector.replace(argument, "#{argument.source} => :environment")
+          elsif argument.type?(:sym, :str)
+            corrector.replace(argument, task_arguments_dependency([argument]))
+          end
+        end
+
+        def task_arguments_dependency(task_arguments)
+          "[#{task_arguments.map(&:source).join(', ')}] => :environment"
+        end
+
+        def correct_empty_dependencies(corrector, hash_node)
+          dependencies = hash_node.pairs.first&.value
+          return unless dependencies&.array_type? && dependencies.values.empty?
+
+          corrector.replace(dependencies, '[:environment]')
+        end
+
+        def task_arguments_range(task_arguments)
+          task_arguments.first.source_range.join(task_arguments.last.source_range)
         end
 
         def correct_task_dependency(task_name)
@@ -86,14 +126,6 @@ module RuboCop
               key.value.to_sym
             end
           end
-        end
-
-        def task_arguments(node)
-          node.arguments[1]
-        end
-
-        def with_arguments?(node)
-          node.arguments.size > 1 && node.arguments[1].array_type?
         end
 
         def with_dependencies?(node)

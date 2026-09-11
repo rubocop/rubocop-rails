@@ -1,0 +1,1 @@
+* [#1660](https://github.com/rubocop/rubocop-rails/pull/1660): Fix an incorrect autocorrect for `Rails/RakeEnvironment` when a task declares its arguments without an array literal, or declares an empty dependency list. ([@viralpraxis][])

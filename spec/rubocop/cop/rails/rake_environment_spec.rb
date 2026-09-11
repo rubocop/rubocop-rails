@@ -53,6 +53,68 @@ RSpec.describe RuboCop::Cop::Rails::RakeEnvironment, :config do
     RUBY
   end
 
+  it 'registers an offense for a task with a bare argument' do
+    expect_offense(<<~RUBY)
+      task :foo, :arg do
+      ^^^^^^^^^^^^^^^ Include `:environment` task as a dependency for all Rake tasks.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      task :foo, [:arg] => :environment do
+      end
+    RUBY
+  end
+
+  it 'registers an offense for a task with several bare arguments' do
+    expect_offense(<<~RUBY)
+      task :foo, :arg1, 'arg2' do
+      ^^^^^^^^^^^^^^^^^^^^^^^^ Include `:environment` task as a dependency for all Rake tasks.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      task :foo, [:arg1, 'arg2'] => :environment do
+      end
+    RUBY
+  end
+
+  it 'registers an offense but does not correct a task whose arguments are not literals' do
+    expect_offense(<<~RUBY)
+      task :foo, *args do
+      ^^^^^^^^^^^^^^^^ Include `:environment` task as a dependency for all Rake tasks.
+      end
+    RUBY
+
+    expect_no_corrections
+  end
+
+  it 'registers an offense and corrects a task with an empty dependency list' do
+    expect_offense(<<~RUBY)
+      task foo: [] do
+      ^^^^^^^^^^^^ Include `:environment` task as a dependency for all Rake tasks.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      task foo: [:environment] do
+      end
+    RUBY
+  end
+
+  it 'registers an offense and corrects a task with arguments and an empty dependency list' do
+    expect_offense(<<~RUBY)
+      task :foo, [:arg] => [] do
+      ^^^^^^^^^^^^^^^^^^^^^^^ Include `:environment` task as a dependency for all Rake tasks.
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      task :foo, [:arg] => [:environment] do
+      end
+    RUBY
+  end
+
   it 'does not register an offense to task with :environment but it has other dependency before it' do
     expect_no_offenses(<<~RUBY)
       task foo: [:bar, `:environment`] do
