@@ -6,6 +6,13 @@ module RuboCop
       # Checks code that can be written more easily using
       # `Object#presence` defined by Active Support.
       #
+      # @safety
+      #   This cop is unsafe because `Object#presence` returns `self`, and an object
+      #   built with `DelegateClass` forwards `presence` to the object it wraps.
+      #   `Tempfile` is one such class, so `tempfile.close(true) if tempfile.present?`
+      #   and `tempfile.presence&.close(true)` call `Tempfile#close` and `File#close`
+      #   respectively, and the latter raises `ArgumentError`.
+      #
       # @example
       #   # bad
       #   a.present? ? a : nil

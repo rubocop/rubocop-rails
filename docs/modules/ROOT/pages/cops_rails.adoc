@@ -4836,13 +4836,22 @@ core extensions to the numeric classes.
 
 | Enabled
 | Yes
-| Always
+| Always (Unsafe)
 | 0.52
-| 2.34
+| 2.38
 |===
 
 Checks code that can be written more easily using
 `Object#presence` defined by Active Support.
+
+[#safety-railspresence]
+=== Safety
+
+This cop is unsafe because `Object#presence` returns `self`, and an object
+built with `DelegateClass` forwards `presence` to the object it wraps.
+`Tempfile` is one such class, so `tempfile.close(true) if tempfile.present?`
+and `tempfile.presence&.close(true)` call `Tempfile#close` and `File#close`
+respectively, and the latter raises `ArgumentError`.
 
 [#examples-railspresence]
 === Examples
