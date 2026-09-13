@@ -52,6 +52,8 @@ module RuboCop
           return if within_shadowing_method?(node)
 
           add_offense(node, message: build_message(node)) do |corrector|
+            next if nested_read_write_attribute?(node)
+
             corrector.replace(node, node_replacement(node))
           end
         end
@@ -105,6 +107,12 @@ module RuboCop
 
         def write_attribute_replacement(node)
           "self[#{node.first_argument.source}] = #{node.last_argument.source}"
+        end
+
+        def nested_read_write_attribute?(node)
+          node.each_descendant(:send).any? do |descendant|
+            read_write_attribute?(descendant) && !within_shadowing_method?(descendant)
+          end
         end
       end
     end
