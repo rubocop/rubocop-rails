@@ -271,5 +271,32 @@ RSpec.describe RuboCop::Cop::Rails::ReadWriteAttribute, :config do
     it 'registers no offense with explicit receiver' do
       expect_no_offenses('object.write_attribute(:test, val)')
     end
+
+    it 'registers an offense and corrects when the nested call is shadowed by the enclosing method' do
+      expect_offense(<<~RUBY)
+        def foo
+          write_attribute(:bar, read_attribute(:foo))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self[:bar] = read_attribute(:foo)`.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        def foo
+          self[:bar] = read_attribute(:foo)
+        end
+      RUBY
+    end
+
+    it 'registers an offense and corrects a nested `read_attribute`' do
+      expect_offense(<<~RUBY)
+        write_attribute(:attr, read_attribute(:other))
+                               ^^^^^^^^^^^^^^^^^^^^^^ Prefer `self[:other]`.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `self[:attr] = read_attribute(:other)`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        self[:attr] = self[:other]
+      RUBY
+    end
   end
 end
