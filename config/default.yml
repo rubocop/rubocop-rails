@@ -908,6 +908,14 @@ Rails/RedundantAllowNil:
   Include:
     - '**/app/models/**/*.rb'
 
+Rails/RedundantClassNames:
+  Description: >-
+                 Checks for redundant `class_names` calls in the `class`
+                 option of tag helpers.
+  Reference: 'https://api.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-token_list'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
 Rails/RedundantForeignKey:
   Description: 'Checks for associations where the `:foreign_key` option is redundant.'
   Enabled: true

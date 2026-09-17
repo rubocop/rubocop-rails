@@ -99,6 +99,7 @@ module RuboCop
       register_cop :ReadWriteAttribute, "#{__dir__}/rails/read_write_attribute"
       register_cop :RedundantActiveRecordAllMethod, "#{__dir__}/rails/redundant_active_record_all_method"
       register_cop :RedundantAllowNil, "#{__dir__}/rails/redundant_allow_nil"
+      register_cop :RedundantClassNames, "#{__dir__}/rails/redundant_class_names"
       register_cop :RedundantForeignKey, "#{__dir__}/rails/redundant_foreign_key"
       register_cop :RedundantPresenceValidationOnBelongsTo, "#{__dir__}/rails/redundant_presence_validation_on_belongs_to"
       register_cop :RedundantReceiverInWithOptions, "#{__dir__}/rails/redundant_receiver_in_with_options"
