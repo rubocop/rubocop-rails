@@ -28,7 +28,7 @@ RSpec.describe 'cop lazy loading' do # rubocop:disable RSpec/DescribeClass
       puts "loaded_mixin_files=\#{loaded_mixins.size}"
     RUBY
 
-    expect(output).to include('registered=138', 'loaded_cop_files=0', 'loaded_mixin_files=0')
+    expect(output).to include('registered=139', 'loaded_cop_files=0', 'loaded_mixin_files=0')
   end
 
   it 'overrides the deprecated `EnforceSuperclass` autoload registered by RuboCop core' do
