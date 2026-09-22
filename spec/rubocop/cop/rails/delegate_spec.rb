@@ -354,6 +354,105 @@ RSpec.describe RuboCop::Cop::Rails::Delegate, :config do
     RUBY
   end
 
+  it 'autocorrects and preserves a comment in the method body' do
+    expect_offense(<<~RUBY)
+      def bar
+      ^^^ Use `delegate` to define delegations.
+        # foo has the bar we want
+        foo.bar
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      # foo has the bar we want
+      delegate :bar, to: :foo
+    RUBY
+  end
+
+  it 'autocorrects and preserves multiple comments in the method body' do
+    expect_offense(<<~RUBY)
+      def bar
+      ^^^ Use `delegate` to define delegations.
+        # comment1
+        # comment2
+        foo.bar
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      # comment1
+      # comment2
+      delegate :bar, to: :foo
+    RUBY
+  end
+
+  it 'autocorrects and preserves a comment below the delegation call' do
+    expect_offense(<<~RUBY)
+      def bar
+      ^^^ Use `delegate` to define delegations.
+        foo.bar
+        # trailing comment
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      # trailing comment
+      delegate :bar, to: :foo
+    RUBY
+  end
+
+  it 'autocorrects and preserves a trailing inline comment in the method body' do
+    expect_offense(<<~RUBY)
+      def bar
+      ^^^ Use `delegate` to define delegations.
+        foo.bar # some note
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      # some note
+      delegate :bar, to: :foo
+    RUBY
+  end
+
+  it 'autocorrects and preserves comments inside a class with correct indentation' do
+    expect_offense(<<~RUBY)
+      class A
+        def foo
+        ^^^ Use `delegate` to define delegations.
+          # comment1
+          # comment2
+          bar.foo
+        end
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      class A
+        # comment1
+        # comment2
+        delegate :foo, to: :bar
+      end
+    RUBY
+  end
+
+  it 'autocorrects and preserves comments both above and below the delegation call' do
+    expect_offense(<<~RUBY)
+      def bar
+      ^^^ Use `delegate` to define delegations.
+        # comment above
+        foo.bar
+        # comment below
+      end
+    RUBY
+
+    expect_correction(<<~RUBY)
+      # comment above
+      # comment below
+      delegate :bar, to: :foo
+    RUBY
+  end
+
   it 'is disabled for controllers' do
     expect_no_offenses(<<~RUBY, "#{Bundler.root}/app/controllers/foo_controller.rb")
       class FooController
