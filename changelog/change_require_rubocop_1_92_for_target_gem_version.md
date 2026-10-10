@@ -1,0 +1,1 @@
+* [#1666](https://github.com/rubocop/rubocop-rails/pull/1666): Require RuboCop 1.92.0 or later and gate version-gated cops through the public `target_gem_version` API instead of overriding a private RuboCop core method. ([@koic][])
