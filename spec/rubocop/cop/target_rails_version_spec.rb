@@ -226,11 +226,71 @@ RSpec.describe RuboCop::Cop::TargetRailsVersion do
       it { is_expected.to be(false) }
     end
 
-    # The override targets a private method of `RuboCop::Cop::Base`. This example fails loudly
-    # when RuboCop core renames it, in which case the override must follow; the behavior examples
-    # above cannot catch that because they call the override directly.
-    it 'overrides a private method that still exists in RuboCop core' do
-      expect(RuboCop::Cop::Base.private_method_defined?(:target_satisfies_all_gem_version_requirements?)).to be(true)
+    context 'when the cop also requires a gem other than `railties`' do
+      let(:cop_class) do
+        stub_cop_class('RuboCop::Cop::Test::VersionGatedCopWithOtherGem') do
+          # `described_class` is unavailable here because this block is class-evaled.
+          extend RuboCop::Cop::TargetRailsVersion # rubocop:disable RSpec/DescribedClass
+
+          minimum_target_rails_version 7.1
+          requires_gem 'rack', '>= 3.1.0'
+        end
+      end
+
+      context 'when the lockfile `rack` satisfies the requirement' do
+        let(:configuration) do
+          configuration = RuboCop::Config.new({ 'AllCops' => { 'TargetRailsVersion' => 7.1 } }, loaded_path)
+          allow(configuration).to receive(:gem_versions_in_target).and_return({ 'rack' => Gem::Version.new('3.1.0') })
+          configuration
+        end
+
+        it { is_expected.to be(true) }
+      end
+
+      context 'when the lockfile `rack` does not satisfy the requirement' do
+        let(:configuration) do
+          configuration = RuboCop::Config.new({ 'AllCops' => { 'TargetRailsVersion' => 7.1 } }, loaded_path)
+          allow(configuration).to receive(:gem_versions_in_target).and_return({ 'rack' => Gem::Version.new('3.0.0') })
+          configuration
+        end
+
+        it { is_expected.to be(false) }
+      end
+
+      context 'when no lockfile exists', :isolated_environment do
+        let(:configuration) do
+          RuboCop::Config.new({ 'AllCops' => { 'TargetRailsVersion' => 7.1 } }, loaded_path)
+        end
+
+        it { is_expected.to be(false) }
+      end
+    end
+  end
+
+  describe '#target_gem_version' do
+    let(:cop_class) do
+      stub_cop_class('RuboCop::Cop::Test::VersionGatedCop') do
+        # `described_class` is unavailable here because this block is class-evaled.
+        extend RuboCop::Cop::TargetRailsVersion # rubocop:disable RSpec/DescribedClass
+      end
+    end
+    let(:cop) { cop_class.new(configuration) }
+    let(:configuration) do
+      configuration = RuboCop::Config.new({ 'AllCops' => { 'TargetRailsVersion' => 7.1 } }, loaded_path)
+      allow(configuration).to receive(:gem_versions_in_target).and_return(
+        { 'railties' => Gem::Version.new('8.0.0'), 'rack' => Gem::Version.new('3.1.0') }
+      )
+      configuration
+    end
+
+    include_context 'maintain registry'
+
+    it 'returns the resolved target Rails version for `railties`' do
+      expect(cop.target_gem_version('railties')).to eq Gem::Version.new('7.1')
+    end
+
+    it 'returns the locked version for other gems' do
+      expect(cop.target_gem_version('rack')).to eq Gem::Version.new('3.1.0')
     end
   end
 end
