@@ -1167,6 +1167,21 @@ Rails/ThreeStateBooleanColumn:
   Include:
     - db/**/*.rb
 
+Rails/TimeComparison:
+  Description: 'Prefer `past?` and `future?` over comparing time with the current time.'
+  StyleGuide: 'https://rails.rubystyle.guide#time-comparison'
+  Enabled: pending
+  VersionAdded: '<<next>>'
+
+Rails/TimeComparisonStyle:
+  Description: 'Enforces either `before?` and `after?`, or `<` and `>` for comparisons with relative time.'
+  Enabled: false
+  EnforcedStyle: comparison
+  SupportedStyles:
+    - comparison
+    - relative
+  VersionAdded: '<<next>>'
+
 Rails/TimeZone:
   Description: 'Checks the correct usage of time zone aware methods.'
   StyleGuide: 'https://rails.rubystyle.guide#time'
