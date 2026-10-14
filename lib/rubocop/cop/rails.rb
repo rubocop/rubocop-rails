@@ -72,6 +72,7 @@ module RuboCop
       register_cop :I18nLocaleTexts, "#{__dir__}/rails/i18n_locale_texts"
       register_cop :IgnoredColumnsAssignment, "#{__dir__}/rails/ignored_columns_assignment"
       register_cop :IgnoredSkipActionFilterOption, "#{__dir__}/rails/ignored_skip_action_filter_option"
+      register_cop :InGroupsOf, "#{__dir__}/rails/in_groups_of"
       register_cop :IndexBy, "#{__dir__}/rails/index_by"
       register_cop :IndexWith, "#{__dir__}/rails/index_with"
       register_cop :Inquiry, "#{__dir__}/rails/inquiry"

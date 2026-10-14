@@ -665,6 +665,16 @@ Rails/IgnoredSkipActionFilterOption:
     - '**/app/controllers/**/*.rb'
     - '**/app/mailers/**/*.rb'
 
+Rails/InGroupsOf:
+  Description: 'Prefer `each_slice` over `in_groups_of` to avoid padding groups with `nil`.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+  EnforcedStyle: each_slice
+  SupportedStyles:
+    - each_slice
+    - explicit
+
 Rails/IndexBy:
   Description: 'Prefer `index_by` over `each_with_object`, `to_h`, or `map`.'
   Enabled: true
