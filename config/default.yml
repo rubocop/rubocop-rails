@@ -600,6 +600,7 @@ Rails/HttpPositionalArguments:
   Description: 'Use keyword arguments instead of positional arguments in http method calls.'
   Enabled: true
   VersionAdded: '0.44'
+  VersionChanged: '<<next>>'
   Include:
     - '**/spec/**/*'
     - '**/test/**/*'
@@ -726,10 +727,11 @@ Rails/MailerName:
 Rails/MatchRoute:
   Description: >-
                   Don't use `match` to define any routes unless there is a need to map multiple request types
-                  among [:get, :post, :patch, :put, :delete] to a single action using the `:via` option.
+                  among [:get, :post, :patch, :put, :delete, :query] to a single action using the `:via` option.
   StyleGuide: 'https://rails.rubystyle.guide/#no-match-routes'
   Enabled: 'pending'
   VersionAdded: '2.7'
+  VersionChanged: '<<next>>'
   Include:
     - '**/config/routes.rb'
     - '**/config/routes/**/*.rb'
@@ -747,6 +749,7 @@ Rails/MultipleRoutePaths:
   Enabled: pending
   Severity: warning
   VersionAdded: '2.29'
+  VersionChanged: '<<next>>'
   Include:
     - '**/config/routes.rb'
     - '**/config/routes/**/*.rb'

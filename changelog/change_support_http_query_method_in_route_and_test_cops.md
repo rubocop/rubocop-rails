@@ -1,0 +1,1 @@
+* [#1653](https://github.com/rubocop/rubocop-rails/pull/1653): Support the HTTP QUERY method (Rails 8.2) in `Rails/MatchRoute`, `Rails/MultipleRoutePaths`, and `Rails/HttpPositionalArguments`. ([@koic][])
