@@ -1,0 +1,1 @@
+* [#1593](https://github.com/rubocop/rubocop-rails/pull/1593): Allow method chain patterns like `foo.call if foo.present?` in `Rails/Presence` to avoid potential misbehavior with `Delegator` subclasses. ([@soudai-s][])

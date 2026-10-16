@@ -39,22 +39,6 @@ module RuboCop
       #   a.presence || b
       #
       # @example
-      #   # bad
-      #   a.present? ? a.foo : nil
-      #
-      #   # bad
-      #   !a.present? ? nil : a.foo
-      #
-      #   # bad
-      #   a.blank? ? nil : a.foo
-      #
-      #   # bad
-      #   !a.blank? ? a.foo : nil
-      #
-      #   # good
-      #   a.presence&.foo
-      #
-      # @example
       #   # good
       #   a.present? ? a[1] : nil
       #
@@ -69,6 +53,9 @@ module RuboCop
       #
       #   # good
       #   a << "bar" if a.present?
+      #
+      #   # good
+      #   a.foo if a.present?
       class Presence < Base
         include RangeHelp
         extend AutoCorrector
@@ -90,21 +77,6 @@ module RuboCop
           }
         PATTERN
 
-        def_node_matcher :redundant_receiver_and_chain, <<~PATTERN
-          {
-            (if
-              {(send $_recv :blank?) (send (send $_recv :present?) :!)}
-              {nil? nil_type?}
-              $(send _recv ...)
-            )
-            (if
-              {(send $_recv :present?) (send (send $_recv :blank?) :!)}
-              $(send _recv ...)
-              {nil? nil_type?}
-            )
-          }
-        PATTERN
-
         def on_if(node)
           return if ignore_if_node?(node)
 
@@ -112,12 +84,6 @@ module RuboCop
             return if ignore_other_node?(other) || receiver.nil?
 
             register_offense(node, receiver, other)
-          end
-
-          redundant_receiver_and_chain(node) do |receiver, chain|
-            return if ignore_chain_node?(chain) || receiver.nil?
-
-            register_chain_offense(node, receiver, chain)
           end
         end
 
@@ -130,23 +96,12 @@ module RuboCop
           end
         end
 
-        def register_chain_offense(node, receiver, chain)
-          replacement = chain_replacement(receiver, chain)
-          add_offense(node, message: message(node, replacement)) do |corrector|
-            corrector.replace(node, replacement)
-          end
-        end
-
         def ignore_if_node?(node)
           node.elsif?
         end
 
         def ignore_other_node?(node)
           node&.type?(:if, :rescue, :while)
-        end
-
-        def ignore_chain_node?(node)
-          node.assignment? || node.operator_method?
         end
 
         def message(node, replacement)
@@ -195,12 +150,6 @@ module RuboCop
 
         def method_range(node)
           range_between(node.source_range.begin_pos, node.first_argument.source_range.begin_pos - 1)
-        end
-
-        def chain_replacement(receiver, chain)
-          replaced = "#{receiver.source}.presence&.#{chain.method_name}"
-          replaced += "(#{chain.arguments.map(&:source).join(', ')})" if chain.arguments?
-          replaced
         end
       end
     end
