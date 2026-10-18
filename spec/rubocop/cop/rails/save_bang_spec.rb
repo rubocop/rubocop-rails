@@ -752,6 +752,12 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       RUBY
     end
 
+    it "when using persisted? directly on a parenthesized #{method} return value" do
+      expect_no_offenses(<<~RUBY)
+        return unless (object.#{method}).persisted?
+      RUBY
+    end
+
     it "when using persisted? on the result of #{method} in if assignment" do
       expect_no_offenses(<<~RUBY)
         if (user = User.#{method}).persisted?
@@ -780,6 +786,84 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
           foo(user)
         else
           bar(user)
+        end
+      RUBY
+    end
+
+    it "when using persisted? on the result of #{method} in if assignment without a parenthesized call" do
+      expect_no_offenses(<<~RUBY)
+        if (user = User.#{method}).persisted?
+          foo
+        end
+
+        return unless (post = Post.#{method}).persisted?
+        bar post
+      RUBY
+    end
+
+    it "when using persisted? on a variable that a nested assignment of #{method} is assigned to" do
+      expect_no_offenses(<<~RUBY)
+        temp = (user = User.#{method})
+
+        if temp.persisted?
+          foo
+        end
+      RUBY
+    end
+
+    it "when using persisted? on a variable that a chained assignment of #{method} is assigned to" do
+      expect_no_offenses(<<~RUBY)
+        temp = user = User.#{method}
+
+        if temp.persisted?
+          foo
+        end
+      RUBY
+    end
+
+    it "when using persisted? on the inner variable of a nested assignment of #{method}" do
+      expect_no_offenses(<<~RUBY)
+        temp = (user = User.#{method})
+
+        if user.persisted?
+          foo(temp)
+        end
+      RUBY
+    end
+
+    it "when using persisted? after a parenthesized #{method}" do
+      expect_no_offenses(<<~RUBY)
+        user = (User.#{method})
+
+        if user.persisted?
+          foo
+        end
+      RUBY
+    end
+
+    it "when not using persisted? after a parenthesized #{method}" do
+      expect_offense(<<~RUBY, method: method)
+        user = (User.#{method})
+                     ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked. Or check `persisted?` on model returned from `#{method}`.
+        foo(user)
+      RUBY
+    end
+
+    it "when not using persisted? on a variable that a nested assignment of #{method} is assigned to" do
+      expect_offense(<<~RUBY, method: method)
+        temp = (user = User.#{method})
+                            ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked. Or check `persisted?` on model returned from `#{method}`.
+        foo(temp)
+      RUBY
+    end
+
+    it "when passing the result of #{method} to a parenthesized call in an if checking another persisted?" do
+      expect_offense(<<~RUBY, method: method)
+        user = User.#{method}
+                    ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked. Or check `persisted?` on model returned from `#{method}`.
+
+        if other.persisted?
+          foo(user)
         end
       RUBY
     end

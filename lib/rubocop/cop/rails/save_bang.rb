@@ -128,6 +128,7 @@ module RuboCop
 
         CREATE_PERSIST_METHODS = %i[create create_or_find_by first_or_create find_or_create_by].freeze
         MODIFY_PERSIST_METHODS = %i[save update update_attributes destroy].freeze
+        VARIABLE_ASSIGNMENT_TYPES = %i[lvasgn ivasgn cvasgn gvasgn].freeze
         RESTRICT_ON_SEND = (CREATE_PERSIST_METHODS + MODIFY_PERSIST_METHODS).freeze
 
         def self.joining_forces
@@ -135,19 +136,22 @@ module RuboCop
         end
 
         def after_leaving_scope(scope, _variable_table)
-          scope.variables.each_value do |variable|
-            variable.assignments.each do |assignment|
-              check_assignment(assignment)
-            end
+          assignments = scope.variables.each_value.flat_map(&:assignments)
+          assignments_by_node = assignments.each_with_object({}.compare_by_identity) do |assignment, by_node|
+            by_node[assignment.node] = assignment
+          end
+
+          assignments.each do |assignment|
+            check_assignment(assignment, assignments_by_node)
           end
         end
 
-        def check_assignment(assignment)
+        def check_assignment(assignment, assignments_by_node)
           node = right_assignment_node(assignment)
 
           return unless node&.send_type?
           return unless persist_method?(node, CREATE_PERSIST_METHODS)
-          return if persisted_referenced?(assignment)
+          return if persisted_checked?(assignment, assignments_by_node)
 
           register_offense(node, CREATE_MSG)
         end
@@ -181,10 +185,31 @@ module RuboCop
 
         def right_assignment_node(assignment)
           node = assignment.node.child_nodes.first
+          node = node.children.last while node&.begin_type?
 
           return node unless node&.any_block_type?
 
           node.send_node
+        end
+
+        # Follows the model through chained assignments such as `a = (b = User.create)`,
+        # and accepts `persisted?` called on any variable in the chain or on the
+        # outermost assignment itself, as in `if (user = User.create).persisted?`.
+        def persisted_checked?(assignment, assignments_by_node)
+          node = assignment.node
+
+          loop do
+            return true if assignment && persisted_referenced?(assignment)
+
+            node = last_expression_in_begin(node)
+            parent = node.parent
+            return checked_immediately?(node) unless parent&.type?(*VARIABLE_ASSIGNMENT_TYPES)
+            # Instance, class and global variables are not tracked, as with `@user = User.create`.
+            return true unless parent.lvasgn_type?
+
+            node = parent
+            assignment = assignments_by_node[node]
+          end
         end
 
         def persisted_referenced?(assignment)
@@ -196,8 +221,6 @@ module RuboCop
         end
 
         def call_to_persisted?(node)
-          node = node.parent.condition if node.parenthesized_call? && node.parent.if_type?
-
           node.send_type? && node.method?(:persisted?)
         end
 
@@ -257,6 +280,7 @@ module RuboCop
         end
 
         def checked_immediately?(node)
+          node = last_expression_in_begin(node)
           node.parent && call_to_persisted?(node.parent)
         end
 
@@ -335,7 +359,7 @@ module RuboCop
         end
 
         def return_value_assigned?(node)
-          return false unless (assignment = assignable_node(node).parent)
+          return false unless (assignment = last_expression_in_begin(assignable_node(node)).parent)
 
           assignment.assignment?
         end
