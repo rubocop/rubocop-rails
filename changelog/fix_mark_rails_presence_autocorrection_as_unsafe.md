@@ -1,0 +1,1 @@
+* [#1639](https://github.com/rubocop/rubocop-rails/issues/1639): Mark `Rails/Presence` autocorrection as unsafe, because `Object#presence` is forwarded to the wrapped object for `DelegateClass` objects such as `Tempfile`, so the corrected code can call a different method. ([@a-abdellatif98][])
