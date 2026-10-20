@@ -11,6 +11,7 @@ module RuboCop
     autoload :EnforceSuperclass, "#{__dir__}/mixin/enforce_superclass"
     autoload :IndexMethod, "#{__dir__}/mixin/index_method"
     autoload :MigrationsHelper, "#{__dir__}/mixin/migrations_helper"
+    autoload :RelativeIncludeMatching, "#{__dir__}/mixin/relative_include_matching"
     autoload :RoutesHelper, "#{__dir__}/mixin/routes_helper"
     autoload :TargetRailsVersion, "#{__dir__}/mixin/target_rails_version"
   end
