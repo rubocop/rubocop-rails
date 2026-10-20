@@ -19,6 +19,7 @@ module RuboCop
       #   Rails.logger.debug 'A debug message'
       class Output < Base
         include RangeHelp
+        include RelativeIncludeMatching
         extend AutoCorrector
 
         MSG = "Do not write to stdout. Use Rails's logger if you want to log."

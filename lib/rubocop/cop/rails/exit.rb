@@ -25,6 +25,7 @@ module RuboCop
       #   raise 'a bad error has happened'
       class Exit < Base
         include ConfigurableEnforcedStyle
+        include RelativeIncludeMatching
 
         MSG = 'Do not use `%<current>s` in Rails applications.'
         RESTRICT_ON_SEND = %i[exit exit! abort].freeze
