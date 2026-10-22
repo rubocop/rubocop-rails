@@ -440,6 +440,14 @@ RSpec.describe RuboCop::Cop::Rails::HttpPositionalArguments, :config do
       RUBY
     end
 
+    it 'does not register an offense for a block argument' do
+      expect_no_offenses(<<~RUBY)
+        def perform_request(&block)
+          get('/', &block)
+        end
+      RUBY
+    end
+
     it 'does not register an offese for keyword arguments forwaring' do
       expect_no_offenses(<<~RUBY)
         def perform_request(**options)

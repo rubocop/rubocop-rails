@@ -96,7 +96,7 @@ module RuboCop
 
         # rubocop:disable-next Metrics/CyclomaticComplexity
         def needs_conversion?(data)
-          return false if data.forwarded_args_type? || forwarded_kwrestarg?(data)
+          return false if data.type?(:forwarded_args, :block_pass) || forwarded_kwrestarg?(data)
           return true unless data.hash_type?
           return false if kwsplat_hash?(data)
 
