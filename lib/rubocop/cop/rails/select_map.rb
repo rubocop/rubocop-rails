@@ -26,6 +26,9 @@ module RuboCop
 
         RESTRICT_ON_SEND = %i[map collect].freeze
 
+        MATERIALIZING_METHODS = %i[each find find_each first last load load_async records reload take to_a
+                                   to_ary].freeze
+
         def on_send(node)
           return unless node.first_argument
 
@@ -89,6 +92,7 @@ module RuboCop
             current = current.children.last if current.begin_type?
             return true if current.equal?(select_node)
             break unless current.call_type?
+            break if MATERIALIZING_METHODS.include?(current.method_name)
 
             current = current.receiver
           end
