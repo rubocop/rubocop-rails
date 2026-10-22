@@ -82,6 +82,7 @@ module RuboCop
           slash_node = node.children[rails_root_index + 1]
           return unless slash_node&.str_type? && slash_node.source.start_with?(File::SEPARATOR)
           return unless node.children[rails_root_index].children.first.send_type?
+          return if double_quote_after_rails_root?(node, rails_root_index)
 
           register_offense(node, require_to_s: false) do |corrector|
             autocorrect_slash_after_rails_root_in_dstr(corrector, node, rails_root_index)
@@ -278,6 +279,10 @@ module RuboCop
 
         def replace_with_rails_root_join(corrector, node, argument_source)
           corrector.replace(node, %<Rails.root.join("#{argument_source}")>)
+        end
+
+        def double_quote_after_rails_root?(node, rails_root_index)
+          extract_rails_root_join_argument_source(node, rails_root_index).include?('"')
         end
 
         def extract_rails_root_join_argument_source(node, rails_root_index)
