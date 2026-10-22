@@ -97,6 +97,18 @@ RSpec.describe RuboCop::Cop::Rails::SelectMap, :config do
     end
   end
 
+  it 'does not register an offense when materializing records with `find_in_batches`' do
+    expect_no_offenses(<<~RUBY)
+      query.select(:id).find_in_batches.flat_map(&:itself).map(&:id)
+    RUBY
+  end
+
+  it 'does not register an offense when materializing records with `in_batches`' do
+    expect_no_offenses(<<~RUBY)
+      query.select(:id).in_batches.flat_map(&:to_a).map(&:id)
+    RUBY
+  end
+
   it 'does not register an offense across materialization in a longer chain with parentheses' do
     expect_no_offenses(<<~RUBY)
       (query.select(:id).where(active: true).first(limit)).collect(&:id)
