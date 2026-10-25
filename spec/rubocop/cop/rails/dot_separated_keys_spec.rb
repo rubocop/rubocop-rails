@@ -36,6 +36,18 @@ RSpec.describe RuboCop::Cop::Rails::DotSeparatedKeys, :config do
     RUBY
   end
 
+  it 'registers an offense and corrects when the scope follows a comma with trailing whitespace' do
+    expect_offense(<<~RUBY)
+      I18n.t(:key,\s
+             scope: [:one, :two], default: 'Not here')
+             ^^^^^^^^^^^^^^^^^^^ Use the dot-separated keys instead of specifying the `:scope` option.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      I18n.t('one.two.key', default: 'Not here')
+    RUBY
+  end
+
   it 'registers an offense and corrects when translating keys with convertible scopes are used with `::I18n`' do
     expect_offense(<<~RUBY)
       ::I18n.t :key, scope: [:one, :two]
