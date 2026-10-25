@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::RedundantActiveRecordAllMethod, :config do
+  describe '.autocorrect_incompatible_with' do
+    it 'declares `Layout::DotPosition` as incompatible to avoid leaving a lone dot' do
+      incompatible = described_class.autocorrect_incompatible_with
+
+      expect(incompatible.include?(RuboCop::Cop::Layout::DotPosition)).to be(true)
+    end
+  end
+
   describe "#{described_class}::QUERYING_METHODS" do
     it 'equals defined methods in `ActiveRecord::Querying::QUERYING_METHODS`' do
       expect(described_class::QUERYING_METHODS).to eq(
