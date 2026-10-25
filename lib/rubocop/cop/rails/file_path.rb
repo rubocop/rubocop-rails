@@ -245,7 +245,8 @@ module RuboCop
               range_with_surrounding_comma(
                 range_with_surrounding_space(
                   argument.source_range,
-                  side: :left
+                  side: :left,
+                  whitespace: true
                 ),
                 :left
               )
