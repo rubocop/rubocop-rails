@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::RedirectBackOrTo, :config do
+  describe '.autocorrect_incompatible_with' do
+    it 'declares `Style::MethodCallWithArgsParentheses` as incompatible to avoid a doubled closing parenthesis' do
+      incompatible = described_class.autocorrect_incompatible_with
+
+      expect(incompatible.include?(RuboCop::Cop::Style::MethodCallWithArgsParentheses)).to be(true)
+    end
+  end
+
   context 'Rails >= 7.0', :rails70 do
     it 'registers an offense and corrects when using redirect_back with a fallback_location' do
       expect_offense(<<~RUBY)

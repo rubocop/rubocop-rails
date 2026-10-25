@@ -1,0 +1,1 @@
+* [#1675](https://github.com/rubocop/rubocop-rails/pull/1675): Fix an incorrect autocorrect for `Rails/RedirectBackOrTo` when used together with `Style/MethodCallWithArgsParentheses`. ([@Starlexxx][])
