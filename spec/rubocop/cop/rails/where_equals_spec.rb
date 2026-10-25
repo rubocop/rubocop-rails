@@ -168,6 +168,18 @@ RSpec.describe RuboCop::Cop::Rails::WhereEquals, :config do
     end
   end
 
+  it 'does not register an offense when the left-hand side is a number literal' do
+    expect_no_offenses(<<~RUBY)
+      User.where('1 = ?', 1)
+    RUBY
+  end
+
+  it 'does not register an offense when the left-hand side is a number literal with `IN`' do
+    expect_no_offenses(<<~RUBY)
+      User.where('1 IN (?)', [1, 2])
+    RUBY
+  end
+
   it 'does not register an offense when using `where`' do
     expect_no_offenses(<<~RUBY)
       User.where(name: nil)
