@@ -156,6 +156,10 @@ module RuboCop
           (send (send _ :all) QUERYING_METHODS ...)
         PATTERN
 
+        def self.autocorrect_incompatible_with
+          [Layout::DotPosition]
+        end
+
         def on_send(node)
           return unless followed_by_query_method?(node.parent)
           return if possible_enumerable_block_method?(node) || sensitive_association_method?(node)
