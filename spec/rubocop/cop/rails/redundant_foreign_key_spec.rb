@@ -48,6 +48,24 @@ RSpec.describe RuboCop::Cop::Rails::RedundantForeignKey, :config do
       RUBY
     end
 
+    it 'registers an offense when the option follows a comma with trailing whitespace on the previous line' do
+      expect_offense(<<~RUBY)
+        class Comment
+          belongs_to :post, class_name: 'SpecialPost',\s
+                     foreign_key: 'post_id',
+                     ^^^^^^^^^^^^^^^^^^^^^^ Specifying the default value for `foreign_key` is redundant.
+                     dependent: :destroy
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class Comment
+          belongs_to :post, class_name: 'SpecialPost',
+                     dependent: :destroy
+        end
+      RUBY
+    end
+
     it 'registers an offense even when defined in a block' do
       expect_offense(<<~RUBY)
         class_methods do

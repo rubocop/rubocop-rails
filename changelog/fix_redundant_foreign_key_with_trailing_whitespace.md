@@ -1,0 +1,1 @@
+* [#1676](https://github.com/rubocop/rubocop-rails/pull/1676): Fix an incorrect autocorrect for `Rails/RedundantForeignKey` when the previous line ends with a comma and trailing whitespace. ([@Starlexxx][])
