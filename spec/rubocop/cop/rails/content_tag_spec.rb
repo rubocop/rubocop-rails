@@ -125,6 +125,33 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
+    it 'does not register an offense when first argument is a multiline string' do
+      expect_no_offenses(<<~'RUBY')
+        tag("div\nputs(:injected)\n#")
+      RUBY
+    end
+
+    it 'does not register an offense when first argument is a string with a trailing newline' do
+      expect_no_offenses(<<~'RUBY')
+        tag("div\n")
+      RUBY
+    end
+
+    it 'does not register an offense when first argument is an interpolated string' do
+      expect_no_offenses(<<~'RUBY')
+        tag("div#{x}")
+      RUBY
+    end
+
+    it 'does not register an offense when first argument is a multiline heredoc' do
+      expect_no_offenses(<<~RUBY)
+        tag(<<~TAG)
+          div
+          puts(:injected)
+        TAG
+      RUBY
+    end
+
     context 'when the first argument is a variable' do
       it 'does not register an offense when the first argument is a lvar' do
         expect_no_offenses(<<~RUBY)
