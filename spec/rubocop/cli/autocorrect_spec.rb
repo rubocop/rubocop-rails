@@ -25,6 +25,21 @@ RSpec.describe 'RuboCop::CLI --autocorrect', :isolated_environment do # rubocop:
     RUBY
   end
 
+  it 'corrects `Rails/IndexBy` with `Layout/SingleLineBlockChain`' do
+    create_file('example.rb', <<~RUBY)
+      for t, d in dirs.map { |x| [x.name, x] }.to_h do
+        foo(t, d)
+      end
+    RUBY
+
+    expect(cli.run(['-a', '--only', 'Rails/IndexBy,Layout/SingleLineBlockChain'])).to eq(0)
+    expect(File.read('example.rb')).to eq(<<~RUBY)
+      for t, d in dirs.index_by { |x| x.name } do
+        foo(t, d)
+      end
+    RUBY
+  end
+
   it 'corrects `Rails/NegateInclude,` with `Style/InverseMethods`' do
     create_file('example.rb', <<~RUBY)
       array.select { |item| !do_something.include?(item) }
