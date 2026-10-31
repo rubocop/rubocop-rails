@@ -12,6 +12,11 @@ jobs:
     permissions:
       contents: write
 
+    env:
+      # A fine-grained token with contents write access to rubocop/docs.rubocop.org,
+      # which sending it a repository dispatch requires.
+      DISPATCH_TOKEN: ${{ secrets.RELEASE_DISPATCH_TOKEN }}
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v7
@@ -23,3 +28,13 @@ jobs:
           name: RuboCop Rails ${{ github.ref_name }}
           bodyFile: relnotes/${{ github.ref_name }}.md
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Adds the tag to docs.rubocop.org's playbook and publishes the docs.
+      - name: Publish the docs
+        if: env.DISPATCH_TOKEN != ''
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          token: ${{ env.DISPATCH_TOKEN }}
+          repository: rubocop/docs.rubocop.org
+          event-type: release
+          client-payload: '{"project": "rubocop-rails", "tag": "${{ github.ref_name }}"}'
