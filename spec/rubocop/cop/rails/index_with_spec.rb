@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::IndexWith, :config do
+  describe '.autocorrect_incompatible_with' do
+    it 'declares `Layout/SingleLineBlockChain` as incompatible' do
+      incompatible = described_class.autocorrect_incompatible_with
+
+      expect(incompatible.include?(RuboCop::Cop::Layout::SingleLineBlockChain)).to be(true)
+    end
+  end
+
   context 'when using Rails 6.0 or newer', :rails60 do
     context 'with an inline block' do
       it 'registers an offense for `each_with_object`' do
