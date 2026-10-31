@@ -152,6 +152,12 @@ RSpec.describe RuboCop::Cop::Rails::ContentTag, :config do
       RUBY
     end
 
+    it 'does not register an offense when first argument is a number' do
+      expect_no_offenses(<<~RUBY)
+        tag(1)
+      RUBY
+    end
+
     context 'when the first argument is a variable' do
       it 'does not register an offense when the first argument is a lvar' do
         expect_no_offenses(<<~RUBY)
