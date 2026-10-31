@@ -37,6 +37,10 @@ module RuboCop
           )
         PATTERN
 
+        def self.autocorrect_incompatible_with
+          [Style::MethodCallWithArgsParentheses]
+        end
+
         def on_send(node)
           redirect_back_with_fallback_location(node) do |fallback_pair, fallback_value, options|
             add_offense(node.loc.selector) do |corrector|
