@@ -95,12 +95,11 @@ module RuboCop
           corrector.remove(block_argument_range(send_node)) if node.block_type?
         end
 
-        # rubocop:disable-next Metrics/AbcSize
         def redundant_receiver?(send_nodes, node)
           proc = if node.numblock_type?
-                   ->(n) { n.receiver.lvar_type? && n.receiver.source == '_1' }
+                   ->(n) { block_parameter_receiver?(n, '_1') }
                  elsif node.itblock_type?
-                   ->(n) { n.receiver.lvar_type? && n.receiver.source == 'it' }
+                   ->(n) { block_parameter_receiver?(n, 'it') }
                  else
                    return false if node.arguments.empty?
 
@@ -109,6 +108,11 @@ module RuboCop
                  end
 
           send_nodes.all?(&proc)
+        end
+
+        def block_parameter_receiver?(send_node, name)
+          receiver = send_node.receiver
+          receiver&.lvar_type? && receiver.source == name
         end
 
         def block_argument_range(node)
