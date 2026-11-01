@@ -10,7 +10,8 @@ module RuboCop
       #
       # This cop has two different enforcement modes. When the EnforcedStyle
       # is `conservative` (the default), then only calls to `pluck` on a constant
-      # (i.e. a model class) before `uniq` are added as offenses.
+      # (i.e. a model class) before `uniq` are added as offenses. Constants in
+      # SCREAMING_SNAKE_CASE are treated as values, not model classes, and are ignored.
       #
       # When the EnforcedStyle is `aggressive` then all calls to `pluck` before
       # distinct are added as offenses. This may lead to false positives
@@ -28,6 +29,7 @@ module RuboCop
       #
       #   # good
       #   Album.distinct.pluck(:band_name)
+      #   ALBUMS.pluck(:band_name).uniq
       #
       # @example EnforcedStyle: aggressive
       #   # bad - redundantly fetches duplicate values
@@ -56,7 +58,7 @@ module RuboCop
 
         def on_send(node)
           uniq_before_pluck(node) do |uniq_node, pluck_node|
-            next if style == :conservative && !pluck_node.receiver&.const_type?
+            next if style == :conservative && !model_class?(pluck_node.receiver)
 
             add_offense(uniq_node.loc.selector) do |corrector|
               autocorrect(corrector, uniq_node, pluck_node)
@@ -65,6 +67,10 @@ module RuboCop
         end
 
         private
+
+        def model_class?(node)
+          node&.const_type? && !node.short_name.match?(/\A[A-Z0-9_]+\z/)
+        end
 
         def autocorrect(corrector, uniq_node, pluck_node)
           corrector.remove(range_between(pluck_node.loc.end.end_pos, uniq_node.loc.selector.end_pos))
