@@ -694,6 +694,50 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       end
     end
 
+    it "when using #{method} in a modifier if as the last expression" do
+      if allow_implicit_return
+        expect_no_offenses(<<~RUBY)
+          def foo
+            object.#{method} if condition
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          def foo
+            object.#{method} if condition
+                   ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+        RUBY
+      end
+    end
+
+    it "when using #{method} in a modifier unless as the last expression" do
+      if allow_implicit_return
+        expect_no_offenses(<<~RUBY)
+          def foo
+            object.#{method} unless condition
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          def foo
+            object.#{method} unless condition
+                   ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+        RUBY
+      end
+    end
+
+    it "when using #{method} in a modifier if before the last expression" do
+      expect_offense(<<~RUBY, method: method)
+        def foo
+          object.#{method} if condition
+                 ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          bar
+        end
+      RUBY
+    end
+
     it "when using #{method} not as the last method call in a multiline method" do
       expect_offense(<<~RUBY, method: method)
         def foo
