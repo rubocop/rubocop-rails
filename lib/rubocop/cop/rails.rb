@@ -10,6 +10,7 @@ module RuboCop
       extend LazyLoader
 
       register_cop :ActionControllerFlashBeforeRender, "#{__dir__}/rails/action_controller_flash_before_render"
+      register_cop :RedundantQueryMethods, "#{__dir__}/rails/redundant_query_methods"
       register_cop :StrongParametersExpect, "#{__dir__}/rails/strong_parameters_expect"
       register_cop :ActionControllerTestCase, "#{__dir__}/rails/action_controller_test_case"
       register_cop :ActionFilter, "#{__dir__}/rails/action_filter"
