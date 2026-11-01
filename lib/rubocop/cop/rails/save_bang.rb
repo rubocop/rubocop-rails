@@ -303,11 +303,20 @@ module RuboCop
         def implicit_return?(node)
           return false unless cop_config['AllowImplicitReturn']
 
-          node = last_expression_in_begin(assignable_node(node))
+          node = modifier_conditional_parent(assignable_node(node))
+          node = last_expression_in_begin(node)
           method, sibling_index = find_method_with_sibling_index(node.parent)
           return false unless method&.type?(:def, :any_block)
 
           method.children.size == node.sibling_index + sibling_index
+        end
+
+        def modifier_conditional_parent(node)
+          parent = node.parent
+          return node unless parent&.if_type? && parent.modifier_form?
+          return node if node == parent.condition
+
+          parent
         end
 
         # A multiline method or block body is wrapped in a `begin` node, so climb
