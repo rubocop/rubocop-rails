@@ -104,9 +104,9 @@ module RuboCop
         end
 
         def check_date_node(node)
-          chain = extract_method_chain(node)
+          return unless bad_days.include?(node.method_name)
 
-          return if (chain & bad_days).empty?
+          chain = extract_method_chain(node)
 
           method_name = (chain & bad_days).join('.')
 
@@ -120,8 +120,12 @@ module RuboCop
           end
         end
 
+        # Collects the method names of `node` and of the methods called on its result,
+        # stopping at the first ancestor that receives `node` as an argument.
         def extract_method_chain(node)
-          [node, *node.each_ancestor(:send)].map(&:method_name)
+          chain = [node]
+          chain << chain.last.parent while method_send?(chain.last)
+          chain.map(&:method_name)
         end
 
         # checks that parent node of send_type
