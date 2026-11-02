@@ -1,0 +1,1 @@
+* [#1588](https://github.com/rubocop/rubocop-rails/issues/1588): Mark `Rails/SafeNavigation` autocorrection as unsafe, because converting `try` to `&.` raises `NoMethodError` when the receiver does not respond to the method. ([@corsonknowles][])
