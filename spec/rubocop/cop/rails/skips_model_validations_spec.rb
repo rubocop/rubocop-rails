@@ -69,6 +69,14 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
         RUBY
       end
 
+      it "does not register an offense for #{method} that looks like Array#insert with a string-keyed hash" do
+        expect_no_offenses(<<~RUBY)
+          array.#{method}(1, { 'key' => value })
+          array.#{method}(1, 'key' => value)
+          array&.#{method}(1, 'key' => value)
+        RUBY
+      end
+
       it "registers an offense for #{method} with `:returning` keyword argument" do
         expect_offense(<<~RUBY, method: method)
           %{method}(attributes, returning: false)
@@ -80,6 +88,13 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
         expect_offense(<<~RUBY, method: method)
           %{method}(attributes, unique_by: :username)
           ^{method} Avoid using `#{method}` because it skips validations.
+        RUBY
+      end
+
+      it "registers an offense for #{method} with `:record_timestamps` keyword argument" do
+        expect_offense(<<~RUBY, method: method)
+          User.%{method}(attributes, record_timestamps: false)
+               ^{method} Avoid using `#{method}` because it skips validations.
         RUBY
       end
 

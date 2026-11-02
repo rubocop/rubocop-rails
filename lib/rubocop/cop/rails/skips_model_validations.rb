@@ -68,7 +68,7 @@ module RuboCop
         def_node_matcher :good_insert?, <<~PATTERN
           (call _ {:insert :insert!} _ {
             !(hash ...)
-            (hash <(pair (sym !{:returning :unique_by}) _) ...>)
+            (hash <(pair !(sym {:returning :unique_by :record_timestamps}) _) ...>)
           } ...)
         PATTERN
 
