@@ -1,0 +1,1 @@
+* [#1688](https://github.com/rubocop/rubocop-rails/pull/1688): Fix a false positive for `Rails/SkipsModelValidations` when `insert` is called with a string-keyed hash, and detect the `record_timestamps` option. ([@corsonknowles][])
