@@ -1,0 +1,1 @@
+* [#1686](https://github.com/rubocop/rubocop-rails/pull/1686): Fix false positives and an unsafe autocorrect for `Rails/Date` when a `Date` call is an argument to a method named `today`, `yesterday`, or `tomorrow`, or when one of those methods is called on a `Date` object. ([@corsonknowles][])
