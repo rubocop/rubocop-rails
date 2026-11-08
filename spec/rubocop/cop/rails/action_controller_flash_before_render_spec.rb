@@ -439,4 +439,53 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
       RUBY
     end
   end
+
+  context 'when using `flash` in a `case` branch' do
+    it 'does not register an offense when `redirect_to` follows the `case`' do
+      expect_no_offenses(<<~RUBY)
+        class HomeController < ApplicationController
+          def create
+            unless @user
+              case @context
+              when Course
+                flash[:error] = "msg"
+              when Group
+                flash[:error] = "msg"
+              end
+              redirect_to :index
+              return
+            end
+            render :index
+          end
+        end
+      RUBY
+    end
+
+    it 'registers an offense when `render` follows the `case`' do
+      expect_offense(<<~RUBY)
+        class HomeController < ApplicationController
+          def create
+            case @context
+            when Course
+              flash[:error] = "msg"
+              ^^^^^ Use `flash.now` before `render`.
+            end
+            render :index
+          end
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class HomeController < ApplicationController
+          def create
+            case @context
+            when Course
+              flash.now[:error] = "msg"
+            end
+            render :index
+          end
+        end
+      RUBY
+    end
+  end
 end
