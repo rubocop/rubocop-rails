@@ -1,0 +1,1 @@
+* [#1679](https://github.com/rubocop/rubocop-rails/pull/1679): Fix an incorrect autocorrect for `Rails/FilePath` when `Rails.root.join` arguments are separated by a comma with trailing whitespace. ([@Starlexxx][])
