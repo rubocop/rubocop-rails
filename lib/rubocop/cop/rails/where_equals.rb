@@ -62,11 +62,11 @@ module RuboCop
         end
         alias on_csend on_send
 
-        EQ_ANONYMOUS_RE = /\A([\w.]+)\s+=\s+\?\z/.freeze             # column = ?
-        IN_ANONYMOUS_RE = /\A([\w.]+)\s+IN\s+\(\?\)\z/i.freeze       # column IN (?)
-        EQ_NAMED_RE     = /\A([\w.]+)\s+=\s+:(\w+)\z/.freeze         # column = :column
-        IN_NAMED_RE     = /\A([\w.]+)\s+IN\s+\(:(\w+)\)\z/i.freeze   # column IN (:column)
-        IS_NULL_RE      = /\A([\w.]+)\s+IS\s+NULL\z/i.freeze         # column IS NULL
+        EQ_ANONYMOUS_RE = /\A([a-zA-Z_][\w.]*)\s+=\s+\?\z/.freeze             # column = ?
+        IN_ANONYMOUS_RE = /\A([a-zA-Z_][\w.]*)\s+IN\s+\(\?\)\z/i.freeze       # column IN (?)
+        EQ_NAMED_RE     = /\A([a-zA-Z_][\w.]*)\s+=\s+:(\w+)\z/.freeze         # column = :column
+        IN_NAMED_RE     = /\A([a-zA-Z_][\w.]*)\s+IN\s+\(:(\w+)\)\z/i.freeze   # column IN (:column)
+        IS_NULL_RE      = /\A([a-zA-Z_][\w.]*)\s+IS\s+NULL\z/i.freeze         # column IS NULL
 
         private
 
