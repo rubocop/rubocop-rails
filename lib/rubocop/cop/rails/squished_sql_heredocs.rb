@@ -49,6 +49,10 @@ module RuboCop
         MSG = 'Use `%<expect>s` instead of `%<current>s`.'
         SQL_IDENTIFIER_MARKERS = /(".+?")|('.+?')|(\[.+?\])/.freeze
 
+        def self.autocorrect_incompatible_with
+          [Style::TrailingCommaInArguments]
+        end
+
         def on_heredoc(node)
           return unless offense_detected?(node)
 
