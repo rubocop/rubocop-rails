@@ -48,6 +48,10 @@ module RuboCop
 
         CALLBACKS_ORDER_MAP = CALLBACKS_IN_ORDER.each_with_index.to_h.freeze
 
+        def self.autocorrect_incompatible_with
+          [Layout::EmptyLines]
+        end
+
         def on_class(class_node)
           previous_index = -1
           previous_callback = nil
