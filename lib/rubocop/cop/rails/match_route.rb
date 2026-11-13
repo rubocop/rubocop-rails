@@ -7,7 +7,10 @@ module RuboCop
       # can be replaced with a specific HTTP method.
       #
       # Don't use `match` to define any routes unless there is a need to map multiple request types
-      # among [:get, :post, :patch, :put, :delete] to a single action using the `:via` option.
+      # among [:get, :post, :patch, :put, :delete, :query] to a single action using the `:via` option.
+      #
+      # NOTE: `via: :query` is registered as an offense only when the target Rails version is 8.2
+      # or higher, where the `query` route helper is available.
       #
       # @example
       #   # bad
@@ -80,7 +83,10 @@ module RuboCop
         end
 
         def http_method?(method)
-          HTTP_METHODS.include?(method.to_sym)
+          method = method.to_sym
+          return false if method == :query && target_rails_version < 8.2
+
+          HTTP_METHODS.include?(method)
         end
 
         def replacement(path_node, options_node)
