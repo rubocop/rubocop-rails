@@ -147,6 +147,45 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
       end
     end
 
+    context 'with a unique constraint' do
+      let(:schema) { <<~RUBY }
+        ActiveRecord::Schema.define(version: 2020_02_02_075409) do
+          create_table "users", force: :cascade do |t|
+            t.string "account", null: false
+            t.bigint "group_id", null: false
+            t.integer "position", null: false
+            t.unique_constraint ["account"], deferrable: :deferred, name: "unique_account"
+            t.unique_constraint ["group_id", "position"], name: "unique_group_position"
+          end
+        end
+      RUBY
+
+      it 'does not register an offense' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates :account, uniqueness: true
+          end
+        RUBY
+      end
+
+      it 'does not register an offense for a scoped validation' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates :position, uniqueness: { scope: :group_id }
+          end
+        RUBY
+      end
+
+      it 'registers an offense for a column without a unique constraint' do
+        expect_offense(<<~RUBY)
+          class User
+            validates :position, uniqueness: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
+          end
+        RUBY
+      end
+    end
+
     context 'when the validation is for two columns' do
       context 'without proper index' do
         let(:schema) { <<~RUBY }
