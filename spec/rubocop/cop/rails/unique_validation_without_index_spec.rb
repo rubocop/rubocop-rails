@@ -127,6 +127,54 @@ RSpec.describe RuboCop::Cop::Rails::UniqueValidationWithoutIndex, :config do
       end
     end
 
+    context 'with a unique constraint' do
+      let(:schema) { <<~RUBY }
+        ActiveRecord::Schema[7.1].define(version: 2020_02_02_075409) do
+          create_table "users", force: :cascade do |t|
+            t.string "account", null: false
+            t.string "email", null: false
+            t.string "name", null: false
+            t.unique_constraint ["account"], name: "unique_account", deferrable: :deferred
+            t.unique_constraint ["email", "name"]
+          end
+        end
+      RUBY
+
+      it 'does not register an offense for a single column' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates :account, uniqueness: true
+          end
+        RUBY
+      end
+
+      it 'does not register an offense for multiple columns' do
+        expect_no_offenses(<<~RUBY)
+          class User
+            validates :email, uniqueness: { scope: :name }
+          end
+        RUBY
+      end
+
+      it 'registers an offense when the constraint does not cover all validated columns' do
+        expect_offense(<<~RUBY)
+          class User
+            validates :email, uniqueness: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
+          end
+        RUBY
+      end
+
+      it 'registers an offense for a column without the constraint' do
+        expect_offense(<<~RUBY)
+          class User
+            validates :name, uniqueness: true
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Uniqueness validation should have a unique index on the database column.
+          end
+        RUBY
+      end
+    end
+
     context 'with a unique index and `check_constraint` that has `nil` first argument' do
       let(:schema) { <<~RUBY }
         ActiveRecord::Schema.define(version: 2020_02_02_075409) do

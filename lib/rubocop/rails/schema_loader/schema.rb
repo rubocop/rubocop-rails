@@ -86,7 +86,7 @@ module RuboCop
         def build_columns(node)
           each_content(node).filter_map do |child|
             next unless child&.send_type?
-            next if child.method?(:index)
+            next if child.method?(:index) || child.method?(:unique_constraint)
 
             Column.new(child)
           end
@@ -95,9 +95,9 @@ module RuboCop
         def build_indices(node)
           each_content(node).filter_map do |child|
             next unless child&.send_type?
-            next unless child.method?(:index)
+            next unless child.method?(:index) || child.method?(:unique_constraint)
 
-            Index.new(child)
+            child.method?(:index) ? Index.new(child) : UniqueConstraint.new(child)
           end
         end
 
@@ -170,6 +170,16 @@ module RuboCop
               @unique = true
             end
           end
+        end
+      end
+
+      # Represent a unique constraint of PostgreSQL (`t.unique_constraint`).
+      # It is treated as a unique index because the database enforces uniqueness.
+      class UniqueConstraint < Index
+        def initialize(node)
+          super
+
+          @unique = true
         end
       end
 

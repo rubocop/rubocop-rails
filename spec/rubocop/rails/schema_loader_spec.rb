@@ -89,6 +89,28 @@ RSpec.describe RuboCop::Rails::SchemaLoader do
           expect(table.indices.first.unique).to be true
         end
 
+        context 'when a table has a unique constraint' do
+          let(:schema) { <<~RUBY }
+            ActiveRecord::Schema[7.1].define(version: 2020_02_02_075409) do
+              create_table "users", force: :cascade do |t|
+                t.string "account", null: false
+                t.string "email", null: false
+                t.unique_constraint ["account"], name: "unique_account", deferrable: :deferred
+                t.unique_constraint ["account", "email"]
+              end
+            end
+          RUBY
+
+          it 'has the unique constraints as unique indices and not as columns' do
+            table = loaded_schema.table_by(name: 'users')
+            expect(table.columns.map(&:name)).to eq %w[account email]
+            expect(table.indices.size).to eq 2
+            expect(table.indices.map(&:unique)).to eq [true, true]
+            expect(table.indices.first.name).to eq 'unique_account'
+            expect(table.indices.map(&:columns)).to eq [['account'], %w[account email]]
+          end
+        end
+
         context 'when an index in users table specified by `add_index`' do
           let(:schema) { <<~RUBY }
             ActiveRecord::Schema.define(version: 2020_02_02_075409) do

@@ -1,0 +1,1 @@
+* [#1393](https://github.com/rubocop/rubocop-rails/issues/1393): Fix a false positive for `Rails/UniqueValidationWithoutIndex` when the table has a PostgreSQL unique constraint (`t.unique_constraint`) in `db/schema.rb`. ([@anastasiia-baboshina][])
