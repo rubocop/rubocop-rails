@@ -103,6 +103,8 @@ module RuboCop
 
             # Unwrap `return redirect_to :index`
             sibling = sibling.children.first if sibling.return_type? && sibling.children.one?
+            # Unwrap `redirect_to :index and return`
+            sibling = sibling.lhs if sibling.and_type?
             sibling.send_type? && sibling.method?(:redirect_to)
           end
         end
