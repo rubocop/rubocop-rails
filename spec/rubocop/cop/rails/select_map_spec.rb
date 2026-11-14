@@ -89,6 +89,49 @@ RSpec.describe RuboCop::Cop::Rails::SelectMap, :config do
     RUBY
   end
 
+  %w[first(3) last(3) take(3) find([1,2]) to_a to_ary records load load_async reload each find_each].each do |method|
+    it "does not register an offense when `#{method}` materializes the selected records" do
+      expect_no_offenses(<<~RUBY)
+        query.select(:id).#{method}.map(&:id)
+      RUBY
+    end
+  end
+
+  it 'does not register an offense when materializing records with `find_in_batches`' do
+    expect_no_offenses(<<~RUBY)
+      query.select(:id).find_in_batches.flat_map(&:itself).map(&:id)
+    RUBY
+  end
+
+  it 'does not register an offense when materializing records with `in_batches`' do
+    expect_no_offenses(<<~RUBY)
+      query.select(:id).in_batches.flat_map(&:to_a).map(&:id)
+    RUBY
+  end
+
+  it 'does not register an offense across materialization in a longer chain with parentheses' do
+    expect_no_offenses(<<~RUBY)
+      (query.select(:id).where(active: true).first(limit)).collect(&:id)
+    RUBY
+  end
+
+  it 'does not register an offense across materialization with safe navigation' do
+    expect_no_offenses(<<~RUBY)
+      query&.select(:id)&.first(limit)&.map(&:id)
+    RUBY
+  end
+
+  it 'registers an offense when a materializing call is only in a scope argument' do
+    expect_offense(<<~RUBY)
+      query.select(:id).limit(limits.first).map(&:id)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `pluck(:id)` instead of `select` with `map`.
+    RUBY
+
+    expect_correction(<<~RUBY)
+      query.limit(limits.first).pluck(:id)
+    RUBY
+  end
+
   it 'does not register an offense when using `select(:mismatch_column_name).map(&:column_name)`' do
     expect_no_offenses(<<~RUBY)
       Model.select(:mismatch_column_name).map(&:column_name)
