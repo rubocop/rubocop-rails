@@ -329,6 +329,29 @@ RSpec.describe RuboCop::Cop::Rails::ActionControllerFlashBeforeRender, :config d
     end
   end
 
+  context 'when using `flash` before `redirect_to ... and return` in condition block and `render` in a later branch' do
+    it 'does not register an offense' do
+      expect_no_offenses(<<~RUBY)
+        class HomeController < ApplicationController
+          def update
+            if condition
+              flash[:danger] = "msg"
+              redirect_to root_path and return
+            end
+
+            if other_condition
+              flash[:success] = "other msg"
+              redirect_to root_path
+            else
+              flash.now[:danger] = "other other msg"
+              render 'something', status: :unprocessable_entity
+            end
+          end
+        end
+      RUBY
+    end
+  end
+
   context 'when using `flash` after `render` and `redirect_to` is used in implicit return branch ' \
           'and render is is used in the other branch' do
     it 'does not register an offense' do
