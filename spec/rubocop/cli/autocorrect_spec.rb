@@ -46,7 +46,7 @@ RSpec.describe 'RuboCop::CLI --autocorrect', :isolated_environment do # rubocop:
       self.try(:bar).try(:baz)
     RUBY
 
-    expect(cli.run(['-a', '--only', 'Rails/SafeNavigation,Style/RedundantSelf'])).to eq(0)
+    expect(cli.run(['-A', '--only', 'Rails/SafeNavigation,Style/RedundantSelf'])).to eq(0)
     expect(File.read('example.rb')).to eq(<<~RUBY)
       self&.bar&.baz
     RUBY
