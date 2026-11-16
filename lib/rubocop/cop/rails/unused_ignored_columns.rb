@@ -26,6 +26,7 @@ module RuboCop
       #
       class UnusedIgnoredColumns < Base
         include ActiveRecordHelper
+        include ActiveRecordSchemaChecksum
 
         MSG = 'Remove `%<column_name>s` from `ignored_columns` because the column does not exist.'
         RESTRICT_ON_SEND = %i[ignored_columns=].freeze
