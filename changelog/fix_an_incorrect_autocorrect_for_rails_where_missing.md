@@ -1,0 +1,1 @@
+* [#1696](https://github.com/rubocop/rubocop-rails/pull/1696): Fix an incorrect autocorrect for `Rails/WhereMissing` when `where` is on its own line after a single-line `left_joins`, or shares its line with another method call. ([@davidenglishmusic][])
