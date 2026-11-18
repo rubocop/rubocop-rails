@@ -919,6 +919,12 @@ Rails/RedundantPresenceValidationOnBelongsTo:
   SafeAutoCorrect: false
   VersionAdded: '2.13'
 
+Rails/RedundantQueryMethods:
+  Description: 'Checks for Active Record query methods called more than once in the same chain with the same arguments.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Rails/RedundantReceiverInWithOptions:
   Description: 'Checks for redundant receiver in `with_options`.'
   Enabled: true
