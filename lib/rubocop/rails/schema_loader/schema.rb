@@ -86,7 +86,7 @@ module RuboCop
         def build_columns(node)
           each_content(node).filter_map do |child|
             next unless child&.send_type?
-            next if child.method?(:index)
+            next if child.method?(:index) || child.method?(:unique_constraint)
 
             Column.new(child)
           end
@@ -95,9 +95,12 @@ module RuboCop
         def build_indices(node)
           each_content(node).filter_map do |child|
             next unless child&.send_type?
-            next unless child.method?(:index)
 
-            Index.new(child)
+            if child.method?(:index)
+              Index.new(child)
+            elsif child.method?(:unique_constraint)
+              UniqueConstraint.new(child)
+            end
           end
         end
 
@@ -170,6 +173,15 @@ module RuboCop
               @unique = true
             end
           end
+        end
+      end
+
+      # Represent a unique constraint (`t.unique_constraint`)
+      class UniqueConstraint < Index
+        def initialize(node)
+          super
+
+          @unique = true
         end
       end
 
