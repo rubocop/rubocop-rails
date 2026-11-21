@@ -67,23 +67,13 @@ module RuboCop
           (any_block (call _ {:map :collect}) $_argument (send lvar :[] $_key))
         PATTERN
 
-        # rubocop:disable-next Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         def on_block(node)
           return if node.each_ancestor(:any_block).first&.receiver
-          return if allowed_receiver?(node.send_node.receiver)
+          return if allowed_receiver?(node.receiver)
 
           pluck_candidate?(node) do |argument, key|
             next if key.regexp_type? || !use_one_block_argument?(argument)
-
-            match = if node.block_type?
-                      block_argument = argument.children.first.source
-                      use_block_argument_in_key?(block_argument, key)
-                    elsif node.numblock_type?
-                      use_block_argument_in_key?('_1', key)
-                    else # itblock
-                      use_block_argument_in_key?('it', key)
-                    end
-            next unless match
+            next unless use_block_argument_in_key?(block_argument_name(node, argument), key)
 
             register_offense(node, key)
           end
@@ -99,7 +89,7 @@ module RuboCop
           allowed = cop_config.fetch('AllowedReceivers', [])
           return false if allowed.empty?
 
-          receiver.each_node(:send, :csend).any? { |send_node| allowed.include?(send_node.method_name.to_s) }
+          receiver.each_node(:call).any? { |send_node| allowed.include?(send_node.method_name.to_s) }
         end
 
         def use_one_block_argument?(argument)
@@ -107,6 +97,16 @@ module RuboCop
           return true if [1, :it].include?(argument)
 
           argument.respond_to?(:one?) && argument.one?
+        end
+
+        def block_argument_name(node, argument)
+          if node.block_type?
+            argument.children.first.source
+          elsif node.numblock_type?
+            '_1'
+          else # itblock
+            'it'
+          end
         end
 
         def use_block_argument_in_key?(block_argument, key)
