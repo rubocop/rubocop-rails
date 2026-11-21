@@ -57,6 +57,15 @@ RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
         end
       RUBY
     end
+
+    it 'does not register an offense when calling a method without a receiver' do
+      expect_no_offenses(<<~RUBY)
+        with_options dependent: :destroy do
+          _1.has_many :customers
+          has_many :products
+        end
+      RUBY
+    end
   end
 
   context 'Ruby >= 3.4', :ruby34, unsupported_on: :parser do
@@ -84,6 +93,15 @@ RSpec.describe RuboCop::Cop::Rails::RedundantReceiverInWithOptions, :config do
             has_many :invoices
             has_many :expenses
           end
+        end
+      RUBY
+    end
+
+    it 'does not register an offense when calling a method without a receiver' do
+      expect_no_offenses(<<~RUBY)
+        with_options dependent: :destroy do
+          it.has_many :customers
+          has_many :products
         end
       RUBY
     end
