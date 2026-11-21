@@ -1,0 +1,1 @@
+* [#1212](https://github.com/rubocop/rubocop-rails/issues/1212): Fix a false positive for `Rails/SaveBang` when a persistence call in a modifier `if` or `unless` expression is implicitly returned. ([@ozamasa][])
