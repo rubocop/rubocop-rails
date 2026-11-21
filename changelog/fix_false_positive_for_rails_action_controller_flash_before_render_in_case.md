@@ -1,0 +1,1 @@
+* [#1243](https://github.com/rubocop/rubocop-rails/issues/1243): Fix false positives for `Rails/ActionControllerFlashBeforeRender` when `flash` is assigned in a `case` branch followed by `redirect_to`. ([@kshtzkr][])
