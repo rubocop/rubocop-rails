@@ -222,4 +222,37 @@ RSpec.describe RuboCop::Cop::Rails::Pluck, :config do
       end
     end
   end
+
+  context 'with AllowedReceivers', :rails50 do
+    let(:cop_config) { { 'AllowedReceivers' => %w[xpath css search at_xpath at_css] } }
+
+    it 'does not register an offense when the receiver chain contains an allowed method (Nokogiri)' do
+      expect_no_offenses(<<~RUBY)
+        doc.xpath('//item').map { |node| node['name'] }
+      RUBY
+    end
+
+    it 'does not register an offense when the allowed method is the immediate receiver' do
+      expect_no_offenses(<<~RUBY)
+        page.css('.row').collect { |el| el[:id] }
+      RUBY
+    end
+
+    it 'does not register an offense for safe-navigation receivers in the chain' do
+      expect_no_offenses(<<~RUBY)
+        doc&.xpath('//item').map { |node| node['name'] }
+      RUBY
+    end
+
+    it 'still registers an offense for unrelated receivers' do
+      expect_offense(<<~RUBY)
+        Post.published.map { |post| post[:title] }
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Prefer `pluck(:title)` over `map { |post| post[:title] }`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Post.published.pluck(:title)
+      RUBY
+    end
+  end
 end
