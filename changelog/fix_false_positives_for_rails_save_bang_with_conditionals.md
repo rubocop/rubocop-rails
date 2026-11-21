@@ -1,0 +1,1 @@
+* [#1699](https://github.com/rubocop/rubocop-rails/pull/1699): Fix false positives for `Rails/SaveBang` when a persistence call is implicitly returned from an `if`, `elsif`, `else`, or ternary branch. ([@koic][])
