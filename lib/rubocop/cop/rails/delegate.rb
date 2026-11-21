@@ -88,8 +88,24 @@ module RuboCop
           add_offense(node.loc.keyword) do |corrector|
             receiver = determine_register_offense_receiver(node.body.receiver)
             delegation = build_delegation(node, receiver)
+            corrector.replace(node, build_replacement(node, delegation))
+          end
+        end
 
-            corrector.replace(node, delegation)
+        def build_replacement(node, delegation)
+          comments = body_comments(node)
+          return delegation if comments.empty?
+
+          indent = ' ' * node.loc.keyword.column
+          comments_str = comments.each_with_index.map do |c, i|
+            i.zero? ? c.text : "#{indent}#{c.text}"
+          end.join("\n")
+          "#{comments_str}\n#{indent}#{delegation}"
+        end
+
+        def body_comments(node)
+          processed_source.comments.select do |comment|
+            comment.loc.line.between?(node.first_line + 1, node.last_line - 1)
           end
         end
 
