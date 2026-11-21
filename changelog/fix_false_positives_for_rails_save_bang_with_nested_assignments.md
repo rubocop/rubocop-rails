@@ -1,0 +1,1 @@
+* [#1422](https://github.com/rubocop/rubocop-rails/issues/1422): Fix false positives for `Rails/SaveBang` when `persisted?` is checked through a parenthesized or chained assignment, and a false negative when the result is only passed to a parenthesized call inside an `if` that checks `persisted?` on another object. ([@ybai08][])
