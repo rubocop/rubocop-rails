@@ -239,6 +239,67 @@ RSpec.describe RuboCop::Cop::Rails::WhereMissing, :config do
       RUBY
     end
 
+    it 'registers an offense when using `left_joins(:foo).where(foos: {id: nil})` and there is a line break after ' \
+       '`left_joins`' do
+      expect_offense(<<~RUBY)
+        Foo.left_joins(:foo)
+            ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+          .where(foos: { id: nil })
+          .where(bar: "bar")
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Foo.where.missing(:foo)
+          .where(bar: "bar")
+      RUBY
+    end
+
+    it 'registers an offense when using `left_joins(:foo).where(foos: {id: nil})` and there is a line break after ' \
+       '`left_joins` without receiver' do
+      expect_offense(<<~RUBY)
+        left_joins(:foo)
+        ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+          .where(foos: { id: nil })
+          .where(bar: "bar")
+      RUBY
+
+      expect_correction(<<~RUBY)
+        where.missing(:foo)
+          .where(bar: "bar")
+      RUBY
+    end
+
+    it 'registers an offense when using `left_joins(:foo).where(foos: {id: nil})` with multi-line trailing ' \
+       'dot method calls without receiver' do
+      expect_offense(<<~RUBY)
+        left_joins(:foo).
+        ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+          where(foos: { id: nil }).
+          where(bar: "bar")
+      RUBY
+
+      expect_correction(<<~RUBY)
+        where.missing(:foo).
+          where(bar: "bar")
+      RUBY
+    end
+
+    it 'registers an offense when using `left_joins(:foo).where(foos: {id: nil})` with multi-line leading ' \
+       'dot method calls and another method call on the `where` line' do
+      expect_offense(<<~RUBY)
+        Foo
+          .left_joins(:foo)
+           ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+          .where(foos: { id: nil }).order(:bar)
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Foo
+          .where.missing(:foo)
+          .order(:bar)
+      RUBY
+    end
+
     it "registers an offense when using `left_joins(:foo).where(foos: {id: nil}, bar: 'bar')` " \
        'with other `left_joins(:foo)`' do
       expect_offense(<<~RUBY)
