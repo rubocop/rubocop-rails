@@ -1,0 +1,1 @@
+* [#1700](https://github.com/rubocop/rubocop-rails/pull/1700): Fix false negatives and false positives for `Rails/ActionControllerFlashBeforeRender` by following the normal flow after `flash` to the end of the method. ([@koic][])
