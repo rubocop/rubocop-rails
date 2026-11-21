@@ -6,6 +6,7 @@ module RuboCop
     # because they're used only when the relevant cop class is loaded.
     autoload :ActiveRecordHelper, "#{__dir__}/mixin/active_record_helper"
     autoload :ActiveRecordMigrationsHelper, "#{__dir__}/mixin/active_record_migrations_helper"
+    autoload :ActiveRecordSchemaChecksum, "#{__dir__}/mixin/active_record_schema_checksum"
     autoload :ClassSendNodeHelper, "#{__dir__}/mixin/class_send_node_helper"
     autoload :DatabaseTypeResolvable, "#{__dir__}/mixin/database_type_resolvable"
     autoload :EnforceSuperclass, "#{__dir__}/mixin/enforce_superclass"
