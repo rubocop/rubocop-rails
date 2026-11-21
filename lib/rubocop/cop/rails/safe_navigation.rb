@@ -7,6 +7,17 @@ module RuboCop
       # to convert `try`. It will convert code to use safe navigation
       # if the target Ruby version is set to 2.3+
       #
+      # @safety
+      #   Autocorrection is unsafe when `ConvertTry: true`, because `try` and `&.` behave
+      #   differently when the receiver does not respond to the method. `try` returns `nil`,
+      #   whereas `&.` raises `NoMethodError`. `try!` behaves the same as `&.`.
+      #
+      #   [source,ruby]
+      #   ----
+      #   1.try(:foo)  # => nil
+      #   1&.foo       # => NoMethodError
+      #   ----
+      #
       # @example ConvertTry: false (default)
       #   # bad
       #   foo.try!(:bar)

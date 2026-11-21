@@ -1035,7 +1035,9 @@ Rails/RootPublicPath:
 Rails/SafeNavigation:
   Description: "Use Ruby's safe navigation operator (`&.`) instead of `try!`."
   Enabled: true
+  SafeAutoCorrect: false
   VersionAdded: '0.43'
+  VersionChanged: '<<next>>'
   # This will convert usages of `try` to use safe navigation as well as `try!`.
   # `try` and `try!` work slightly differently. `try!` and safe navigation will
   # both raise a `NoMethodError` if the receiver of the method call does not
