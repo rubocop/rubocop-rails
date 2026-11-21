@@ -198,6 +198,40 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
       expect_no_offenses('A')
     end
 
+    it 'accepts a method called on the result of `Date.new`' do
+      expect_no_offenses(<<~RUBY)
+        Date.new(2024, 1, 1).tomorrow
+      RUBY
+    end
+
+    it 'accepts `Date.new` passed as an argument to an unrelated `today` method' do
+      expect_no_offenses(<<~RUBY)
+        calendar.today(Date.new(2024, 1, 1))
+      RUBY
+    end
+
+    it 'registers an offense for `Date.today` chained with another method' do
+      expect_offense(<<~RUBY)
+        Date.today.tomorrow
+             ^^^^^ Do not use `Date.today.tomorrow` without zone. Use `Time.zone.today.tomorrow` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Time.zone.today.tomorrow
+      RUBY
+    end
+
+    it 'registers an offense for `Date.today` passed as an argument' do
+      expect_offense(<<~RUBY)
+        calendar.tomorrow(Date.today)
+                               ^^^^^ Do not use `Date.today` without zone. Use `Time.zone.today` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        calendar.tomorrow(Time.zone.today)
+      RUBY
+    end
+
     it 'registers an offense for #to_time_in_current_zone' do
       expect_offense(<<~RUBY)
         "2016-07-12 14:36:31".to_time_in_current_zone
@@ -241,9 +275,43 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
       RUBY
     end
 
+    it 'accepts `Date.new` passed as an argument to an unrelated `today` method' do
+      expect_no_offenses(<<~RUBY)
+        calendar.today(Date.new(2024, 1, 1))
+      RUBY
+    end
+
+    it 'registers an offense for `Date.today` chained with another method' do
+      expect_offense(<<~RUBY)
+        Date.today.tomorrow
+             ^^^^^ Do not use `Date.today` without zone. Use `Time.zone.today` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Time.zone.today.tomorrow
+      RUBY
+    end
+
     RuboCop::Cop::Rails::TimeZone::ACCEPTED_METHODS.each do |a_method|
       it "accepts val.to_time.#{a_method}" do
         expect_no_offenses("val.to_time.#{a_method}")
+      end
+    end
+
+    context 'when `AllowToTime: false`' do
+      let(:cop_config) { { 'EnforcedStyle' => 'flexible', 'AllowToTime' => false } }
+
+      it 'accepts `to_time` followed by an accepted method' do
+        expect_no_offenses(<<~RUBY)
+          date.to_time.in_time_zone
+        RUBY
+      end
+
+      it 'registers an offense when `to_time` is passed as an argument to an accepted method' do
+        expect_offense(<<~RUBY)
+          time.in_time_zone(date.to_time)
+                                 ^^^^^^^ Do not use `to_time` on Date objects, because they know nothing about the time zone in use.
+        RUBY
       end
     end
 
