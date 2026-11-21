@@ -300,6 +300,45 @@ RSpec.describe RuboCop::Cop::Rails::WhereMissing, :config do
       RUBY
     end
 
+    it 'registers an offense when using `left_joins(:foo).where(foos: {id: nil})` with multi-line arguments ' \
+       'for `where`' do
+      expect_offense(<<~RUBY)
+        Foo.left_joins(:foo)
+            ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+          .where(
+            foos: { id: nil }
+          )
+          .order(:bar)
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Foo.where.missing(:foo)
+          .order(:bar)
+      RUBY
+    end
+
+    it 'registers an offense when using `left_joins(:foo).where foos: {id: nil}` without parentheses' do
+      expect_offense(<<~RUBY)
+        Foo.left_joins(:foo).where foos: { id: nil }
+            ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Foo.where.missing(:foo)
+      RUBY
+    end
+
+    it "registers an offense when using `left_joins(:foo).where foos: {id: nil}, bar: 'bar'` without parentheses" do
+      expect_offense(<<~RUBY)
+        Foo.left_joins(:foo).where foos: { id: nil }, bar: 'bar'
+            ^^^^^^^^^^^^^^^^ Use `where.missing(:foo)` instead of `left_joins(:foo).where(foos: { id: nil })`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Foo.where.missing(:foo).where bar: 'bar'
+      RUBY
+    end
+
     it "registers an offense when using `left_joins(:foo).where(foos: {id: nil}, bar: 'bar')` " \
        'with other `left_joins(:foo)`' do
       expect_offense(<<~RUBY)

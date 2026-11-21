@@ -94,12 +94,12 @@ module RuboCop
             corrector.remove(where_method_range(where_node))
           else
             corrector.remove(node.loc.dot)
-            corrector.remove(range_between(where_node.loc.selector.begin_pos, where_node.loc.end.end_pos))
+            corrector.remove(where_node)
           end
         end
 
         def where_method_range(where_node)
-          range = range_between(where_node.loc.dot.begin_pos, where_node.loc.end.end_pos)
+          range = range_between(where_node.loc.dot.begin_pos, where_node.source_range.end_pos)
           if alone_on_its_lines?(range)
             range_by_whole_lines(range, include_final_newline: true)
           else
