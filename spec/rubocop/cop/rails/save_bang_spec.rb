@@ -738,6 +738,146 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
       RUBY
     end
 
+    it "when using #{method} in an if as the last expression" do
+      if allow_implicit_return
+        expect_no_offenses(<<~RUBY)
+          def foo
+            if condition
+              prepare
+              object.#{method}
+            end
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          def foo
+            if condition
+              prepare
+              object.#{method}
+                     ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+            end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          def foo
+            if condition
+              prepare
+              object.#{method}!
+            end
+          end
+        RUBY
+      end
+    end
+
+    it "when using #{method} in each branch of an if-elsif-else as the last expression" do
+      if allow_implicit_return
+        expect_no_offenses(<<~RUBY)
+          def foo
+            if condition
+              object.#{method}
+            elsif other_condition
+              other.#{method}
+            else
+              another.#{method}
+            end
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          def foo
+            if condition
+              object.#{method}
+                     ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+            elsif other_condition
+              other.#{method}
+                    ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+            else
+              another.#{method}
+                      ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+            end
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          def foo
+            if condition
+              object.#{method}!
+            elsif other_condition
+              other.#{method}!
+            else
+              another.#{method}!
+            end
+          end
+        RUBY
+      end
+    end
+
+    it "when using #{method} in a ternary as the last expression" do
+      if allow_implicit_return
+        expect_no_offenses(<<~RUBY)
+          def foo
+            condition ? object.#{method} : nil
+          end
+        RUBY
+      else
+        expect_offense(<<~RUBY, method: method)
+          def foo
+            condition ? object.#{method} : nil
+                               ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          def foo
+            condition ? object.#{method}! : nil
+          end
+        RUBY
+      end
+    end
+
+    it "when using #{method} before the last expression of an if branch" do
+      expect_offense(<<~RUBY, method: method)
+        def foo
+          if condition
+            object.#{method}
+                   ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+            bar
+          end
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        def foo
+          if condition
+            object.#{method}!
+            bar
+          end
+        end
+      RUBY
+    end
+
+    it "when using #{method} in an if before the last expression" do
+      expect_offense(<<~RUBY, method: method)
+        def foo
+          if condition
+            object.#{method}
+                   ^{method} Use `#{method}!` instead of `#{method}` if the return value is not checked.
+          end
+          bar
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        def foo
+          if condition
+            object.#{method}!
+          end
+          bar
+        end
+      RUBY
+    end
+
     it "when using #{method} not as the last method call in a multiline method" do
       expect_offense(<<~RUBY, method: method)
         def foo
