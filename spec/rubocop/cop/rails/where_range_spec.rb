@@ -109,6 +109,12 @@ RSpec.describe RuboCop::Cop::Rails::WhereRange, :config do
         RUBY
       end
 
+      it 'does not register an offense when using named `>=` with a double splat' do
+        expect_no_offenses(<<~RUBY)
+          Model.where('column >= :min', **options)
+        RUBY
+      end
+
       it 'registers an offense and corrects when using `>=` with an array' do
         expect_offense(<<~RUBY)
           Model.where(['column >= ?', value])
@@ -215,6 +221,28 @@ RSpec.describe RuboCop::Cop::Rails::WhereRange, :config do
         expect_offense(<<~RUBY)
           Model.where('column < ?', value)
                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(column: ...value)` instead of manually constructing SQL.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Model.where(column: ...value)
+        RUBY
+      end
+
+      it 'registers an offense and corrects when using named `<=`' do
+        expect_offense(<<~RUBY)
+          Model.where('column <= :max', max: value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(column: ..value)` instead of manually constructing SQL.
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Model.where(column: ..value)
+        RUBY
+      end
+
+      it 'registers an offense and corrects when using named `<`' do
+        expect_offense(<<~RUBY)
+          Model.where('column < :max', max: value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `where(column: ...value)` instead of manually constructing SQL.
         RUBY
 
         expect_correction(<<~RUBY)

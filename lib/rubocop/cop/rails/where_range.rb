@@ -114,14 +114,16 @@ module RuboCop
 
             if value_node.hash_type?
               pair = find_pair(value_node, Regexp.last_match(2))
-              lhs = pair.value
-              operator = '..'
+              if pair
+                lhs = pair.value
+                operator = '..'
+              end
             end
           when LTEQ_NAMED_RE
             value_node = values_node[0]
 
             if value_node.hash_type?
-              pair = find_pair(value_node, Regexp.last_match(2))
+              pair = find_pair(value_node, Regexp.last_match(3))
               if pair && target_ruby_version >= 2.7
                 operator = range_operator(Regexp.last_match(2))
                 rhs = pair.value

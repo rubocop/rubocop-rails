@@ -1,0 +1,1 @@
+* [#1312](https://github.com/rubocop/rubocop-rails/issues/1312): Fix false negatives for `Rails/WhereRange` when using named `<=` and `<` placeholders, and an error for named `>=` with a double splat. ([@APX403][])
