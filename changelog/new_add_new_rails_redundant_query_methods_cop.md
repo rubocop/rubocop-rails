@@ -1,0 +1,1 @@
+* [#885](https://github.com/rubocop/rubocop-rails/issues/885): Add new `Rails/RedundantQueryMethods` cop, which checks for Active Record query methods called more than once in the same chain with the same arguments. ([@IslamElsayed][])
