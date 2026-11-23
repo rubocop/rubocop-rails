@@ -40,6 +40,16 @@ module RuboCop
           end
         end
         alias on_csend on_send
+
+        def on_block_pass(node)
+          symbol = node.children.first
+          return unless symbol&.sym_type? && RESTRICT_ON_SEND.include?(symbol.value)
+          return if symbol.value == style
+
+          add_offense(symbol, message: format(MSG, prefer: style)) do |corrector|
+            corrector.replace(symbol, ":#{style}")
+          end
+        end
       end
     end
   end
