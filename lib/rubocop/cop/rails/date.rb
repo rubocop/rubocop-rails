@@ -89,7 +89,27 @@ module RuboCop
         end
         alias on_csend on_send
 
+        def on_block_pass(node)
+          symbol = node.children.first
+          return unless symbol&.sym_type? && bad_methods.include?(symbol.value)
+          return if allow_to_time? && symbol.value == :to_time
+
+          register_block_pass_offense(symbol)
+        end
+
         private
+
+        def register_block_pass_offense(symbol)
+          deprecated = DEPRECATED_METHODS.find { |method| method[:deprecated].to_sym == symbol.value }
+
+          if deprecated
+            message = format(DEPRECATED_MSG, deprecated: deprecated[:deprecated], relevant: deprecated[:relevant])
+
+            add_offense(symbol, message: message) { |corrector| corrector.replace(symbol, ":#{deprecated[:relevant]}") }
+          else
+            add_offense(symbol, message: format(MSG_SEND, method: symbol.value))
+          end
+        end
 
         def check_deprecated_methods(node)
           DEPRECATED_METHODS.each do |method|

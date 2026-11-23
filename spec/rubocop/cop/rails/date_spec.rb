@@ -326,4 +326,51 @@ RSpec.describe RuboCop::Cop::Rails::Date, :config do
       RUBY
     end
   end
+
+  context 'when using a symbol block' do
+    let(:cop_config) { { 'EnforcedStyle' => 'flexible', 'AllowToTime' => allow_to_time } }
+    let(:allow_to_time) { true }
+
+    it 'registers and corrects an offense when using `&:to_time_in_current_zone`' do
+      expect_offense(<<~RUBY)
+        dates.map(&:to_time_in_current_zone)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^ `to_time_in_current_zone` is deprecated. Use `in_time_zone` instead.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        dates.map(&:in_time_zone)
+      RUBY
+    end
+
+    it 'does not register an offense when using `&:to_time` and `AllowToTime: true`' do
+      expect_no_offenses(<<~RUBY)
+        dates.map(&:to_time)
+      RUBY
+    end
+
+    context 'when `AllowToTime: false`' do
+      let(:allow_to_time) { false }
+
+      it 'registers an offense when using `&:to_time`' do
+        expect_offense(<<~RUBY)
+          dates.map(&:to_time)
+                     ^^^^^^^^ Do not use `to_time` on Date objects, because they know nothing about the time zone in use.
+        RUBY
+      end
+    end
+
+    it 'does not register an offense when using another symbol block' do
+      expect_no_offenses(<<~RUBY)
+        dates.map(&:in_time_zone)
+      RUBY
+    end
+
+    it 'does not register an offense when forwarding an anonymous block', :ruby31 do
+      expect_no_offenses(<<~RUBY)
+        def foo(&)
+          bar(&)
+        end
+      RUBY
+    end
+  end
 end

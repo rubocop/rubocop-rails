@@ -1,0 +1,1 @@
+* [#1703](https://github.com/rubocop/rubocop-rails/pull/1703): Fix a false negative for `Rails/Date` when `to_time` or `to_time_in_current_zone` is passed as a symbol block, such as `dates.map(&:to_time_in_current_zone)`. ([@Darhazer][])
