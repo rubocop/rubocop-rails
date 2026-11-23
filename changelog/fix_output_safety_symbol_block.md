@@ -1,0 +1,1 @@
+* [#1702](https://github.com/rubocop/rubocop-rails/pull/1702): Fix a false negative for `Rails/OutputSafety` when `html_safe` is passed as a symbol block, such as `foo.map(&:html_safe)`. ([@Darhazer][])

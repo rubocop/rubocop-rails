@@ -219,4 +219,42 @@ RSpec.describe RuboCop::Cop::Rails::OutputSafety, :config do
       RUBY
     end
   end
+
+  context 'when using `html_safe` as a symbol block' do
+    it 'registers an offense' do
+      expect_offense(<<~RUBY)
+        foo.map(&:html_safe)
+                 ^^^^^^^^^^ Tagging a string as html safe may be a security risk.
+      RUBY
+    end
+
+    it 'registers an offense in a multiline chain' do
+      expect_offense(<<~RUBY)
+        foo
+          .map(&:to_s)
+          .map(&:html_safe)
+                ^^^^^^^^^^ Tagging a string as html safe may be a security risk.
+      RUBY
+    end
+
+    it 'does not register an offense when using another symbol block' do
+      expect_no_offenses(<<~RUBY)
+        foo.map(&:to_s)
+      RUBY
+    end
+
+    it 'does not register an offense when forwarding an anonymous block', :ruby31 do
+      expect_no_offenses(<<~RUBY)
+        def foo(&)
+          bar(&)
+        end
+      RUBY
+    end
+
+    it 'does not register an offense when passing a method object' do
+      expect_no_offenses(<<~RUBY)
+        foo.map(&method(:html_safe))
+      RUBY
+    end
+  end
 end

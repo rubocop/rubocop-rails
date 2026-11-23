@@ -81,6 +81,13 @@ module RuboCop
         end
         alias on_csend on_send
 
+        def on_block_pass(node)
+          symbol = node.children.first
+          return unless symbol&.sym_type? && symbol.value == :html_safe
+
+          add_offense(symbol)
+        end
+
         private
 
         def non_interpolated_string?(node)
