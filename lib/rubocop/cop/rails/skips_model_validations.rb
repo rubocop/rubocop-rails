@@ -83,6 +83,17 @@ module RuboCop
         end
         alias on_csend on_send
 
+        def on_block_pass(node)
+          symbol = node.children.first
+          return unless symbol&.sym_type?
+
+          method_name = symbol.value.to_s
+          return if allowed_methods.include?(method_name) || !forbidden_methods.include?(method_name)
+          return if METHODS_WITH_ARGUMENTS.include?(method_name)
+
+          add_offense(symbol, message: format(MSG, method: method_name))
+        end
+
         def initialize(*)
           super
           @displayed_allowed_warning = false
