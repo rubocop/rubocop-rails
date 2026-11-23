@@ -1,0 +1,1 @@
+* [#1702](https://github.com/rubocop/rubocop-rails/pull/1702): Fix a false negative for `Rails/ToFormattedS` when `to_formatted_s` or `to_fs` is passed as a symbol block, such as `times.map(&:to_formatted_s)`. ([@Darhazer][])
