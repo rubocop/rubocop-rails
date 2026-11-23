@@ -20,6 +20,10 @@ module RuboCop
       # * calls whose signature doesn't look like an ActiveRecord
       #   persistence method.
       #
+      # A persistence method passed as a symbol block, such as `users.each(&:save)`,
+      # is registered too, when the value of the call receiving the block is discarded, as `Lint/Void` decides it.
+      # A call that is assigned, chained, tested or passed along uses its value.
+      #
       # By default it will also allow implicit returns from methods and blocks.
       # that behavior can be turned off with `AllowImplicitReturn: false`.
       #
@@ -52,6 +56,7 @@ module RuboCop
       #   user.update(name: 'Joe')
       #   user.find_or_create_by(name: 'Joe')
       #   user.destroy
+      #   users.each(&:save)
       #
       #   # good
       #   unless user.save
@@ -61,6 +66,7 @@ module RuboCop
       #   user.update!(name: 'Joe')
       #   user.find_or_create_by!(name: 'Joe')
       #   user.destroy!
+      #   users.each(&:save!)
       #
       #   user = User.find_or_create_by(name: 'Joe')
       #   unless user.persisted?
@@ -170,7 +176,63 @@ module RuboCop
         end
         alias on_csend on_send
 
+        def on_block_pass(node)
+          symbol = node.children.first
+          return unless symbol&.sym_type? && MODIFY_PERSIST_METHODS.include?(symbol.value)
+
+          call = node.parent
+          return unless call&.call_type?
+          return unless value_discarded?(call)
+
+          register_block_pass_offense(symbol)
+        end
+
         private
+
+        def register_block_pass_offense(symbol)
+          bang_method = "#{symbol.value}!"
+          message = format(MSG, prefer: "&:#{bang_method}", current: "&:#{symbol.value}")
+
+          add_offense(symbol, message: message) do |corrector|
+            corrector.replace(symbol, ":#{bang_method}")
+          end
+        end
+
+        # Whether the value of the call that receives the symbol block is thrown away, as `Lint/Void` decides it:
+        # a statement that is not the last of its body, or the last one of a body that is a void context, such as the
+        # block of `each` or `initialize`. Assigned, chained, tested, returned or passed along, the value is used.
+        # The last statement of any other method or block is an implicit return, discarded only with
+        # `AllowImplicitReturn: false`.
+        def value_discarded?(node)
+          parent = node.parent
+
+          case parent&.type
+          when :begin, :kwbegin
+            statement_value_discarded?(parent, node)
+          when :if, :case
+            branch_value_discarded?(parent, node)
+          when :when
+            parent.body.equal?(node) && value_discarded?(parent.parent)
+          when :def, :defs, :block, :numblock, :itblock
+            body_value_discarded?(parent, node)
+          else
+            false
+          end
+        end
+
+        def statement_value_discarded?(sequence, node)
+          !node.equal?(sequence.children.last) || value_discarded?(sequence)
+        end
+
+        def branch_value_discarded?(conditional, node)
+          !conditional.condition.equal?(node) && value_discarded?(conditional)
+        end
+
+        def body_value_discarded?(owner, node)
+          return false unless owner.body.equal?(node)
+
+          owner.void_context? || !cop_config['AllowImplicitReturn']
+        end
 
         def register_offense(node, msg)
           current_method = node.method_name

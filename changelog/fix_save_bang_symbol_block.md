@@ -1,0 +1,1 @@
+* [#1701](https://github.com/rubocop/rubocop-rails/pull/1701): Fix a false negative for `Rails/SaveBang` when a persistence method is passed as a symbol block, such as `users.each(&:save)`. ([@Darhazer][])

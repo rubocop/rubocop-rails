@@ -1129,6 +1129,181 @@ RSpec.describe RuboCop::Cop::Rails::SaveBang, :config do
     end
   end
 
+  describe 'a persistence method passed as a symbol block' do
+    described_class::MODIFY_PERSIST_METHODS.each do |method|
+      it "registers an offense for each(&:#{method}) and autocorrects it" do
+        expect_offense(<<~RUBY, method: method)
+          users.each(&:#{method})
+                      ^^{method} Use `&:#{method}!` instead of `&:#{method}` if the return value is not checked.
+          something
+        RUBY
+
+        expect_correction(<<~RUBY)
+          users.each(&:#{method}!)
+          something
+        RUBY
+      end
+    end
+
+    it 'registers an offense for a call with safe navigation' do
+      expect_offense(<<~RUBY)
+        users&.each(&:save)
+                     ^^^^^ Use `&:save!` instead of `&:save` if the return value is not checked.
+        something
+      RUBY
+    end
+
+    it 'registers an offense when the result is not used in an if body' do
+      expect_offense(<<~RUBY)
+        if condition
+          users.each(&:save)
+                      ^^^^^ Use `&:save!` instead of `&:save` if the return value is not checked.
+        end
+        something
+      RUBY
+    end
+
+    it 'allows the bang form' do
+      expect_no_offenses('users.each(&:save!)')
+    end
+
+    it 'allows other symbol blocks' do
+      expect_no_offenses(<<~RUBY)
+        users.each(&:touch)
+        users.map(&:name)
+        something
+      RUBY
+    end
+
+    it 'allows a block that is not a symbol' do
+      expect_no_offenses(<<~RUBY)
+        users.each(&block)
+        something
+      RUBY
+    end
+
+    it 'allows a result that is assigned' do
+      expect_no_offenses(<<~RUBY)
+        saved = users.map(&:save)
+        something
+      RUBY
+    end
+
+    it 'allows a result that is tested in a condition' do
+      expect_no_offenses(<<~RUBY)
+        if users.all?(&:save)
+          something
+        end
+      RUBY
+    end
+
+    it 'allows a result that is an operand of a boolean operator' do
+      expect_no_offenses(<<~RUBY)
+        users.all?(&:save) || raise('failed')
+        something
+      RUBY
+    end
+
+    it 'allows a result that is explicitly returned' do
+      expect_no_offenses(<<~RUBY)
+        def save_all
+          return users.all?(&:save)
+        end
+      RUBY
+    end
+
+    it 'allows a result that is passed as an argument' do
+      expect_no_offenses(<<~RUBY)
+        raise_if_failed(users.map(&:save))
+      RUBY
+    end
+
+    it 'allows a chained call' do
+      expect_no_offenses(<<~RUBY)
+        users.map(&:save).all?
+        users.reject(&:save).each { |user| report(user) }
+        users.select(&:save).size
+        something
+      RUBY
+    end
+
+    it 'registers an offense for a result that is discarded before the last statement of a method' do
+      expect_offense(<<~RUBY)
+        def save_all
+          users.all?(&:save)
+                      ^^^^^ Use `&:save!` instead of `&:save` if the return value is not checked.
+          something
+        end
+      RUBY
+    end
+
+    it 'registers an offense for the last statement of an each block' do
+      expect_offense(<<~RUBY)
+        groups.each do |group|
+          group.users.each(&:save)
+                            ^^^^^ Use `&:save!` instead of `&:save` if the return value is not checked.
+        end
+      RUBY
+    end
+
+    it 'registers an offense for the last statement of initialize' do
+      expect_offense(<<~RUBY)
+        def initialize
+          users.each(&:save)
+                      ^^^^^ Use `&:save!` instead of `&:save` if the return value is not checked.
+        end
+      RUBY
+    end
+
+    it 'registers an offense for a result that is discarded in a case branch' do
+      expect_offense(<<~RUBY)
+        case kind
+        when :all
+          users.each(&:save)
+                      ^^^^^ Use `&:save!` instead of `&:save` if the return value is not checked.
+        end
+        something
+      RUBY
+    end
+
+    it 'allows the implicit return of a method from an if branch' do
+      expect_no_offenses(<<~RUBY)
+        def save_all
+          if condition
+            users.each(&:save)
+          end
+        end
+      RUBY
+    end
+
+    it 'allows the implicit return of a method' do
+      expect_no_offenses(<<~RUBY)
+        def save_all
+          users.all?(&:save)
+        end
+      RUBY
+    end
+
+    context 'with AllowImplicitReturn false' do
+      let(:cop_config) { { 'AllowImplicitReturn' => false } }
+
+      it 'registers an offense for the implicit return of a method' do
+        expect_offense(<<~RUBY)
+          def save_all
+            users.all?(&:save)
+                        ^^^^^ Use `&:save!` instead of `&:save` if the return value is not checked.
+          end
+        RUBY
+
+        expect_correction(<<~RUBY)
+          def save_all
+            users.all?(&:save!)
+          end
+        RUBY
+      end
+    end
+  end
+
   it 'properly ignores lvasign without right hand side' do
     expect_no_offenses('variable += 1')
   end
