@@ -1,0 +1,1 @@
+* [#1703](https://github.com/rubocop/rubocop-rails/pull/1703): Fix a false negative for `Rails/SkipsModelValidations` when a forbidden method is passed as a symbol block, such as `users.each(&:touch)`. ([@Darhazer][])

@@ -138,6 +138,43 @@ RSpec.describe RuboCop::Cop::Rails::SkipsModelValidations, :config do
     end
   end
 
+  context 'when using a symbol block' do
+    (cop_config['ForbiddenMethods'] - methods_with_arguments).each do |method_name|
+      it "registers an offense for `&:#{method_name}`" do
+        expect_offense(<<~RUBY, method_name: method_name)
+          users.each(&:#{method_name})
+                      ^^{method_name} #{format(msg, method_name)}
+        RUBY
+      end
+    end
+
+    methods_with_arguments.each do |method_name|
+      it "doesn't register an offense for `&:#{method_name}`" do
+        expect_no_offenses("users.each(&:#{method_name})")
+      end
+    end
+
+    it 'does not register an offense when using another symbol block' do
+      expect_no_offenses('users.each(&:save)')
+    end
+
+    it 'does not register an offense when forwarding an anonymous block', :ruby31 do
+      expect_no_offenses(<<~RUBY)
+        def foo(&)
+          bar(&)
+        end
+      RUBY
+    end
+
+    context 'with allowed methods' do
+      let(:cop_config) { { 'ForbiddenMethods' => %w[touch], 'AllowedMethods' => %w[touch] } }
+
+      it 'does not register an offense for an allowed method' do
+        expect_no_offenses('users.each(&:touch)')
+      end
+    end
+  end
+
   context 'with `update_attribute` method in forbidden methods' do
     let(:cop_config) do
       { 'ForbiddenMethods' => %w[update_attribute] }
