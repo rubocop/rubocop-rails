@@ -26,6 +26,7 @@ module RuboCop
       #
       class UniqueValidationWithoutIndex < Base
         include ActiveRecordHelper
+        include ActiveRecordSchemaChecksum
 
         MSG = 'Uniqueness validation should have a unique index on the database column.'
         RESTRICT_ON_SEND = %i[validates].freeze

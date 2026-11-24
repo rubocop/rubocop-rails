@@ -27,17 +27,6 @@ module RuboCop
         node.each_ancestor(:class).any? { |class_node| active_record?(class_node.parent_class) }
       end
 
-      def external_dependency_checksum
-        return @external_dependency_checksum if defined?(@external_dependency_checksum)
-
-        schema_path = RuboCop::Rails::SchemaLoader.db_schema_path
-        return nil if schema_path.nil?
-
-        schema_code = File.read(schema_path)
-
-        @external_dependency_checksum ||= Digest::SHA1.hexdigest(schema_code)
-      end
-
       def schema
         # For compatibility with RuboCop 1.61.0 or lower.
         if respond_to?(:parser_engine)
