@@ -78,6 +78,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railsi18nlocaletexts[Rails/I18nLocaleTexts]
 * xref:cops_rails.adoc#railsignoredcolumnsassignment[Rails/IgnoredColumnsAssignment]
 * xref:cops_rails.adoc#railsignoredskipactionfilteroption[Rails/IgnoredSkipActionFilterOption]
+* xref:cops_rails.adoc#railsingroupsof[Rails/InGroupsOf]
 * xref:cops_rails.adoc#railsindexby[Rails/IndexBy]
 * xref:cops_rails.adoc#railsindexwith[Rails/IndexWith]
 * xref:cops_rails.adoc#railsinquiry[Rails/Inquiry]
