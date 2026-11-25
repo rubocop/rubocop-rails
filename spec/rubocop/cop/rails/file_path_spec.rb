@@ -153,6 +153,14 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
+    context 'when using Rails.root in a percent string followed by a double quote' do
+      it 'does not register an offense' do
+        expect_no_offenses(<<~'RUBY')
+          %{config.paths << "#{Rails.root}/extras"}
+        RUBY
+      end
+    end
+
     context 'when using Rails.root called by double quoted string that ends with string interpolation' do
       it 'registers an offense' do
         expect_offense(<<~'RUBY')
