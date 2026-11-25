@@ -1,0 +1,1 @@
+* [#1663](https://github.com/rubocop/rubocop-rails/pull/1663): Add new `Rails/RedundantClassNames` cop to suggest using an array literal instead of a redundant `class_names` call in the `class` option of tag helpers. ([@davidenglishmusic][])
