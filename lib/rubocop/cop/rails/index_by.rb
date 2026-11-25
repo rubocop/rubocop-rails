@@ -21,6 +21,10 @@ module RuboCop
         include IndexMethod
         extend AutoCorrector
 
+        def self.autocorrect_incompatible_with
+          [Layout::SingleLineBlockChain]
+        end
+
         def_node_matcher :on_bad_each_with_object, <<~PATTERN
           (block
             (call _ :each_with_object (hash))

@@ -1,0 +1,1 @@
+* [#1683](https://github.com/rubocop/rubocop-rails/pull/1683): Fix an incorrect autocorrect for `Rails/IndexBy` and `Rails/IndexWith` when used together with `Layout/SingleLineBlockChain`. ([@Starlexxx][])
