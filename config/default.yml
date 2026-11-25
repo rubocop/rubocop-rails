@@ -1131,6 +1131,12 @@ Rails/SkipsModelValidations:
     - upsert_all
   AllowedMethods: []
 
+Rails/SquishedSQLHeredocComments:
+  Description: 'Checks for `--` comments in SQL heredocs that use `.squish`.'
+  Enabled: pending
+  Severity: warning
+  VersionAdded: '<<next>>'
+
 Rails/SquishedSQLHeredocs:
   Description: 'Checks SQL heredocs to use `.squish`.'
   StyleGuide: 'https://rails.rubystyle.guide/#squished-heredocs'

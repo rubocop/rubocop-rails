@@ -125,6 +125,7 @@ module RuboCop
       register_cop :SelectMap, "#{__dir__}/rails/select_map"
       register_cop :ShortI18n, "#{__dir__}/rails/short_i18n"
       register_cop :SkipsModelValidations, "#{__dir__}/rails/skips_model_validations"
+      register_cop :SquishedSQLHeredocComments, "#{__dir__}/rails/squished_sql_heredoc_comments"
       register_cop :SquishedSQLHeredocs, "#{__dir__}/rails/squished_sql_heredocs"
       register_cop :StripHeredoc, "#{__dir__}/rails/strip_heredoc"
       register_cop :TableNameAssignment, "#{__dir__}/rails/table_name_assignment"
