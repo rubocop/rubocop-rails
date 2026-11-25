@@ -1,0 +1,1 @@
+* [#1680](https://github.com/rubocop/rubocop-rails/pull/1680): Fix an incorrect autocorrect for `Rails/DotSeparatedKeys` when the `:scope` option follows a comma with trailing whitespace. ([@Starlexxx][])
