@@ -1,0 +1,1 @@
+* [#1568](https://github.com/rubocop/rubocop-rails/issues/1568): Fix a false positive for `Rails/UniqBeforePluck` in conservative mode when `pluck` is called on a SCREAMING_SNAKE_CASE constant. ([@maksim-romanov][])

@@ -117,6 +117,29 @@ RSpec.describe RuboCop::Cop::Rails::UniqBeforePluck, :config do
         pluck(:name).uniq
       RUBY
     end
+
+    it 'ignores uniq on a SCREAMING_SNAKE_CASE constant' do
+      expect_no_offenses(<<~RUBY)
+        DEFAULT_RULES.pluck(:resource_type).uniq
+      RUBY
+    end
+
+    it 'ignores uniq on a namespaced SCREAMING_SNAKE_CASE constant' do
+      expect_no_offenses(<<~RUBY)
+        Foo::BAR.pluck(:id).uniq
+      RUBY
+    end
+
+    it 'registers an offense for a namespaced model' do
+      expect_offense(<<~RUBY)
+        Foo::Bar.pluck(:id).uniq
+                            ^^^^ Use `distinct` before `pluck`.
+      RUBY
+
+      expect_correction(<<~RUBY)
+        Foo::Bar.distinct.pluck(:id)
+      RUBY
+    end
   end
 
   context 'when the enforced mode is aggressive' do
@@ -154,6 +177,13 @@ RSpec.describe RuboCop::Cop::Rails::UniqBeforePluck, :config do
 
       expect_correction(<<~RUBY)
         distinct.pluck(:name)
+      RUBY
+    end
+
+    it 'registers an offense for a SCREAMING_SNAKE_CASE constant' do
+      expect_offense(<<~RUBY)
+        DEFAULT_RULES.pluck(:id).uniq
+                                 ^^^^ Use `distinct` before `pluck`.
       RUBY
     end
   end
