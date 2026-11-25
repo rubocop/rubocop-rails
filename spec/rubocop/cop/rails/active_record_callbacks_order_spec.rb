@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::ActiveRecordCallbacksOrder, :config do
+  describe '.autocorrect_incompatible_with' do
+    it 'declares `Layout::EmptyLines` as incompatible to avoid joining two callbacks on one line' do
+      incompatible = described_class.autocorrect_incompatible_with
+
+      expect(incompatible.include?(RuboCop::Cop::Layout::EmptyLines)).to be(true)
+    end
+  end
+
   it 'registers an offense and corrects when declared callbacks are not correctly ordered' do
     expect_offense(<<~RUBY)
       class User < ApplicationRecord
