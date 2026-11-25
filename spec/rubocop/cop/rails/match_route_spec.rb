@@ -113,4 +113,31 @@ RSpec.describe RuboCop::Cop::Rails::MatchRoute, :config do
       end
     RUBY
   end
+
+  context 'Rails >= 8.2', :rails82 do
+    it 'registers an offense and corrects when using `match` with `via: :query`' do
+      expect_offense(<<~RUBY)
+        routes.draw do
+          match 'search', to: 'search#index', via: :query
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Use `query` instead of `match` to define a route.
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        routes.draw do
+          query 'search', to: 'search#index'
+        end
+      RUBY
+    end
+  end
+
+  context 'Rails <= 8.1', :rails81 do
+    it 'does not register an offense when using `match` with `via: :query`' do
+      expect_no_offenses(<<~RUBY)
+        routes.draw do
+          match 'search', to: 'search#index', via: :query
+        end
+      RUBY
+    end
+  end
 end
