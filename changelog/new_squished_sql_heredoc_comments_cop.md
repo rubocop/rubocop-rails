@@ -1,0 +1,1 @@
+* [#1273](https://github.com/rubocop/rubocop-rails/issues/1273): Add new `Rails/SquishedSQLHeredocComments` cop that flags `--` comments in squished SQL heredocs, where `.squish` turns them into comments over the rest of the query. ([@loqimean][])
