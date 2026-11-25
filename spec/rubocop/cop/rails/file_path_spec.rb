@@ -30,6 +30,21 @@ RSpec.describe RuboCop::Cop::Rails::FilePath, :config do
       end
     end
 
+    context 'when using Rails.root.join with path strings after a comma with trailing whitespace' do
+      it 'registers an offense' do
+        expect_offense(<<~RUBY)
+          Rails.root.join('app',\s
+          ^^^^^^^^^^^^^^^^^^^^^^^ Prefer `Rails.root.join('path/to')`.
+                          'models',\s
+                          'user.rb')
+        RUBY
+
+        expect_correction(<<~RUBY)
+          Rails.root.join("app/models/user.rb")
+        RUBY
+      end
+    end
+
     context 'when using ::Rails.root.join with some path strings' do
       it 'registers an offense' do
         expect_offense(<<~RUBY)
