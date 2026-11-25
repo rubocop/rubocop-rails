@@ -1,0 +1,1 @@
+* [#1685](https://github.com/rubocop/rubocop-rails/pull/1685): Fix an error for `Rails/RedundantReceiverInWithOptions` when a numbered or `it` block contains a call without a receiver. ([@Starlexxx][])
