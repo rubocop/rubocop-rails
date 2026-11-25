@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe RuboCop::Cop::Rails::SquishedSQLHeredocs, :config do
+  describe '.autocorrect_incompatible_with' do
+    it 'declares `Style::TrailingCommaInArguments` as incompatible to avoid producing `<<~SQL,.squish`' do
+      incompatible = described_class.autocorrect_incompatible_with
+
+      expect(incompatible.include?(RuboCop::Cop::Style::TrailingCommaInArguments)).to be(true)
+    end
+  end
+
   context 'with multi line heredoc' do
     it 'registers an offense and corrects it' do
       expect_offense(<<~RUBY)
