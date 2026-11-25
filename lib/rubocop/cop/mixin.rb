@@ -13,5 +13,6 @@ module RuboCop
     autoload :MigrationsHelper, "#{__dir__}/mixin/migrations_helper"
     autoload :RoutesHelper, "#{__dir__}/mixin/routes_helper"
     autoload :TargetRailsVersion, "#{__dir__}/mixin/target_rails_version"
+    autoload :TimeComparisonHelper, "#{__dir__}/mixin/time_comparison_helper"
   end
 end
