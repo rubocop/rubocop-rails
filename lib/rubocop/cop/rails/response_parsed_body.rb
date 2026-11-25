@@ -14,6 +14,7 @@ module RuboCop
       # @example
       #   # bad
       #   JSON.parse(response.body)
+      #   Oj.load(response.body)
       #   Nokogiri::HTML(response.body)
       #   Nokogiri::HTML4(response.body)
       #   Nokogiri::HTML5(response.body)
@@ -34,13 +35,18 @@ module RuboCop
 
         HTML = %i[HTML HTML4 HTML5].to_set.freeze
 
-        RESTRICT_ON_SEND = [:parse, *HTML].freeze
+        RESTRICT_ON_SEND = [:parse, :load, *HTML].freeze
 
         minimum_target_rails_version 5.0
 
         # @!method json_parse_response_body?(node)
         def_node_matcher :json_parse_response_body?, <<~PATTERN
           (send #json? :parse #response_body?)
+        PATTERN
+
+        # @!method oj_load_response_body?(node)
+        def_node_matcher :oj_load_response_body?, <<~PATTERN
+          (send #oj? :load #response_body?)
         PATTERN
 
         # @!method nokogiri_html_response_body?(node)
@@ -61,6 +67,11 @@ module RuboCop
         # @!method json?(node)
         def_node_matcher :json?, <<~PATTERN
           (const {nil? cbase} :JSON)
+        PATTERN
+
+        # @!method oj?(node)
+        def_node_matcher :oj?, <<~PATTERN
+          (const {nil? cbase} :Oj)
         PATTERN
 
         # @!method nokogiri?(node)
@@ -96,7 +107,7 @@ module RuboCop
         end
 
         def json_offense?(node)
-          json_parse_response_body?(node)
+          json_parse_response_body?(node) || oj_load_response_body?(node)
         end
 
         def support_response_parsed_body_for_html?
