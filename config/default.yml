@@ -1231,6 +1231,12 @@ Rails/TransactionExitStatement:
   VersionAdded: '2.14'
   TransactionMethods: []
 
+Rails/UnfilteredParametersLogging:
+  Description: 'Avoid logging unfiltered request parameters.'
+  Enabled: pending
+  Safe: false
+  VersionAdded: '<<next>>'
+
 Rails/UniqBeforePluck:
   Description: 'Prefer the use of uniq or distinct before pluck.'
   Enabled: true

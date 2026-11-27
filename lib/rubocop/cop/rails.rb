@@ -135,6 +135,7 @@ module RuboCop
       register_cop :ToSWithArgument, "#{__dir__}/rails/to_s_with_argument"
       register_cop :TopLevelHashWithIndifferentAccess, "#{__dir__}/rails/top_level_hash_with_indifferent_access"
       register_cop :TransactionExitStatement, "#{__dir__}/rails/transaction_exit_statement"
+      register_cop :UnfilteredParametersLogging, "#{__dir__}/rails/unfiltered_parameters_logging"
       register_cop :UniqBeforePluck, "#{__dir__}/rails/uniq_before_pluck"
       register_cop :UniqueValidationWithoutIndex, "#{__dir__}/rails/unique_validation_without_index"
       register_cop :UnknownEnv, "#{__dir__}/rails/unknown_env"
