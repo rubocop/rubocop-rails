@@ -7569,6 +7569,49 @@ end
 
 * https://github.com/rails/rails/commit/15aa4200e083
 
+[#railsunfilteredparameterslogging]
+== Rails/UnfilteredParametersLogging
+
+|===
+| Enabled by default | Safe | Supports autocorrection | Version Added | Version Changed
+
+| Pending
+| No
+| No
+| <<next>>
+| -
+|===
+
+Checks for unfiltered request parameters in log messages.
+Use `request.filtered_parameters` to apply configured parameter filtering.
+
+Explicit field selection is allowed, but does not redact the selected values.
+A selected field may itself contain a nested hash or sensitive data.
+
+[#safety-railsunfilteredparameterslogging]
+=== Safety
+
+This cop assumes `params`, `request`, and `logger` refer to Rails APIs.
+It does not follow local variable aliases or recognize custom filtering methods.
+
+Intermediate parameter references in message blocks may be flagged even when
+the block's final value does not expose them.
+
+[#examples-railsunfilteredparameterslogging]
+=== Examples
+
+[source,ruby]
+----
+# bad
+Rails.logger.info(params)
+logger.debug { request.parameters.to_json }
+
+# good
+Rails.logger.info(request.filtered_parameters)
+logger.info(params.slice(:id))
+logger.info(params.size)
+----
+
 [#railsuniqbeforepluck]
 == Rails/UniqBeforePluck
 

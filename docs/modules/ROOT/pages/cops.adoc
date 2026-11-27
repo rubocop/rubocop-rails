@@ -142,6 +142,7 @@ based on the https://rails.rubystyle.guide/[Rails Style Guide].
 * xref:cops_rails.adoc#railstoswithargument[Rails/ToSWithArgument]
 * xref:cops_rails.adoc#railstoplevelhashwithindifferentaccess[Rails/TopLevelHashWithIndifferentAccess]
 * xref:cops_rails.adoc#railstransactionexitstatement[Rails/TransactionExitStatement]
+* xref:cops_rails.adoc#railsunfilteredparameterslogging[Rails/UnfilteredParametersLogging]
 * xref:cops_rails.adoc#railsuniqbeforepluck[Rails/UniqBeforePluck]
 * xref:cops_rails.adoc#railsuniquevalidationwithoutindex[Rails/UniqueValidationWithoutIndex]
 * xref:cops_rails.adoc#railsunknownenv[Rails/UnknownEnv]
